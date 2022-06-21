@@ -10,7 +10,8 @@ class IconBtnToggle extends Component
         title: string,
         id: string,
         a: string,
-        b: string
+        b: string,
+        children: React.ReactNode
     }, {
         isToggleOn: boolean
     }>  {
