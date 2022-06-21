@@ -1,6 +1,6 @@
-import React, { useState, Fragment, Component } from 'react';
-import { DropdownButton, Dropdown, Row, Col, Form, Container, Button, ButtonGroup, ButtonToolbar, Table, FormLabel } from 'react-bootstrap';
-import { outPutNumbersArray, MiddleC, allNotes } from './template-arrays';
+import React, { useState } from 'react';
+import { Form, Button } from 'react-bootstrap';
+import { outPutNumbersArray, MiddleC } from './template-arrays';
 
 function NumberList(props: { numbers: any; }) {
     const numbers = props.numbers;

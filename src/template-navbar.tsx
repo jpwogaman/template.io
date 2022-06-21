@@ -1,8 +1,6 @@
-import React from 'react';
-import { Navbar, Nav, Container, Button, ButtonGroup, ButtonToolbar } from 'react-bootstrap';
+import { Navbar, Nav, Container } from 'react-bootstrap';
 
 export default function TemplateNavbar() {
-
 
     return (
         <Navbar bg="dark" variant="dark" sticky="top" id="TemplateNavbar">

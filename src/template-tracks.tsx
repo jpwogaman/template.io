@@ -1,5 +1,5 @@
-import React, { useState, Fragment, Component } from 'react';
-import { DropdownButton, Dropdown, Row, Col, Form, Container, Button, ButtonGroup, ButtonToolbar, Table } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Col, Form, Container, Button, Table } from 'react-bootstrap';
 import { midiChannelsArray, instanceOutputsArray, samplerOutputsArray } from './template-arrays';
 
 function NumberList(props: { numbers: any; }) {
@@ -26,7 +26,6 @@ function TrackRow(props: { id: any; }) {
 
     const id = props.id;
 
-    const [valueType, setType] = useState("")
     const [valueChn, setChn] = useState("")
     const [valueSmpOut, setSmpOut] = useState("")
     const [valueVepOut, setVepOut] = useState("")
