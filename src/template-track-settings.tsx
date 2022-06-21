@@ -1,26 +1,6 @@
 import React, { useState, Fragment, Component } from 'react';
 import { DropdownButton, Dropdown, Row, Col, Form, Container, Button, ButtonGroup, ButtonToolbar, Table } from 'react-bootstrap';
 import { allNotes, midiValuesArray, noteValuesArray, pitchValuesArray } from './template-arrays';
-
-class ErrorBoundary extends Component {
-    constructor(props: {} | Readonly<{}>) {
-        super(props);
-        this.state = { error: null, errorInfo: null };
-    }
-
-    componentDidCatch(error: any, errorInfo: any) {
-        // Catch errors in any components below and re-render with error message
-        this.setState({
-            error: error,
-            errorInfo: errorInfo
-        })
-        // You can also log error messages to an error reporting service here
-    }
-
-    render() {
-        return this.props.children;
-    }
-}
 class IconBtnToggle extends Component<{}, { isToggleOn: boolean }>  {
     constructor(props: any) {
         super(props);

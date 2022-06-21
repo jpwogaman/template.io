@@ -46,12 +46,12 @@ function SettingsForm() {
     };
 
     const changeVepOuts = function (event: any) {
-        setVepOuts((event!.target! as HTMLInputElement).value)
+        setVepOuts(event!.target!.value)
     };
 
 
     const changeSmpOuts = function (event: any) {
-        setSmpOuts((event!.target! as HTMLInputElement).value)
+        setSmpOuts(event!.target!.value)
     };
 
 
