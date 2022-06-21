@@ -1,7 +1,19 @@
 import React, { useState, Fragment, Component } from 'react';
 import { DropdownButton, Dropdown, Row, Col, Form, Container, Button, ButtonGroup, ButtonToolbar, Table } from 'react-bootstrap';
 import { allNotes, midiValuesArray, noteValuesArray, pitchValuesArray } from './template-arrays';
-class IconBtnToggle extends Component<{}, { isToggleOn: boolean }>  {
+
+class IconBtnToggle extends Component
+    <{
+        default: string,
+        variant: string,
+        size: any,
+        title: string,
+        id: string,
+        a: string,
+        b: string
+    }, {
+        isToggleOn: boolean
+    }>  {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -59,8 +71,8 @@ function SettingsRow(props: { id: any; type: any; variant: any; }) {
     const [valueOff, setOff] = useState("")
     const [valueDeft, setDeft] = useState("")
     const [valueName, setName] = useState("")
-    const [valueMidi, setMidi] = useState(midiValuesArray)
-    const [valueCodeMidi, setCodeMidi] = useState(midiValuesArray)
+    const [valueMidi, setMidi] = useState(midiValuesArray as string[] | number[])
+    const [valueCodeMidi, setCodeMidi] = useState(midiValuesArray as string[] | number[])
     const [codeDisabled, setCodeDisabled] = useState(false)
     const [isChecked, setChecked] = useState(false)
     const [isChecked2, setChecked2] = useState(false)
