@@ -48,7 +48,6 @@
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.0.0",
-    "cross-env": "^7.0.3",
-    "react-devtools": "^4.24.7"
+    "cross-env": "^7.0.3"
   }
 }
