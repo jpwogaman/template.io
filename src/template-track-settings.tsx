@@ -21,7 +21,7 @@ class ErrorBoundary extends Component {
         return this.props.children;
     }
 }
-class IconBtnToggle extends Component<{ default: string }, { isToggleOn: boolean }>  {
+class IconBtnToggle extends Component<{}, { isToggleOn: boolean }>  {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -97,23 +97,23 @@ function SettingsRow(props: { id: any; type: any; variant: any; }) {
     const [togArt, setTogArt] = useState(variant === "tog" ? true : false)
     const [artFad, setArtFad] = useState(type === "art" ? true : false)
 
-    const codeChange = function () {
+    const codeChange = function (event: any) {
         setCode((event!.target! as HTMLInputElement).value);
     }
-    const onValChange = function () {
+    const onValChange = function (event: any) {
         setOn((event!.target! as HTMLInputElement).value);
     }
-    const offChange = function () {
+    const offChange = function (event: any) {
         setOff((event!.target! as HTMLInputElement).value);
     }
-    const deftChange = function () {
+    const deftChange = function (event: any) {
         setDeft((event!.target! as HTMLInputElement).value);
     }
-    const nameChange = function () {
+    const nameChange = function (event: any) {
         setName((event!.target! as HTMLInputElement).value);
     }
 
-    const typeChange = function () {
+    const typeChange = function (event: any) {
         setType((event!.target! as HTMLInputElement).value);
 
         if ((event!.target! as HTMLInputElement).value === "/note") {

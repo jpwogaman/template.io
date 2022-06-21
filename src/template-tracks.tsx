@@ -32,16 +32,16 @@ function TrackRow(props: { id: any; }) {
     const [valueVepOut, setVepOut] = useState("")
     const [valueName, setName] = useState("")
 
-    const chnChange = function () {
+    const chnChange = function (event: any) {
         setChn((event!.target! as HTMLInputElement).value)
     }
-    const smpOutChange = function () {
+    const smpOutChange = function (event: any) {
         setSmpOut((event!.target! as HTMLInputElement).value)
     }
-    const vepOutChange = function () {
+    const vepOutChange = function (event: any) {
         setVepOut((event!.target! as HTMLInputElement).value)
     }
-    const nameChange = function () {
+    const nameChange = function (event: any) {
         setName((event!.target! as HTMLInputElement).value)
     }
 
