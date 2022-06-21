@@ -1,0 +1,27 @@
+$font-stack-1: camingocoderegular, sans-serif;
+$font-stack-2: gravesend-sans, sans-serif;
+$font-stack-3: brandon-grotesque, sans-serif;
+
+$bg-color-b: #000;
+$bg-color-w: #fff;
+$bg-color-1: #cdbd9a;
+$bg-color-2: #c1c1c1;
+$bg-color-3: #4987c8;
+$bg-color-4: #d0cdc4;
+$bg-color-5: #808080;
+$bg-color-U1: #ff0000;
+$bg-color-U2: #0000ff;
+$bg-color-H1: #ff0000;
+$bg-color-H2: #008000;
+$txt-color-b: #000;
+$txt-color-w: #fff;
+$txt-color-1: #b60000;
+$txt-color-2: #001eff;
+$border-color-b: #000;
+$border-color-w: #fff;
+$border-color-1: #808080;
+$border-color-2: #008000;
+$border-color-3: #0000ff;
+@mixin easeOut {
+	transition: all 0.5s ease-out;
+}

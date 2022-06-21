@@ -1,0 +1,106 @@
+@import 'config';
+@import 'bootstrap-custom';
+@import 'webfonts.css';
+
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	scroll-behavior: smooth;
+	font-family: $font-stack-1;
+}
+
+body {
+	background-color: $bg-color-1;
+	font-family: $font-stack-1;
+	line-height: 1.5;
+	padding: 0;
+	width: 100vw;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+	overflow-x: hidden;
+}
+
+body::-webkit-scrollbar {
+	display: none;
+}
+
+img {
+	width: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+#TemplateTrackSettings {
+	display: block;
+	position: absolute;
+	top: 40px;
+	bottom: 0;
+	width: 45%;
+	padding: 0.5%;
+	z-index: 99;
+	background-color: $bg-color-4;
+	overflow-y: scroll;
+	@include easeOut;
+}
+
+#TemplateTrackSettings::-webkit-scrollbar {
+	display: none;
+}
+
+#TemplateTrackSettings {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.MSshow {
+	margin-left: 55%;
+	opacity: 1;
+}
+
+.MShide {
+	margin-left: 100%;
+	opacity: 0;
+}
+
+#TemplateTracks {
+	display: block;
+	position: absolute;
+	top: 40px;
+	bottom: 0;
+	padding: 0.5%;
+	z-index: 99;
+	background-color: $bg-color-1;
+	overflow-y: scroll;
+	@include easeOut;
+}
+
+#TemplateTracks::-webkit-scrollbar {
+	display: none;
+}
+
+#TemplateTracks {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.MSshowTemplateTracks {
+	width: 55%;
+	min-width: 55%;
+	margin-right: 45%;
+	font-size: small;
+}
+
+.MShideTemplateTracks {
+	width: 100%;
+	min-width: 100%;
+	margin-right: 0;
+	font-size: medium;
+}
