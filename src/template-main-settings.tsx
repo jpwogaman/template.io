@@ -26,7 +26,7 @@ function SettingsForm() {
     const [vepOuts, setVepOuts] = useState(32)
     const [smpOuts, setSmpOuts] = useState(32)
 
-    const findMiddleC = function () {
+    const findMiddleC = function (event: any) {
         setValueMiddleC((event!.target! as HTMLInputElement).value);
 
         if ((event!.target! as HTMLInputElement).value === "NotesC5=60") {
@@ -45,12 +45,12 @@ function SettingsForm() {
 
     };
 
-    const changeVepOuts = function () {
+    const changeVepOuts = function (event: any) {
         setVepOuts((event!.target! as HTMLInputElement).value)
     };
 
 
-    const changeSmpOuts = function () {
+    const changeSmpOuts = function (event: any) {
         setSmpOuts((event!.target! as HTMLInputElement).value)
     };
 
