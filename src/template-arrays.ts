@@ -42,14 +42,15 @@ for (let i = 0; i <= 127; i++) {
 }
 const samplerOutputsArray: string[] = [];
 for (let i = 1; i < smpOutSettings; i++) {
-    //link (i < x;) to settings.html "number of outputs per sampler, etc."
-    let output = i + '-' + i + 1;
+    let j: number = i + 1
+    let output: string = i + '-' + j;
     samplerOutputsArray.push(output);
     i = i + 1;
 }
 const instanceOutputsArray: string[] = [];
 for (let i = 1; i < vepOutSettings; i++) {
-    let output = i + '-' + i + 1;
+    let j: number = i + 1
+    let output: string = i + '-' + j;
     instanceOutputsArray.push(output);
     i = i + 1;
 }
