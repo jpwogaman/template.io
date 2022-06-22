@@ -48,8 +48,7 @@ function NumberList(props: { numbers: any; }) {
     const numbers = props.numbers;
     const listItems = numbers.map(
         (number: string | number | boolean |
-            React.ReactElement<any, string |
-                React.JSXElementConstructor<any>> |
+            React.ReactElement<any, string | React.JSXElementConstructor<any>> |
             React.ReactFragment |
             React.ReactPortal | null | undefined) =>
             <option key={number!.toString()} value={number!.toString()}>
@@ -84,8 +83,8 @@ function SettingsRow(props: { id: any; type: any; variant: any; }) {
     const [nameArtTitle2, setNameArtTitle2] = useState("Set the NAME for this patch. (i.e Staccato)")
     const [nameFadTitle, setNameFadTitle] = useState("Set the NAME for this parameter. (i.e Dynamics)")
     const [codeArtTitle, setCodeArtTitle] = useState("Set the CODE for this patch. (i.e. CC58)")
-    const [codeOnArt, setcodeOnArt] = useState("Set the ON setting for this patch. (i.e. CC58, Value 76)")
-    const [codeOnArt2, setcodeOnArt2] = useState("Set the ON setting for this patch. (i.e. CC58, Value 21)")
+    const [codeOnArt, setCodeOnArt] = useState("Set the ON setting for this patch. (i.e. CC58, Value 76)")
+    const [codeOnArt2, setCodeOnArt2] = useState("Set the ON setting for this patch. (i.e. CC58, Value 21)")
     const [codeFadTitle, setCodeFadTitle] = useState("Set the CODE for this parameter. (i.e CC11)")
     const [togArt, setTogArt] = useState(variant === "tog" ? true : false)
     const [artFad, setArtFad] = useState(type === "art" ? true : false)
