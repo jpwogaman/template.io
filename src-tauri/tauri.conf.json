@@ -16,8 +16,8 @@
     },
     "bundle": {
       "active": true,
-      "category": "DeveloperTool",
-      "copyright": "",
+      "category": "Productivity",
+      "copyright": "Copyright (c) 2022 JP Wogaman II",
       "deb": {
         "depends": []
       },

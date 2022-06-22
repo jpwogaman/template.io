@@ -1,7 +1,24 @@
 {
   "name": "template.io",
   "version": "0.1.0",
+  "description": "",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jpwogaman/template.io.git"
+  },
+  "author": "JP Wogaman II",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jpwogaman/template.io/issues"
+  },
+  "scripts": {
+    "start": "cross-env BROWSER=none react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "tauri": "tauri"
+  },
   "dependencies": {
     "@tauri-apps/api": "^1.0.1",
     "@testing-library/jest-dom": "^5.16.4",
@@ -22,13 +39,6 @@
     "typescript": "^4.7.4",
     "web-vitals": "^2.1.4"
   },
-  "scripts": {
-    "start": "cross-env BROWSER=none react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "tauri": "tauri"
-  },
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -48,6 +58,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-syntax-top-level-await": "^7.14.5",
     "@tauri-apps/cli": "^1.0.0",
     "cross-env": "^7.0.3"
   }
