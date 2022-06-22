@@ -4,14 +4,14 @@ import { midiChannelsArray, instanceOutputsArray, samplerOutputsArray } from './
 
 function NumberList(props: { numbers: any; }) {
     const numbers = props.numbers;
-    const listItems = numbers.map((number: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined) =>
+    const listItems = numbers.map((number: string | number) =>
         <option key={number!.toString()} value={number!.toString()}>
             {number}
         </option>);
     return (
         listItems
     );
-};
+}
 
 const settingsOpen = function () {
 
