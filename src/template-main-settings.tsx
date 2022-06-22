@@ -6,8 +6,7 @@ function NumberList(props: { numbers: any; }) {
     const numbers = props.numbers;
     const listItems = numbers.map(
         (number: string | number | boolean |
-            React.ReactElement<any, string |
-                React.JSXElementConstructor<any>> |
+            React.ReactElement<any, string | React.JSXElementConstructor<any>> |
             React.ReactFragment |
             React.ReactPortal | null | undefined) =>
             <option key={number!.toString()} value={number!.toString()}>
@@ -41,19 +40,15 @@ function SettingsForm() {
             MiddleC.bottom = -2
             MiddleC.top = 9
         }
-
-
     };
 
     const changeVepOuts = function (event: any) {
         setVepOuts(event!.target!.value)
     };
 
-
     const changeSmpOuts = function (event: any) {
         setSmpOuts(event!.target!.value)
     };
-
 
     const autoSave = function () {
         if (isChecked) {
@@ -125,7 +120,6 @@ function SettingsForm() {
         </Form.Group >
     );
 };
-
 
 export default function TemplateMainSettings() {
 
