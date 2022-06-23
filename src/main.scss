@@ -75,6 +75,7 @@ a {
 	position: absolute;
 	top: 40px;
 	bottom: 0;
+	left: 0;
 	padding: 0.5%;
 	z-index: 99;
 	background-color: $bg-color-1;
@@ -103,4 +104,9 @@ a {
 	min-width: 100%;
 	margin-right: 0;
 	font-size: medium;
+}
+
+#trackList_01-01 {
+	padding: 0.5%;
+	background-color: $bg-color-4;
 }

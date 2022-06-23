@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { Col, Form, Container, Button, Table } from 'react-bootstrap';
+import { render } from '@testing-library/react';
+import { Fragment, useState } from 'react';
+import { Col, Form, Container, Button, Table, ButtonGroup } from 'react-bootstrap';
 import { midiChannelsArray, instanceOutputsArray, samplerOutputsArray } from './template-arrays';
+import ColorPicker from './template-color-picker'
 
 function NumberList(props: { numbers: any; }) {
     const numbers = props.numbers;
@@ -22,9 +24,11 @@ const settingsOpen = function () {
     else return
 }
 
-function TrackRow(props: { id: any; }) {
+function TrackRow(props: { id: any; onDelete: any; onAdd: any }) {
 
     const id = props.id;
+    const onDelete = props.onDelete;
+    const onAdd = props.onAdd;
 
     const [valueChn, setChn] = useState("")
     const [valueSmpOut, setSmpOut] = useState("")
@@ -45,13 +49,13 @@ function TrackRow(props: { id: any; }) {
     }
 
     const chnListMidi =
-        <NumberList numbers={midiChannelsArray}></NumberList>
+        <NumberList numbers={midiChannelsArray} />
 
     const outListSmp =
-        <NumberList numbers={samplerOutputsArray}></NumberList>
+        <NumberList numbers={samplerOutputsArray} />
 
     const outListVep =
-        <NumberList numbers={instanceOutputsArray}></NumberList>
+        <NumberList numbers={instanceOutputsArray} />
 
     const chnOption =
         <Form.Group title="Set the MIDI channel for this track or multi.">
@@ -101,13 +105,29 @@ function TrackRow(props: { id: any; }) {
         </Form.Group >
 
     const editTrack =
-        <Button
-            variant="primary"
-            size="sm"
-            title="Edit Track Parameters"
-            onClick={settingsOpen}>
-            <i className="fa-solid fa-pen-to-square"></i>
-        </Button>
+        <ButtonGroup>
+            <Button
+                variant="primary"
+                size="sm"
+                title="Edit Track Parameters"
+                onClick={settingsOpen}>
+                <i className="fa-solid fa-pen-to-square"></i>
+            </Button>
+            <Button
+                variant="primary"
+                size="sm"
+                title="Delete Track"
+                onClick={onDelete}>
+                <i className="fas fa-xmark" />
+            </Button>
+            <Button
+                variant="primary"
+                size="sm"
+                title="Add Track"
+                onClick={onAdd}>
+                <i className="fas fa-plus" />
+            </Button>
+        </ButtonGroup >
 
     return (
         <tr id={"trk_" + id} className="align-middle">
@@ -121,11 +141,67 @@ function TrackRow(props: { id: any; }) {
     );
 };
 
+function Tracks() {
+
+    const [TrackList, setTracks] = useState([
+        {
+            id: "01"
+        },
+        {
+            id: "02"
+        },
+        {
+            id: "03"
+        }
+    ])
+
+    function addTrack(id: string) {
+
+        const trackIndex: number = TrackList.findIndex(i => i.id === id)
+        const selectedTrack: string = 'trk_' + id
+
+        let newIdNumb: number = parseInt(id) + 1
+
+
+        let newIdStr: string = newIdNumb.toLocaleString('en-US', {
+            minimumIntegerDigits: 2,
+            useGrouping: false
+        })
+
+        console.log(`selectedTrack: ${selectedTrack} TrackList[Index]: ${trackIndex}`)
+        console.log(`nextTrackId: ${newIdStr}`)
+
+        // const newTrack = { newId }
+        // setTracks([...TrackList, newTrack])
+    }
+
+    function removeTrack(id: string) {
+        console.log('remove track', id);
+
+        if (TrackList.length != 1) {
+            setTracks(TrackList.filter((track) => track.id !== id));
+        }
+    }
+
+    return (
+        <Fragment>
+            {TrackList.map((track) => (
+                <TrackRow
+                    key={track.id}
+                    id={track.id}
+                    onDelete={() => removeTrack(track.id)}
+                    onAdd={() => addTrack(track.id)} />
+            ))}
+        </Fragment>
+    )
+}
+
 export default function TemplateTracks() {
 
     return (
         <Container id="TemplateTracks" className="MShideTemplateTracks">
             <Container id="trackList_01-01">
+                <ColorPicker />
                 <Table hover responsive className='table-condensed'>
                     <thead>
                         <tr>
@@ -138,10 +214,7 @@ export default function TemplateTracks() {
                         </tr>
                     </thead>
                     <tbody>
-                        <TrackRow id="01"></TrackRow>
-                        <TrackRow id="02"></TrackRow>
-                        <TrackRow id="03"></TrackRow>
-                        <TrackRow id="04"></TrackRow>
+                        <Tracks></Tracks>
                     </tbody>
                 </Table>
             </Container>
