@@ -53,7 +53,6 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
     const chnOption =
         <Form.Group title="Set the MIDI channel for this track or multi.">
             <Form.Select
-                as={Col}
                 size="sm"
                 value={valueChn}
                 id={"trkChn_" + id}
@@ -65,7 +64,6 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
     const smpOutOption =
         <Form.Group title="Set the sampler outputs for this track or multi." >
             <Form.Select
-                as={Col}
                 size="sm"
                 value={valueSmpOut}
                 id={"trkSmpOut_" + id}
@@ -77,7 +75,6 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
     const vepOutOption =
         <Form.Group title="Set the instance outputs for this track or multi.">
             <Form.Select
-                as={Col}
                 size="sm"
                 value={valueVepOut}
                 id={"trkVepOut_" + id}

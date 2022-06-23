@@ -197,7 +197,7 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
         </Form.Group >
 
     const rangeOption =
-        <Form.Group as={Col} title={checkRngTitle}>
+        <Form.Group title={checkRngTitle}>
             <Form.Check
                 checked={isChecked}
                 onChange={rangeOptionChange}
@@ -224,7 +224,6 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const onOption =
         <Form.Group title={artFad && togArt ? codeOnArt : codeOnArt2}>
             <Form.Select
-                as={Col}
                 size="sm"
                 value={valueOn}
                 id={type + "On___" + id}
@@ -237,7 +236,6 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const offOption =
         <Form.Group title="Set the OFF setting for this patch. (i.e. CC58, Value 81)" >
             <Form.Select
-                as={Col}
                 size="sm"
                 value={valueOff}
                 id={type + "Off__" + id}
@@ -261,7 +259,6 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const deftSelect =
         <Form.Group title="Set the DEFAULT setting for this patch.">
             <Form.Select
-                as={Col}
                 size="sm"
                 value={valueDeft}
                 id={type + "Deft_" + id}
