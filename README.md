@@ -5,7 +5,6 @@
 
 
 ## Running from Source
----
 
 [**Tauri Prerequisites**](https://tauri.app/v1/guides/getting-started/prerequisites) - this includes downloading Microsoft Visual Studio C++ Build Tools and Rust, as well as configuring your PATH. 
 
@@ -23,9 +22,9 @@ npm run tauri dev
 ```
 
 ## Technologies Used
----
 
-|                          |                                                                                                                                       | 
+
+| Component                | Version                                                                                                                               | 
 | -------------------------| ------------------------------------------------------------------------------------------------------------------------------------- | 
 | [**Tauri**]()            | [![npm version](https://img.shields.io/npm/v/create-tauri-app.svg?style=flat)](https://github.com/tauri-apps/tauri)                   |
 | [**React**]()            | [![npm version](https://img.shields.io/npm/v/react.svg?style=flat)](https://github.com/facebook/react)                                |
