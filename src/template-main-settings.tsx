@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { outPutNumbersArray, MiddleC, SelectList } from './template-arrays';
 
@@ -10,32 +10,32 @@ const SettingsForm: FC<SettingsFormProps> = () => {
     const [valueMiddleC, setValueMiddleC] = useState<string>("NotesC3=60")
     const [isChecked, setChecked] = useState<boolean>(true)
     const [isChecked2, setChecked2] = useState<boolean>(false)
-    const [vepOuts, setVepOuts] = useState<number>(32)
-    const [smpOuts, setSmpOuts] = useState<number>(32)
+    const [vepOuts, setVepOuts] = useState<number | string>(32)
+    const [smpOuts, setSmpOuts] = useState<number | string>(32)
 
-    const findMiddleC = function (event: any) {
-        setValueMiddleC((event!.target! as HTMLInputElement).value);
+    const findMiddleC = (event: ChangeEvent<HTMLSelectElement>) => {
+        setValueMiddleC(event.target.value);
 
-        if ((event!.target! as HTMLInputElement).value === "NotesC5=60") {
+        if (event.target.value === "NotesC5=60") {
             MiddleC.bottom = -4
             MiddleC.top = 7
         }
-        if ((event!.target! as HTMLInputElement).value === "NotesC4=60") {
+        if (event.target.value === "NotesC4=60") {
             MiddleC.bottom = -3
             MiddleC.top = 8
         }
-        if ((event!.target! as HTMLInputElement).value === "NotesC3=60") {
+        if (event.target.value === "NotesC3=60") {
             MiddleC.bottom = -2
             MiddleC.top = 9
         }
     };
 
-    const changeVepOuts = function (event: any) {
-        setVepOuts(event!.target!.value)
+    const changeVepOuts = (event: ChangeEvent<HTMLSelectElement>) => {
+        setVepOuts(event.target.value)
     };
 
-    const changeSmpOuts = function (event: any) {
-        setSmpOuts(event!.target!.value)
+    const changeSmpOuts = (event: ChangeEvent<HTMLSelectElement>) => {
+        setSmpOuts(event.target.value)
     };
 
     const autoSave = () => {
