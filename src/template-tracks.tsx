@@ -1,6 +1,6 @@
-import { FC, ChangeEvent, Fragment, useState } from 'react';
-import { Col, Form, Container, Button, Table, ButtonGroup, InputGroup, Row, ListGroup } from 'react-bootstrap';
-import { midiChannelsArray, instanceOutputsArray, samplerOutputsArray, samplerList, SelectList } from './template-arrays';
+import { FC, ChangeEvent, Fragment, useState, MouseEventHandler } from 'react';
+import { Col, Form, Container, Button, Table, ButtonGroup, InputGroup, ListGroup } from 'react-bootstrap';
+import { samplerList, chnListMidi, outListSmp, outListVep } from './template-arrays';
 import ColorPicker from './template-color-picker'
 
 const settingsOpen = () => {
@@ -13,8 +13,8 @@ const settingsOpen = () => {
 }
 interface TrackRowProps {
     id: string;
-    onDelete: any;
-    onAdd: any;
+    onDelete: (id: string) => MouseEventHandler<HTMLButtonElement> | void;
+    onAdd: (id: string) => MouseEventHandler<HTMLButtonElement> | void;
 }
 
 const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
@@ -35,15 +35,6 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
     const vepOutChange = (event: ChangeEvent<HTMLInputElement>) => {
         setVepOut(event.target.value)
     }
-
-    const chnListMidi =
-        <SelectList numbers={midiChannelsArray} />
-
-    const outListSmp =
-        <SelectList numbers={samplerOutputsArray} />
-
-    const outListVep =
-        <SelectList numbers={instanceOutputsArray} />
 
     const nameOption =
         <Form.Group title="Set the NAME for this track or multi.">
@@ -106,14 +97,14 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
                 variant="primary"
                 size="sm"
                 title="Delete Track"
-                onClick={onDelete}>
+                onClick={() => onDelete}>
                 <i className="fas fa-xmark" />
             </Button>
             <Button
                 variant="primary"
                 size="sm"
                 title="Add Track"
-                onClick={onAdd}>
+                onClick={() => onAdd}>
                 <i className="fas fa-plus" />
             </Button>
         </ButtonGroup >
@@ -189,7 +180,6 @@ const Tracks: FC<TracksProps> = () => {
     )
 }
 
-
 interface SamplerInfoProps {
 
 }
@@ -230,7 +220,7 @@ const SamplerInfo: FC<SamplerInfoProps> = () => {
                         value={samplerType}
                         id="smpType"
                         onChange={changeSampler}>
-                        <SelectList numbers={samplerList} />
+                        {outListSmp}
                     </Form.Select >
                 </Form.Group >
             </InputGroup>

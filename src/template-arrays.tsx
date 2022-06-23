@@ -76,6 +76,29 @@ const samplerList = [
     'Vienna Instruments',
 ];
 
+
+const chnListMidi =
+    <SelectList numbers={midiChannelsArray} />
+
+const outListSmp =
+    <SelectList numbers={samplerOutputsArray} />
+
+const outListVep =
+    <SelectList numbers={instanceOutputsArray} />
+
+const numListMidi =
+    <SelectList numbers={midiValuesArray}></SelectList>
+
+const numListCode =
+    <SelectList numbers={noteValuesArray}></SelectList>
+
+const ptchListCode =
+    <SelectList numbers={pitchValuesArray}></SelectList>
+
+const numListAll =
+    <SelectList numbers={allNotes} />
+
+
 export {
     SelectList,
     MiddleC,
@@ -89,5 +112,12 @@ export {
     samplerOutputsArray,
     instanceOutputsArray,
     pitchValuesArray,
-    samplerList
+    samplerList,
+    chnListMidi,
+    outListSmp,
+    outListVep,
+    ptchListCode,
+    numListAll,
+    numListCode,
+    numListMidi
 };

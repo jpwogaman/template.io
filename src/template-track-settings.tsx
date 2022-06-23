@@ -1,8 +1,6 @@
-import React, { FC, useState, ChangeEvent, Fragment, Component, ReactNode } from 'react';
+import { FC, useState, ChangeEvent, Fragment, ReactNode } from 'react';
 import { DropdownButton, Dropdown, Row, Col, Form, Container, Button, ButtonGroup, ButtonToolbar, Table } from 'react-bootstrap';
-import { allNotes, midiValuesArray, noteValuesArray, pitchValuesArray, SelectList } from './template-arrays';
-
-
+import { allNotes, midiValuesArray, noteValuesArray, SelectList, ptchListCode, numListAll, numListCode, numListMidi } from './template-arrays';
 
 interface IconBtnToggleProps {
     defaultIcon: string;
@@ -52,14 +50,8 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const [valueOff, setOff] = useState<string>("")
     const [valueDeft, setDeft] = useState<string>("")
     const [valueName, setName] = useState<string>("")
-    const [valueMidi, setMidi] = useState<string[] | number[]>(midiValuesArray)
-    const [valueCodeMidi, setCodeMidi] = useState<string[] | number[]>(midiValuesArray)
-    const [codeDisabled, setCodeDisabled] = useState<boolean>(false)
-    const [isChecked, setChecked] = useState<boolean>(false)
-    const [isChecked2, setChecked2] = useState<boolean>(false)
     const [checkVelTitle, setVelTitle] = useState<string>("Switch to Velocity-Based Changes")
     const [checkRngTitle, setRngTitle] = useState<string>("Switch to independent playable range.")
-    const [showRngSelect, setRngSelect] = useState<boolean>(false)
     const [nameArtTitle, setNameArtTitle] = useState<string>("Set the NAME for this patch. (i.e Legato On/OFF)")
     const [nameArtTitle2, setNameArtTitle2] = useState<string>("Set the NAME for this patch. (i.e Staccato)")
     const [nameFadTitle, setNameFadTitle] = useState<string>("Set the NAME for this parameter. (i.e Dynamics)")
@@ -69,6 +61,31 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const [codeFadTitle, setCodeFadTitle] = useState<string>("Set the CODE for this parameter. (i.e CC11)")
     const [togArt, setTogArt] = useState<boolean>(variant === "tog" ? true : false)
     const [artFad, setArtFad] = useState<boolean>(type === "art" ? true : false)
+    const [codeDisabled, setCodeDisabled] = useState<boolean>(false)
+    const [showRngSelect, setRngSelect] = useState<boolean>(false)
+    const [isChecked, setChecked] = useState<boolean>(false)
+    const [isChecked2, setChecked2] = useState<boolean>(false)
+    const [valueMidi, setMidi] = useState<JSX.Element>(numListCode)
+    const [valueCodeMidi, setCodeMidi] = useState<JSX.Element>(numListCode)
+
+    const typeChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setType(event.target.value)
+
+        if (event.target.value === "/note") {
+            setMidi(numListCode)
+            setCodeMidi(numListCode)
+            setCodeDisabled(true)
+        }
+        else if (event.target.value === "/pitch") {
+            setMidi(ptchListCode)
+            setCodeDisabled(true)
+        }
+        else {
+            setMidi(numListMidi)
+            setCodeMidi(numListMidi)
+            setCodeDisabled(false);
+        };
+    };
 
     const codeChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setCode(event.target.value)
@@ -86,36 +103,17 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
         setName(event.target.value)
     }
 
-    const typeChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setType(event.target.value)
-
-        if (event.target.value === "/note") {
-            setMidi(noteValuesArray)
-            setCodeMidi(noteValuesArray)
-            setCodeDisabled(true)
-        }
-        else if (event.target.value === "/pitch") {
-            setMidi(pitchValuesArray)
-            setCodeDisabled(true)
-        }
-        else {
-            setMidi(midiValuesArray)
-            setCodeMidi(midiValuesArray)
-            setCodeDisabled(false);
-        };
-    };
-
     const noteOptionChange = () => {
         if (isChecked) {
             setChecked(false)
             setVelTitle('Switch to Velocity-Based Changes')
             setCodeDisabled(true)
-            setMidi(noteValuesArray)
+            setMidi(numListCode)
         } else {
             setChecked(true)
             setVelTitle('Switch to Standard Note Changes')
             setCodeDisabled(false)
-            setMidi(midiValuesArray)
+            setMidi(numListMidi)
         }
     }
     const rangeOptionChange = () => {
@@ -138,15 +136,6 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
             setChecked2(true)
         }
     }
-
-    const numListMidi =
-        <SelectList numbers={valueMidi}></SelectList>
-
-    const numListCode =
-        <SelectList numbers={valueCodeMidi}></SelectList>
-
-    const numListAll =
-        <SelectList numbers={allNotes}></SelectList>
 
     const rangeSelects =
         <Row>
@@ -228,7 +217,7 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
                 value={!codeDisabled ? valueCode : "N/A"}
                 id={type + "Code_" + id}
                 onChange={() => codeChange}>
-                {!codeDisabled ? numListCode : naOption}
+                {!codeDisabled ? valueCodeMidi : naOption}
             </Form.Select>
         </Form.Group>
 
@@ -277,7 +266,7 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
                 value={valueDeft}
                 id={type + "Deft_" + id}
                 onChange={() => deftChange}>
-                {type === "art" ? onOffOption : numListMidi}
+                {type === "art" ? onOffOption : valueMidi}
             </Form.Select >
         </Form.Group >
 
