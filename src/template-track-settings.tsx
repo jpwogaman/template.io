@@ -1,115 +1,100 @@
-import React, { useState, Fragment, Component } from 'react';
+import React, { FC, useState, ChangeEvent, Fragment, Component, ReactNode } from 'react';
 import { DropdownButton, Dropdown, Row, Col, Form, Container, Button, ButtonGroup, ButtonToolbar, Table } from 'react-bootstrap';
-import { allNotes, midiValuesArray, noteValuesArray, pitchValuesArray } from './template-arrays';
+import { allNotes, midiValuesArray, noteValuesArray, pitchValuesArray, SelectList } from './template-arrays';
 
-class IconBtnToggle extends Component
-    <{
-        default: string,
-        variant: string,
-        size: any,
-        title: string,
-        id: string,
-        a: string,
-        b: string,
-        children: React.ReactNode
-    }, {
-        isToggleOn: boolean
-    }>  {
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            isToggleOn: this.props.default === "a" ? true : false
-        };
-        this.handleClick = this.handleClick.bind(this);
-    }
 
-    handleClick() {
-        this.setState(prevState => ({
-            isToggleOn: !prevState.isToggleOn
-        }));
-    }
 
-    render() {
-        const { variant, size, title, id, a, b } = this.props;
-        return (
-            <Button
-                variant={variant}
-                size={size}
-                title={title}
-                onClick={this.handleClick}
-                id={id}>
-                <i className={this.state.isToggleOn ? a : b}></i>
-            </Button>
-        );
-    }
+interface IconBtnToggleProps {
+    defaultIcon: string;
+    variant: string;
+    size: any;
+    title: string;
+    id: string;
+    a: string;
+    b: string;
+    children?: ReactNode;
 }
 
-function NumberList(props: { numbers: any; }) {
-    const numbers = props.numbers;
-    const listItems = numbers.map((number: string | number) =>
-        <option key={number!.toString()} value={number!.toString()}>
-            {number}
-        </option>);
+const IconBtnToggle: FC<IconBtnToggleProps> = ({ defaultIcon, variant, size, title, id, a, b }) => {
+
+    const [isToggleOn, setToggle] = useState<boolean>(defaultIcon === "a" ? true : false)
+
+    const handleClick = () => {
+        if (isToggleOn) {
+            setToggle(false)
+        } else {
+            setToggle(true)
+        }
+    }
+
     return (
-        listItems
+        <Button
+            variant={variant}
+            size={size}
+            title={title}
+            onClick={() => handleClick}
+            id={id}>
+            <i className={isToggleOn ? a : b}></i>
+        </Button>
     );
 }
+interface SettingsRowProps {
+    id: string;
+    type: string;
+    variant: string | undefined;
+}
 
-function SettingsRow(props: { id: any; type: any; variant: any; }) {
+const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
 
-    const id = props.id;
-    const type = props.type;
-    const variant = props.variant;
+    const [valueType, setType] = useState<string>("")
+    const [valueCode, setCode] = useState<string>("")
+    const [valueOn, setOn] = useState<string>("")
+    const [valueOff, setOff] = useState<string>("")
+    const [valueDeft, setDeft] = useState<string>("")
+    const [valueName, setName] = useState<string>("")
+    const [valueMidi, setMidi] = useState<string[] | number[]>(midiValuesArray)
+    const [valueCodeMidi, setCodeMidi] = useState<string[] | number[]>(midiValuesArray)
+    const [codeDisabled, setCodeDisabled] = useState<boolean>(false)
+    const [isChecked, setChecked] = useState<boolean>(false)
+    const [isChecked2, setChecked2] = useState<boolean>(false)
+    const [checkVelTitle, setVelTitle] = useState<string>("Switch to Velocity-Based Changes")
+    const [checkRngTitle, setRngTitle] = useState<string>("Switch to independent playable range.")
+    const [showRngSelect, setRngSelect] = useState<boolean>(false)
+    const [nameArtTitle, setNameArtTitle] = useState<string>("Set the NAME for this patch. (i.e Legato On/OFF)")
+    const [nameArtTitle2, setNameArtTitle2] = useState<string>("Set the NAME for this patch. (i.e Staccato)")
+    const [nameFadTitle, setNameFadTitle] = useState<string>("Set the NAME for this parameter. (i.e Dynamics)")
+    const [codeArtTitle, setCodeArtTitle] = useState<string>("Set the CODE for this patch. (i.e. CC58)")
+    const [codeOnArt, setCodeOnArt] = useState<string>("Set the ON setting for this patch. (i.e. CC58, Value 76)")
+    const [codeOnArt2, setCodeOnArt2] = useState<string>("Set the ON setting for this patch. (i.e. CC58, Value 21)")
+    const [codeFadTitle, setCodeFadTitle] = useState<string>("Set the CODE for this parameter. (i.e CC11)")
+    const [togArt, setTogArt] = useState<boolean>(variant === "tog" ? true : false)
+    const [artFad, setArtFad] = useState<boolean>(type === "art" ? true : false)
 
-    const [valueType, setType] = useState("")
-    const [valueCode, setCode] = useState("")
-    const [valueOn, setOn] = useState("")
-    const [valueOff, setOff] = useState("")
-    const [valueDeft, setDeft] = useState("")
-    const [valueName, setName] = useState("")
-    const [valueMidi, setMidi] = useState(midiValuesArray as string[] | number[])
-    const [valueCodeMidi, setCodeMidi] = useState(midiValuesArray as string[] | number[])
-    const [codeDisabled, setCodeDisabled] = useState(false)
-    const [isChecked, setChecked] = useState(false)
-    const [isChecked2, setChecked2] = useState(false)
-    const [checkVelTitle, setVelTitle] = useState("Switch to Velocity-Based Changes")
-    const [checkRngTitle, setRngTitle] = useState("Switch to independent playable range.")
-    const [showRngSelect, setRngSelect] = useState(false)
-    const [nameArtTitle, setNameArtTitle] = useState("Set the NAME for this patch. (i.e Legato On/OFF)")
-    const [nameArtTitle2, setNameArtTitle2] = useState("Set the NAME for this patch. (i.e Staccato)")
-    const [nameFadTitle, setNameFadTitle] = useState("Set the NAME for this parameter. (i.e Dynamics)")
-    const [codeArtTitle, setCodeArtTitle] = useState("Set the CODE for this patch. (i.e. CC58)")
-    const [codeOnArt, setCodeOnArt] = useState("Set the ON setting for this patch. (i.e. CC58, Value 76)")
-    const [codeOnArt2, setCodeOnArt2] = useState("Set the ON setting for this patch. (i.e. CC58, Value 21)")
-    const [codeFadTitle, setCodeFadTitle] = useState("Set the CODE for this parameter. (i.e CC11)")
-    const [togArt, setTogArt] = useState(variant === "tog" ? true : false)
-    const [artFad, setArtFad] = useState(type === "art" ? true : false)
-
-    const codeChange = function (event: any) {
-        setCode((event!.target! as HTMLInputElement).value);
+    const codeChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        setCode(event.target.value)
     }
-    const onValChange = function (event: any) {
-        setOn((event!.target! as HTMLInputElement).value);
+    const onValChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setOn(event.target.value)
     }
-    const offChange = function (event: any) {
-        setOff((event!.target! as HTMLInputElement).value);
+    const offChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setOff(event.target.value)
     }
-    const deftChange = function (event: any) {
-        setDeft((event!.target! as HTMLInputElement).value);
+    const deftChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setDeft(event.target.value)
     }
-    const nameChange = function (event: any) {
-        setName((event!.target! as HTMLInputElement).value);
+    const nameChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setName(event.target.value)
     }
 
-    const typeChange = function (event: any) {
-        setType((event!.target! as HTMLInputElement).value);
+    const typeChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setType(event.target.value)
 
-        if ((event!.target! as HTMLInputElement).value === "/note") {
+        if (event.target.value === "/note") {
             setMidi(noteValuesArray)
             setCodeMidi(noteValuesArray)
             setCodeDisabled(true)
         }
-        else if ((event!.target! as HTMLInputElement).value === "/pitch") {
+        else if (event.target.value === "/pitch") {
             setMidi(pitchValuesArray)
             setCodeDisabled(true)
         }
@@ -120,7 +105,7 @@ function SettingsRow(props: { id: any; type: any; variant: any; }) {
         };
     };
 
-    const noteOptionChange = function () {
+    const noteOptionChange = () => {
         if (isChecked) {
             setChecked(false)
             setVelTitle('Switch to Velocity-Based Changes')
@@ -133,7 +118,7 @@ function SettingsRow(props: { id: any; type: any; variant: any; }) {
             setMidi(midiValuesArray)
         }
     }
-    const rangeOptionChange = function () {
+    const rangeOptionChange = () => {
         if (isChecked) {
             setChecked(false)
             setRngTitle('Switch to independent playable range.')
@@ -145,7 +130,7 @@ function SettingsRow(props: { id: any; type: any; variant: any; }) {
         }
     }
 
-    const deftPatchChange = function () {
+    const deftPatchChange = () => {
         console.log('default')
         if (isChecked2) {
             setChecked2(false)
@@ -155,13 +140,13 @@ function SettingsRow(props: { id: any; type: any; variant: any; }) {
     }
 
     const numListMidi =
-        <NumberList numbers={valueMidi}></NumberList>
+        <SelectList numbers={valueMidi}></SelectList>
 
     const numListCode =
-        <NumberList numbers={valueCodeMidi}></NumberList>
+        <SelectList numbers={valueCodeMidi}></SelectList>
 
     const numListAll =
-        <NumberList numbers={allNotes}></NumberList>
+        <SelectList numbers={allNotes}></SelectList>
 
     const rangeSelects =
         <Row>
@@ -198,7 +183,7 @@ function SettingsRow(props: { id: any; type: any; variant: any; }) {
                 size="sm"
                 value={valueType}
                 id={type + "Type_" + id}
-                onChange={typeChange}>
+                onChange={() => typeChange}>
                 <option value="/control">Control Code</option>
                 <option value="/note" >Note</option>
                 <option value="/program">Program Change</option>
@@ -242,7 +227,7 @@ function SettingsRow(props: { id: any; type: any; variant: any; }) {
                 disabled={codeDisabled}
                 value={!codeDisabled ? valueCode : "N/A"}
                 id={type + "Code_" + id}
-                onChange={codeChange}>
+                onChange={() => codeChange}>
                 {!codeDisabled ? numListCode : naOption}
             </Form.Select>
         </Form.Group>
@@ -254,7 +239,7 @@ function SettingsRow(props: { id: any; type: any; variant: any; }) {
                 size="sm"
                 value={valueOn}
                 id={type + "On___" + id}
-                onChange={onValChange}>
+                onChange={() => onValChange}>
                 {numListMidi}
             </Form.Select>
             {valueType === "/note" ? noteOption : null}
@@ -267,7 +252,7 @@ function SettingsRow(props: { id: any; type: any; variant: any; }) {
                 size="sm"
                 value={valueOff}
                 id={type + "Off__" + id}
-                onChange={offChange}>
+                onChange={() => offChange}>
                 {numListMidi}
             </Form.Select>
             {valueType === "/note" ? noteOption : null}
@@ -291,7 +276,7 @@ function SettingsRow(props: { id: any; type: any; variant: any; }) {
                 size="sm"
                 value={valueDeft}
                 id={type + "Deft_" + id}
-                onChange={deftChange}>
+                onChange={() => deftChange}>
                 {type === "art" ? onOffOption : numListMidi}
             </Form.Select >
         </Form.Group >
@@ -333,10 +318,9 @@ function SettingsRow(props: { id: any; type: any; variant: any; }) {
 
 export default function TemplateTrackSettings() {
 
-    function closeSettingsWindow() {
+    const closeSettingsWindow = () => {
         document.getElementById('TemplateTrackSettings')!.classList.replace('MSshow', 'MShide');
         document.getElementById('TemplateTracks')!.classList.replace('MSshowTemplateTracks', 'MShideTemplateTracks');
-
     }
 
     return (
@@ -357,7 +341,7 @@ export default function TemplateTrackSettings() {
                         id="editLock"
                         a="fa-solid fa-lock-open"
                         b="fa-solid fa-lock"
-                        default="a">
+                        defaultIcon="a">
                     </IconBtnToggle>
                     <DropdownButton id="dropdown-item-button" title="Save Track Settings">
                         <Dropdown.Item as="button">Print Track Settings</Dropdown.Item>
@@ -377,12 +361,12 @@ export default function TemplateTrackSettings() {
                 </Col>
                 <Col>
                     <Form.Select>
-                        <NumberList numbers={allNotes}></NumberList>
+                        <SelectList numbers={allNotes}></SelectList>
                     </Form.Select>
                 </Col>
                 <Col>
                     <Form.Select>
-                        <NumberList numbers={allNotes}></NumberList>
+                        <SelectList numbers={allNotes}></SelectList>
                     </Form.Select>
                 </Col>
             </Row>

@@ -1,25 +1,17 @@
-import React, { useState } from 'react';
+import { FC, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
-import { outPutNumbersArray, MiddleC } from './template-arrays';
+import { outPutNumbersArray, MiddleC, SelectList } from './template-arrays';
 
-function NumberList(props: { numbers: any; }) {
-    const numbers = props.numbers;
-    const listItems = numbers.map((number: string | number) =>
-        <option key={number!.toString()} value={number!.toString()}>
-            {number}
-        </option>);
-    return (
-        listItems
-    );
+interface SettingsFormProps {
+
 }
+const SettingsForm: FC<SettingsFormProps> = () => {
 
-function SettingsForm() {
-
-    const [valueMiddleC, setValueMiddleC] = useState("NotesC3=60")
-    const [isChecked, setChecked] = useState(true)
-    const [isChecked2, setChecked2] = useState(false)
-    const [vepOuts, setVepOuts] = useState(32)
-    const [smpOuts, setSmpOuts] = useState(32)
+    const [valueMiddleC, setValueMiddleC] = useState<string>("NotesC3=60")
+    const [isChecked, setChecked] = useState<boolean>(true)
+    const [isChecked2, setChecked2] = useState<boolean>(false)
+    const [vepOuts, setVepOuts] = useState<number>(32)
+    const [smpOuts, setSmpOuts] = useState<number>(32)
 
     const findMiddleC = function (event: any) {
         setValueMiddleC((event!.target! as HTMLInputElement).value);
@@ -46,7 +38,7 @@ function SettingsForm() {
         setSmpOuts(event!.target!.value)
     };
 
-    const autoSave = function () {
+    const autoSave = () => {
         if (isChecked) {
             setChecked(false)
         } else {
@@ -54,7 +46,7 @@ function SettingsForm() {
         }
     };
 
-    const closeOnSave = function () {
+    const closeOnSave = () => {
         if (isChecked2) {
             setChecked2(false)
         } else {
@@ -101,7 +93,7 @@ function SettingsForm() {
                 id="vepOutSettings"
                 value={vepOuts}
                 onChange={changeVepOuts}>
-                <NumberList numbers={outPutNumbersArray}></NumberList>
+                <SelectList numbers={outPutNumbersArray}></SelectList>
             </Form.Select>
 
             <Form.Label forhmtl="smpOutSettings">Number of Ouputs per Sampler</Form.Label>
@@ -110,7 +102,7 @@ function SettingsForm() {
                 id="smpOutSettings"
                 value={smpOuts}
                 onChange={changeSmpOuts}>
-                <NumberList numbers={outPutNumbersArray}></NumberList>
+                <SelectList numbers={outPutNumbersArray}></SelectList>
             </Form.Select>
             <Button>Save</Button>
         </Form.Group >

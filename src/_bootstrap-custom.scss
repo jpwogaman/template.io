@@ -1,3 +1,5 @@
+@import 'config';
+
 // Variable overrides first
 // $primary: $bg-color-w;
 // $secondary: $gray-600 !default;
@@ -9,6 +11,14 @@
 // $dark: $gray-900 !default;
 $enable-shadows: true;
 $prefix: 'mo-';
+
+
+
+// $input-bg: $bg-color-4;
+// $input-focus-bg: #f8f9fa;
+// $input-placeholder-color: $txt-color-b;
+// $form-select-bg: $bg-color-4;
+
 
 .nav-item {
 	color: $txt-color-w;

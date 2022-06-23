@@ -1,21 +1,9 @@
-import { render } from '@testing-library/react';
-import { Fragment, useState } from 'react';
-import { Col, Form, Container, Button, Table, ButtonGroup } from 'react-bootstrap';
-import { midiChannelsArray, instanceOutputsArray, samplerOutputsArray } from './template-arrays';
+import { FC, ChangeEvent, Fragment, useState } from 'react';
+import { Col, Form, Container, Button, Table, ButtonGroup, InputGroup, Row, ListGroup } from 'react-bootstrap';
+import { midiChannelsArray, instanceOutputsArray, samplerOutputsArray, samplerList, SelectList } from './template-arrays';
 import ColorPicker from './template-color-picker'
 
-function NumberList(props: { numbers: any; }) {
-    const numbers = props.numbers;
-    const listItems = numbers.map((number: string | number) =>
-        <option key={number!.toString()} value={number!.toString()}>
-            {number}
-        </option>);
-    return (
-        listItems
-    );
-}
-
-const settingsOpen = function () {
+const settingsOpen = () => {
 
     if (document.getElementById('TemplateTrackSettings')!.classList.contains('MShide')) {
         document.getElementById('TemplateTrackSettings')!.classList.replace('MShide', 'MSshow');
@@ -23,39 +11,51 @@ const settingsOpen = function () {
     }
     else return
 }
+interface TrackRowProps {
+    id: string;
+    onDelete: any;
+    onAdd: any;
+}
 
-function TrackRow(props: { id: any; onDelete: any; onAdd: any }) {
+const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
+    const [valueChn, setChn] = useState<string>("")
+    const [valueSmpOut, setSmpOut] = useState<string>("")
+    const [valueVepOut, setVepOut] = useState<string>("")
+    const [valueName, setName] = useState<string>("")
 
-    const id = props.id;
-    const onDelete = props.onDelete;
-    const onAdd = props.onAdd;
-
-    const [valueChn, setChn] = useState("")
-    const [valueSmpOut, setSmpOut] = useState("")
-    const [valueVepOut, setVepOut] = useState("")
-    const [valueName, setName] = useState("")
-
-    const chnChange = function (event: any) {
-        setChn((event!.target! as HTMLInputElement).value)
+    const nameChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setName(event.target.value)
     }
-    const smpOutChange = function (event: any) {
-        setSmpOut((event!.target! as HTMLInputElement).value)
+    const chnChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setChn(event.target.value)
     }
-    const vepOutChange = function (event: any) {
-        setVepOut((event!.target! as HTMLInputElement).value)
+    const smpOutChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setSmpOut(event.target.value)
     }
-    const nameChange = function (event: any) {
-        setName((event!.target! as HTMLInputElement).value)
+    const vepOutChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setVepOut(event.target.value)
     }
 
     const chnListMidi =
-        <NumberList numbers={midiChannelsArray} />
+        <SelectList numbers={midiChannelsArray} />
 
     const outListSmp =
-        <NumberList numbers={samplerOutputsArray} />
+        <SelectList numbers={samplerOutputsArray} />
 
     const outListVep =
-        <NumberList numbers={instanceOutputsArray} />
+        <SelectList numbers={instanceOutputsArray} />
+
+    const nameOption =
+        <Form.Group title="Set the NAME for this track or multi.">
+            <Form.Control
+                size="sm"
+                type="text"
+                value={valueName}
+                id={"trkName_" + id}
+                placeholder="Track Name"
+                onChange={nameChange}>
+            </Form.Control>
+        </Form.Group >
 
     const chnOption =
         <Form.Group title="Set the MIDI channel for this track or multi.">
@@ -64,7 +64,7 @@ function TrackRow(props: { id: any; onDelete: any; onAdd: any }) {
                 size="sm"
                 value={valueChn}
                 id={"trkChn_" + id}
-                onChange={chnChange}>
+                onChange={() => chnChange}>
                 {chnListMidi}
             </Form.Select>
         </Form.Group>
@@ -76,7 +76,7 @@ function TrackRow(props: { id: any; onDelete: any; onAdd: any }) {
                 size="sm"
                 value={valueSmpOut}
                 id={"trkSmpOut_" + id}
-                onChange={smpOutChange}>
+                onChange={() => smpOutChange}>
                 {outListSmp}
             </Form.Select>
         </Form.Group >
@@ -88,20 +88,9 @@ function TrackRow(props: { id: any; onDelete: any; onAdd: any }) {
                 size="sm"
                 value={valueVepOut}
                 id={"trkVepOut_" + id}
-                onChange={vepOutChange}>
+                onChange={() => vepOutChange}>
                 {outListVep}
             </Form.Select >
-        </Form.Group >
-
-    const nameOption =
-        <Form.Group title="Set the NAME for this track or multi.">
-            <Form.Control
-                size="sm"
-                type="text"
-                value={valueName}
-                id={"trkName_" + id}
-                onChange={nameChange}>
-            </Form.Control>
         </Form.Group >
 
     const editTrack =
@@ -141,9 +130,13 @@ function TrackRow(props: { id: any; onDelete: any; onAdd: any }) {
     );
 };
 
-function Tracks() {
+interface TracksProps {
 
-    const [TrackList, setTracks] = useState([
+}
+
+const Tracks: FC<TracksProps> = () => {
+
+    const [TrackList, setTracks] = useState<any[]>([
         {
             id: "01"
         },
@@ -155,13 +148,12 @@ function Tracks() {
         }
     ])
 
-    function addTrack(id: string) {
+    const addTrack = (id: string) => {
 
         const trackIndex: number = TrackList.findIndex(i => i.id === id)
         const selectedTrack: string = 'trk_' + id
 
         let newIdNumb: number = parseInt(id) + 1
-
 
         let newIdStr: string = newIdNumb.toLocaleString('en-US', {
             minimumIntegerDigits: 2,
@@ -171,11 +163,12 @@ function Tracks() {
         console.log(`selectedTrack: ${selectedTrack} TrackList[Index]: ${trackIndex}`)
         console.log(`nextTrackId: ${newIdStr}`)
 
-        // const newTrack = { newId }
+        // const newTrack = { newIdStr }
         // setTracks([...TrackList, newTrack])
     }
 
-    function removeTrack(id: string) {
+
+    const removeTrack = (id: string) => {
         console.log('remove track', id);
 
         if (TrackList.length != 1) {
@@ -196,12 +189,62 @@ function Tracks() {
     )
 }
 
+
+interface SamplerInfoProps {
+
+}
+const SamplerInfo: FC<SamplerInfoProps> = () => {
+
+    const [samplerType, setSamplerType] = useState<string>(samplerList[0])
+    const [valueName, setName] = useState<string>("")
+
+    const changeSampler = (event: any) => {
+        setSamplerType((event!.target! as HTMLInputElement).value)
+    }
+
+    const nameChange = (event: any) => {
+        setName((event!.target! as HTMLInputElement).value)
+    }
+
+    return (
+        <Fragment>
+            <ListGroup horizontal>
+                <ListGroup.Item>Sampler No. 1</ListGroup.Item>
+                <ListGroup.Item>0 Tracks</ListGroup.Item>
+                <ListGroup.Item>0 Multis</ListGroup.Item>
+            </ListGroup>
+            <InputGroup size="sm">
+                <ColorPicker />
+                <Form.Control
+                    size="sm"
+                    type="text"
+                    value={valueName}
+                    id={"smpName_"}
+                    placeholder="Instrument/Patch/Sampler/Multi Name"
+                    onChange={nameChange}>
+                </Form.Control>
+                <Form.Group title="Sampler Type">
+                    <Form.Select
+                        as={Col}
+                        size="sm"
+                        value={samplerType}
+                        id="smpType"
+                        onChange={changeSampler}>
+                        <SelectList numbers={samplerList} />
+                    </Form.Select >
+                </Form.Group >
+            </InputGroup>
+        </Fragment>
+    )
+}
+
+
 export default function TemplateTracks() {
 
     return (
         <Container id="TemplateTracks" className="MShideTemplateTracks">
             <Container id="trackList_01-01">
-                <ColorPicker />
+                <SamplerInfo />
                 <Table hover responsive className='table-condensed'>
                     <thead>
                         <tr>

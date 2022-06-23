@@ -1,3 +1,17 @@
+import { FC, Fragment } from "react";
+
+interface SelectListProps {
+    numbers: any;
+}
+
+const SelectList: FC<SelectListProps> = ({ numbers }) => {
+    return (
+        <Fragment>
+            {numbers.map((number: string | number) =>
+                <option key={number} value={number}>{number}</option>)}
+        </Fragment>
+    );
+}
 
 let smpOutSettings = 32
 let vepOutSettings = 32
@@ -9,19 +23,8 @@ let MiddleC = {
 
 const allNotes: string[] = []
 for (let i = MiddleC.bottom; i < MiddleC.top; i++) {
-    let cn = String('C' + i);
-    let cs = String('C#' + i);
-    let dn = String('D' + i);
-    let ds = String('D#' + i);
-    let en = String('E' + i);
-    let fn = String('F' + i);
-    let fs = String('F#' + i);
-    let gn = String('G' + i);
-    let gs = String('G#' + i);
-    let an = String('A' + i);
-    let as = String('A#' + i);
-    let bn = String('B' + i);
-    allNotes.push(cn, cs, dn, ds, en, fn, fs, gn, gs, an, as, bn);
+    allNotes.push('C' + i, 'C#' + i, 'D' + i, 'D#' + i, 'E' + i, 'F' + i,
+        'F#' + i, 'G' + i, 'G#' + i, 'A' + i, 'A#' + i, 'B' + i);
 }
 const midiChannelsArray: number[] = [];
 for (let i = 1; i <= 16; i++) {
@@ -59,7 +62,22 @@ for (let i = 0; i < 16384; i++) {
     pitchValuesArray.push(i);
 }
 
+const samplerList = [
+    'Native Instruments Kontakt',
+    'Native Instruments Maschine',
+    'Native Instruments Reaktor',
+    'Native Instruments Komplete Kontrol',
+    'EastWest Opus',
+    'EastWest Play',
+    'Orchestral Tools SINE Player',
+    'Spitfire Audio LABS',
+    'Spitfire Audio BBC Symphony Orchestra',
+    'Vienna Synchron Player',
+    'Vienna Instruments',
+];
+
 export {
+    SelectList,
     MiddleC,
     smpOutSettings,
     vepOutSettings,
@@ -70,5 +88,6 @@ export {
     noteValuesArray,
     samplerOutputsArray,
     instanceOutputsArray,
-    pitchValuesArray
+    pitchValuesArray,
+    samplerList
 };
