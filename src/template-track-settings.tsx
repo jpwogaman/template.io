@@ -1,6 +1,6 @@
 import { FC, useState, ChangeEvent, Fragment, ReactNode } from 'react';
 import { DropdownButton, Dropdown, Row, Col, Form, Container, Button, ButtonGroup, ButtonToolbar, Table } from 'react-bootstrap';
-import { allNotes, SelectList, ptchListCode, numListAll, numListCode, numListMidi } from './template-arrays';
+import { ptchListCode, numListAll, numListCode, numListMidi } from './template-arrays';
 
 interface IconBtnToggleProps {
     defaultIcon: string;
