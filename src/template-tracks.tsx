@@ -161,7 +161,7 @@ const Tracks: FC<TracksProps> = () => {
     const removeTrack = (id: string) => {
         console.log('remove track', id);
 
-        if (TrackList.length != 1) {
+        if (TrackList.length !== 1) {
             setTracks(TrackList.filter((track) => track.id !== id));
         }
     }
