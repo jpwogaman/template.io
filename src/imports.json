@@ -1,0 +1,51 @@
+{
+    "index.tsx": {
+        "react": [
+            "{Fragment}"
+        ],
+        "react-dom/client": [
+            "ReactDOM"
+        ],
+        "./main.scss": [],
+        "./template-navbar": [
+            "TemplateNavbar"
+        ],
+        "./template-track-settings": [
+            "TemplateTrackSettings"
+        ],
+        "./template-tracks": [
+            "TemplateTracks"
+        ],
+        "./reportWebVitals": [
+            "reportWebVitals"
+        ]
+    },
+    "template-tracks.tsx": {
+        "./template-color-picker": [
+            "ColorPicker"
+        ],
+        "./template-arrays": [
+            "{samplerList}",
+            "{chnListMidi}",
+            "{outListSmp}",
+            "{outListVep}",
+            "{smpListAll}"
+        ],
+        "react": [
+            "{FC}",
+            "{ChangeEvent}",
+            "{Fragment}",
+            "{useState}"
+        ],
+        "react-bootstrap": [
+            "{Col}",
+            "{Form}",
+            "{Container}",
+            "{Button}",
+            "{Table}",
+            "{ButtonGroup}",
+            "{InputGroup}",
+            "{ListGroup}"
+        ]
+    }
+}
