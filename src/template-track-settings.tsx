@@ -1,6 +1,6 @@
 import { FC, useState, ChangeEvent, Fragment, ReactNode } from 'react';
 import { DropdownButton, Dropdown, Row, Col, Form, Container, Button, ButtonGroup, ButtonToolbar, Table } from 'react-bootstrap';
-import { allNotes, midiValuesArray, noteValuesArray, SelectList, ptchListCode, numListAll, numListCode, numListMidi } from './template-arrays';
+import { allNotes, SelectList, ptchListCode, numListAll, numListCode, numListMidi } from './template-arrays';
 
 interface IconBtnToggleProps {
     defaultIcon: string;
@@ -30,7 +30,7 @@ const IconBtnToggle: FC<IconBtnToggleProps> = ({ defaultIcon, variant, size, tit
             variant={variant}
             size={size}
             title={title}
-            onClick={() => handleClick}
+            onClick={handleClick}
             id={id}>
             <i className={isToggleOn ? a : b}></i>
         </Button>
@@ -65,10 +65,10 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const [showRngSelect, setRngSelect] = useState<boolean>(false)
     const [isChecked, setChecked] = useState<boolean>(false)
     const [isChecked2, setChecked2] = useState<boolean>(false)
-    const [valueMidi, setMidi] = useState<JSX.Element>(numListCode)
-    const [valueCodeMidi, setCodeMidi] = useState<JSX.Element>(numListCode)
+    const [valueMidi, setMidi] = useState<JSX.Element>(numListMidi)
+    const [valueCodeMidi, setCodeMidi] = useState<JSX.Element>(numListMidi)
 
-    const typeChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const typeChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setType(event.target.value)
 
         if (event.target.value === "/note") {
@@ -90,13 +90,13 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const codeChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setCode(event.target.value)
     }
-    const onValChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const onValChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setOn(event.target.value)
     }
-    const offChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const offChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setOff(event.target.value)
     }
-    const deftChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const deftChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setDeft(event.target.value)
     }
     const nameChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -172,7 +172,7 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
                 size="sm"
                 value={valueType}
                 id={type + "Type_" + id}
-                onChange={() => typeChange}>
+                onChange={typeChange}>
                 <option value="/control">Control Code</option>
                 <option value="/note" >Note</option>
                 <option value="/program">Program Change</option>
@@ -216,7 +216,7 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
                 disabled={codeDisabled}
                 value={!codeDisabled ? valueCode : "N/A"}
                 id={type + "Code_" + id}
-                onChange={() => codeChange}>
+                onChange={codeChange}>
                 {!codeDisabled ? valueCodeMidi : naOption}
             </Form.Select>
         </Form.Group>
@@ -228,7 +228,7 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
                 size="sm"
                 value={valueOn}
                 id={type + "On___" + id}
-                onChange={() => onValChange}>
+                onChange={onValChange}>
                 {numListMidi}
             </Form.Select>
             {valueType === "/note" ? noteOption : null}
@@ -241,7 +241,7 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
                 size="sm"
                 value={valueOff}
                 id={type + "Off__" + id}
-                onChange={() => offChange}>
+                onChange={offChange}>
                 {numListMidi}
             </Form.Select>
             {valueType === "/note" ? noteOption : null}
@@ -265,7 +265,7 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
                 size="sm"
                 value={valueDeft}
                 id={type + "Deft_" + id}
-                onChange={() => deftChange}>
+                onChange={deftChange}>
                 {type === "art" ? onOffOption : valueMidi}
             </Form.Select >
         </Form.Group >
@@ -350,12 +350,12 @@ export default function TemplateTrackSettings() {
                 </Col>
                 <Col>
                     <Form.Select>
-                        <SelectList numbers={allNotes}></SelectList>
+                        {numListAll}
                     </Form.Select>
                 </Col>
                 <Col>
                     <Form.Select>
-                        <SelectList numbers={allNotes}></SelectList>
+                        {numListAll}
                     </Form.Select>
                 </Col>
             </Row>

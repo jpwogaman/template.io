@@ -98,6 +98,9 @@ const ptchListCode =
 const numListAll =
     <SelectList numbers={allNotes} />
 
+const smpListAll =
+    <SelectList numbers={samplerList} />
+
 
 export {
     SelectList,
@@ -119,5 +122,6 @@ export {
     ptchListCode,
     numListAll,
     numListCode,
-    numListMidi
+    numListMidi,
+    smpListAll
 };

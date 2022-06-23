@@ -1,6 +1,6 @@
-import { FC, ChangeEvent, Fragment, useState, MouseEventHandler } from 'react';
+import { FC, ChangeEvent, Fragment, useState } from 'react';
 import { Col, Form, Container, Button, Table, ButtonGroup, InputGroup, ListGroup } from 'react-bootstrap';
-import { samplerList, chnListMidi, outListSmp, outListVep } from './template-arrays';
+import { samplerList, chnListMidi, outListSmp, outListVep, smpListAll } from './template-arrays';
 import ColorPicker from './template-color-picker'
 
 const settingsOpen = () => {
@@ -13,8 +13,10 @@ const settingsOpen = () => {
 }
 interface TrackRowProps {
     id: string;
-    onDelete: (id: string) => MouseEventHandler<HTMLButtonElement> | void;
-    onAdd: (id: string) => MouseEventHandler<HTMLButtonElement> | void;
+    onDelete: any;
+    onAdd: any;
+    // onDelete: (id: string) => MouseEventHandler<HTMLButtonElement>;
+    // onAdd: (id: string) => MouseEventHandler<HTMLButtonElement>;
 }
 
 const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
@@ -26,13 +28,13 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
     const nameChange = (event: ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value)
     }
-    const chnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const chnChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setChn(event.target.value)
     }
-    const smpOutChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const smpOutChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setSmpOut(event.target.value)
     }
-    const vepOutChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const vepOutChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setVepOut(event.target.value)
     }
 
@@ -55,7 +57,7 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
                 size="sm"
                 value={valueChn}
                 id={"trkChn_" + id}
-                onChange={() => chnChange}>
+                onChange={chnChange}>
                 {chnListMidi}
             </Form.Select>
         </Form.Group>
@@ -67,7 +69,7 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
                 size="sm"
                 value={valueSmpOut}
                 id={"trkSmpOut_" + id}
-                onChange={() => smpOutChange}>
+                onChange={smpOutChange}>
                 {outListSmp}
             </Form.Select>
         </Form.Group >
@@ -79,7 +81,7 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
                 size="sm"
                 value={valueVepOut}
                 id={"trkVepOut_" + id}
-                onChange={() => vepOutChange}>
+                onChange={vepOutChange}>
                 {outListVep}
             </Form.Select >
         </Form.Group >
@@ -188,12 +190,12 @@ const SamplerInfo: FC<SamplerInfoProps> = () => {
     const [samplerType, setSamplerType] = useState<string>(samplerList[0])
     const [valueName, setName] = useState<string>("")
 
-    const changeSampler = (event: any) => {
-        setSamplerType((event!.target! as HTMLInputElement).value)
+    const changeSampler = (event: ChangeEvent<HTMLSelectElement>) => {
+        setSamplerType(event.target.value)
     }
 
-    const nameChange = (event: any) => {
-        setName((event!.target! as HTMLInputElement).value)
+    const nameChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setName(event.target.value)
     }
 
     return (
@@ -220,7 +222,7 @@ const SamplerInfo: FC<SamplerInfoProps> = () => {
                         value={samplerType}
                         id="smpType"
                         onChange={changeSampler}>
-                        {outListSmp}
+                        {smpListAll}
                     </Form.Select >
                 </Form.Group >
             </InputGroup>
