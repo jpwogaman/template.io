@@ -18,15 +18,18 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const [valueName, setName] = useState<string>("")
     const [checkVelTitle, setVelTitle] = useState<string>("Switch to Velocity-Based Changes")
     const [checkRngTitle, setRngTitle] = useState<string>("Switch to independent playable range.")
-    const [nameArtTitle, setNameArtTitle] = useState<string>("Set the NAME for this patch. (i.e Legato On/OFF)")
-    const [nameArtTitle2, setNameArtTitle2] = useState<string>("Set the NAME for this patch. (i.e Staccato)")
-    const [nameFadTitle, setNameFadTitle] = useState<string>("Set the NAME for this parameter. (i.e Dynamics)")
-    const [codeArtTitle, setCodeArtTitle] = useState<string>("Set the CODE for this patch. (i.e. CC58)")
-    const [codeOnArt, setCodeOnArt] = useState<string>("Set the ON setting for this patch. (i.e. CC58, Value 76)")
-    const [codeOnArt2, setCodeOnArt2] = useState<string>("Set the ON setting for this patch. (i.e. CC58, Value 21)")
-    const [codeFadTitle, setCodeFadTitle] = useState<string>("Set the CODE for this parameter. (i.e CC11)")
-    const [togArt, setTogArt] = useState<boolean>(variant === "tog" ? true : false)
-    const [artFad, setArtFad] = useState<boolean>(type === "art" ? true : false)
+
+
+    const nameArtTitle: string = "Set the NAME for this patch. (i.e Legato On/OFF)"
+    const nameArtTitle2: string = "Set the NAME for this patch. (i.e Staccato)"
+    const nameFadTitle: string = "Set the NAME for this parameter. (i.e Dynamics)"
+    const codeArtTitle: string = "Set the CODE for this patch. (i.e. CC58)"
+    const codeOnArt: string = "Set the ON setting for this patch. (i.e. CC58, Value 76)"
+    const codeOnArt2: string = "Set the ON setting for this patch. (i.e. CC58, Value 21)"
+    const codeFadTitle: string = "Set the CODE for this parameter. (i.e CC11)"
+    const togArt: boolean = variant === "tog" ? true : false
+    const artFad: boolean = type === "art" ? true : false
+
     const [codeDisabled, setCodeDisabled] = useState<boolean>(false)
     const [showRngSelect, setRngSelect] = useState<boolean>(false)
     const [isChecked, setChecked] = useState<boolean>(false)
@@ -105,23 +108,38 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
 
     const rangeSelects =
         <Row>
-            <Col>
+            <Col xs={2}>
                 <Form.Select>
                     {numListAll}
                 </Form.Select>
             </Col>
-            <Col>
+            <Col xs={2}><i className='fas fa-arrow-right-long' /></Col>
+            <Col xs={2}>
                 <Form.Select>
                     {numListAll}
                 </Form.Select>
             </Col>
-            <Button
-                size="sm"
-                variant="primary"
-                title="This patch as more than one set of playable ranges.">
-                <i className="fa-solid fa-plus"></i>
-            </Button>
+            <Col xs={2}>
+                <Form.Group title="Describe this range-group. (i.e hits/rolls)">
+                    <Form.Control
+                        size="sm"
+                        type="text"
+                        value={valueName}
+                        id={type + "Name_" + id}
+                        onChange={nameChange}>
+                    </Form.Control>
+                </Form.Group>
+            </Col>
+            <Col xs={2}>
+                <Button
+                    size="sm"
+                    variant="primary"
+                    title="This patch has more than one set of playable ranges.">
+                    <i className="fa-solid fa-plus"></i>
+                </Button>
+            </Col>
         </Row>
+
 
     const naOption =
         <option>N/A</option>
@@ -163,17 +181,19 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
         </Form.Group >
 
     const rangeOption =
-        <Form.Group title={checkRngTitle}>
-            <Form.Check
-                checked={isChecked}
-                onChange={rangeOptionChange}
-                type="switch"
-                title={checkRngTitle}
-                aria-label="Does this patch have the same playable range as the default?"
-                id={type + "RangeOption_" + id}>
-            </Form.Check>
+        <Fragment>
+            <Form.Group title={checkRngTitle}>
+                <Form.Check
+                    checked={isChecked}
+                    onChange={rangeOptionChange}
+                    type="switch"
+                    title={checkRngTitle}
+                    aria-label="Does this patch have the same playable range as the default?"
+                    id={type + "RangeOption_" + id}>
+                </Form.Check>
+            </Form.Group >
             {showRngSelect ? rangeSelects : null}
-        </Form.Group >
+        </Fragment>
 
     const codeOption =
         <Form.Group title={artFad ? codeArtTitle : codeFadTitle}>

@@ -1,6 +1,6 @@
+@import 'webfonts';
 @import 'config';
 @import 'bootstrap-custom';
-@import 'webfonts.css';
 
 *,
 *::after,
@@ -41,10 +41,11 @@ a {
 #TemplateTrackSettings {
 	display: block;
 	position: absolute;
+	font-size: small;
 	top: 40px;
 	bottom: 0;
-	width: 45%;
-	padding: 0.5%;
+	width: 50%;
+	padding: 15px;
 	z-index: 99;
 	background-color: $bg-color-4;
 	overflow-y: scroll;
@@ -60,8 +61,16 @@ a {
 	scrollbar-width: none;
 }
 
+#TemplateTrackSettings>.row>.col>select.form-select {
+	font-size: small;
+}
+
+#TemplateTrackSettings>.table-responsive>table>tbody>tr>td>div>select.form-select {
+	font-size: small;
+}
+
 .MSshow {
-	margin-left: 55%;
+	margin-left: 50%;
 	opacity: 1;
 }
 
@@ -75,12 +84,16 @@ a {
 	position: absolute;
 	top: 40px;
 	bottom: 0;
+	font-size: small;
 	left: 0;
-	padding: 0.5%;
 	z-index: 99;
 	background-color: $bg-color-1;
 	overflow-y: scroll;
 	@include easeOut;
+}
+
+#TemplateTracks.container {
+	padding: 0;
 }
 
 #TemplateTracks::-webkit-scrollbar {
@@ -93,20 +106,19 @@ a {
 }
 
 .MSshowTemplateTracks {
-	width: 55%;
-	min-width: 55%;
-	margin-right: 45%;
-	font-size: small;
+	width: 50%;
+	min-width: 50%;
+	margin-right: 50%;
+
 }
 
 .MShideTemplateTracks {
 	width: 100%;
 	min-width: 100%;
 	margin-right: 0;
-	font-size: medium;
 }
 
-#trackList_01-01 {
-	padding: 0.5%;
+.TrackLists {
+	padding: 15px;
 	background-color: $bg-color-4;
 }

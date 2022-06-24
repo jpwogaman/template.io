@@ -1,5 +1,5 @@
 import { FC, ChangeEvent, Fragment, useState } from 'react';
-import { Col, Form, Container, Button, Table, ButtonGroup, InputGroup, ListGroup } from 'react-bootstrap';
+import { Form, Container, Button, Table, ButtonGroup, InputGroup, ListGroup } from 'react-bootstrap';
 import { samplerList, chnListMidi, outListSmp, outListVep, smpListAll } from './template-arrays';
 import ColorPicker from './template-color-picker'
 
@@ -214,7 +214,6 @@ const SamplerInfo: FC<SamplerInfoProps> = () => {
                 </Form.Control>
                 <Form.Group title="Sampler Type">
                     <Form.Select
-                        as={Col}
                         size="sm"
                         value={samplerType}
                         id="smpType"
@@ -232,7 +231,7 @@ export default function TemplateTracks() {
 
     return (
         <Container id="TemplateTracks" className="MShideTemplateTracks">
-            <Container id="trackList_01-01">
+            <Container id="trackList_01-01" className="TrackLists">
                 <SamplerInfo />
                 <Table hover responsive className='table-condensed'>
                     <thead>

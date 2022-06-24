@@ -9,21 +9,26 @@
 // $danger: $red !default;
 // $light: $gray-100 !default;
 // $dark: $gray-900 !default;
+
 $enable-shadows: true;
 $prefix: 'mo-';
-
-
 
 // $input-bg: $bg-color-4;
 // $input-focus-bg: #f8f9fa;
 // $input-placeholder-color: $txt-color-b;
 // $form-select-bg: $bg-color-4;
 
-
 .nav-item {
 	color: $txt-color-w;
 }
 
+.form-select,
+.form-control {
+	font-size: small;
+}
+
+
 // Then import Bootstrap
-@import '../node_modules/bootstrap/scss/bootstrap.scss';
-@import '../node_modules/bootstrap-icons/font/bootstrap-icons.css';
+
+@import '../../node_modules/bootstrap/scss/bootstrap.scss';
+@import '../../node_modules/bootstrap-icons/font/bootstrap-icons.css';

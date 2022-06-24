@@ -55,12 +55,13 @@
     },
     "windows": [
       {
-        "fullscreen": false,
-        "center": true,
-        "height": 600,
-        "resizable": true,
         "title": "Template.io",
-        "width": 800
+        "fullscreen": false,
+        "resizable": true,
+        "alwaysOnTop": true,
+        "center": true,
+        "height": 800,
+        "width": 1200
       }
     ]
   }

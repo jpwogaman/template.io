@@ -51,6 +51,7 @@ export default function TemplateTrackSettings() {
                         {numListAll}
                     </Form.Select>
                 </Col>
+                <Col><i className='fas fa-arrow-right-long' /></Col>
                 <Col>
                     <Form.Select>
                         {numListAll}

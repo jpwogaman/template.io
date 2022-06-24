@@ -1,6 +1,4 @@
 $font-stack-1: camingocoderegular, sans-serif;
-$font-stack-2: gravesend-sans, sans-serif;
-$font-stack-3: brandon-grotesque, sans-serif;
 
 $bg-color-b: #000;
 $bg-color-w: #fff;
@@ -22,6 +20,7 @@ $border-color-w: #fff;
 $border-color-1: #808080;
 $border-color-2: #008000;
 $border-color-3: #0000ff;
+
 @mixin easeOut {
 	transition: all 0.5s ease-out;
 }
