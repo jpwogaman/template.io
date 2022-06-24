@@ -1,6 +1,7 @@
 @import 'fonts';
-@import 'config';
-@import 'bootstrap-custom';
+@import "~tailwindcss/base";
+@import "~tailwindcss/components";
+@import "~tailwindcss/utilities";
 
 *,
 *::after,
@@ -8,65 +9,13 @@
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
-}
-
-html {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
 	scroll-behavior: smooth;
-	font-family: $font-stack-1;
 }
 
-body {
-	background-color: $bg-color-1;
-	font-family: $font-stack-1;
-	line-height: 1.5;
-	padding: 0;
-	width: 100vw;
-	-ms-overflow-style: none;
-	scrollbar-width: none;
-	overflow-x: hidden;
-}
-
-body::-webkit-scrollbar {
+*::-webkit-scrollbar {
 	display: none;
-}
-
-img {
-	width: 100%;
-}
-
-a {
-	text-decoration: none;
-}
-
-#TemplateTrackSettings {
-	display: block;
-	position: absolute;
-	font-size: small;
-	top: 40px;
-	bottom: 0;
-	width: 50%;
-	padding: 15px;
-	z-index: 99;
-	background-color: $bg-color-4;
-	overflow-y: scroll;
-	@include easeOut;
-}
-
-#TemplateTrackSettings::-webkit-scrollbar {
-	display: none;
-}
-
-#TemplateTrackSettings {
-	-ms-overflow-style: none;
-	scrollbar-width: none;
-}
-
-#TemplateTrackSettings>.row>.col>select.form-select {
-	font-size: small;
-}
-
-#TemplateTrackSettings>.table-responsive>table>tbody>tr>td>div>select.form-select {
-	font-size: small;
 }
 
 .MSshow {
@@ -79,46 +28,14 @@ a {
 	opacity: 0;
 }
 
-#TemplateTracks {
-	display: block;
-	position: absolute;
-	top: 40px;
-	bottom: 0;
-	font-size: small;
-	left: 0;
-	z-index: 99;
-	background-color: $bg-color-1;
-	overflow-y: scroll;
-	@include easeOut;
-}
-
-#TemplateTracks.container {
-	padding: 0;
-}
-
-#TemplateTracks::-webkit-scrollbar {
-	display: none;
-}
-
-#TemplateTracks {
-	-ms-overflow-style: none;
-	scrollbar-width: none;
-}
-
 .MSshowTemplateTracks {
 	width: 50%;
 	min-width: 50%;
 	margin-right: 50%;
-
 }
 
 .MShideTemplateTracks {
 	width: 100%;
 	min-width: 100%;
 	margin-right: 0;
-}
-
-.TrackLists {
-	padding: 15px;
-	background-color: $bg-color-4;
 }

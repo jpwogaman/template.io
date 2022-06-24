@@ -1,5 +1,4 @@
 import { FC, ChangeEvent, Fragment, useState } from 'react';
-import { Form, Container, Button, Table, ButtonGroup, InputGroup, ListGroup } from 'react-bootstrap';
 import { samplerList, chnListMidi, outListSmp, outListVep, smpListAll } from './template-arrays';
 import ColorPicker from './template-color-picker'
 
@@ -39,83 +38,80 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
     }
 
     const nameOption =
-        <Form.Group title="Set the NAME for this track or multi.">
-            <Form.Control
-                size="sm"
+        <div title="Set the NAME for this track or multi.">
+            <input
+                className='min-w-full'
                 type="text"
                 value={valueName}
                 id={"trkName_" + id}
                 placeholder="Track Name"
                 onChange={nameChange}>
-            </Form.Control>
-        </Form.Group >
+            </input>
+        </div >
 
     const chnOption =
-        <Form.Group title="Set the MIDI channel for this track or multi.">
-            <Form.Select
-                size="sm"
+        <div title="Set the MIDI channel for this track or multi.">
+            <select
+                className='min-w-full'
                 value={valueChn}
                 id={"trkChn_" + id}
                 onChange={chnChange}>
                 {chnListMidi}
-            </Form.Select>
-        </Form.Group>
+            </select>
+        </div>
 
     const smpOutOption =
-        <Form.Group title="Set the sampler outputs for this track or multi." >
-            <Form.Select
-                size="sm"
+        <div title="Set the sampler outputs for this track or multi." >
+            <select
+                className='min-w-full'
                 value={valueSmpOut}
                 id={"trkSmpOut_" + id}
                 onChange={smpOutChange}>
                 {outListSmp}
-            </Form.Select>
-        </Form.Group >
+            </select>
+        </div >
 
     const vepOutOption =
-        <Form.Group title="Set the instance outputs for this track or multi.">
-            <Form.Select
-                size="sm"
+        <div title="Set the instance outputs for this track or multi.">
+            <select
+                className='min-w-full'
                 value={valueVepOut}
                 id={"trkVepOut_" + id}
                 onChange={vepOutChange}>
                 {outListVep}
-            </Form.Select >
-        </Form.Group >
+            </select >
+        </div >
 
     const editTrack =
-        <ButtonGroup>
-            <Button
-                variant="primary"
-                size="sm"
+        <div className='flex justify-evenly'>
+            <button
+                className="w-6 h-6 border border-black mr-1 hover:border-green-50"
                 title="Edit Track Parameters"
                 onClick={settingsOpen}>
                 <i className="fa-solid fa-pen-to-square"></i>
-            </Button>
-            <Button
-                variant="primary"
-                size="sm"
+            </button>
+            <button
+                className="w-6 h-6 border border-black mr-1 hover:border-green-50"
                 title="Delete Track"
                 onClick={() => onDelete}>
                 <i className="fas fa-xmark" />
-            </Button>
-            <Button
-                variant="primary"
-                size="sm"
+            </button>
+            <button
+                className="w-6 h-6 border border-black mr-1 hover:border-green-50"
                 title="Add Track"
                 onClick={() => onAdd}>
                 <i className="fas fa-plus" />
-            </Button>
-        </ButtonGroup >
+            </button>
+        </div >
 
     return (
-        <tr id={"trk_" + id} className="align-middle">
-            <td id={"trkNumb_" + id}>{parseInt(id)}</td>
-            <td>{nameOption}</td>
-            <td>{chnOption}</td>
-            <td>{smpOutOption}</td>
-            <td>{vepOutOption}</td>
-            <td>{editTrack}</td>
+        <tr id={"trk_" + id}>
+            <td className='p-0.5' id={"trkNumb_" + id}>{parseInt(id)}</td>
+            <td className='p-0.5'>{nameOption}</td>
+            <td className='p-0.5'>{chnOption}</td>
+            <td className='p-0.5'>{smpOutOption}</td>
+            <td className='p-0.5'>{vepOutOption}</td>
+            <td className='p-0.5'>{editTrack}</td>
         </tr>
     );
 };
@@ -197,31 +193,37 @@ const SamplerInfo: FC<SamplerInfoProps> = () => {
 
     return (
         <Fragment>
-            <ListGroup horizontal>
-                <ListGroup.Item>Sampler No. 1</ListGroup.Item>
-                <ListGroup.Item>0 Tracks</ListGroup.Item>
-                <ListGroup.Item>0 Multis</ListGroup.Item>
-            </ListGroup>
-            <InputGroup size="sm">
-                <ColorPicker />
-                <Form.Control
-                    size="sm"
+            <ul className='w-1/3'>
+                <li>Sampler No. 1</li>
+                <li>0 Tracks</li>
+                <li>0 Multis</li>
+            </ul>
+            <div className='flex items-center mt-1 mb-1 w-1/3' >
+                <div
+                    title='Set the color for this sampler.'
+                    className='w-1/12'>
+                    <ColorPicker />
+                </div>
+                <input
+                    title='Set the name for this sampler.'
+                    className='ml-1 w-11/12'
                     type="text"
                     value={valueName}
                     id={"smpName_"}
-                    placeholder="Instrument/Patch/Sampler/Multi Name"
+                    placeholder="Instrument/Multi Name"
                     onChange={nameChange}>
-                </Form.Control>
-                <Form.Group title="Sampler Type">
-                    <Form.Select
-                        size="sm"
-                        value={samplerType}
-                        id="smpType"
-                        onChange={changeSampler}>
-                        {smpListAll}
-                    </Form.Select >
-                </Form.Group >
-            </InputGroup>
+                </input>
+            </div>
+            <div title="Sampler Manufacturer" className='w-1/3'>
+                <select
+                    className='w-full'
+                    value={samplerType}
+                    id="smpType"
+                    onChange={changeSampler}>
+                    {smpListAll}
+                </select >
+            </div >
+
         </Fragment>
     )
 }
@@ -230,25 +232,25 @@ const SamplerInfo: FC<SamplerInfoProps> = () => {
 export default function TemplateTracks() {
 
     return (
-        <Container id="TemplateTracks" className="MShideTemplateTracks">
-            <Container id="trackList_01-01" className="TrackLists">
+        <div id="TemplateTracks" className="MShideTemplateTracks absolute bg-main-grey transition-all duration-1000">
+            <div id="trackList_01-01" className="p-4">
                 <SamplerInfo />
-                <Table hover responsive className='table-condensed'>
+                <table className='table-auto border-collapse text-left min-w-full'>
                     <thead>
                         <tr>
-                            <th data-width="3%">No.</th>
-                            <th data-width="52%">Name</th>
-                            <th data-width="14%">MIDI Channel</th>
-                            <th data-width="14%">Sampler Outputs</th>
-                            <th data-width="14%">Instance Outputs</th>
-                            <th data-width="3%"></th>
+                            <th className='p-0.5'>No.</th>
+                            <th className='p-0.5'>Name</th>
+                            <th className='p-0.5'>MIDI Channel</th>
+                            <th className='p-0.5'>Sampler Outputs</th>
+                            <th className='p-0.5'>Instance Outputs</th>
+                            <th className='p-0.5'></th>
                         </tr>
                     </thead>
                     <tbody>
                         <Tracks></Tracks>
                     </tbody>
-                </Table>
-            </Container>
-        </Container>
+                </table>
+            </div>
+        </div>
     );
 };

@@ -1,5 +1,5 @@
 import reactCSS from 'reactcss'
-import { Component } from 'react'
+import { Component, Fragment } from 'react'
 import { SketchPicker } from 'react-color'
 
 export default class ColorPicker extends Component {
@@ -30,7 +30,6 @@ export default class ColorPicker extends Component {
         const styles = reactCSS({
             'default': {
                 color: {
-                    width: '36px',
                     height: '14px',
                     borderRadius: '2px',
                     background: `rgba(
@@ -44,7 +43,6 @@ export default class ColorPicker extends Component {
                     background: '#fff',
                     borderRadius: '1px',
                     boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
-                    display: 'inline-block',
                     cursor: 'pointer',
                 },
                 popover: {
@@ -69,7 +67,7 @@ export default class ColorPicker extends Component {
         */
 
         return (
-            <div>
+            <Fragment>
                 <div style={styles.swatch} onClick={this.handleClick}>
                     <div style={styles.color} />
                 </div>
@@ -77,7 +75,7 @@ export default class ColorPicker extends Component {
                     <div style={styles.cover} onClick={this.handleClose} />
                     <SketchPicker color={this.state.color} onChange={this.handleChange} />
                 </div> : null}
-            </div>
+            </Fragment>
         )
     }
 }

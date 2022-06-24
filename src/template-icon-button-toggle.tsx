@@ -1,18 +1,15 @@
 import { ReactNode, FC, useState } from "react";
-import { Button } from "react-bootstrap";
-
 interface IconBtnToggleProps {
     defaultIcon: string;
-    variant: string;
-    size: any;
     title: string;
+    className: string;
     id: string;
     a: string;
     b: string;
     children?: ReactNode;
 }
 
-const IconBtnToggle: FC<IconBtnToggleProps> = ({ defaultIcon, variant, size, title, id, a, b }) => {
+const IconBtnToggle: FC<IconBtnToggleProps> = ({ className, defaultIcon, title, id, a, b }) => {
 
     const [isToggleOn, setToggle] = useState<boolean>(defaultIcon === "a" ? true : false)
 
@@ -25,14 +22,13 @@ const IconBtnToggle: FC<IconBtnToggleProps> = ({ defaultIcon, variant, size, tit
     }
 
     return (
-        <Button
-            variant={variant}
-            size={size}
+        <button
+            className={className}
             title={title}
             onClick={handleClick}
             id={id}>
             <i className={isToggleOn ? a : b}></i>
-        </Button>
+        </button>
     );
 }
 

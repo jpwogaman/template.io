@@ -1,5 +1,4 @@
 import { FC, useState, ChangeEvent, Fragment } from "react";
-import { Row, Col, Form, Button } from "react-bootstrap";
 import { numListMidi, numListCode, ptchListCode, numListAll } from "./template-arrays";
 
 interface SettingsRowProps {
@@ -106,39 +105,30 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     }
 
     const rangeSelects =
-        <Row>
-            <Col xs={2}>
-                <Form.Select>
-                    {numListAll}
-                </Form.Select>
-            </Col>
-            <Col xs={2}><i className='fas fa-arrow-right-long' /></Col>
-            <Col xs={2}>
-                <Form.Select>
-                    {numListAll}
-                </Form.Select>
-            </Col>
-            <Col xs={2}>
-                <Form.Group title="Describe this range-group. (i.e hits/rolls)">
-                    <Form.Control
-                        size="sm"
-                        type="text"
-                        value={valueName}
-                        id={type + "Name_" + id}
-                        onChange={nameChange}>
-                    </Form.Control>
-                </Form.Group>
-            </Col>
-            <Col xs={2}>
-                <Button
-                    size="sm"
-                    variant="primary"
-                    title="This patch has more than one set of playable ranges.">
-                    <i className="fa-solid fa-plus"></i>
-                </Button>
-            </Col>
-        </Row>
-
+        <div className="flex justify-evenly min-w-full">
+            <select className="">
+                {numListAll}
+            </select>
+            <div className=''>
+                <i className='fas fa-arrow-right-long' />
+            </div>
+            <select className="">
+                {numListAll}
+            </select>
+            <input
+                className=''
+                title="Describe this range-group. (i.e hits/rolls)"
+                type="text"
+                value={valueName}
+                id={type + "Name_" + id}
+                onChange={nameChange}>
+            </input>
+            <button
+                className=''
+                title="This patch has more than one set of playable ranges.">
+                <i className="fa-solid fa-plus"></i>
+            </button>
+        </div>
 
     const naOption =
         <option>N/A</option>
@@ -150,9 +140,9 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
         </Fragment>
 
     const typeOption =
-        <Form.Group title="Select the TYPE of code for this patch.">
-            <Form.Select
-                size="sm"
+        <div title="Select the TYPE of code for this patch.">
+            <select
+                className='min-w-full'
                 value={valueType}
                 id={type + "Type_" + id}
                 onChange={typeChange}>
@@ -164,104 +154,108 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
                 <option value="/mtc">MTC</option>
                 <option value="/channel_pressure">Channel Pressure</option>
                 <option value="/key_pressure">Polyphonic Key Pressure</option>
-            </Form.Select>
-        </Form.Group>
+            </select>
+        </div>
 
     const noteOption =
-        <Form.Group as={Col} title={checkVelTitle}>
-            <Form.Check
+        <div title={checkVelTitle}>
+            <input
+                className='min-w-full'
                 checked={isChecked}
                 onChange={noteOptionChange}
-                type="switch"
+                type="checkbox"
                 title={checkVelTitle}
                 aria-label="Switch Between Velocity-Based and Standard Note Changes"
                 id={type + "NoteOption_" + id}>
-            </Form.Check>
-        </Form.Group >
+            </input>
+        </div >
 
     const rangeOption =
         <Fragment>
-            <Form.Group title={checkRngTitle}>
-                <Form.Check
+            <div title={checkRngTitle}>
+                <input
+                    className='min-w-full'
                     checked={isChecked}
                     onChange={rangeOptionChange}
-                    type="switch"
+                    type="checkbox"
                     title={checkRngTitle}
                     aria-label="Does this patch have the same playable range as the default?"
                     id={type + "RangeOption_" + id}>
-                </Form.Check>
-            </Form.Group >
+                </input>
+            </div >
             {showRngSelect ? rangeSelects : null}
         </Fragment>
 
     const codeOption =
-        <Form.Group title={artFad ? codeArtTitle : codeFadTitle}>
-            <Form.Select
-                size="sm"
+        <div title={artFad ? codeArtTitle : codeFadTitle}>
+            <select
+                className='min-w-full'
                 disabled={codeDisabled}
                 value={!codeDisabled ? valueCode : "N/A"}
                 id={type + "Code_" + id}
                 onChange={codeChange}>
                 {!codeDisabled ? valueCodeMidi : naOption}
-            </Form.Select>
-        </Form.Group>
+            </select>
+        </div>
 
     const onOption =
-        <Form.Group title={artFad && togArt ? codeOnArt : codeOnArt2}>
-            <Form.Select
-                size="sm"
+        <div title={artFad && togArt ? codeOnArt : codeOnArt2}>
+            <select
+                className='min-w-full'
                 value={valueOn}
                 id={type + "On___" + id}
                 onChange={onValChange}>
                 {numListMidi}
-            </Form.Select>
+            </select>
             {valueType === "/note" ? noteOption : null}
-        </Form.Group>
+        </div>
 
     const offOption =
-        <Form.Group title="Set the OFF setting for this patch. (i.e. CC58, Value 81)" >
-            <Form.Select
-                size="sm"
+        <div title="Set the OFF setting for this patch. (i.e. CC58, Value 81)" >
+            <select
+                className='min-w-full'
                 value={valueOff}
                 id={type + "Off__" + id}
                 onChange={offChange}>
                 {numListMidi}
-            </Form.Select>
+            </select>
             {valueType === "/note" ? noteOption : null}
-        </Form.Group >
+        </div >
 
     const deftCheck =
-        <Form.Group title="Set this as the default patch.">
-            <Form.Check
+        <div title="Set this as the default patch.">
+            <input
+                className='min-w-full'
+                type="checkbox"
                 checked={isChecked2}
                 onChange={deftPatchChange}
                 title="Set this as the default patch."
                 aria-label="Set this as the default patch."
                 id={type + "DeftOption_" + id}>
-            </Form.Check>
-        </Form.Group>
+            </input>
+        </div>
 
     const deftSelect =
-        <Form.Group title="Set the DEFAULT setting for this patch.">
-            <Form.Select
-                size="sm"
+        <div title="Set the DEFAULT setting for this patch.">
+            <select
+                className='min-w-full'
                 value={valueDeft}
                 id={type + "Deft_" + id}
                 onChange={deftChange}>
                 {type === "art" ? onOffOption : valueMidi}
-            </Form.Select >
-        </Form.Group >
+            </select >
+        </div >
 
     const nameOption =
-        <Form.Group title={artFad && togArt ? nameArtTitle : artFad && !togArt ? nameArtTitle2 : nameFadTitle}>
-            <Form.Control
-                size="sm"
+        <div title={artFad && togArt ? nameArtTitle : artFad && !togArt ? nameArtTitle2 : nameFadTitle}>
+            <input
+                className='min-w-full'
                 type="text"
                 value={valueName}
                 id={type + "Name_" + id}
                 onChange={nameChange}>
-            </Form.Control>
-        </Form.Group >
+            </input>
+        </div >
 
     const deftOption =
         <Fragment>
@@ -271,18 +265,18 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
 
     const justArt =
         <Fragment>
-            <td> {onOption} </td>
-            <td> {togArt ? offOption : rangeOption} </td>
+            <td className='p-0.5'> {onOption} </td>
+            <td className='p-0.5'> {togArt ? offOption : rangeOption} </td>
         </Fragment>
 
     return (
         <tr id={type + "_" + id} className="align-middle">
-            <td id={type + "Numb_" + id}>{parseInt(id)}</td>
-            <td>{typeOption}</td>
-            <td>{codeOption}</td>
+            <td className='p-0.5' id={type + "Numb_" + id}>{parseInt(id)}</td>
+            <td className='p-0.5'>{typeOption}</td>
+            <td className='p-0.5'>{codeOption}</td>
             {artFad ? justArt : null}
-            <td>{deftOption}</td>
-            <td>{nameOption}</td>
+            <td className='p-0.5'>{deftOption}</td>
+            <td className='p-0.5'>{nameOption}</td>
         </tr>
     );
 };

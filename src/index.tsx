@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import ReactDOM from 'react-dom/client';
 import './scss/index.scss';
+
 import TemplateNavbar from './template-navbar';
 import TemplateTracks from './template-tracks';
 import TemplateTrackSettings from './template-track-settings';

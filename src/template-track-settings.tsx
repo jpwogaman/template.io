@@ -1,4 +1,3 @@
-import { DropdownButton, Dropdown, Row, Col, Form, Container, Button, ButtonGroup, ButtonToolbar, Table } from 'react-bootstrap';
 import { numListAll } from './template-arrays';
 import { IconBtnToggle } from './template-icon-button-toggle'
 import { SettingsRow } from './template-settings-row'
@@ -11,64 +10,69 @@ export default function TemplateTrackSettings() {
     }
 
     return (
-        <Container id="TemplateTrackSettings" className="MShide">
-            <ButtonToolbar>
-                <ButtonGroup className="container">
-                    <Button
-                        variant="primary"
-                        size="sm"
+        <div id="TemplateTrackSettings" className="MShide p-4 z-50 w-1/2 bg-main-grey overflow-y-scroll transition-all duration-1000">
+            <div>
+                <div >
+                    <button
+                        className="w-10 h-10 border border-black mr-1 hover:border-green-50"
                         title="Close Track Settings Window"
                         onClick={closeSettingsWindow}>
                         <i className="fa-solid fa-xmark"></i>
-                    </Button>
+                    </button>
                     <IconBtnToggle
-                        variant="primary"
-                        size="sm"
+                        className="w-10 h-10 border border-black mr-1 hover:border-green-50"
                         title="Close Track Settings Window"
                         id="editLock"
                         a="fa-solid fa-lock-open"
                         b="fa-solid fa-lock"
                         defaultIcon="a">
                     </IconBtnToggle>
-                    <DropdownButton id="dropdown-item-button" title="Save Track Settings">
-                        <Dropdown.Item as="button">Print Track Settings</Dropdown.Item>
-                        <Dropdown.Item as="button">Save Track Settings as Manufacturer Default</Dropdown.Item>
-                        <Dropdown.Item as="button">Open Manufacturer Default Settings for Track</Dropdown.Item>
-                        <Dropdown.Item as="button">Save Track Settings as User Default</Dropdown.Item>
-                        <Dropdown.Item as="button">Open User Default Settings for Track</Dropdown.Item>
-                    </DropdownButton>
-                </ButtonGroup>
-            </ButtonToolbar >
+                    <button
+                        className="w-10 h-10 border border-black mr-1 hover:border-green-50"
+                        title="Save Settings Window">
+                        <i className="fa-solid fa-save"></i>
+                    </button>
+                    <div className='invisible'>
+                        <ul id="dropdown-item-button">
+                            <li>Print Track Settings</li>
+                            <li>Save Track Settings as Manufacturer Default</li>
+                            <li>Open Manufacturer Default Settings for Track</li>
+                            <li>Save Track Settings as User Default</li>
+                            <li>Open User Default Settings for Track</li>
+                        </ul>
+                    </div>
+                </div>
+            </div >
 
-            <h2 id="trkEditDisplay">Track:</h2>
+            <h2 id="trkEditDisplay" className='w-1/2'>Track:</h2>
 
-            <Row sm="auto">
-                <Col>
+            <div className='flex w-1/2'>
+                <div>
                     <h3>Playable Range:</h3>
-                </Col>
-                <Col>
-                    <Form.Select>
+                </div>
+                <div>
+                    <select>
                         {numListAll}
-                    </Form.Select>
-                </Col>
-                <Col><i className='fas fa-arrow-right-long' /></Col>
-                <Col>
-                    <Form.Select>
+                    </select>
+                </div>
+                <div><i className='fas fa-arrow-right-long' /></div>
+                <div>
+                    <select>
                         {numListAll}
-                    </Form.Select>
-                </Col>
-            </Row>
+                    </select>
+                </div>
+            </div>
 
-            <h3>Faders</h3>
+            <h3 className='w-1/2'>Faders</h3>
 
-            <Table hover responsive className='table-condensed'>
+            <table className='min-w-full table-fixed text-left'>
                 <thead>
                     <tr>
-                        <th data-width="3%">No.</th>
-                        <th data-width="30%">Type</th>
-                        <th data-width="18%">Code</th>
-                        <th data-width="18%">Default</th>
-                        <th data-width="31%">Name</th>
+                        <th className='p-0.5'>No.</th>
+                        <th className='p-0.5'>Type</th>
+                        <th className='p-0.5'>Code</th>
+                        <th className='p-0.5'>Default</th>
+                        <th className='p-0.5'>Name</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -81,38 +85,38 @@ export default function TemplateTrackSettings() {
                     <SettingsRow id="07" type="fad" variant={undefined}></SettingsRow>
                     <SettingsRow id="08" type="fad" variant={undefined}></SettingsRow>
                 </tbody>
-            </Table>
+            </table>
 
-            <h3>Articulations (toggle)</h3>
+            <h3 className='w-1/2'>Articulations (toggle)</h3>
 
-            <Table hover responsive>
+            <table className='min-w-full table-fixed text-left'>
                 <thead>
                     <tr>
-                        <th data-width="3%">No.</th>
-                        <th data-width="30%">Type</th>
-                        <th data-width="9%">Code</th>
-                        <th data-width="9%">On</th>
-                        <th data-width="9%">Off</th>
-                        <th data-width="9%">Default</th>
-                        <th data-width="31%">Name</th>
+                        <th className='p-0.5'>No.</th>
+                        <th className='p-0.5'>Type</th>
+                        <th className='p-0.5'>Code</th>
+                        <th className='p-0.5'>On</th>
+                        <th className='p-0.5'>Off</th>
+                        <th className='p-0.5'>Default</th>
+                        <th className='p-0.5'>Name</th>
                     </tr>
                 </thead>
                 <tbody>
                     <SettingsRow id="01" type="art" variant="tog"></SettingsRow>
                     <SettingsRow id="02" type="art" variant="tog"></SettingsRow>
                 </tbody>
-            </Table>
-            <h3>Articulations (one-at-a-time)</h3>
-            <Table hover responsive>
+            </table>
+            <h3 className='w-1/2'>Articulations (one-at-a-time)</h3>
+            <table className='min-w-full table-fixed text-left'>
                 <thead>
                     <tr>
-                        <th data-width="3%">No.</th>
-                        <th data-width="30%">Type</th>
-                        <th data-width="9%">Code</th>
-                        <th data-width="9%">On</th>
-                        <th data-width="9%">Range</th>
-                        <th data-width="9%">Default</th>
-                        <th data-width="31%">Name</th>
+                        <th className='p-0.5'>No.</th>
+                        <th className='p-0.5'>Type</th>
+                        <th className='p-0.5'>Code</th>
+                        <th className='p-0.5'>On</th>
+                        <th className='p-0.5'>Range</th>
+                        <th className='p-0.5'>Default</th>
+                        <th className='p-0.5'>Name</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -133,7 +137,7 @@ export default function TemplateTrackSettings() {
                     <SettingsRow id="17" type="art" variant={undefined}></SettingsRow>
                     <SettingsRow id="18" type="art" variant={undefined}></SettingsRow>
                 </tbody>
-            </Table>
-        </Container >
+            </table>
+        </div >
     );
 };
