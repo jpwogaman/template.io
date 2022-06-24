@@ -1,5 +1,5 @@
 import { FC, ChangeEvent, Fragment, useState } from 'react';
-import { samplerList, chnListMidi, outListSmp, outListVep, smpListAll } from './template-arrays';
+import { TdSelect } from './td-selects';
 import ColorPicker from './template-color-picker'
 
 const settingsOpen = () => {
@@ -19,22 +19,9 @@ interface TrackRowProps {
 }
 
 const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
-    const [valueChn, setChn] = useState<string>("")
-    const [valueSmpOut, setSmpOut] = useState<string>("")
-    const [valueVepOut, setVepOut] = useState<string>("")
     const [valueName, setName] = useState<string>("")
-
     const nameChange = (event: ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value)
-    }
-    const chnChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        setChn(event.target.value)
-    }
-    const smpOutChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        setSmpOut(event.target.value)
-    }
-    const vepOutChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        setVepOut(event.target.value)
     }
 
     const nameOption =
@@ -51,35 +38,17 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
 
     const chnOption =
         <div title="Set the MIDI channel for this track or multi.">
-            <select
-                className='min-w-full'
-                value={valueChn}
-                id={"trkChn_" + id}
-                onChange={chnChange}>
-                {chnListMidi}
-            </select>
+            <TdSelect id={"trkChn_" + id} options="chnListMidi"></TdSelect>
         </div>
 
     const smpOutOption =
         <div title="Set the sampler outputs for this track or multi." >
-            <select
-                className='min-w-full'
-                value={valueSmpOut}
-                id={"trkSmpOut_" + id}
-                onChange={smpOutChange}>
-                {outListSmp}
-            </select>
+            <TdSelect id={"trkSmpOut_" + id} options="outListSmp"></TdSelect>
         </div >
 
     const vepOutOption =
         <div title="Set the instance outputs for this track or multi.">
-            <select
-                className='min-w-full'
-                value={valueVepOut}
-                id={"trkVepOut_" + id}
-                onChange={vepOutChange}>
-                {outListVep}
-            </select >
+            <TdSelect id={"trkVepOut_" + id} options="outListVep"></TdSelect>
         </div >
 
     const editTrack =
@@ -180,13 +149,7 @@ interface SamplerInfoProps {
 }
 const SamplerInfo: FC<SamplerInfoProps> = () => {
 
-    const [samplerType, setSamplerType] = useState<string>(samplerList[0])
     const [valueName, setName] = useState<string>("")
-
-    const changeSampler = (event: ChangeEvent<HTMLSelectElement>) => {
-        setSamplerType(event.target.value)
-    }
-
     const nameChange = (event: ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value)
     }
@@ -215,13 +178,7 @@ const SamplerInfo: FC<SamplerInfoProps> = () => {
                 </input>
             </div>
             <div title="Sampler Manufacturer" className='w-1/3'>
-                <select
-                    className='w-full'
-                    value={samplerType}
-                    id="smpType"
-                    onChange={changeSampler}>
-                    {smpListAll}
-                </select >
+                <TdSelect id="smpType" options="smpListAll"></TdSelect>
             </div >
 
         </Fragment>

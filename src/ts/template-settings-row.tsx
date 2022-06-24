@@ -1,5 +1,5 @@
 import { FC, useState, ChangeEvent, Fragment } from "react";
-import { numListMidi, numListCode, ptchListCode, numListAll } from "./template-arrays";
+import { TdSelect } from "./td-selects";
 
 interface SettingsRowProps {
     id: string;
@@ -10,10 +10,6 @@ interface SettingsRowProps {
 const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
 
     const [valueType, setType] = useState<string>("")
-    const [valueCode, setCode] = useState<string>("")
-    const [valueOn, setOn] = useState<string>("")
-    const [valueOff, setOff] = useState<string>("")
-    const [valueDeft, setDeft] = useState<string>("")
     const [valueName, setName] = useState<string>("")
     const [checkVelTitle, setVelTitle] = useState<string>("Switch to Velocity-Based Changes")
     const [checkRngTitle, setRngTitle] = useState<string>("Switch to independent playable range.")
@@ -32,40 +28,28 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const togArt: boolean = variant === "tog" ? true : false
     const artFad: boolean = type === "art" ? true : false
 
-    const [valueMidi, setMidi] = useState<JSX.Element>(numListMidi)
-    const [valueCodeMidi, setCodeMidi] = useState<JSX.Element>(numListMidi)
+    const [valueMidi, setMidi] = useState<string>("numListMidi")
+    const [valueCodeMidi, setCodeMidi] = useState<string>("numListMidi")
 
     const typeChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setType(event.target.value)
 
         if (event.target.value === "/note") {
-            setMidi(numListCode)
-            setCodeMidi(numListCode)
+            setMidi("numListCode")
+            setCodeMidi("numListCode")
             setCodeDisabled(true)
         }
         else if (event.target.value === "/pitch") {
-            setMidi(ptchListCode)
+            setMidi("ptchListCode")
             setCodeDisabled(true)
         }
         else {
-            setMidi(numListMidi)
-            setCodeMidi(numListMidi)
+            setMidi("numListMidi")
+            setCodeMidi("numListMidi")
             setCodeDisabled(false);
         };
     };
 
-    const codeChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        setCode(event.target.value)
-    }
-    const onValChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        setOn(event.target.value)
-    }
-    const offChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        setOff(event.target.value)
-    }
-    const deftChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        setDeft(event.target.value)
-    }
     const nameChange = (event: ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value)
     }
@@ -73,25 +57,25 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const noteOptionChange = () => {
         if (isChecked) {
             setChecked(false)
-            setVelTitle('Switch to Velocity-Based Changes')
             setCodeDisabled(true)
-            setMidi(numListCode)
+            setVelTitle('Switch to Velocity-Based Changes')
+            setMidi("numListCode")
         } else {
             setChecked(true)
-            setVelTitle('Switch to Standard Note Changes')
             setCodeDisabled(false)
-            setMidi(numListMidi)
+            setVelTitle('Switch to Standard Note Changes')
+            setMidi("numListMidi")
         }
     }
     const rangeOptionChange = () => {
         if (isChecked) {
             setChecked(false)
-            setRngTitle('Switch to independent playable range.')
             setRngSelect(false)
+            setRngTitle('Switch to independent playable range.')
         } else {
             setChecked(true)
-            setRngTitle('Switch to same playable range as default.')
             setRngSelect(true)
+            setRngTitle('Switch to same playable range as default.')
         }
     }
 
@@ -106,15 +90,11 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
 
     const rangeSelects =
         <div className="flex justify-evenly min-w-full">
-            <select className="">
-                {numListAll}
-            </select>
+            <TdSelect id="" options="numListAll" codeDisabled={codeDisabled}></TdSelect>
             <div className=''>
                 <i className='fas fa-arrow-right-long' />
             </div>
-            <select className="">
-                {numListAll}
-            </select>
+            <TdSelect id="" options="numListAll" codeDisabled={codeDisabled}></TdSelect>
             <input
                 className=''
                 title="Describe this range-group. (i.e hits/rolls)"
@@ -130,31 +110,9 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
             </button>
         </div>
 
-    const naOption =
-        <option>N/A</option>
-
-    const onOffOption =
-        <Fragment>
-            <option value="On">On</option>
-            <option value="Off">Off</option>
-        </Fragment>
-
     const typeOption =
         <div title="Select the TYPE of code for this patch.">
-            <select
-                className='min-w-full'
-                value={valueType}
-                id={type + "Type_" + id}
-                onChange={typeChange}>
-                <option value="/control">Control Code</option>
-                <option value="/note" >Note</option>
-                <option value="/program">Program Change</option>
-                <option value="/pitch">PitchWheel</option>
-                <option value="/sysex">Sysex</option>
-                <option value="/mtc">MTC</option>
-                <option value="/channel_pressure">Channel Pressure</option>
-                <option value="/key_pressure">Polyphonic Key Pressure</option>
-            </select>
+            <TdSelect id={type + "Type_" + id} options='addressOptions'></TdSelect>
         </div>
 
     const noteOption =
@@ -188,37 +146,18 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
 
     const codeOption =
         <div title={artFad ? codeArtTitle : codeFadTitle}>
-            <select
-                className='min-w-full'
-                disabled={codeDisabled}
-                value={!codeDisabled ? valueCode : "N/A"}
-                id={type + "Code_" + id}
-                onChange={codeChange}>
-                {!codeDisabled ? valueCodeMidi : naOption}
-            </select>
+            <TdSelect id={type + "Code_" + id} options={valueCodeMidi} codeDisabled={codeDisabled}></TdSelect>
         </div>
 
     const onOption =
         <div title={artFad && togArt ? codeOnArt : codeOnArt2}>
-            <select
-                className='min-w-full'
-                value={valueOn}
-                id={type + "On___" + id}
-                onChange={onValChange}>
-                {numListMidi}
-            </select>
+            <TdSelect id={type + "On___" + id} options={valueMidi}></TdSelect>
             {valueType === "/note" ? noteOption : null}
         </div>
 
     const offOption =
         <div title="Set the OFF setting for this patch. (i.e. CC58, Value 81)" >
-            <select
-                className='min-w-full'
-                value={valueOff}
-                id={type + "Off__" + id}
-                onChange={offChange}>
-                {numListMidi}
-            </select>
+            <TdSelect id={type + "Off__" + id} options={valueMidi}></TdSelect>
             {valueType === "/note" ? noteOption : null}
         </div >
 
@@ -237,13 +176,7 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
 
     const deftSelect =
         <div title="Set the DEFAULT setting for this patch.">
-            <select
-                className='min-w-full'
-                value={valueDeft}
-                id={type + "Deft_" + id}
-                onChange={deftChange}>
-                {type === "art" ? onOffOption : valueMidi}
-            </select >
+            <TdSelect id={type + "Deft_" + id} options={type === "art" ? "onOffOption" : valueMidi}></TdSelect>
         </div >
 
     const nameOption =

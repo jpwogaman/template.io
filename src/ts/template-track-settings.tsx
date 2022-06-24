@@ -42,11 +42,11 @@ export default function TemplateTrackSettings() {
                         </ul>
                     </div>
                 </div>
-            </div >
+            </div>
 
-            <h2 id="trkEditDisplay" className='w-1/2'>Track:</h2>
+            <h2 id="trkEditDisplay" className=''>Track:</h2>
 
-            <div className='flex w-1/2'>
+            <div className='flex'>
                 <div>
                     <h3>Playable Range:</h3>
                 </div>
@@ -63,7 +63,7 @@ export default function TemplateTrackSettings() {
                 </div>
             </div>
 
-            <h3 className='w-1/2'>Faders</h3>
+            <h3 className=''>Faders</h3>
 
             <table className='min-w-full table-fixed text-left'>
                 <thead>
@@ -87,7 +87,7 @@ export default function TemplateTrackSettings() {
                 </tbody>
             </table>
 
-            <h3 className='w-1/2'>Articulations (toggle)</h3>
+            <h3 className=''>Articulations (toggle)</h3>
 
             <table className='min-w-full table-fixed text-left'>
                 <thead>
@@ -106,7 +106,7 @@ export default function TemplateTrackSettings() {
                     <SettingsRow id="02" type="art" variant="tog"></SettingsRow>
                 </tbody>
             </table>
-            <h3 className='w-1/2'>Articulations (one-at-a-time)</h3>
+            <h3 className=''>Articulations (one-at-a-time)</h3>
             <table className='min-w-full table-fixed text-left'>
                 <thead>
                     <tr>
