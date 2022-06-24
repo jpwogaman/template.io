@@ -6,7 +6,7 @@
 
 ## Running from Source
 
-[**Tauri Prerequisites**](https://tauri.app/v1/guides/getting-started/prerequisites) - this includes downloading Microsoft Visual Studio C++ Build Tools and Rust, as well as configuring your PATH. 
+[**Tauri Prerequisites**](https://tauri.app/v1/guides/getting-started/prerequisites) - this includes downloading Rust, as well as configuring your PATH. 
 
 ```
 git clone https://github.com/jpwogaman/template.io
