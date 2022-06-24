@@ -18,7 +18,10 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const [valueName, setName] = useState<string>("")
     const [checkVelTitle, setVelTitle] = useState<string>("Switch to Velocity-Based Changes")
     const [checkRngTitle, setRngTitle] = useState<string>("Switch to independent playable range.")
-
+    const [codeDisabled, setCodeDisabled] = useState<boolean>(false)
+    const [showRngSelect, setRngSelect] = useState<boolean>(false)
+    const [isChecked, setChecked] = useState<boolean>(false)
+    const [isChecked2, setChecked2] = useState<boolean>(false)
 
     const nameArtTitle: string = "Set the NAME for this patch. (i.e Legato On/OFF)"
     const nameArtTitle2: string = "Set the NAME for this patch. (i.e Staccato)"
@@ -30,10 +33,6 @@ const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const togArt: boolean = variant === "tog" ? true : false
     const artFad: boolean = type === "art" ? true : false
 
-    const [codeDisabled, setCodeDisabled] = useState<boolean>(false)
-    const [showRngSelect, setRngSelect] = useState<boolean>(false)
-    const [isChecked, setChecked] = useState<boolean>(false)
-    const [isChecked2, setChecked2] = useState<boolean>(false)
     const [valueMidi, setMidi] = useState<JSX.Element>(numListMidi)
     const [valueCodeMidi, setCodeMidi] = useState<JSX.Element>(numListMidi)
 
