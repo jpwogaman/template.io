@@ -2,10 +2,10 @@ import { Fragment } from 'react';
 import ReactDOM from 'react-dom/client';
 import './scss/index.scss';
 
-import TemplateNavbar from './template-navbar';
-import TemplateTracks from './template-tracks';
-import TemplateTrackSettings from './template-track-settings';
-import reportWebVitals from './reportWebVitals';
+import TemplateNavbar from './ts/template-navbar';
+import TemplateTracks from './ts/template-tracks';
+import TemplateTrackSettings from './ts/template-track-settings';
+import reportWebVitals from './ts/react-app/reportWebVitals';
 
 const template = ReactDOM.createRoot(
     document.getElementById('template') as HTMLElement

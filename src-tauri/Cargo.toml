@@ -1,11 +1,11 @@
 [package]
-name = "app"
+name = "template_io"
 version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
-license = ""
-repository = ""
-default-run = "app"
+description = "template_io"
+authors = ["JP Wogaman II"]
+license = "MIT"
+repository = "https://github.com/jpwogaman/template.io"
+default-run = "template_io"
 edition = "2021"
 rust-version = "1.57"
 
