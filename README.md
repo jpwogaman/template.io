@@ -24,11 +24,11 @@ npm run tauri dev
 ## Technologies Used
 
 
-| Component                | Version                                                                                                                               | 
-| -------------------------| ------------------------------------------------------------------------------------------------------------------------------------- | 
-| [**Tauri**](https://github.com/tauri-apps/tauri)            | [![npm version](https://img.shields.io/npm/v/create-tauri-app.svg?style=flat)](https://github.com/tauri-apps/tauri)                   |
-| [**React**]()            | [![npm version](https://img.shields.io/npm/v/react.svg?style=flat)](https://github.com/facebook/react)                                |
-| [**Bootstrap**]()        | [![npm version](https://img.shields.io/npm/v/bootstrap.svg?style=flat)](https://github.com/twbs/bootstrap)                            |
-| [**React-Bootstrap**]()  | [![npm version](https://img.shields.io/npm/v/react-bootstrap.svg?style=flat)](https://github.com/react-bootstrap/react-bootstrap)     |
-| [**TypeScript**]()       | [![npm version](https://img.shields.io/npm/v/typescript.svg?style=flat)](https://github.com/Microsoft/TypeScript)                     |
-| [**SASS**]()             | [![npm version](https://img.shields.io/npm/v/sass.svg?style=flat)](https://github.com/sass/dart-sass)                                 |
+| Component                                                                 | Version                                                                                                                               | 
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | 
+| [**Tauri**](https://github.com/tauri-apps/tauri)                          | [![npm version](https://img.shields.io/npm/v/create-tauri-app.svg?style=flat)](https://github.com/tauri-apps/tauri)                   |
+| [**React**](https://github.com/facebook/react)                            | [![npm version](https://img.shields.io/npm/v/react.svg?style=flat)](https://github.com/facebook/react)                                |
+| [**Bootstrap**](https://github.com/twbs/bootstrap)                        | [![npm version](https://img.shields.io/npm/v/bootstrap.svg?style=flat)](https://github.com/twbs/bootstrap)                            |
+| [**React-Bootstrap**](https://github.com/react-bootstrap/react-bootstrap) | [![npm version](https://img.shields.io/npm/v/react-bootstrap.svg?style=flat)](https://github.com/react-bootstrap/react-bootstrap)     |
+| [**TypeScript**](https://github.com/Microsoft/TypeScript)                 | [![npm version](https://img.shields.io/npm/v/typescript.svg?style=flat)](https://github.com/Microsoft/TypeScript)                     |
+| [**SASS**](https://github.com/sass/dart-sass)                             | [![npm version](https://img.shields.io/npm/v/sass.svg?style=flat)](https://github.com/sass/dart-sass)                                 |
