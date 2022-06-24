@@ -9,7 +9,7 @@
 [**Tauri Prerequisites**](https://tauri.app/v1/guides/getting-started/prerequisites) - this includes downloading Rust, as well as configuring your PATH. 
 
 ```
-git clone https://github.com/jpwogaman/template.osc
+git clone https://github.com/jpwogaman/template.io
 ```
 ```
 cd template.io
