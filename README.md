@@ -9,7 +9,7 @@
 [**Tauri Prerequisites**](https://tauri.app/v1/guides/getting-started/prerequisites) - this includes downloading Rust, as well as configuring your PATH. 
 
 ```
-git clone https://github.com/jpwogaman/template.io
+git clone https://github.com/jpwogaman/template.osc
 ```
 ```
 cd template.io
@@ -26,7 +26,7 @@ npm run tauri dev
 
 | Component                | Version                                                                                                                               | 
 | -------------------------| ------------------------------------------------------------------------------------------------------------------------------------- | 
-| [**Tauri**]()            | [![npm version](https://img.shields.io/npm/v/create-tauri-app.svg?style=flat)](https://github.com/tauri-apps/tauri)                   |
+| [**Tauri**](https://github.com/tauri-apps/tauri)            | [![npm version](https://img.shields.io/npm/v/create-tauri-app.svg?style=flat)](https://github.com/tauri-apps/tauri)                   |
 | [**React**]()            | [![npm version](https://img.shields.io/npm/v/react.svg?style=flat)](https://github.com/facebook/react)                                |
 | [**Bootstrap**]()        | [![npm version](https://img.shields.io/npm/v/bootstrap.svg?style=flat)](https://github.com/twbs/bootstrap)                            |
 | [**React-Bootstrap**]()  | [![npm version](https://img.shields.io/npm/v/react-bootstrap.svg?style=flat)](https://github.com/react-bootstrap/react-bootstrap)     |
