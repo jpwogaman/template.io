@@ -1,4 +1,4 @@
-import { numListAll } from './template-arrays';
+import { TdSelect } from './select';
 import { IconBtnToggle } from './template-icon-button-toggle'
 import { SettingsRow } from './template-settings-row'
 
@@ -51,15 +51,11 @@ export default function TemplateTrackSettings() {
                     <h3>Playable Range:</h3>
                 </div>
                 <div>
-                    <select>
-                        {numListAll}
-                    </select>
+                    <TdSelect id={""} options="allNoteList"></TdSelect>
                 </div>
                 <div><i className='fas fa-arrow-right-long' /></div>
                 <div>
-                    <select>
-                        {numListAll}
-                    </select>
+                    <TdSelect id={""} options="allNoteList"></TdSelect>
                 </div>
             </div>
 

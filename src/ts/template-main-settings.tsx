@@ -1,32 +1,14 @@
-import { ChangeEvent, FC, useState } from 'react';
-import { TdSelect } from './td-selects';
-import { outPutNumbersArray, MiddleC, SelectList } from './template-arrays';
+import { FC, useState } from 'react';
+import { TdSelect } from './select';
 
 interface SettingsFormProps {
 
 }
 const SettingsForm: FC<SettingsFormProps> = () => {
 
-    const [valueMiddleC, setValueMiddleC] = useState<string>("NotesC3=60")
     const [isChecked, setChecked] = useState<boolean>(true)
     const [isChecked2, setChecked2] = useState<boolean>(false)
 
-    const findMiddleC = (event: ChangeEvent<HTMLSelectElement>) => {
-        setValueMiddleC(event.target.value);
-
-        if (event.target.value === "NotesC5=60") {
-            MiddleC.bottom = -4
-            MiddleC.top = 7
-        }
-        if (event.target.value === "NotesC4=60") {
-            MiddleC.bottom = -3
-            MiddleC.top = 8
-        }
-        if (event.target.value === "NotesC3=60") {
-            MiddleC.bottom = -2
-            MiddleC.top = 9
-        }
-    };
 
     const autoSave = () => {
         if (isChecked) {

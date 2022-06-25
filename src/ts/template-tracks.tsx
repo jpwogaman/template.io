@@ -1,5 +1,5 @@
 import { FC, ChangeEvent, Fragment, useState } from 'react';
-import { TdSelect } from './td-selects';
+import { TdSelect } from './select';
 import ColorPicker from './template-color-picker'
 
 const settingsOpen = () => {
@@ -38,17 +38,17 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
 
     const chnOption =
         <div title="Set the MIDI channel for this track or multi.">
-            <TdSelect id={"trkChn_" + id} options="chnListMidi"></TdSelect>
+            <TdSelect id={"trkChn_" + id} options="chnMidiList"></TdSelect>
         </div>
 
     const smpOutOption =
         <div title="Set the sampler outputs for this track or multi." >
-            <TdSelect id={"trkSmpOut_" + id} options="outListSmp"></TdSelect>
+            <TdSelect id={"trkSmpOut_" + id} options="smpOutsList"></TdSelect>
         </div >
 
     const vepOutOption =
         <div title="Set the instance outputs for this track or multi.">
-            <TdSelect id={"trkVepOut_" + id} options="outListVep"></TdSelect>
+            <TdSelect id={"trkVepOut_" + id} options="vepOutsList"></TdSelect>
         </div >
 
     const editTrack =
@@ -178,7 +178,7 @@ const SamplerInfo: FC<SamplerInfoProps> = () => {
                 </input>
             </div>
             <div title="Sampler Manufacturer" className='w-1/3'>
-                <TdSelect id="smpType" options="smpListAll"></TdSelect>
+                <TdSelect id="smpType" options="smpTypeList"></TdSelect>
             </div >
 
         </Fragment>
