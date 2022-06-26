@@ -1,8 +1,8 @@
 import { TdSelect } from './select';
-import { IconBtnToggle } from './template-icon-button-toggle'
-import { SettingsRow } from './template-settings-row'
+import { IconBtnToggle } from './button-icon-toggle'
+import { SettingsRow } from './track-settings-table-row'
 
-export default function TemplateTrackSettings() {
+export default function TrackSettings() {
 
     const closeSettingsWindow = () => {
         document.getElementById('TemplateTrackSettings')!.classList.replace('MSshow', 'MShide');

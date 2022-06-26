@@ -2,9 +2,9 @@ import { Fragment } from 'react';
 import ReactDOM from 'react-dom/client';
 import './scss/index.scss';
 
-import TemplateNavbar from './ts/template-navbar';
-import TemplateTracks from './ts/template-tracks';
-import TemplateTrackSettings from './ts/template-track-settings';
+import TemplateNavbar from './ts/navbar';
+import TrackList from './ts/track-list';
+import TrackSettings from './ts/track-settings';
 import reportWebVitals from './ts/react-app/reportWebVitals';
 
 const template = ReactDOM.createRoot(
@@ -14,8 +14,8 @@ const template = ReactDOM.createRoot(
 template.render(
     <Fragment>
         <TemplateNavbar />
-        <TemplateTracks />
-        <TemplateTrackSettings />
+        <TrackList />
+        <TrackSettings />
     </Fragment>
 );
 

@@ -1,6 +1,6 @@
 import { FC, ChangeEvent, Fragment, useState } from 'react';
 import { TdSelect } from './select';
-import ColorPicker from './template-color-picker'
+import ColorPicker from './color-picker'
 
 const settingsOpen = () => {
 
@@ -186,7 +186,7 @@ const SamplerInfo: FC<SamplerInfoProps> = () => {
 }
 
 
-export default function TemplateTracks() {
+export default function TrackList() {
 
     return (
         <div id="TemplateTracks" className="MShideTemplateTracks absolute bg-main-grey transition-all duration-1000">

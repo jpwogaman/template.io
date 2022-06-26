@@ -33,8 +33,6 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const togArt: boolean = variant === "tog" ? true : false
     const artFad: boolean = type === "art" ? true : false
 
-
-
     const typeChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setType(event.target.value)
 
