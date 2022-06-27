@@ -65,10 +65,11 @@ export default function TrackSettings() {
                 <thead>
                     <tr>
                         <th className='p-0.5'>No.</th>
-                        <th className='p-0.5'>Type</th>
+                        <th className='p-0.5'>Name</th>
+                        <th className='p-0.5'>Code Type</th>
                         <th className='p-0.5'>Code</th>
                         <th className='p-0.5'>Default</th>
-                        <th className='p-0.5'>Name</th>
+                        <th className='p-0.5'>Change-Type</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -89,12 +90,13 @@ export default function TrackSettings() {
                 <thead>
                     <tr>
                         <th className='p-0.5'>No.</th>
-                        <th className='p-0.5'>Type</th>
+                        <th className='p-0.5'>Name</th>
+                        <th className='p-0.5'>Code Type</th>
                         <th className='p-0.5'>Code</th>
                         <th className='p-0.5'>On</th>
                         <th className='p-0.5'>Off</th>
                         <th className='p-0.5'>Default</th>
-                        <th className='p-0.5'>Name</th>
+                        <th className='p-0.5'>Change-Type</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -107,12 +109,13 @@ export default function TrackSettings() {
                 <thead>
                     <tr>
                         <th className='p-0.5'>No.</th>
-                        <th className='p-0.5'>Type</th>
+                        <th className='p-0.5'>Name</th>
+                        <th className='p-0.5'>Code Type</th>
                         <th className='p-0.5'>Code</th>
                         <th className='p-0.5'>On</th>
                         <th className='p-0.5'>Range</th>
                         <th className='p-0.5'>Default</th>
-                        <th className='p-0.5'>Name</th>
+                        <th className='p-0.5'>Change-Type</th>
                     </tr>
                 </thead>
                 <tbody>

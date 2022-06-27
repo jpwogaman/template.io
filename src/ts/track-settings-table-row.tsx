@@ -12,15 +12,16 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
 
     const [valueType, setType] = useState<string>("")
     const [valueName, setName] = useState<string>("")
-    const [checkVelTitle, setVelTitle] = useState<string>("Switch to Velocity-Based Changes")
+    const [checkVelTitle, setVelTitle] = useState<string>("Switch to Value2-Based Changes")
     const [checkRngTitle, setRngTitle] = useState<string>("Switch to independent playable range.")
     const [valueMidi, setMidi] = useState<string>("valMidiList")
     const [valueCodeMidi, setCodeMidi] = useState<string>("valMidiList")
 
     const [codeDisabled, setCodeDisabled] = useState<boolean>(false)
     const [showRngSelect, setRngSelect] = useState<boolean>(false)
-    const [isChecked, setChecked] = useState<boolean>(false)
+    const [isChecked, setChecked] = useState<boolean>(true)
     const [isChecked2, setChecked2] = useState<boolean>(false)
+    const [isChecked3, setChecked3] = useState<boolean>(false)
 
     const nameArtTitle: string = "Set the NAME for this patch. (i.e Legato On/OFF)"
     const nameArtTitle2: string = "Set the NAME for this patch. (i.e Staccato)"
@@ -60,22 +61,22 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
         if (isChecked) {
             setChecked(false)
             setCodeDisabled(true)
-            setVelTitle('Switch to Velocity-Based Changes')
-            setMidi("valNoteList")
+            setVelTitle('Switch to Value2-Based Changes')
+            // typeChange()
         } else {
             setChecked(true)
             setCodeDisabled(false)
-            setVelTitle('Switch to Standard Note Changes')
-            setMidi("valMidiList")
+            setVelTitle('Switch to Value1-Based Changes')
+            // typeChange()
         }
     }
     const rangeOptionChange = () => {
-        if (isChecked) {
-            setChecked(false)
+        if (isChecked3) {
+            setChecked3(false)
             setRngSelect(false)
             setRngTitle('Switch to independent playable range.')
         } else {
-            setChecked(true)
+            setChecked3(true)
             setRngSelect(true)
             setRngTitle('Switch to same playable range as default.')
         }
@@ -124,7 +125,7 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
             {/* <TdSelect id={type + "Type_" + id} options='valAddrList'></TdSelect> */}
         </div>
 
-    const noteOption =
+    const changeOption =
         <div title={checkVelTitle}>
             <input
                 className='min-w-full'
@@ -142,7 +143,7 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
             <div title={checkRngTitle}>
                 <input
                     className='min-w-full'
-                    checked={isChecked}
+                    checked={isChecked3}
                     onChange={rangeOptionChange}
                     type="checkbox"
                     title={checkRngTitle}
@@ -161,13 +162,11 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const onOption =
         <div title={artFad && togArt ? codeOnArt : codeOnArt2}>
             <TdSelect id={type + "On___" + id} options={valueMidi}></TdSelect>
-            {valueType === "Note" ? noteOption : null}
         </div>
 
     const offOption =
         <div title="Set the OFF setting for this patch. (i.e. CC58, Value 81)" >
             <TdSelect id={type + "Off__" + id} options={valueMidi}></TdSelect>
-            {valueType === "Note" ? noteOption : null}
         </div >
 
     const deftCheck =
@@ -202,7 +201,6 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const deftOption =
         <Fragment>
             {artFad && !togArt ? deftCheck : deftSelect}
-            {type !== "art" && valueType === "Note" ? noteOption : null}
         </Fragment>
 
     const justArt =
@@ -214,11 +212,12 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     return (
         <tr id={type + "_" + id} className="align-middle">
             <td className='p-0.5' id={type + "Numb_" + id}>{parseInt(id)}</td>
+            <td className='p-0.5'>{nameOption}</td>
             <td className='p-0.5'>{typeOption}</td>
             <td className='p-0.5'>{codeOption}</td>
             {artFad ? justArt : null}
             <td className='p-0.5'>{deftOption}</td>
-            <td className='p-0.5'>{nameOption}</td>
+            <td className='p-0.5'>{changeOption}</td>
         </tr>
     );
 };
