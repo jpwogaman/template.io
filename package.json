@@ -5,7 +5,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jpwogaman/template.io.git"
+    "url": "https://github.com/jpwogaman/template.io"
   },
   "author": "JP Wogaman II",
   "license": "MIT",
