@@ -36,7 +36,7 @@ Download the Template.io binary for your system, run the installer, and set your
 ## 3. Setup Open Stage Control
 Download and launch [**Open Stage Control**](https://github.com/jean-emmanuel/open-stage-control.git). Add the locations for the **template-io-workfile.json** and the **template-io-custom-module.js** files in the 'load' and 'custom-module' inputs, respectively. 
 
-Add the MIDI ports for that we created above by pasting the following into the MIDI input:
+Add the MIDI ports that we created above by pasting the following into the MIDI input:
 ```JS      
 OSC1:null,OSC1 OSC2:OSC2,OSC2 OSC3:OSC3,OSC3 OSC4:null,OSC4
 ``` 
@@ -69,7 +69,7 @@ Now in Cubase, setup your MIDI ports to match the scheme above, create a new Gen
 
 Create empty MIDI tracks and start naming and routing them as you would normally, however, be sure to add a transformer on the MIDI sends for the track. This will receive the signal that Open Stage Control just sent (in response to the signal Cubase sent when the track was selected) and return a Polyphonic Key Pressure signal on port OSC3 that is completely unique to every track. 
 
-I know this seems like a hassle, so I took the liberty of setting up these transformers on over 2,000 empty MIDI tracks so wouldn't have to! I recommend you import these into your template (or just use the file provided to start a new one). These tracks are available in the **template-io-empty-tracks.cpr** file and are all disabled for you to activate anytime you wish to add a new instrument.
+I know this seems like a hassle, so I took the liberty of setting up these transformers on over 2,000 empty MIDI tracks so you wouldn't have to! I recommend you import these into your template (or just use the file provided to start a new one). These tracks are available in the **template-io-empty-tracks.cpr** file and are all disabled for you to activate anytime you wish to add a new instrument.
 
 ![transformer setup](./public/Images/cubase-transformer.png)
 
