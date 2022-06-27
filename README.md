@@ -53,7 +53,13 @@ nofocus=1
 
 The in/out configuration works like this:
 
-![general port setup](./public/Images/general-port-setup.png)
+| Open Stage Control |       | Cubase        | "In All MIDI" |
+| ------------------ | ----- | ------------- | ------------- |
+| **OSC1**           | **→** | **OSC1**      | No            |
+| **OSC2**           | **↔** | **OSC2**      | No            |
+| **OSC3**           | **↔** | **OSC3**      | Yes           |
+| **OSC4**           | **→** | **OSC4**      | Yes           |
+
 
 ## 4. Setup Cubase
 
