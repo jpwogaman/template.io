@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<remotedescription version="1.1">
+<ctrltable name="Standard MIDI">
+<ctrl><name>Track Selected</name><stat>176</stat><chan>0</chan><addr>126</addr><max>1</max><flags>2</flags></ctrl>
+</ctrltable>
+<bank name="GR4-OSC3-CH1">
+<entry ctrl="Track Selected">
+<value><device>Midi Mixer</device><chan>-2</chan><tag>4000</tag><flags>0</flags></value>
+</entry>
+</bank>
+</remotedescription>
