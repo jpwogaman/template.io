@@ -1,7 +1,6 @@
 import { FC, useState, ChangeEvent, Fragment } from "react";
 import { TdSwitch } from "./checkbox-switch";
 import { TdSelect } from "./select";
-import { valAddrArray, allNoteArray, addressNamesArray, SelectList } from "./select-arrays"
 
 interface SettingsRowProps {
     id: string;
