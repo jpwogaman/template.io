@@ -46,11 +46,11 @@ export const TdSwitch: FC<TdSwitchProps> = ({ showVals, title, defaultVal, id, a
     return (
         <div
             title={title}
-            className="flex justify-between items-center">
+            className="flex justify-evenly items-center">
             {showVals ? valSpan1 : null}
             <label
                 htmlFor={id}
-                className="ml-auto mr-auto inline-flex relative items-center cursor-pointer">
+                className="inline-flex relative items-center cursor-pointer">
                 <input
                     type="checkbox"
                     value={isChecked ? b : a}

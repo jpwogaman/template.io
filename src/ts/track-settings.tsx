@@ -10,7 +10,7 @@ export default function TrackSettings() {
     }
 
     return (
-        <div id="TemplateTrackSettings" className="MShide p-4 z-50 w-1/2 bg-main-grey transition-all duration-1000 overflow-x-scroll">
+        <div id="TemplateTrackSettings" className="MShide p-4 z-50 w-1/2 bg-main-gray transition-all duration-1000 overflow-y-scroll">
             <div>
                 <div >
                     <button
@@ -59,17 +59,17 @@ export default function TrackSettings() {
                 </div>
             </div>
 
-            <h3 className=''>Faders</h3>
+            <h4 className='mt-5 mb-1'>Faders</h4>
 
-            <table className='min-w-full table-fixed text-left'>
+            <table className='min-w-full table-fixed text-left text-sm'>
                 <thead>
                     <tr>
-                        <th className='p-0.5'>No.</th>
-                        <th className='p-0.5'>Name</th>
-                        <th className='p-0.5'>Code Type</th>
-                        <th className='p-0.5'>Code</th>
-                        <th className='p-0.5'>Default</th>
-                        <th className='p-0.5'>Change-Type</th>
+                        <th className='p-0.5 border-2 border-b-gray-400 w-[5%]'>No.</th>
+                        <th className='p-0.5 border-2 border-b-gray-400 w-[20%]'>Name</th>
+                        <th className='p-0.5 border-2 border-b-gray-400 w-[25%]'>Code Type</th>
+                        <th className='p-0.5 border-2 border-b-gray-400 w-[18%]'>Code</th>
+                        <th className='p-0.5 border-2 border-b-gray-400 w-[18%]'>Default</th>
+                        <th className='p-0.5 border-2 border-b-gray-400 w-[14%]'>Change Type</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -84,19 +84,19 @@ export default function TrackSettings() {
                 </tbody>
             </table>
 
-            <h3 className=''>Articulations (toggle)</h3>
+            <h4 className='mt-5 mb-1'>Articulations (toggle)</h4>
 
-            <table className='min-w-full table-fixed text-left'>
+            <table className='min-w-full table-fixed text-left text-sm'>
                 <thead>
                     <tr>
-                        <th className='p-0.5'>No.</th>
-                        <th className='p-0.5'>Name</th>
-                        <th className='p-0.5'>Code Type</th>
-                        <th className='p-0.5'>Code</th>
-                        <th className='p-0.5'>On</th>
-                        <th className='p-0.5'>Off</th>
-                        <th className='p-0.5'>Default</th>
-                        <th className='p-0.5'>Change-Type</th>
+                        <th className='p-0.5 border-2 border-b-gray-400 w-[5%]'>No.</th>
+                        <th className='p-0.5 border-2 border-b-gray-400 w-[20%]'>Name</th>
+                        <th className='p-0.5 border-2 border-b-gray-400 w-[25%]'>Code Type</th>
+                        <th className='p-0.5 border-2 border-b-gray-400 w-[9%]'>Code</th>
+                        <th className='p-0.5 border-2 border-b-gray-400 w-[9%]'>On</th>
+                        <th className='p-0.5 border-2 border-b-gray-400 w-[9%]'>Off</th>
+                        <th className='p-0.5 border-2 border-b-gray-400 w-[9%]'>Default</th>
+                        <th className='p-0.5 border-2 border-b-gray-400 w-[14%]'>Change Type</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -104,18 +104,18 @@ export default function TrackSettings() {
                     <SettingsRow id="02" type="art" variant="tog"></SettingsRow>
                 </tbody>
             </table>
-            <h3 className=''>Articulations (one-at-a-time)</h3>
-            <table className='min-w-full table-fixed text-left'>
+            <h4 className='mt-5 mb-1'>Articulations (one-at-a-time)</h4>
+            <table className='min-w-full table-fixed text-left text-sm'>
                 <thead>
                     <tr>
-                        <th className='p-0.5'>No.</th>
-                        <th className='p-0.5'>Name</th>
-                        <th className='p-0.5'>Code Type</th>
-                        <th className='p-0.5'>Code</th>
-                        <th className='p-0.5'>On</th>
-                        <th className='p-0.5'>Range</th>
-                        <th className='p-0.5'>Default</th>
-                        <th className='p-0.5'>Change-Type</th>
+                        <th className='p-0.5 border-2 border-b-gray-400 w-[5%]'>No.</th>
+                        <th className='p-0.5 border-2 border-b-gray-400 w-[20%]'>Name</th>
+                        <th className='p-0.5 border-2 border-b-gray-400 w-[25%]'>Code Type</th>
+                        <th className='p-0.5 border-2 border-b-gray-400 w-[9%]'>Code</th>
+                        <th className='p-0.5 border-2 border-b-gray-400 w-[9%]'>On</th>
+                        <th className='p-0.5 border-2 border-b-gray-400 w-[9%]'>Range</th>
+                        <th className='p-0.5 border-2 border-b-gray-400 w-[9%]'>Default</th>
+                        <th className='p-0.5 border-2 border-b-gray-400 w-[14%]'>Change Type</th>
                     </tr>
                 </thead>
                 <tbody>

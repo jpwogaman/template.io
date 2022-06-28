@@ -22,6 +22,7 @@ body::-webkit-scrollbar {
 	display: none;
 }
 
+
 .MSshow {
 	margin-left: 50%;
 	opacity: 1;
@@ -48,12 +49,15 @@ body::-webkit-scrollbar {
 h1 {
 	@apply text-5xl
 }
+
 h2 {
 	@apply text-4xl
 }
+
 h3 {
 	@apply text-3xl
 }
+
 h4 {
 	@apply text-2xl
 }

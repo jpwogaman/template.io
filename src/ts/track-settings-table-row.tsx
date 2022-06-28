@@ -32,8 +32,6 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const togArt: boolean = variant === "tog" ? true : false
     const artFad: boolean = type === "art" ? true : false
 
-
-
     const nameChange = (event: ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value)
     }
@@ -233,6 +231,12 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
             <td className='p-0.5 border-2 border-gray-400'>{onOption}</td>
             <td className='p-0.5 border-2 border-gray-400'>{togArt ? offOption : rangeOption}</td>
         </Fragment>
+
+    // const justFad =
+    //     <Fragment>
+    //         <td className='p-0.5 border-2 border-gray-400'></td>
+    //         <td className='p-0.5 border-2 border-gray-400'></td>
+    //     </Fragment>
 
     return (
         <Fragment>

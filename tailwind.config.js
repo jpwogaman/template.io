@@ -8,7 +8,7 @@ module.exports = {
     extend: {
       colors: {
         'main-sand': '#cdbd9a',
-        'main-grey': '#c1c1c1'
+        'main-gray': '#c1c1c1'
       },
       fontFamily: {
         sans: ['camingocoderegular'],

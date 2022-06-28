@@ -187,18 +187,18 @@ const SamplerInfo: FC<SamplerInfoProps> = () => {
 export default function TrackList() {
 
     return (
-        <div id="TemplateTracks" className="MShideTemplateTracks absolute bg-main-grey transition-all duration-1000">
+        <div id="TemplateTracks" className="MShideTemplateTracks absolute bg-main-gray transition-all duration-1000">
             <div id="trackList_01-01" className="p-4">
                 <SamplerInfo />
-                <table className='table-auto border-collapse text-left min-w-full'>
+                <table className='table-auto border-collapse text-left text-sm min-w-full'>
                     <thead>
                         <tr>
-                            <th className='p-0.5'>No.</th>
-                            <th className='p-0.5'>Name</th>
-                            <th className='p-0.5'>MIDI Channel</th>
-                            <th className='p-0.5'>Sampler Outputs</th>
-                            <th className='p-0.5'>Instance Outputs</th>
-                            <th className='p-0.5'></th>
+                            <th className='p-0.5 border-2 border-b-gray-400 w-[5%]'>No.</th>
+                            <th className='p-0.5 border-2 border-b-gray-400 w-[45%]'>Name</th>
+                            <th className='p-0.5 border-2 border-b-gray-400 w-[10%]'>MIDI Channel</th>
+                            <th className='p-0.5 border-2 border-b-gray-400 w-[10%]'>Sampler Outputs</th>
+                            <th className='p-0.5 border-2 border-b-gray-400 w-[10%]'>Instance Outputs</th>
+                            <th className='p-0.5 border-2 border-b-gray-400 w-[20%]'></th>
                         </tr>
                     </thead>
                     <tbody>
