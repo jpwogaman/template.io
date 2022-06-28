@@ -64,25 +64,14 @@ const smpTypeArray: string[] = [
 ];
 
 const valAddrArray: string[] = [
-    "/control",
-    "/note",
-    "/program",
-    "/pitch",
-    "/sysex",
-    "/mtc",
-    "/channel_pressure",
-    "/key_pressure"
-]
-
-const addressNamesArray: string[] = [
-    "Control Code",
-    "Note",
-    "Program Change",
-    "Pitch Wheel",
-    "Sysex",
-    "MTC",
-    "Channel Pressure",
-    "Polyphonic Key Pressure"
+    "/control---Control Code",
+    "/note---Note",
+    "/program---Program Change",
+    "/pitch---Pitch Wheel",
+    "/sysex---Sysex",
+    "/mtc---MTC",
+    "/channel_pressure---Channel Pressure",
+    "/key_pressure---Polyphonic Key Pressure",
 ]
 
 const valDeftArray: string[] = [
@@ -97,17 +86,17 @@ const setNoteArray: string[] = [
 ]
 
 interface SelectListProps {
-    numbers: any;
-    names?: any;
+    numbers?: any;
+    valName?: any;
 }
 
-const SelectList: FC<SelectListProps> = ({ numbers, names }) => {
+const SelectList: FC<SelectListProps> = ({ numbers, valName }) => {
 
-    if (names) {
+    if (valName) {
         return (
             <Fragment>
-                {names.map((name: string) =>
-                    <option key={name} value={name}>{name}</option>)}
+                {valName.map((name: string) =>
+                    <option key={name.split('---')[0]} value={name.split('---')[0]}>{name.split('---')[1]}</option>)}
             </Fragment>
         );
     } else
@@ -133,7 +122,7 @@ export const selectArrays: selectArraysProps = {
     smpTypeList: { name: 'smpTypeList', array: <SelectList numbers={smpTypeArray} /> },
     smpOutsList: { name: 'smpOutsList', array: <SelectList numbers={smpOutsArray} /> },
     vepOutsList: { name: 'vepOutsList', array: <SelectList numbers={vepOutsArray} /> },
-    valAddrList: { name: 'valAddrList', array: <SelectList numbers={valAddrArray} names={addressNamesArray} /> },
+    valAddrList: { name: 'valAddrList', array: <SelectList valName={valAddrArray} /> },
     valMidiList: { name: 'valMidiList', array: <SelectList numbers={valMidiArray} /> },
     valNoteList: { name: 'valNoteList', array: <SelectList numbers={valNoteArray} /> },
     valPtchList: { name: 'valPtchList', array: <SelectList numbers={valPtchArray} /> },
