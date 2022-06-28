@@ -50,11 +50,11 @@ export default function TrackSettings() {
                 <div>
                     <h3>Playable Range:</h3>
                 </div>
-                <div>
+                <div className='border-2 border-gray-400'>
                     <TdSelect id={`FullRngBot_${'needtofindtrkid1'}`} options="allNoteList"></TdSelect>
                 </div>
                 <div><i className='fas fa-arrow-right-long ml-1 mr-2' /></div>
-                <div>
+                <div className='border-2 border-gray-400'>
                     <TdSelect id={`FullRngTop_${'needtofindtrkid2'}`} options="allNoteList"></TdSelect>
                 </div>
             </div>

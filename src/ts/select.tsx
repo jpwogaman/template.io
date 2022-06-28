@@ -11,51 +11,14 @@ interface TdSelectProps {
 export const TdSelect: FC<TdSelectProps> = ({ codeDisabled, id, options }) => {
 
     const [val, setVal] = useState<string>("")
-    //This NEEDS to be a function!
-    let optionElements: JSX.Element | undefined
 
-    if (options === "setOutsList") {
-        optionElements = selectArrays.setOutsList
-    }
-    if (options === "setNoteList") {
-        optionElements = selectArrays.setNoteList
-    }
-    if (options === "chnMidiList") {
-        optionElements = selectArrays.chnMidiList
-    }
-    if (options === "smpTypeList") {
-        optionElements = selectArrays.smpTypeList
-    }
-    if (options === "smpOutsList") {
-        optionElements = selectArrays.smpOutsList
-    }
-    if (options === "vepOutsList") {
-        optionElements = selectArrays.vepOutsList
-    }
-    if (options === "valAddrList") {
-        optionElements = selectArrays.valAddrList
-    }
-    if (options === "valMidiList") {
-        optionElements = selectArrays.valMidiList
-    }
-    if (options === "valNoteList") {
-        optionElements = selectArrays.valNoteList
-    }
-    if (options === "valPtchList") {
-        optionElements = selectArrays.valPtchList
-    }
-    if (options === "valDeftList") {
-        optionElements = selectArrays.valDeftList
-    }
-    if (options === "allNoteList") {
-        optionElements = selectArrays.allNoteList
-    }
+    let optionElements: string | JSX.Element | undefined
 
-
-
-
-
-
+    for (const array in selectArrays) {
+        if (options === selectArrays[array].name) {
+            optionElements = selectArrays[array].array
+        }
+    }
 
     //Need something to pass through for instances where changing one select affects the other selects as well.
     const valChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -81,7 +44,7 @@ export const TdSelect: FC<TdSelectProps> = ({ codeDisabled, id, options }) => {
             onChange={valChange}
 
         >
-            {!codeDisabled ? optionElements : selectArrays.valNoneList}
+            {!codeDisabled ? optionElements : selectArrays.valNoneList.array}
         </select>
     );
 };

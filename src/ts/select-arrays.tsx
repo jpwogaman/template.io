@@ -8,17 +8,17 @@ let MiddleC = {
     top: 9
 };
 
-export const allNoteArray: string[] = []
+const allNoteArray: string[] = []
 for (let i = MiddleC.bottom; i < MiddleC.top; i++) {
     allNoteArray.push('C' + i, 'C#' + i, 'D' + i, 'D#' + i, 'E' + i, 'F' + i,
         'F#' + i, 'G' + i, 'G#' + i, 'A' + i, 'A#' + i, 'B' + i);
 }
-export const chnMidiArray: number[] = [];
+const chnMidiArray: number[] = [];
 for (let i = 1; i <= 16; i++) {
     chnMidiArray.push(i);
 }
 
-export const setOutsArray: number[] = [];
+const setOutsArray: number[] = [];
 for (let i = 1; i <= 128; i++) {
     setOutsArray.push(i);
 }
@@ -26,30 +26,30 @@ const valMidiArray: number[] = [];
 for (let i = 0; i <= 127; i++) {
     valMidiArray.push(i);
 }
-export const valNoteArray: string[] = [];
+const valNoteArray: string[] = [];
 for (let i = 0; i <= 127; i++) {
     valNoteArray.push(i + " / " + allNoteArray[i]);
 }
-export const smpOutsArray: string[] = [];
+const smpOutsArray: string[] = [];
 for (let i = 1; i < smpOutSettings; i++) {
     let j: number = i + 1
     let output: string = i + '-' + j;
     smpOutsArray.push(output);
     i = i + 1;
 }
-export const vepOutsArray: string[] = [];
+const vepOutsArray: string[] = [];
 for (let i = 1; i < vepOutSettings; i++) {
     let j: number = i + 1
     let output: string = i + '-' + j;
     vepOutsArray.push(output);
     i = i + 1;
 }
-export const valPtchArray: number[] = [];
+const valPtchArray: number[] = [];
 for (let i = 0; i < 16384; i++) {
     valPtchArray.push(i);
 }
 
-export const smpTypeArray: string[] = [
+const smpTypeArray: string[] = [
     'Native Instruments Kontakt',
     'Native Instruments Maschine',
     'Native Instruments Reaktor',
@@ -63,7 +63,7 @@ export const smpTypeArray: string[] = [
     'Vienna Instruments',
 ];
 
-export const valAddrArray: string[] = [
+const valAddrArray: string[] = [
     "/control",
     "/note",
     "/program",
@@ -74,7 +74,7 @@ export const valAddrArray: string[] = [
     "/key_pressure"
 ]
 
-export const addressNamesArray: string[] = [
+const addressNamesArray: string[] = [
     "Control Code",
     "Note",
     "Program Change",
@@ -85,12 +85,12 @@ export const addressNamesArray: string[] = [
     "Polyphonic Key Pressure"
 ]
 
-export const valDeftArray: string[] = [
+const valDeftArray: string[] = [
     "On",
     "Off"
 ]
 
-export const setNoteArray: string[] = [
+const setNoteArray: string[] = [
     "Middle C (60) = C5",
     "Middle C (60) = C4",
     "Middle C (60) = C3"
@@ -101,7 +101,7 @@ interface SelectListProps {
     names?: any;
 }
 
-export const SelectList: FC<SelectListProps> = ({ numbers, names }) => {
+const SelectList: FC<SelectListProps> = ({ numbers, names }) => {
 
     if (names) {
         return (
@@ -119,22 +119,25 @@ export const SelectList: FC<SelectListProps> = ({ numbers, names }) => {
         );
 }
 
-export const selectArrays: { [index: string]: JSX.Element } = {
+interface selectArraysProps {
+    [index: string]: {
+        [index: string]: string | JSX.Element | undefined
+    }
+}
 
-    setOutsList: <SelectList numbers={setOutsArray} />,
-    setNoteList: <SelectList numbers={setNoteArray} />,
+export const selectArrays: selectArraysProps = {
 
-    chnMidiList: <SelectList numbers={chnMidiArray} />,
-    smpTypeList: <SelectList numbers={smpTypeArray} />,
-    smpOutsList: <SelectList numbers={smpOutsArray} />,
-    vepOutsList: <SelectList numbers={vepOutsArray} />,
-
-    valAddrList: <SelectList numbers={valAddrArray} names={addressNamesArray} />,
-    valMidiList: <SelectList numbers={valMidiArray} />,
-    valNoteList: <SelectList numbers={valNoteArray} />,
-    valPtchList: <SelectList numbers={valPtchArray} />,
-    valDeftList: <SelectList numbers={valDeftArray} />,
-    valNoneList: <option>N/A</option>,
-
-    allNoteList: <SelectList numbers={allNoteArray} />
+    setOutsList: { name: 'setOutsList', array: <SelectList numbers={setOutsArray} /> },
+    setNoteList: { name: 'setNoteList', array: <SelectList numbers={setNoteArray} /> },
+    chnMidiList: { name: 'chnMidiList', array: <SelectList numbers={chnMidiArray} /> },
+    smpTypeList: { name: 'smpTypeList', array: <SelectList numbers={smpTypeArray} /> },
+    smpOutsList: { name: 'smpOutsList', array: <SelectList numbers={smpOutsArray} /> },
+    vepOutsList: { name: 'vepOutsList', array: <SelectList numbers={vepOutsArray} /> },
+    valAddrList: { name: 'valAddrList', array: <SelectList numbers={valAddrArray} names={addressNamesArray} /> },
+    valMidiList: { name: 'valMidiList', array: <SelectList numbers={valMidiArray} /> },
+    valNoteList: { name: 'valNoteList', array: <SelectList numbers={valNoteArray} /> },
+    valPtchList: { name: 'valPtchList', array: <SelectList numbers={valPtchArray} /> },
+    valDeftList: { name: 'valDeftList', array: <SelectList numbers={valDeftArray} /> },
+    valNoneList: { name: 'valNoneList', array: <option>N/A</option> },
+    allNoteList: { name: 'allNoteList', array: <SelectList numbers={allNoteArray} /> }
 }
