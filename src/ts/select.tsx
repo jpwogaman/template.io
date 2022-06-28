@@ -50,10 +50,27 @@ export const TdSelect: FC<TdSelectProps> = ({ codeDisabled, id, options }) => {
     if (options === "allNoteList") {
         optionElements = selectArrays.allNoteList
     }
+
+
+
+
+
+
+
     //Need something to pass through for instances where changing one select affects the other selects as well.
     const valChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setVal(event.target.value)
     }
+
+
+
+
+
+
+
+
+
+
 
     return (
         <select
@@ -61,7 +78,9 @@ export const TdSelect: FC<TdSelectProps> = ({ codeDisabled, id, options }) => {
             value={!codeDisabled ? val : undefined}
             disabled={codeDisabled}
             id={id}
-            onChange={valChange}>
+            onChange={valChange}
+
+        >
             {!codeDisabled ? optionElements : selectArrays.valNoneList}
         </select>
     );

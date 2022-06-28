@@ -13,12 +13,11 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const [valueType, setType] = useState<string>("")
     const [valueName, setName] = useState<string>("")
     const [checkRngTitle, setRngTitle] = useState<string>("Switch to independent playable range.")
-    const [valueMidi, setMidi] = useState<string>("valMidiList")
-    const [valueCodeMidi, setCodeMidi] = useState<string>("valMidiList")
+
 
     const [codeDisabled, setCodeDisabled] = useState<boolean>(false)
     const [showRngSelect, setRngSelect] = useState<boolean>(false)
-    const [isChecked, setChecked] = useState<boolean>(true)
+
     const [isChecked2, setChecked2] = useState<boolean>(false)
     const [isChecked3, setChecked3] = useState<boolean>(false)
 
@@ -33,40 +32,12 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const togArt: boolean = variant === "tog" ? true : false
     const artFad: boolean = type === "art" ? true : false
 
-    const typeChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        setType(event.target.value)
 
-        if (event.target.value === "Note") {
-            setMidi("valNoteList")
-            setCodeMidi("valNoteList")
-            setCodeDisabled(true)
-        }
-        else if (event.target.value === "Pitch Wheel") {
-            setMidi("valPtchList")
-            setCodeDisabled(true)
-        }
-        else {
-            setMidi("valMidiList")
-            setCodeMidi("valMidiList")
-            setCodeDisabled(false);
-        };
-    };
 
     const nameChange = (event: ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value)
     }
 
-    const noteOptionChange = () => {
-        if (isChecked) {
-            setChecked(false)
-            setCodeDisabled(true)
-            // typeChange()
-        } else {
-            setChecked(true)
-            setCodeDisabled(false)
-            // typeChange()
-        }
-    }
     const rangeOptionChange = () => {
         if (isChecked3) {
             setChecked3(false)
@@ -80,7 +51,6 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     }
 
     const deftPatchChange = () => {
-        console.log('default')
         if (isChecked2) {
             setChecked2(false)
         } else {
@@ -120,23 +90,6 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
             <td className="bg-gray-400 border-2 border-gray-400"></td>
         </Fragment>
 
-    const nameOption =
-        <div title={artFad && togArt ? nameArtTitle : artFad && !togArt ? nameArtTitle2 : nameFadTitle}>
-            <input
-                className='min-w-full bg-inherit hover:cursor-pointer focus:cursor-text focus:bg-white placeholder-black focus:placeholder-gray-400'
-                type="text"
-                placeholder={artFad ? 'Articulation Name' : 'Fader Name'}
-                value={valueName}
-                id={`${type}Name_${id}`}
-                onChange={nameChange}>
-            </input>
-        </div >
-
-    const typeOption =
-        <div title="Select the TYPE of code for this patch.">
-            <TdSelect id={`${type}Type_${id}`} options='valAddrList'></TdSelect>
-        </div>
-
     const rangeOption =
         <Fragment>
             <div title={checkRngTitle}>
@@ -152,20 +105,110 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
             </div>
         </Fragment>
 
+    const nameOption =
+        <div title={artFad && togArt ? nameArtTitle : artFad && !togArt ? nameArtTitle2 : nameFadTitle}>
+            <input
+                className='min-w-full bg-inherit hover:cursor-pointer focus:cursor-text focus:bg-white placeholder-black focus:placeholder-gray-400'
+                type="text"
+                placeholder={artFad ? 'Articulation Name' : 'Fader Name'}
+                value={valueName}
+                id={`${type}Name_${id}`}
+                onChange={nameChange}>
+            </input>
+        </div >
+
+
+
+    ////
+    const [valueMidi, setMidi] = useState<string>("valMidiList")
+    const [valueCodeMidi, setCodeMidi] = useState<string>("valMidiList")
+    const [isChecked, setChecked] = useState<boolean>(true)
+    const typeChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        setType(event.target.value)
+        setMidi("valMidiList")
+        setCodeMidi("valMidiList")
+        setCodeDisabled(false);
+
+        if (event.target.value === "Note") {
+            setMidi("valNoteList")
+            setCodeMidi("valNoteList")
+            setCodeDisabled(true)
+        }
+        if (event.target.value === "Pitch Wheel") {
+            setMidi("valPtchList")
+            setCodeMidi("valPtchList")
+            setCodeDisabled(true)
+        }
+
+    };
+    const switchTypeChange = () => {
+        if (isChecked) {
+            setCodeDisabled(true)
+        } else {
+            setCodeDisabled(false)
+        }
+    }
+    const typeOption =
+        <div title="Select the TYPE of code for this patch.">
+            <TdSelect id={`${type}Type_${id}`} options='valAddrList'></TdSelect>
+        </div>
+    // needs to call typeChange()
+
+    const changeOption =
+        <TdSwitch
+            id={`${type}switchTypes_${id}`}
+            title="Switch between Value1-Based and Value2-Based Changes"
+            a="V1"
+            b="V2"
+            defaultVal="b"
+            showVals={true}>
+        </TdSwitch>
+    // needs to call switchTypeChange()
+    // needs to call typeChange()
+
     const codeOption =
         <div title={artFad ? codeArtTitle : codeFadTitle}>
             <TdSelect id={`${type}Code_${id}`} options={valueCodeMidi} codeDisabled={codeDisabled}></TdSelect>
         </div>
+    //needs to be affected by typeChange() 
+    //needs to be affected by switchTypeChange() 
 
     const onOption =
         <div title={artFad && togArt ? codeOnArt : codeOnArt2}>
             <TdSelect id={`ArtOn___${id}`} options={valueMidi}></TdSelect>
         </div>
+    //needs to be affected by typeChange() 
 
     const offOption =
         <div title="Set the OFF setting for this patch. (i.e. CC58, Value 81)" >
             <TdSelect id={`ArtOff__${id}`} options={valueMidi}></TdSelect>
         </div >
+    //needs to be affected by typeChange() 
+
+    const deftSelect =
+        <div title="Set the DEFAULT setting for this patch.">
+            <TdSelect id={`${type}Deft_${id}`} options={type === "art" ? "valDeftList" : valueMidi}></TdSelect>
+        </div >
+    //needs to be affected by typeChange() 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     const deftCheck =
         <div title="Set this as the default patch.">
@@ -180,23 +223,15 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
             </input>
         </div>
 
-    const deftSelect =
-        <div title="Set the DEFAULT setting for this patch.">
-            <TdSelect id={`${type}Deft_${id}`} options={type === "art" ? "valDeftList" : valueMidi}></TdSelect>
-        </div >
-
     const deftOption =
         <Fragment>
             {artFad && !togArt ? deftCheck : deftSelect}
         </Fragment>
 
-    const changeOption =
-        <TdSwitch id={`${type}NoteOption_${id}`} title="Switch between Value1-Based and Value2-Based Changes" a="V1" b="V2" defaultVal="b" showVals={true}></TdSwitch>
-
     const justArt =
         <Fragment>
-            <td className='p-0.5 border-2 border-gray-400'> {onOption} </td>
-            <td className='p-0.5 border-2 border-gray-400'> {togArt ? offOption : rangeOption} </td>
+            <td className='p-0.5 border-2 border-gray-400'>{onOption}</td>
+            <td className='p-0.5 border-2 border-gray-400'>{togArt ? offOption : rangeOption}</td>
         </Fragment>
 
     return (

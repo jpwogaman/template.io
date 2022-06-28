@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, ReactNode } from "react";
 
 interface TdSwitchProps {
     id: string | undefined;
@@ -7,11 +7,19 @@ interface TdSwitchProps {
     b: string | number;
     defaultVal: string;
     showVals?: boolean;
+    children?: ReactNode;
 }
 
 export const TdSwitch: FC<TdSwitchProps> = ({ showVals, title, defaultVal, id, a, b }) => {
 
     const [isChecked, setChecked] = useState<boolean>(defaultVal === "b" ? true : false)
+
+
+
+
+
+
+
 
     //Need something to pass through for the function.
     const valChange = () => {
@@ -21,6 +29,13 @@ export const TdSwitch: FC<TdSwitchProps> = ({ showVals, title, defaultVal, id, a
             setChecked(true)
         }
     }
+
+
+
+
+
+
+
 
     const valSpan1 =
         <span className={isChecked ? 'text-gray-400 transition-colors' : 'text-black transition-colors'}>{a}</span>
@@ -71,4 +86,10 @@ export const TdSwitch: FC<TdSwitchProps> = ({ showVals, title, defaultVal, id, a
 }
 
 const example =
-    <TdSwitch id="exampleTdSwitch" title="Switch between VAL1 and VAL2" a="value 1" b="value 2" defaultVal="a"></TdSwitch>
+    <TdSwitch
+        id="exampleTdSwitch"
+        title="Switch between VAL1 and VAL2"
+        a="value 1"
+        b="value 2"
+        defaultVal="a">
+    </TdSwitch>

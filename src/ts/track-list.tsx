@@ -30,7 +30,7 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
                 className='min-w-full bg-inherit hover:cursor-pointer focus:cursor-text focus:bg-white placeholder-black focus:placeholder-gray-400'
                 type="text"
                 value={valueName}
-                id={"trkName_" + id}
+                id={`trkName_${id}`}
                 placeholder="Track Name"
                 onChange={nameChange}>
             </input>
@@ -38,17 +38,17 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
 
     const chnOption =
         <div title="Set the MIDI channel for this track or multi.">
-            <TdSelect id={"trkChn_" + id} options="chnMidiList"></TdSelect>
+            <TdSelect id={`trkChn_${id}`} options="chnMidiList"></TdSelect>
         </div>
 
     const smpOutOption =
         <div title="Set the sampler outputs for this track or multi." >
-            <TdSelect id={"trkSmpOut_" + id} options="smpOutsList"></TdSelect>
+            <TdSelect id={`trkSmpOut_${id}`} options="smpOutsList"></TdSelect>
         </div >
 
     const vepOutOption =
         <div title="Set the instance outputs for this track or multi.">
-            <TdSelect id={"trkVepOut_" + id} options="vepOutsList"></TdSelect>
+            <TdSelect id={`trkVepOut_${id}`} options="vepOutsList"></TdSelect>
         </div >
 
     const editTrack =
@@ -75,12 +75,12 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
 
     return (
         <tr id={"trk_" + id}>
-            <td className='p-0.5 border-2 border-gray-400 ' id={"trkNumb_" + id}>{parseInt(id)}</td>
-            <td className='p-0.5 border-2 border-gray-400 '>{nameOption}</td>
-            <td className='p-0.5 border-2 border-gray-400 '>{chnOption}</td>
-            <td className='p-0.5 border-2 border-gray-400 '>{smpOutOption}</td>
-            <td className='p-0.5 border-2 border-gray-400 '>{vepOutOption}</td>
-            <td className='p-0.5 border-2 border-gray-400 '>{editTrack}</td>
+            <td className='p-0.5 border-2 border-gray-400' id={`trkNumb_${id}`}>{parseInt(id)}</td>
+            <td className='p-0.5 border-2 border-gray-400'>{nameOption}</td>
+            <td className='p-0.5 border-2 border-gray-400'>{chnOption}</td>
+            <td className='p-0.5 border-2 border-gray-400'>{smpOutOption}</td>
+            <td className='p-0.5 border-2 border-gray-400'>{vepOutOption}</td>
+            <td className='p-0.5 border-2 border-gray-400'>{editTrack}</td>
         </tr>
     );
 };
@@ -121,7 +121,6 @@ const Tracks: FC<TracksProps> = () => {
         // const newTrack = { newIdStr }
         // setTracks([...TrackList, newTrack])
     }
-
 
     const removeTrack = (id: string) => {
         console.log('remove track', id);
@@ -184,7 +183,6 @@ const SamplerInfo: FC<SamplerInfoProps> = () => {
         </Fragment>
     )
 }
-
 
 export default function TrackList() {
 

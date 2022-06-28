@@ -1,11 +1,11 @@
 import { ReactNode, FC, useState } from "react";
 interface IconBtnToggleProps {
-    defaultIcon: string;
+    id: string;
     title: string;
     className: string;
-    id: string;
     a: string;
     b: string;
+    defaultIcon: string;
     children?: ReactNode;
 }
 
@@ -33,3 +33,13 @@ const IconBtnToggle: FC<IconBtnToggleProps> = ({ className, defaultIcon, title, 
 }
 
 export { IconBtnToggle }
+
+const example =
+    <IconBtnToggle
+        className="w-10 h-10 border border-black mr-1 hover:border-green-50"
+        title="Close Track Settings Window"
+        id="editLock"
+        a="fa-solid fa-lock-open"
+        b="fa-solid fa-lock"
+        defaultIcon="a">
+    </IconBtnToggle>
