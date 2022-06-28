@@ -1,6 +1,7 @@
 import { FC, useState, ChangeEvent, Fragment } from "react";
+import { TdSwitch } from "./checkbox-switch";
 import { TdSelect } from "./select";
-import { valAddrArray, addressNamesArray, SelectList } from "./select-arrays"
+import { valAddrArray, allNoteArray, addressNamesArray, SelectList } from "./select-arrays"
 
 interface SettingsRowProps {
     id: string;
@@ -12,7 +13,6 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
 
     const [valueType, setType] = useState<string>("")
     const [valueName, setName] = useState<string>("")
-    const [checkVelTitle, setVelTitle] = useState<string>("Switch to Value2-Based Changes")
     const [checkRngTitle, setRngTitle] = useState<string>("Switch to independent playable range.")
     const [valueMidi, setMidi] = useState<string>("valMidiList")
     const [valueCodeMidi, setCodeMidi] = useState<string>("valMidiList")
@@ -61,12 +61,10 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
         if (isChecked) {
             setChecked(false)
             setCodeDisabled(true)
-            setVelTitle('Switch to Value2-Based Changes')
             // typeChange()
         } else {
             setChecked(true)
             setCodeDisabled(false)
-            setVelTitle('Switch to Value1-Based Changes')
             // typeChange()
         }
     }
@@ -91,111 +89,102 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
         }
     }
 
-    const rangeSelects =
-        <div className="flex justify-evenly min-w-full">
-            <TdSelect id="" options="allNoteList" codeDisabled={codeDisabled}></TdSelect>
-            <div className=''>
-                <i className='fas fa-arrow-right-long' />
-            </div>
-            <TdSelect id="" options="allNoteList" codeDisabled={codeDisabled}></TdSelect>
+    const rangeRow =
+        <Fragment>
+
+            <td className="bg-gray-400 border-2 border-gray-400"></td>
+            <td className="bg-gray-400 border-2 border-gray-400"></td>
+            <td className="p-0.5 border-2 border-gray-400">
+                <input
+                    className='pl-1 min-w-full bg-inherit hover:cursor-pointer focus:cursor-text focus:bg-white placeholder-black focus:placeholder-gray-400'
+                    title="Describe this range-group. (i.e hits/rolls)"
+                    type="text"
+                    placeholder="Range Description"
+                    value={valueName}
+                    id={`ArtRangeName_${id}`}
+                    onChange={nameChange}>
+                </input>
+            </td>
+            <td className="p-0.5 border-2 border-gray-400">
+                <TdSelect id={`ArtRngBot_${id}`} options="allNoteList"></TdSelect>
+            </td>
+            <td className="p-0.5 border-2 border-gray-400">
+                <TdSelect id={`ArtRngTop_${id}`} options="allNoteList"></TdSelect>
+            </td>
+            <td className="p-0.5 border-2 border-gray-400 text-center align-middle">
+                <button
+                    className="w-6 h-6 border border-black hover:border-green-50"
+                    title="This patch has more than one set of playable ranges.">
+                    <i className="fa-solid fa-plus"></i>
+                </button>
+            </td>
+            <td className="bg-gray-400 border-2 border-gray-400"></td>
+            <td className="bg-gray-400 border-2 border-gray-400"></td>
+        </Fragment>
+
+    const nameOption =
+        <div title={artFad && togArt ? nameArtTitle : artFad && !togArt ? nameArtTitle2 : nameFadTitle}>
             <input
-                className=''
-                title="Describe this range-group. (i.e hits/rolls)"
+                className='min-w-full bg-inherit hover:cursor-pointer focus:cursor-text focus:bg-white placeholder-black focus:placeholder-gray-400'
                 type="text"
+                placeholder={artFad ? 'Articulation Name' : 'Fader Name'}
                 value={valueName}
-                id={type + "Name_" + id}
+                id={`${type}Name_${id}`}
                 onChange={nameChange}>
             </input>
-            <button
-                className=''
-                title="This patch has more than one set of playable ranges.">
-                <i className="fa-solid fa-plus"></i>
-            </button>
-        </div>
+        </div >
 
     const typeOption =
         <div title="Select the TYPE of code for this patch.">
-            <select
-                className="min-w-full"
-                value={valueType}
-                id={type + "Type_" + id}
-                onChange={typeChange}>
-                <SelectList numbers={valAddrArray} names={addressNamesArray} />
-            </select>
-            {/* <TdSelect id={type + "Type_" + id} options='valAddrList'></TdSelect> */}
-        </div>
-
-    const changeOption =
-        <div title={checkVelTitle}>
-            <input
-                className='min-w-full'
-                checked={isChecked}
-                onChange={noteOptionChange}
-                type="checkbox"
-                title={checkVelTitle}
-                aria-label="Switch Between Velocity-Based and Standard Note Changes"
-                id={type + "NoteOption_" + id}>
-            </input>
+            <TdSelect id={`${type}Type_${id}`} options='valAddrList'></TdSelect>
         </div>
 
     const rangeOption =
         <Fragment>
             <div title={checkRngTitle}>
                 <input
-                    className='min-w-full'
+                    className='min-w-full cursor-pointer'
                     checked={isChecked3}
                     onChange={rangeOptionChange}
                     type="checkbox"
                     title={checkRngTitle}
                     aria-label="Does this patch have the same playable range as the default?"
-                    id={type + "RangeOption_" + id}>
+                    id={`ArtRangeOption_${id}`}>
                 </input>
             </div>
-            {showRngSelect ? rangeSelects : null}
         </Fragment>
 
     const codeOption =
         <div title={artFad ? codeArtTitle : codeFadTitle}>
-            <TdSelect id={type + "Code_" + id} options={valueCodeMidi} codeDisabled={codeDisabled}></TdSelect>
+            <TdSelect id={`${type}Code_${id}`} options={valueCodeMidi} codeDisabled={codeDisabled}></TdSelect>
         </div>
 
     const onOption =
         <div title={artFad && togArt ? codeOnArt : codeOnArt2}>
-            <TdSelect id={type + "On___" + id} options={valueMidi}></TdSelect>
+            <TdSelect id={`ArtOn___${id}`} options={valueMidi}></TdSelect>
         </div>
 
     const offOption =
         <div title="Set the OFF setting for this patch. (i.e. CC58, Value 81)" >
-            <TdSelect id={type + "Off__" + id} options={valueMidi}></TdSelect>
+            <TdSelect id={`ArtOff__${id}`} options={valueMidi}></TdSelect>
         </div >
 
     const deftCheck =
         <div title="Set this as the default patch.">
             <input
-                className='min-w-full'
+                className='min-w-full cursor-pointer'
                 type="checkbox"
                 checked={isChecked2}
                 onChange={deftPatchChange}
                 title="Set this as the default patch."
                 aria-label="Set this as the default patch."
-                id={type + "DeftOption_" + id}>
+                id={`${type}DeftOption_${id}`}>
             </input>
         </div>
 
     const deftSelect =
         <div title="Set the DEFAULT setting for this patch.">
-            <TdSelect id={type + "Deft_" + id} options={type === "art" ? "valDeftList" : valueMidi}></TdSelect>
-        </div >
-
-    const nameOption =
-        <div title={artFad && togArt ? nameArtTitle : artFad && !togArt ? nameArtTitle2 : nameFadTitle}>
-            <input
-                className='min-w-full'
-                type="text"
-                value={valueName}
-                id={type + "Name_" + id}
-                onChange={nameChange}>
-            </input>
+            <TdSelect id={`${type}Deft_${id}`} options={type === "art" ? "valDeftList" : valueMidi}></TdSelect>
         </div >
 
     const deftOption =
@@ -203,21 +192,28 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
             {artFad && !togArt ? deftCheck : deftSelect}
         </Fragment>
 
+    const changeOption =
+        <TdSwitch id={`${type}NoteOption_${id}`} title="Switch between Value1-Based and Value2-Based Changes" a="V1" b="V2" defaultVal="b" showVals={true}></TdSwitch>
+
+
     const justArt =
         <Fragment>
-            <td className='p-0.5'> {onOption} </td>
-            <td className='p-0.5'> {togArt ? offOption : rangeOption} </td>
+            <td className='p-0.5 border-2 border-gray-400'> {onOption} </td>
+            <td className='p-0.5 border-2 border-gray-400'> {togArt ? offOption : rangeOption} </td>
         </Fragment>
 
     return (
-        <tr id={type + "_" + id} className="align-middle">
-            <td className='p-0.5' id={type + "Numb_" + id}>{parseInt(id)}</td>
-            <td className='p-0.5'>{nameOption}</td>
-            <td className='p-0.5'>{typeOption}</td>
-            <td className='p-0.5'>{codeOption}</td>
-            {artFad ? justArt : null}
-            <td className='p-0.5'>{deftOption}</td>
-            <td className='p-0.5'>{changeOption}</td>
-        </tr>
+        <Fragment>
+            <tr id={`${type}_${id}`} className="align-middle">
+                <td className='p-0.5 border-2 border-gray-400' id={`${type}Numb_${id}`}>{parseInt(id)}</td>
+                <td className='p-0.5 border-2 border-gray-400'>{nameOption}</td>
+                <td className='p-0.5 border-2 border-gray-400'>{typeOption}</td>
+                <td className='p-0.5 border-2 border-gray-400'>{codeOption}</td>
+                {artFad ? justArt : null}
+                <td className='p-0.5 border-2 border-gray-400'>{deftOption}</td>
+                <td className='p-0.5 border-2 border-gray-400'>{changeOption}</td>
+            </tr>
+            <tr>{showRngSelect ? rangeRow : null}</tr>
+        </Fragment>
     );
 };

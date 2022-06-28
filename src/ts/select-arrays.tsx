@@ -8,17 +8,17 @@ let MiddleC = {
     top: 9
 };
 
-const allNoteArray: string[] = []
+export const allNoteArray: string[] = []
 for (let i = MiddleC.bottom; i < MiddleC.top; i++) {
     allNoteArray.push('C' + i, 'C#' + i, 'D' + i, 'D#' + i, 'E' + i, 'F' + i,
         'F#' + i, 'G' + i, 'G#' + i, 'A' + i, 'A#' + i, 'B' + i);
 }
-const chnMidiArray: number[] = [];
+export const chnMidiArray: number[] = [];
 for (let i = 1; i <= 16; i++) {
     chnMidiArray.push(i);
 }
 
-const setOutsArray: number[] = [];
+export const setOutsArray: number[] = [];
 for (let i = 1; i <= 128; i++) {
     setOutsArray.push(i);
 }
@@ -26,30 +26,30 @@ const valMidiArray: number[] = [];
 for (let i = 0; i <= 127; i++) {
     valMidiArray.push(i);
 }
-const valNoteArray: string[] = [];
+export const valNoteArray: string[] = [];
 for (let i = 0; i <= 127; i++) {
     valNoteArray.push(i + " / " + allNoteArray[i]);
 }
-const smpOutsArray: string[] = [];
+export const smpOutsArray: string[] = [];
 for (let i = 1; i < smpOutSettings; i++) {
     let j: number = i + 1
     let output: string = i + '-' + j;
     smpOutsArray.push(output);
     i = i + 1;
 }
-const vepOutsArray: string[] = [];
+export const vepOutsArray: string[] = [];
 for (let i = 1; i < vepOutSettings; i++) {
     let j: number = i + 1
     let output: string = i + '-' + j;
     vepOutsArray.push(output);
     i = i + 1;
 }
-const valPtchArray: number[] = [];
+export const valPtchArray: number[] = [];
 for (let i = 0; i < 16384; i++) {
     valPtchArray.push(i);
 }
 
-const smpTypeArray: string[] = [
+export const smpTypeArray: string[] = [
     'Native Instruments Kontakt',
     'Native Instruments Maschine',
     'Native Instruments Reaktor',
@@ -85,12 +85,12 @@ export const addressNamesArray: string[] = [
     "Polyphonic Key Pressure"
 ]
 
-const valDeftArray: string[] = [
+export const valDeftArray: string[] = [
     "On",
     "Off"
 ]
 
-const setNoteArray: string[] = [
+export const setNoteArray: string[] = [
     "Middle C (60) = C5",
     "Middle C (60) = C4",
     "Middle C (60) = C3"

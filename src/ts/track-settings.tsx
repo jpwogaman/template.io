@@ -10,7 +10,7 @@ export default function TrackSettings() {
     }
 
     return (
-        <div id="TemplateTrackSettings" className="MShide p-4 z-50 w-1/2 bg-main-grey overflow-y-scroll transition-all duration-1000">
+        <div id="TemplateTrackSettings" className="MShide p-4 z-50 w-1/2 bg-main-grey transition-all duration-1000 overflow-x-scroll">
             <div>
                 <div >
                     <button
@@ -46,16 +46,16 @@ export default function TrackSettings() {
 
             <h2 id="trkEditDisplay" className=''>Track:</h2>
 
-            <div className='flex'>
+            <div className='flex items-center'>
                 <div>
                     <h3>Playable Range:</h3>
                 </div>
                 <div>
-                    <TdSelect id={""} options="allNoteList"></TdSelect>
+                    <TdSelect id={`FullRngBot_${'needtofindtrkid1'}`} options="allNoteList"></TdSelect>
                 </div>
-                <div><i className='fas fa-arrow-right-long' /></div>
+                <div><i className='fas fa-arrow-right-long ml-1 mr-2' /></div>
                 <div>
-                    <TdSelect id={""} options="allNoteList"></TdSelect>
+                    <TdSelect id={`FullRngTop_${'needtofindtrkid2'}`} options="allNoteList"></TdSelect>
                 </div>
             </div>
 

@@ -2,7 +2,7 @@ import { FC, useState, ChangeEvent } from "react";
 import { selectArrays } from "./select-arrays";
 
 interface TdSelectProps {
-    id: any;
+    id: string | undefined;
     options: string | number;
     codeDisabled?: boolean;
 
@@ -57,7 +57,7 @@ export const TdSelect: FC<TdSelectProps> = ({ codeDisabled, id, options }) => {
 
     return (
         <select
-            className="min-w-full"
+            className="min-w-full cursor-pointer overflow-scroll bg-inherit focus:bg-white"
             value={!codeDisabled ? val : undefined}
             disabled={codeDisabled}
             id={id}
@@ -66,3 +66,5 @@ export const TdSelect: FC<TdSelectProps> = ({ codeDisabled, id, options }) => {
         </select>
     );
 };
+const example =
+    <TdSelect id="exampleTdSelect" options="setOutsList" codeDisabled={false}></TdSelect>

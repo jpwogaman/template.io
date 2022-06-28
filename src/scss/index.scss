@@ -9,12 +9,16 @@
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
-	-ms-overflow-style: none;
-	scrollbar-width: none;
 	scroll-behavior: smooth;
 }
 
-*::-webkit-scrollbar {
+body {
+	overflow: none;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
 	display: none;
 }
 

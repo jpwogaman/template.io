@@ -27,7 +27,7 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
     const nameOption =
         <div title="Set the NAME for this track or multi.">
             <input
-                className='min-w-full'
+                className='min-w-full bg-inherit hover:cursor-pointer focus:cursor-text focus:bg-white placeholder-black focus:placeholder-gray-400'
                 type="text"
                 value={valueName}
                 id={"trkName_" + id}
@@ -75,12 +75,12 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
 
     return (
         <tr id={"trk_" + id}>
-            <td className='p-0.5' id={"trkNumb_" + id}>{parseInt(id)}</td>
-            <td className='p-0.5'>{nameOption}</td>
-            <td className='p-0.5'>{chnOption}</td>
-            <td className='p-0.5'>{smpOutOption}</td>
-            <td className='p-0.5'>{vepOutOption}</td>
-            <td className='p-0.5'>{editTrack}</td>
+            <td className='p-0.5 border-2 border-gray-400 ' id={"trkNumb_" + id}>{parseInt(id)}</td>
+            <td className='p-0.5 border-2 border-gray-400 '>{nameOption}</td>
+            <td className='p-0.5 border-2 border-gray-400 '>{chnOption}</td>
+            <td className='p-0.5 border-2 border-gray-400 '>{smpOutOption}</td>
+            <td className='p-0.5 border-2 border-gray-400 '>{vepOutOption}</td>
+            <td className='p-0.5 border-2 border-gray-400 '>{editTrack}</td>
         </tr>
     );
 };
@@ -169,7 +169,7 @@ const SamplerInfo: FC<SamplerInfoProps> = () => {
                 </div>
                 <input
                     title='Set the name for this sampler.'
-                    className='ml-1 w-11/12'
+                    className='ml-1 w-11/12 bg-inherit hover:cursor-pointer focus:cursor-text focus:bg-white placeholder-black focus:placeholder-gray-400'
                     type="text"
                     value={valueName}
                     id={"smpName_"}
