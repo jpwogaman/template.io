@@ -91,7 +91,6 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
 
     const rangeRow =
         <Fragment>
-
             <td className="bg-gray-400 border-2 border-gray-400"></td>
             <td className="bg-gray-400 border-2 border-gray-400"></td>
             <td className="p-0.5 border-2 border-gray-400">
@@ -194,7 +193,6 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
 
     const changeOption =
         <TdSwitch id={`${type}NoteOption_${id}`} title="Switch between Value1-Based and Value2-Based Changes" a="V1" b="V2" defaultVal="b" showVals={true}></TdSwitch>
-
 
     const justArt =
         <Fragment>
