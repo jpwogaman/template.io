@@ -41,9 +41,7 @@ export const TdSelect: FC<TdSelectProps> = ({ codeDisabled, id, options }) => {
             value={!codeDisabled ? val : undefined}
             disabled={codeDisabled}
             id={id}
-            onChange={valChange}
-
-        >
+            onChange={valChange}>
             {!codeDisabled ? optionElements : selectArrays.valNoneList.array}
         </select>
     );
