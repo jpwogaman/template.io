@@ -54,10 +54,10 @@ const RangeRows: FC<RangeRowProps> = (id) => {
     return (
         <Fragment>
             {RangeList.map((range) => (
-                <tr key={`ArtRange_${id}_${range.id}`} id={`ArtRange_${id}_${range.id}`} className="hover:bg-gray-400 hover:text-gray-200">
-                    <td className="bg-gray-600 border-2 border-gray-600 "></td>
-                    <td className="bg-gray-600 border-2 border-gray-600 "></td>
-                    <td className="p-0.5 border-2 border-gray-600">
+                <tr key={`ArtRange_${id}_${range.id}`} id={`ArtRange_${id}_${range.id}`} className="">
+                    <td className="p-0.5 rangeRow"></td>
+                    <td className="p-0.5 rangeRow"></td>
+                    <td className="p-0.5 pl-1">
                         <TdInput
                             id={`ArtRangeName_${id}_${range.id}`}
                             title="Describe this range-group. (i.e hits/rolls)"
@@ -65,13 +65,13 @@ const RangeRows: FC<RangeRowProps> = (id) => {
                             codeDisabled={false}>
                         </TdInput>
                     </td>
-                    <td className="p-0.5 border-2 border-gray-600">
+                    <td className="p-0.5">
                         <TdSelect id={`ArtRngBot_${id}_${range.id}`} options="allNoteList"></TdSelect>
                     </td>
-                    <td className="p-0.5 border-2 border-gray-600">
+                    <td className="p-0.5">
                         <TdSelect id={`ArtRngTop_${id}_${range.id}`} options="allNoteList"></TdSelect>
                     </td>
-                    <td className="p-0.5 border-2 border-gray-600 text-center align-middle">
+                    <td className="p-0.5 text-center align-middle">
                         <button
                             className="w-6 h-6 border border-black hover:border-green-50"
                             title="This patch has more than one set of playable ranges."
@@ -81,8 +81,8 @@ const RangeRows: FC<RangeRowProps> = (id) => {
                             <i className="fa-solid fa-plus"></i>
                         </button>
                     </td>
-                    <td className="bg-gray-600 border-2 border-gray-600"></td>
-                    <td className="bg-gray-600 border-2 border-gray-600"></td>
+                    <td className="p-0.5 rangeRow"></td>
+                    <td className="p-0.5 rangeRow"></td>
                 </tr>
             ))}
         </Fragment >
@@ -319,26 +319,26 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
 
     const justArt =
         <Fragment>
-            <td className='p-0.5 border-2 border-gray-600'>{onOption}</td>
-            <td className='p-0.5 border-2 border-gray-600'>{togArt ? offOption : rangeOption}</td>
+            <td className='p-0.5'>{onOption}</td>
+            <td className='p-0.5'>{togArt ? offOption : rangeOption}</td>
         </Fragment>
 
     // const justFad =
     //     <Fragment>
-    //         <td className='p-0.5 border-2 border-gray-400'></td>
-    //         <td className='p-0.5 border-2 border-gray-400'></td>
+    //         <td className='p-0.5'></td>
+    //         <td className='p-0.5'></td>
     //     </Fragment>
 
     return (
         <Fragment>
-            <tr id={`${type}_${id}`} className="align-middle hover:bg-gray-400 hover:text-gray-200">
-                <td className='p-0.5 border-2 border-gray-600' id={`${type}Numb_${id}`} title={`${artFad ? "Articulation" : "Fader"} No. ${parseInt(id)}`}>{parseInt(id)}</td>
-                <td className='p-0.5 border-2 border-gray-600'>{nameOption}</td>
-                <td className='p-0.5 border-2 border-gray-600'>{typeOption}</td>
-                <td className='p-0.5 border-2 border-gray-600'>{codeOption}</td>
+            <tr id={`${type}_${id}`} className="">
+                <td className='p-0.5' id={`${type}Numb_${id}`} title={`${artFad ? "Articulation" : "Fader"} No. ${parseInt(id)}`}>{parseInt(id)}</td>
+                <td className='p-0.5'>{nameOption}</td>
+                <td className='p-0.5'>{typeOption}</td>
+                <td className='p-0.5'>{codeOption}</td>
                 {artFad ? justArt : null}
-                <td className='p-0.5 border-2 border-gray-600'>{deftOption}</td>
-                <td className='p-0.5 border-2 border-gray-600'>{changeOption}</td>
+                <td className='p-0.5'>{deftOption}</td>
+                <td className='p-0.5'>{changeOption}</td>
             </tr>
             {showRngSelect ? <RangeRows id={id}></RangeRows> : null}
         </Fragment>

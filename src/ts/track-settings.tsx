@@ -2,6 +2,8 @@ import { TdSelect } from './select';
 import { IconBtnToggle } from './button-icon-toggle'
 import { SettingsRow } from './track-settings-table-row'
 
+const devMode = true
+
 export default function TrackSettings() {
 
     const closeSettingsWindow = () => {
@@ -9,8 +11,12 @@ export default function TrackSettings() {
         document.getElementById('TemplateTracks')!.classList.replace('MSshowTemplateTracks', 'MShideTemplateTracks');
     }
 
+    const toggleNow = () => {
+        console.log('well')
+    }
+
     return (
-        <div id="TemplateTrackSettings" className="MShide p-4 z-50 w-1/2 bg-main-gray transition-all duration-1000 overflow-y-scroll">
+        <div id="TemplateTrackSettings" className="TrackSettings MShide p-4 z-50 transition-all duration-1000">
             <div>
                 <div >
                     <button
@@ -20,19 +26,20 @@ export default function TrackSettings() {
                         <i className="fa-solid fa-xmark"></i>
                     </button>
                     <IconBtnToggle
-                        className="w-10 h-10 border border-black mr-1 hover:border-green-50"
-                        title="Close Track Settings Window"
+                        classes="w-10 h-10 border border-black mr-1 hover:border-green-50"
+                        title="Lock this track."
                         id="editLock"
                         a="fa-solid fa-lock-open"
                         b="fa-solid fa-lock"
-                        defaultIcon="a">
+                        defaultIcon="a"
+                        onToggle={toggleNow}>
                     </IconBtnToggle>
                     <button
                         className="w-10 h-10 border border-black mr-1 hover:border-green-50"
                         title="Save Settings Window">
                         <i className="fa-solid fa-save"></i>
                     </button>
-                    <div className=''>
+                    {!devMode ? <div className=''>
                         <ul id="dropdown-item-button">
                             <li>Print Track Settings</li>
                             <li>Save Track Settings as Manufacturer Default</li>
@@ -40,7 +47,7 @@ export default function TrackSettings() {
                             <li>Save Track Settings as User Default</li>
                             <li>Open User Default Settings for Track</li>
                         </ul>
-                    </div>
+                    </div> : null}
                 </div>
             </div>
 
@@ -64,12 +71,12 @@ export default function TrackSettings() {
             <table className='min-w-full table-fixed text-left text-sm'>
                 <thead>
                     <tr>
-                        <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[05%]' title="Fader Number">No.</th>
-                        <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[20%]' title="Set the NAME for this parameter. (i.e Dynamics)">Name</th>
-                        <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[25%]' title="Select the TYPE of code for this parameter.">Code Type</th>
-                        <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[18%]' title="Set the CODE for this patch. (i.e. CC11)">Code</th>
-                        <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[18%]' title="Set the DEFAULT value for this parameter.">Default</th>
-                        <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[14%]' title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
+                        <th className='p-0.5 w-[05%]' title="Fader Number">No.</th>
+                        <th className='p-0.5 w-[20%]' title="Set the NAME for this parameter. (i.e Dynamics)">Name</th>
+                        <th className='p-0.5 w-[25%]' title="Select the TYPE of code for this parameter.">Code Type</th>
+                        <th className='p-0.5 w-[18%]' title="Set the CODE for this patch. (i.e. CC11)">Code</th>
+                        <th className='p-0.5 w-[18%]' title="Set the DEFAULT value for this parameter.">Default</th>
+                        <th className='p-0.5 w-[14%]' title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -89,14 +96,14 @@ export default function TrackSettings() {
             <table className='min-w-full table-fixed text-left text-sm'>
                 <thead>
                     <tr>
-                        <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[05%]' title="Articulation Number">No.</th>
-                        <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[20%]' title="Set the NAME for this patch. (i.e Legato On/OFF)">Name</th>
-                        <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[25%]' title="Select the TYPE of code for this patch.">Code Type</th>
-                        <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[09%]' title="Set the CODE for this patch. (i.e. CC58)">Code</th>
-                        <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[09%]' title="Set the ON setting for this patch. (i.e. CC58, Value 76)">On</th>
-                        <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[09%]' title="Set the OFF setting for this patch. (i.e. CC58, Value 81)">Off</th>
-                        <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[09%]' title="Set the DEFAULT setting for this patch.">Default</th>
-                        <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[14%]' title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
+                        <th className='p-0.5 w-[05%]' title="Articulation Number">No.</th>
+                        <th className='p-0.5 w-[20%]' title="Set the NAME for this patch. (i.e Legato On/OFF)">Name</th>
+                        <th className='p-0.5 w-[25%]' title="Select the TYPE of code for this patch.">Code Type</th>
+                        <th className='p-0.5 w-[09%]' title="Set the CODE for this patch. (i.e. CC58)">Code</th>
+                        <th className='p-0.5 w-[09%]' title="Set the ON setting for this patch. (i.e. CC58, Value 76)">On</th>
+                        <th className='p-0.5 w-[09%]' title="Set the OFF setting for this patch. (i.e. CC58, Value 81)">Off</th>
+                        <th className='p-0.5 w-[09%]' title="Set the DEFAULT setting for this patch.">Default</th>
+                        <th className='p-0.5 w-[14%]' title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -108,14 +115,14 @@ export default function TrackSettings() {
             <table className='min-w-full table-fixed text-left text-sm'>
                 <thead>
                     <tr>
-                        <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[05%]' title="Articulation Number">No.</th>
-                        <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[20%]' title="Set the NAME for this patch. (i.e Staccato)">Name</th>
-                        <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[25%]' title="Select the TYPE of code for this patch.">Code Type</th>
-                        <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[09%]' title="Set the CODE for this patch. (i.e. CC58)">Code</th>
-                        <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[09%]' title="Set the ON setting for this patch. (i.e. CC58, Value 21)">On</th>
-                        <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[09%]' title="Set the number of playable ranges for this patch.">Range</th>
-                        <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[09%]' title="Set the default patch.">Default</th>
-                        <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[14%]' title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
+                        <th className='p-0.5 w-[05%]' title="Articulation Number">No.</th>
+                        <th className='p-0.5 w-[20%]' title="Set the NAME for this patch. (i.e Staccato)">Name</th>
+                        <th className='p-0.5 w-[25%]' title="Select the TYPE of code for this patch.">Code Type</th>
+                        <th className='p-0.5 w-[09%]' title="Set the CODE for this patch. (i.e. CC58)">Code</th>
+                        <th className='p-0.5 w-[09%]' title="Set the ON setting for this patch. (i.e. CC58, Value 21)">On</th>
+                        <th className='p-0.5 w-[09%]' title="Set the number of playable ranges for this patch.">Range</th>
+                        <th className='p-0.5 w-[09%]' title="Set the default patch.">Default</th>
+                        <th className='p-0.5 w-[14%]' title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -19,10 +19,11 @@ export const TdInput: FC<TdInputProps> = ({ id, placeholder, title, codeDisabled
         <input
             type="text"
             className='            
-            hover:placeholder-gray-200
+            hover:placeholder-zinc-200 dark:hover:placeholder-zinc-600
             min-w-full 
             bg-inherit 
-            placeholder-gray-500
+            placeholder-zinc-500 dark:placeholder-zinc-500
+            
             border 
             border-transparent
             outline-green-500
@@ -30,8 +31,8 @@ export const TdInput: FC<TdInputProps> = ({ id, placeholder, title, codeDisabled
             hover:cursor-pointer                        
             focus:cursor-text 
             focus:bg-white  
-            focus:placeholder-gray-500
-            focus:text-black'
+            focus:placeholder-zinc-500
+            focus:text-zinc-900'
             id={id}
             title={title}
             placeholder={placeholder}

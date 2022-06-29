@@ -14,8 +14,10 @@ const template = ReactDOM.createRoot(
 template.render(
     <Fragment>
         <TemplateNavbar />
-        <TrackList />
-        <TrackSettings />
+        <div id="TemplateData">
+            <TrackList />
+            <TrackSettings />
+        </div>
     </Fragment>
 );
 

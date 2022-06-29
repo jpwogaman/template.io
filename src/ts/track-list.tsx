@@ -3,6 +3,8 @@ import { TdSelect } from './select';
 import ColorPicker from './color-picker'
 import { TdInput } from './input';
 
+const devMode = true
+
 const settingsOpen = () => {
 
     if (document.getElementById('TemplateTrackSettings')!.classList.contains('MShide')) {
@@ -47,19 +49,19 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
     const editTrack =
         <div className='flex justify-evenly'>
             <button
-                className="w-6 h-6 border border-black mr-1 hover:border-green-50"
+                className="w-6 h-6 mr-1 hover:border-green-50"
                 title="Edit Track Parameters"
                 onClick={settingsOpen}>
                 <i className="fa-solid fa-pen-to-square"></i>
             </button>
             <button
-                className="w-6 h-6 border border-black mr-1 hover:border-green-50"
+                className="w-6 h-6 mr-1 hover:border-green-50"
                 title="Delete Track"
                 onClick={() => onDelete}>
                 <i className="fas fa-xmark" />
             </button>
             <button
-                className="w-6 h-6 border border-black mr-1 hover:border-green-50"
+                className="w-6 h-6 mr-1 hover:border-green-50"
                 title="Add Track"
                 onClick={() => onAdd}>
                 <i className="fas fa-plus" />
@@ -67,13 +69,13 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
         </div >
 
     return (
-        <tr id={"trk_" + id} className="hover:bg-gray-400 hover:text-gray-200">
-            <td className='p-0.5 border-2 border-gray-600' id={`trkNumb_${id}`}>{parseInt(id)}</td>
-            <td className='p-0.5 border-2 border-gray-600'>{nameOption}</td>
-            <td className='p-0.5 border-2 border-gray-600'>{chnOption}</td>
-            <td className='p-0.5 border-2 border-gray-600'>{smpOutOption}</td>
-            <td className='p-0.5 border-2 border-gray-600'>{vepOutOption}</td>
-            <td className='p-0.5 border-2 border-gray-600'>{editTrack}</td>
+        <tr id={"trk_" + id} className="">
+            <td className='p-0.5' id={`trkNumb_${id}`}>{parseInt(id)}</td>
+            <td className='p-0.5'>{nameOption}</td>
+            <td className='p-0.5'>{chnOption}</td>
+            <td className='p-0.5'>{smpOutOption}</td>
+            <td className='p-0.5'>{vepOutOption}</td>
+            <td className='p-0.5'>{editTrack}</td>
         </tr>
     );
 };
@@ -126,11 +128,19 @@ const Tracks: FC<TracksProps> = () => {
     return (
         <Fragment>
             {TrackList.map((track) => (
-                <TrackRow
-                    key={track.id}
-                    id={track.id}
-                    onDelete={() => removeTrack(track.id)}
-                    onAdd={() => addTrack(track.id)} />
+                <Fragment>
+                    <TrackRow
+                        key={track.id}
+                        id={track.id}
+                        onDelete={() => removeTrack(track.id)}
+                        onAdd={() => addTrack(track.id)} />
+                    <TrackRow
+                        key={track.id}
+                        id={track.id}
+                        onDelete={() => removeTrack(track.id)}
+                        onAdd={() => addTrack(track.id)} />
+
+                </Fragment>
             ))}
         </Fragment>
     )
@@ -180,18 +190,18 @@ const SamplerInfo: FC<SamplerInfoProps> = () => {
 export default function TrackList() {
 
     return (
-        <div id="TemplateTracks" className="MShideTemplateTracks absolute bg-main-gray transition-all duration-1000">
-            <div id="trackList_01-01" className="p-4">
-                <SamplerInfo />
+        <div id="TemplateTracks" className="MShideTemplateTracks transition-all duration-1000">
+            <div id="trackList_01-01" className="TrackList p-4">
+                {!devMode ? <SamplerInfo /> : null}
                 <table className='table-auto border-collapse text-left text-sm min-w-full'>
                     <thead>
                         <tr>
-                            <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[05%]' title="Unique Track Number">No.</th>
-                            <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[45%]' title="Set the MIDI channel for this track or multi.">Name</th>
-                            <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[10%]' title="Set the NAME for this track or multi.">MIDI Channel</th>
-                            <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[10%]' title="Set the sampler outputs for this track or multi.">Sampler Outputs</th>
-                            <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[10%]' title="Set the instance outputs for this track or multi.">Instance Outputs</th>
-                            <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[20%]' title="Edit Track Parameters"></th>
+                            <th className='p-0.5 w-[05%]' title="Unique Track Number">No.</th>
+                            <th className='p-0.5 w-[45%]' title="Set the MIDI channel for this track or multi.">Name</th>
+                            <th className='p-0.5 w-[10%]' title="Set the NAME for this track or multi.">MIDI Channel</th>
+                            <th className='p-0.5 w-[10%]' title="Set the sampler outputs for this track or multi.">Sampler Outputs</th>
+                            <th className='p-0.5 w-[10%]' title="Set the instance outputs for this track or multi.">Instance Outputs</th>
+                            <th className='p-0.5 w-[20%]' title="Edit Track Parameters"></th>
                         </tr>
                     </thead>
                     <tbody>

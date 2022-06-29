@@ -13,36 +13,106 @@
 }
 
 body {
-	overflow: none;
-	-ms-overflow-style: none;
-	scrollbar-width: none;
+	height: 100vh;
+	max-height: 100vh;
+	width: 100vw;
+	max-width: 100vw;
+	overflow: hidden;
+	@apply bg-main-sand;
 }
 
-body::-webkit-scrollbar {
-	display: none;
+// body::-webkit-scrollbar {
+// 	display: none;
+// }
+
+// body::-webkit-scrollbar {
+// 	width: 1em;
+// }
+
+// body::-webkit-scrollbar-track {
+// 	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+// }
+
+// body::-webkit-scrollbar-thumb {
+// 	background-color: darkgrey;
+// 	outline: 1px solid slategrey;
+// }
+
+#TemplateData {
+	height: calc(100vh - 40px);
+	width: 100%;
 }
+
+#TemplateTracks {
+	float: left;
+}
+
+#TemplateTracks,
+#TemplateTrackSettings {
+	height: 100%;
+	-ms-overflow-style: none;
+	overflow-y: auto;
+	overflow-x: auto;
+}
+
+.TrackList, .TrackSettings {
+	@apply bg-stone-300 dark:bg-zinc-800; 
+	@apply text-zinc-900 dark:text-zinc-200;
+	@apply transition-all duration-1000;
+}
+
+#TemplateTracks tr, 
+#TemplateTrackSettings tr,
+ {
+	@apply hover:bg-zinc-800 dark:hover:bg-zinc-600; 
+	@apply text-zinc-900 hover:text-blue-600 dark:text-zinc-200 dark:hover:text-zinc-50;
+
+}
+#TemplateTracks th, #TemplateTrackSettings th{
+	@apply border-2;
+
+	@apply text-zinc-900;
+	@apply border-zinc-100 border-b-transparent dark:border-zinc-400 dark:border-b-transparent;
+	@apply bg-zinc-200 dark:bg-zinc-600;
+	
+	@apply transition-all duration-200;
+}
+#TemplateTracks td, #TemplateTrackSettings td {
+	@apply border-2; 
+
+	@apply border-zinc-400 dark:border-zinc-600;
+	@apply bg-zinc-300 dark:bg-zinc-900;
+	@apply transition-all duration-200;
+}
+
+.rangeRow {
+	@apply bg-zinc-600;
+	@apply transition-all duration-200;
+}
+
+
+
+
 
 
 .MSshow {
-	margin-left: 50%;
+	width: 50%;
 	opacity: 1;
 }
 
 .MShide {
-	margin-left: 100%;
+	width: 0%;
 	opacity: 0;
 }
 
 .MSshowTemplateTracks {
 	width: 50%;
 	min-width: 50%;
-	margin-right: 50%;
 }
 
 .MShideTemplateTracks {
 	width: 100%;
 	min-width: 100%;
-	margin-right: 0;
 }
 
 
