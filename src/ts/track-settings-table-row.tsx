@@ -1,5 +1,6 @@
 import { FC, useState, ChangeEvent, Fragment } from "react";
 import { TdSwitch } from "./checkbox-switch";
+import { TdInput } from "./input";
 import { TdSelect } from "./select";
 
 
@@ -53,19 +54,16 @@ const RangeRows: FC<RangeRowProps> = (id) => {
     return (
         <Fragment>
             {RangeList.map((range) => (
-                <tr key={`ArtRange_${id}_${range.id}`} id={`ArtRange_${id}_${range.id}`}>
+                <tr key={`ArtRange_${id}_${range.id}`} id={`ArtRange_${id}_${range.id}`} className="hover:bg-gray-400 hover:text-gray-200">
                     <td className="bg-gray-600 border-2 border-gray-600 "></td>
                     <td className="bg-gray-600 border-2 border-gray-600 "></td>
                     <td className="p-0.5 border-2 border-gray-600">
-                        <input
-                            className='pl-1 min-w-full bg-inherit hover:cursor-pointer focus:cursor-text focus:bg-white placeholder-black focus:placeholder-gray-400 border border-transparent focus:border-white focus:outline-none'
-                            title="Describe this range-group. (i.e hits/rolls)"
-                            type="text"
-                            placeholder="Range Description"
-                            value={valueName}
+                        <TdInput
                             id={`ArtRangeName_${id}_${range.id}`}
-                            onChange={nameChange}>
-                        </input>
+                            title="Describe this range-group. (i.e hits/rolls)"
+                            placeholder="Range Description"
+                            codeDisabled={false}>
+                        </TdInput>
                     </td>
                     <td className="p-0.5 border-2 border-gray-600">
                         <TdSelect id={`ArtRngBot_${id}_${range.id}`} options="allNoteList"></TdSelect>
@@ -188,10 +186,10 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
         <Fragment>
             <div title={checkRngTitle}>
                 <input
+                    type="checkbox"
                     className='min-w-full cursor-pointer'
                     checked={isChecked3}
                     onChange={rangeOptionChange}
-                    type="checkbox"
                     title={checkRngTitle}
                     aria-label="Does this patch have the same playable range as the default?"
                     id={`ArtRangeOption_${id}`}>
@@ -200,17 +198,12 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
         </Fragment>
 
     const nameOption =
-        <div title={artFad && togArt ? nameArtTitle : artFad && !togArt ? nameArtTitle2 : nameFadTitle}>
-            <input
-                className='min-w-full bg-inherit hover:cursor-pointer focus:cursor-text focus:bg-white placeholder-black focus:placeholder-gray-400 border border-transparent focus:border-white focus:outline-none'
-                type="text"
-                placeholder={artFad ? 'Articulation Name' : 'Fader Name'}
-                value={valueName}
-                id={`${type}Name_${id}`}
-                onChange={nameChange}>
-            </input>
-        </div >
-
+        <TdInput
+            id={`${type}Name_${id}`}
+            title={artFad && togArt ? nameArtTitle : artFad && !togArt ? nameArtTitle2 : nameFadTitle}
+            placeholder={artFad ? 'Articulation Name' : 'Fader Name'}
+            codeDisabled={false}>
+        </TdInput>
 
 
     ////
@@ -251,10 +244,12 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const changeOption =
         <TdSwitch
             id={`${type}switchTypes_${id}`}
-            title="Switch between Value 1-Based and Value 2-Based Changes"
+            title="Switch between Value 1-Based and Value 2-Based Changes."
             a="V1"
             b="V2"
             defaultVal="b"
+            artFad={artFad}
+            togArt={togArt}
             showVals={true}>
         </TdSwitch>
     // needs to call switchTypeChange()
@@ -307,8 +302,8 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const deftCheck =
         <div title="Set this as the default patch.">
             <input
-                className='min-w-full cursor-pointer'
                 type="checkbox"
+                className='min-w-full cursor-pointer'
                 checked={isChecked2}
                 onChange={deftPatchChange}
                 title="Set this as the default patch."
@@ -336,7 +331,7 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
 
     return (
         <Fragment>
-            <tr id={`${type}_${id}`} className="align-middle">
+            <tr id={`${type}_${id}`} className="align-middle hover:bg-gray-400 hover:text-gray-200">
                 <td className='p-0.5 border-2 border-gray-600' id={`${type}Numb_${id}`} title={`${artFad ? "Articulation" : "Fader"} No. ${parseInt(id)}`}>{parseInt(id)}</td>
                 <td className='p-0.5 border-2 border-gray-600'>{nameOption}</td>
                 <td className='p-0.5 border-2 border-gray-600'>{typeOption}</td>

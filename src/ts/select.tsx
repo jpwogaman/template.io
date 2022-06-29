@@ -37,7 +37,17 @@ export const TdSelect: FC<TdSelectProps> = ({ codeDisabled, id, options }) => {
 
     return (
         <select
-            className="min-w-full cursor-pointer overflow-scroll bg-inherit focus:bg-white border border-transparent focus:border-white focus:outline-none"
+            className="
+            min-w-full                        
+            cursor-pointer 
+            overflow-scroll 
+            bg-inherit  
+            border 
+            border-transparent  
+            outline-green-500
+            outline-offset-4
+            focus:text-black
+            focus:bg-white"
             value={!codeDisabled ? val : undefined}
             disabled={codeDisabled}
             id={id}

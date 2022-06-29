@@ -1,6 +1,7 @@
 import { FC, ChangeEvent, Fragment, useState } from 'react';
 import { TdSelect } from './select';
 import ColorPicker from './color-picker'
+import { TdInput } from './input';
 
 const settingsOpen = () => {
 
@@ -19,22 +20,14 @@ interface TrackRowProps {
 }
 
 const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
-    const [valueName, setName] = useState<string>("")
-    const nameChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setName(event.target.value)
-    }
 
     const nameOption =
-        <div title="Set the NAME for this track or multi.">
-            <input
-                className='min-w-full bg-inherit hover:cursor-pointer focus:cursor-text focus:bg-white placeholder-black focus:placeholder-gray-400 border border-transparent focus:border-white focus:outline-none'
-                type="text"
-                value={valueName}
-                id={`trkName_${id}`}
-                placeholder="Track Name"
-                onChange={nameChange}>
-            </input>
-        </div >
+        <TdInput
+            id={`trkName_${id}`}
+            title="Set the NAME for this track or multi."
+            placeholder="Track Name"
+            codeDisabled={false}>
+        </TdInput>
 
     const chnOption =
         <div title="Set the MIDI channel for this track or multi.">
@@ -74,7 +67,7 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
         </div >
 
     return (
-        <tr id={"trk_" + id}>
+        <tr id={"trk_" + id} className="hover:bg-gray-400 hover:text-gray-200">
             <td className='p-0.5 border-2 border-gray-600' id={`trkNumb_${id}`}>{parseInt(id)}</td>
             <td className='p-0.5 border-2 border-gray-600'>{nameOption}</td>
             <td className='p-0.5 border-2 border-gray-600'>{chnOption}</td>
@@ -166,17 +159,17 @@ const SamplerInfo: FC<SamplerInfoProps> = () => {
                     className='w-1/12'>
                     <ColorPicker />
                 </div>
-                <input
-                    title='Set the name for this sampler.'
-                    className='ml-1 w-11/12 bg-inherit hover:cursor-pointer focus:cursor-text focus:bg-white placeholder-black focus:placeholder-gray-400 border border-transparent focus:border-white focus:outline-none'
-                    type="text"
-                    value={valueName}
-                    id={"smpName_"}
-                    placeholder="Instrument/Multi Name"
-                    onChange={nameChange}>
-                </input>
+                <div className='ml-1 w-11/12'>
+                    <TdInput
+                        id={"smpName_"}
+                        title='Set the name for this sampler.'
+                        placeholder="Instrument/Multi Name"
+                        codeDisabled={false}>
+                    </TdInput>
+                </div>
+
             </div>
-            <div title="Sampler Manufacturer" className='w-1/3'>
+            <div title="Sampler Manufacturer" className='w-1/3 mb-2'>
                 <TdSelect id="smpType" options="smpTypeList"></TdSelect>
             </div >
 
