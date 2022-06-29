@@ -62,7 +62,7 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
             <td className="bg-gray-400 border-2 border-gray-400"></td>
             <td className="p-0.5 border-2 border-gray-400">
                 <input
-                    className='pl-1 min-w-full bg-inherit hover:cursor-pointer focus:cursor-text focus:bg-white placeholder-black focus:placeholder-gray-400'
+                    className='pl-1 min-w-full bg-inherit hover:cursor-pointer focus:cursor-text focus:bg-white placeholder-black focus:placeholder-gray-400 focus-visible:ring-blue-500 focus-visible:border-blue-500 focus:outline-none'
                     title="Describe this range-group. (i.e hits/rolls)"
                     type="text"
                     placeholder="Range Description"

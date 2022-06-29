@@ -3,6 +3,7 @@ module.exports = {
     'postcss-import': {},
     autoprefixer: {},
     tailwindcss: {},
+    'postcss-focus-visible': {},
     'postcss-flexbugs-fixes': {},
     'postcss-preset-env': {
       autoprefixer: {

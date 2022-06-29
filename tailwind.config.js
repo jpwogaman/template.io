@@ -14,8 +14,20 @@ module.exports = {
         sans: ['camingocoderegular'],
         serif: ['camingocoderegular'],
         mono: ['camingocoderegular']
-      }
+      },
     },
+  },
+  variants: {
+    extend: {
+      textDecoration: ['focus-visible'],
+      ringWidth: ['focus-visible'],
+      ringColor: ['focus-visible'],
+      ringOffsetWidth: ['focus-visible'],
+      ringOffsetColor: ['focus-visible'],
+      ringOpacity: ['focus-visible'],
+      ring: ['focus-visible'],
+      border: ['focus-visible']
+    }
   },
   plugins: [
     require('tailwindcss'),
