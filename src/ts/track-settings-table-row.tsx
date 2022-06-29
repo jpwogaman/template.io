@@ -58,7 +58,7 @@ const RangeRows: FC<RangeRowProps> = (id) => {
                     <td className="bg-gray-600 border-2 border-gray-600 "></td>
                     <td className="p-0.5 border-2 border-gray-600">
                         <input
-                            className='pl-1 min-w-full bg-inherit hover:cursor-pointer focus:cursor-text focus:bg-white placeholder-black focus:placeholder-gray-400  focus:border-blue-500 focus-visible:border-blue-500 focus:outline-green-500'
+                            className='pl-1 min-w-full bg-inherit hover:cursor-pointer focus:cursor-text focus:bg-white placeholder-black focus:placeholder-gray-400 border border-transparent focus:border-white focus:outline-none'
                             title="Describe this range-group. (i.e hits/rolls)"
                             type="text"
                             placeholder="Range Description"
@@ -202,7 +202,7 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const nameOption =
         <div title={artFad && togArt ? nameArtTitle : artFad && !togArt ? nameArtTitle2 : nameFadTitle}>
             <input
-                className='min-w-full bg-inherit hover:cursor-pointer focus:cursor-text focus:bg-white placeholder-black focus:placeholder-gray-400'
+                className='min-w-full bg-inherit hover:cursor-pointer focus:cursor-text focus:bg-white placeholder-black focus:placeholder-gray-400 border border-transparent focus:border-white focus:outline-none'
                 type="text"
                 placeholder={artFad ? 'Articulation Name' : 'Fader Name'}
                 value={valueName}

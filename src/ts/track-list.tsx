@@ -27,7 +27,7 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
     const nameOption =
         <div title="Set the NAME for this track or multi.">
             <input
-                className='min-w-full bg-inherit hover:cursor-pointer focus:cursor-text focus:bg-white placeholder-black focus:placeholder-gray-400'
+                className='min-w-full bg-inherit hover:cursor-pointer focus:cursor-text focus:bg-white placeholder-black focus:placeholder-gray-400 border border-transparent focus:border-white focus:outline-none'
                 type="text"
                 value={valueName}
                 id={`trkName_${id}`}
@@ -168,7 +168,7 @@ const SamplerInfo: FC<SamplerInfoProps> = () => {
                 </div>
                 <input
                     title='Set the name for this sampler.'
-                    className='ml-1 w-11/12 bg-inherit hover:cursor-pointer focus:cursor-text focus:bg-white placeholder-black focus:placeholder-gray-400'
+                    className='ml-1 w-11/12 bg-inherit hover:cursor-pointer focus:cursor-text focus:bg-white placeholder-black focus:placeholder-gray-400 border border-transparent focus:border-white focus:outline-none'
                     type="text"
                     value={valueName}
                     id={"smpName_"}

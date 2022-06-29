@@ -104,7 +104,7 @@ export default function TrackSettings() {
                     <SettingsRow id="02" type="art" variant="tog"></SettingsRow>
                 </tbody>
             </table>
-            <h4 className='mt-5 mb-1'>Articulations (one-at-a-time)</h4>
+            <h4 className='mt-5 mb-1'>Articulations (switch)</h4>
             <table className='min-w-full table-fixed text-left text-sm'>
                 <thead>
                     <tr>
