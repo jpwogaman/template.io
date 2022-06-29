@@ -75,12 +75,12 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
 
     return (
         <tr id={"trk_" + id}>
-            <td className='p-0.5 border-2 border-gray-400' id={`trkNumb_${id}`}>{parseInt(id)}</td>
-            <td className='p-0.5 border-2 border-gray-400'>{nameOption}</td>
-            <td className='p-0.5 border-2 border-gray-400'>{chnOption}</td>
-            <td className='p-0.5 border-2 border-gray-400'>{smpOutOption}</td>
-            <td className='p-0.5 border-2 border-gray-400'>{vepOutOption}</td>
-            <td className='p-0.5 border-2 border-gray-400'>{editTrack}</td>
+            <td className='p-0.5 border-2 border-gray-600' id={`trkNumb_${id}`}>{parseInt(id)}</td>
+            <td className='p-0.5 border-2 border-gray-600'>{nameOption}</td>
+            <td className='p-0.5 border-2 border-gray-600'>{chnOption}</td>
+            <td className='p-0.5 border-2 border-gray-600'>{smpOutOption}</td>
+            <td className='p-0.5 border-2 border-gray-600'>{vepOutOption}</td>
+            <td className='p-0.5 border-2 border-gray-600'>{editTrack}</td>
         </tr>
     );
 };
@@ -193,12 +193,12 @@ export default function TrackList() {
                 <table className='table-auto border-collapse text-left text-sm min-w-full'>
                     <thead>
                         <tr>
-                            <th className='p-0.5 border-2 border-b-gray-400 w-[5%]'>No.</th>
-                            <th className='p-0.5 border-2 border-b-gray-400 w-[45%]'>Name</th>
-                            <th className='p-0.5 border-2 border-b-gray-400 w-[10%]'>MIDI Channel</th>
-                            <th className='p-0.5 border-2 border-b-gray-400 w-[10%]'>Sampler Outputs</th>
-                            <th className='p-0.5 border-2 border-b-gray-400 w-[10%]'>Instance Outputs</th>
-                            <th className='p-0.5 border-2 border-b-gray-400 w-[20%]'></th>
+                            <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[05%]' title="Unique Track Number">No.</th>
+                            <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[45%]' title="Set the MIDI channel for this track or multi.">Name</th>
+                            <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[10%]' title="Set the NAME for this track or multi.">MIDI Channel</th>
+                            <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[10%]' title="Set the sampler outputs for this track or multi.">Sampler Outputs</th>
+                            <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[10%]' title="Set the instance outputs for this track or multi.">Instance Outputs</th>
+                            <th className='p-0.5 border-2 border-gray-100 border-b-gray-600 w-[20%]' title="Edit Track Parameters"></th>
                         </tr>
                     </thead>
                     <tbody>
