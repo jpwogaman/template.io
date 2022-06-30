@@ -17,16 +17,14 @@ export const TdSwitch: FC<TdSwitchProps> = ({ onSwitch, artFad, togArt, showVals
 
     const [isChecked, setChecked] = useState<boolean>(defaultVal === "b" ? true : false)
 
-    //Need something to pass through for the function.
     const valChange = () => {
-        console.log('valChange: ', isChecked)
+        onSwitch!(isChecked ? false : true)
+
         if (isChecked) {
             setChecked(false)
         } else {
             setChecked(true)
         }
-        console.log('valChange: ', isChecked)
-        onSwitch!(isChecked)
     }
 
     let val1SpanTitle = "the DEFAULT value relates to the CODE itself (i.e. DEFAULT = CC11)"

@@ -20,7 +20,6 @@ export const TdSelect: FC<TdSelectProps> = ({ onSelect, codeDisabled, id, option
         }
     }
 
-    //Need something to pass through for instances where changing one select affects the other selects as well.
     const valChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setVal(event.target.value)
         onSelect!(event)

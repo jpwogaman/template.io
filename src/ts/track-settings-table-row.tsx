@@ -210,12 +210,9 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const [valueMidi, setMidi] = useState<string>("valMidiList")
     const [valueCodeMidi, setCodeMidi] = useState<string>("valMidiList")
 
-
-
     const typeChange = (event: ChangeEvent<HTMLSelectElement>) => {
 
-        const isChecked = document.getElementById(`${type}switchTypes_${id}`) as HTMLInputElement
-        console.log('typeChange: ', isChecked.checked)
+        const switchChecked = document.getElementById(`${type}switchTypes_${id}`) as HTMLInputElement
         setMidi("valMidiList")
         setCodeMidi("valMidiList")
 
@@ -227,19 +224,27 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
             setMidi("valPtchList")
             setCodeMidi("valPtchList")
         }
-        console.log('typeChange: ', isChecked.checked)
-        switchTypeChange(isChecked.checked)
+
+        switchTypeChange(switchChecked.checked)
     };
+
     const switchTypeChange = (isChecked: boolean) => {
-        console.log('switchTypeChange: ', isChecked)
+
+        const typeValue = document.getElementById(`${type}Type_${id}`) as HTMLSelectElement
+
         if (isChecked) {
             setCodeDisabled(false)
+            if (typeValue.value === "/note") {
+                setMidi("valMidiList")
+            }
         } else {
             setCodeDisabled(true)
+            if (typeValue.value === "/note") {
+                setMidi("valNoteList")
+            }
         }
+
     }
-
-
 
     const typeOption =
         <div title={artFad ? typeCodeArt : typeCodeFad}>
