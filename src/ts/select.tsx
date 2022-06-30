@@ -5,10 +5,10 @@ interface TdSelectProps {
     id: string | undefined;
     options: string | number;
     codeDisabled?: boolean;
-
+    onSelect?: (event: ChangeEvent<HTMLSelectElement>) => void | undefined;
 }
 
-export const TdSelect: FC<TdSelectProps> = ({ codeDisabled, id, options }) => {
+export const TdSelect: FC<TdSelectProps> = ({ onSelect, codeDisabled, id, options }) => {
 
     const [val, setVal] = useState<string>("")
 
@@ -23,17 +23,8 @@ export const TdSelect: FC<TdSelectProps> = ({ codeDisabled, id, options }) => {
     //Need something to pass through for instances where changing one select affects the other selects as well.
     const valChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setVal(event.target.value)
+        onSelect!(event)
     }
-
-
-
-
-
-
-
-
-
-
 
     return (
         <select

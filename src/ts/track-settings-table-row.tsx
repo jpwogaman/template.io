@@ -126,7 +126,7 @@ interface SettingsRowProps {
 
 export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
 
-    const [valueType, setType] = useState<string>("")
+
     const [valueName, setName] = useState<string>("")
     const [checkRngTitle, setRngTitle] = useState<string>("Switch to independent playable range.")
 
@@ -209,37 +209,42 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     ////
     const [valueMidi, setMidi] = useState<string>("valMidiList")
     const [valueCodeMidi, setCodeMidi] = useState<string>("valMidiList")
-    const [isChecked, setChecked] = useState<boolean>(true)
+
+
+
     const typeChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        setType(event.target.value)
+
+        const isChecked = document.getElementById(`${type}switchTypes_${id}`) as HTMLInputElement
+        console.log('typeChange: ', isChecked.checked)
         setMidi("valMidiList")
         setCodeMidi("valMidiList")
-        setCodeDisabled(false);
 
-        if (event.target.value === "Note") {
+        if (event.target.value === "/note") {
             setMidi("valNoteList")
             setCodeMidi("valNoteList")
-            setCodeDisabled(true)
         }
-        if (event.target.value === "Pitch Wheel") {
+        if (event.target.value === "/pitch") {
             setMidi("valPtchList")
             setCodeMidi("valPtchList")
-            setCodeDisabled(true)
         }
-
+        console.log('typeChange: ', isChecked.checked)
+        switchTypeChange(isChecked.checked)
     };
-    const switchTypeChange = () => {
+    const switchTypeChange = (isChecked: boolean) => {
+        console.log('switchTypeChange: ', isChecked)
         if (isChecked) {
-            setCodeDisabled(true)
-        } else {
             setCodeDisabled(false)
+        } else {
+            setCodeDisabled(true)
         }
     }
+
+
+
     const typeOption =
         <div title={artFad ? typeCodeArt : typeCodeFad}>
-            <TdSelect id={`${type}Type_${id}`} options='valAddrList'></TdSelect>
+            <TdSelect id={`${type}Type_${id}`} options='valAddrList' onSelect={typeChange}></TdSelect>
         </div>
-    // needs to call typeChange()
 
     const changeOption =
         <TdSwitch
@@ -250,9 +255,9 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
             defaultVal="b"
             artFad={artFad}
             togArt={togArt}
-            showVals={true}>
+            showVals={true}
+            onSwitch={switchTypeChange}>
         </TdSwitch>
-    // needs to call switchTypeChange()
     // needs to call typeChange()
 
     const codeOption =

@@ -65,7 +65,7 @@ body {
 #TemplateTrackSettings tr,
  {
 	@apply hover:bg-zinc-800 dark:hover:bg-zinc-600; 
-	@apply text-zinc-900 hover:text-blue-600 dark:text-zinc-200 dark:hover:text-zinc-50;
+	@apply text-zinc-900 dark:text-zinc-200 dark:hover:text-zinc-50;
 
 }
 #TemplateTracks th, #TemplateTrackSettings th{

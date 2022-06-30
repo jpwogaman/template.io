@@ -10,19 +10,23 @@ interface TdSwitchProps {
     togArt?: boolean | undefined;
     showVals?: boolean;
     children?: ReactNode;
+    onSwitch?: any;
 }
 
-export const TdSwitch: FC<TdSwitchProps> = ({ artFad, togArt, showVals, title, defaultVal, id, a, b }) => {
+export const TdSwitch: FC<TdSwitchProps> = ({ onSwitch, artFad, togArt, showVals, title, defaultVal, id, a, b }) => {
 
     const [isChecked, setChecked] = useState<boolean>(defaultVal === "b" ? true : false)
 
     //Need something to pass through for the function.
     const valChange = () => {
+        console.log('valChange: ', isChecked)
         if (isChecked) {
             setChecked(false)
         } else {
             setChecked(true)
         }
+        console.log('valChange: ', isChecked)
+        onSwitch!(isChecked)
     }
 
     let val1SpanTitle = "the DEFAULT value relates to the CODE itself (i.e. DEFAULT = CC11)"
@@ -37,9 +41,6 @@ export const TdSwitch: FC<TdSwitchProps> = ({ artFad, togArt, showVals, title, d
         val1SpanTitle = "the ON value relates to the CODE itself (i.e. ON = CC18)"
         val2SpanTitle = "the ON value relates to the CODE's second Value (i.e. CODE = C#3, ON = Velocity 20)"
     }
-
-
-
 
     const valSpan1 =
         <span
