@@ -1,6 +1,7 @@
 import { TdSelect } from './select';
 import { IconBtnToggle } from './button-icon-toggle'
 import { SettingsRow } from './track-settings-table-row'
+import { TdInput } from './input';
 
 const devMode = true
 
@@ -12,58 +13,77 @@ export default function TrackSettings() {
     }
 
     const toggleNow = () => {
-        console.log('well')
+        console.log('lock')
     }
 
     return (
         <div id="TemplateTrackSettings" className="TrackSettings MShide p-4 z-50 transition-all duration-1000">
-            <div>
-                <div >
-                    <button
-                        className="w-10 h-10 border border-black mr-1 hover:border-green-50"
-                        title="Close Track Settings Window"
-                        onClick={closeSettingsWindow}>
-                        <i className="fa-solid fa-xmark"></i>
-                    </button>
-                    <IconBtnToggle
-                        classes="w-10 h-10 border border-black mr-1 hover:border-green-50"
-                        title="Lock this track."
-                        id="editLock"
-                        a="fa-solid fa-lock-open"
-                        b="fa-solid fa-lock"
-                        defaultIcon="a"
-                        onToggle={toggleNow}>
-                    </IconBtnToggle>
-                    <button
-                        className="w-10 h-10 border border-black mr-1 hover:border-green-50"
-                        title="Save Settings Window">
-                        <i className="fa-solid fa-save"></i>
-                    </button>
-                    {!devMode ? <div className=''>
-                        <ul id="dropdown-item-button">
-                            <li>Print Track Settings</li>
-                            <li>Save Track Settings as Manufacturer Default</li>
-                            <li>Open Manufacturer Default Settings for Track</li>
-                            <li>Save Track Settings as User Default</li>
-                            <li>Open User Default Settings for Track</li>
-                        </ul>
-                    </div> : null}
-                </div>
+            <div className='flex justify-space align-middle'>
+                <button
+                    className="w-10 h-10 text-xl border-2 border-zinc-900 dark:border-zinc-200 hover:scale-[1.15] hover:animate-pulse"
+                    title="Close the Track Settings Window."
+                    id="editClose"
+                    onClick={closeSettingsWindow}>
+                    <i className="fa-solid fa-xmark"></i>
+                </button>
+                <IconBtnToggle
+                    classes="w-10 h-10 mx-2 border-2 border-zinc-900 dark:border-zinc-200 hover:scale-[1.15] hover:animate-pulse"
+                    titleA="Lock the Settings for this Track."
+                    titleB="Unlock the Settings for this Track."
+                    id="editLock"
+                    a="fa-solid fa-lock-open"
+                    b="fa-solid fa-lock"
+                    defaultIcon="a"
+                    onToggleA={toggleNow}
+                    onToggleB={toggleNow}>
+                </IconBtnToggle>
+                <button
+                    className="w-10 h-10 border-2 border-zinc-900 dark:border-zinc-200 hover:scale-[1.15] hover:animate-pulse"
+                    title="Save the Settings for this Track."
+                    id="editSave">
+                    <i className="fa-solid fa-save"></i>
+                </button>
+                {!devMode ? <div className=''>
+                    <ul id="dropdown-item-button">
+                        <li>Print Track Settings</li>
+                        <li>Save Track Settings as Manufacturer Default</li>
+                        <li>Open Manufacturer Default Settings for Track</li>
+                        <li>Save Track Settings as User Default</li>
+                        <li>Open User Default Settings for Track</li>
+                    </ul>
+                </div> : null}
             </div>
 
-            <h2 id="trkEditDisplay" className=''>Track:</h2>
+            <h2 id="trkEditDisplay" className='my-2'>Track:</h2>
 
             <div className='flex items-center'>
+
+                <p>Playable Ranges: </p>
                 <div>
-                    <h3>Playable Range:</h3>
+                    <TdInput
+                        id={`fullRangeName_${'needtofindtrkid1'}`}
+                        title="Describe this range-group. (i.e hits/rolls)"
+                        placeholder="Range"
+                        defaultValue='Full Range'>
+                    </TdInput>
                 </div>
-                <div className='border-2 border-gray-600'>
+
+                <div className='settingsTd mx-2'>
                     <TdSelect id={`FullRngBot_${'needtofindtrkid1'}`} options="allNoteList"></TdSelect>
                 </div>
-                <div><i className='fas fa-arrow-right-long ml-1 mr-2' /></div>
-                <div className='border-2 border-gray-600'>
+
+                <i className='fas fa-arrow-right-long' />
+
+                <div className='settingsTd mx-2'>
                     <TdSelect id={`FullRngTop_${'needtofindtrkid2'}`} options="allNoteList"></TdSelect>
                 </div>
+
+                <button
+                    className="w-6 h-6 hover:scale-[1.15] hover:animate-pulse"
+                    title="This patch has more than one set of playable ranges.">
+                    <i className="fa-solid fa-plus" />
+                </button>
+
             </div>
 
             <h4 className='mt-5 mb-1'>Faders</h4>
@@ -71,23 +91,16 @@ export default function TrackSettings() {
             <table className='min-w-full table-fixed text-left text-sm'>
                 <thead>
                     <tr>
-                        <th className='p-0.5 w-[05%]' title="Fader Number">No.</th>
-                        <th className='p-0.5 w-[20%]' title="Set the NAME for this parameter. (i.e Dynamics)">Name</th>
-                        <th className='p-0.5 w-[25%]' title="Select the TYPE of code for this parameter.">Code Type</th>
-                        <th className='p-0.5 w-[18%]' title="Set the CODE for this patch. (i.e. CC11)">Code</th>
-                        <th className='p-0.5 w-[18%]' title="Set the DEFAULT value for this parameter.">Default</th>
-                        <th className='p-0.5 w-[14%]' title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
+                        <th className='settingsTh w-[05%]' title="Fader Number">No.</th>
+                        <th className='settingsTh w-[20%]' title="Set the NAME for this parameter. (i.e Dynamics)">Name</th>
+                        <th className='settingsTh w-[25%]' title="Select the TYPE of code for this parameter.">Code Type</th>
+                        <th className='settingsTh w-[18%]' title="Set the CODE for this patch. (i.e. CC11)">Code</th>
+                        <th className='settingsTh w-[18%]' title="Set the DEFAULT value for this parameter.">Default</th>
+                        <th className='settingsTh w-[14%]' title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
                     </tr>
                 </thead>
                 <tbody>
                     <SettingsRow id="01" type="fad" variant={undefined}></SettingsRow>
-                    <SettingsRow id="02" type="fad" variant={undefined}></SettingsRow>
-                    <SettingsRow id="03" type="fad" variant={undefined}></SettingsRow>
-                    <SettingsRow id="04" type="fad" variant={undefined}></SettingsRow>
-                    <SettingsRow id="05" type="fad" variant={undefined}></SettingsRow>
-                    <SettingsRow id="06" type="fad" variant={undefined}></SettingsRow>
-                    <SettingsRow id="07" type="fad" variant={undefined}></SettingsRow>
-                    <SettingsRow id="08" type="fad" variant={undefined}></SettingsRow>
                 </tbody>
             </table>
 
@@ -96,52 +109,37 @@ export default function TrackSettings() {
             <table className='min-w-full table-fixed text-left text-sm'>
                 <thead>
                     <tr>
-                        <th className='p-0.5 w-[05%]' title="Articulation Number">No.</th>
-                        <th className='p-0.5 w-[20%]' title="Set the NAME for this patch. (i.e Legato On/OFF)">Name</th>
-                        <th className='p-0.5 w-[25%]' title="Select the TYPE of code for this patch.">Code Type</th>
-                        <th className='p-0.5 w-[09%]' title="Set the CODE for this patch. (i.e. CC58)">Code</th>
-                        <th className='p-0.5 w-[09%]' title="Set the ON setting for this patch. (i.e. CC58, Value 76)">On</th>
-                        <th className='p-0.5 w-[09%]' title="Set the OFF setting for this patch. (i.e. CC58, Value 81)">Off</th>
-                        <th className='p-0.5 w-[09%]' title="Set the DEFAULT setting for this patch.">Default</th>
-                        <th className='p-0.5 w-[14%]' title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
+                        <th className='settingsTh w-[05%]' title="Articulation Number">No.</th>
+                        <th className='settingsTh w-[20%]' title="Set the NAME for this patch. (i.e Legato On/OFF)">Name</th>
+                        <th className='settingsTh w-[25%]' title="Select the TYPE of code for this patch.">Code Type</th>
+                        <th className='settingsTh w-[09%]' title="Set the CODE for this patch. (i.e. CC58)">Code</th>
+                        <th className='settingsTh w-[09%]' title="Set the ON setting for this patch. (i.e. CC58, Value 76)">On</th>
+                        <th className='settingsTh w-[09%]' title="Set the OFF setting for this patch. (i.e. CC58, Value 81)">Off</th>
+                        <th className='settingsTh w-[09%]' title="Set the DEFAULT setting for this patch.">Default</th>
+                        <th className='settingsTh w-[14%]' title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
                     </tr>
                 </thead>
                 <tbody>
                     <SettingsRow id="01" type="art" variant="tog"></SettingsRow>
-                    <SettingsRow id="02" type="art" variant="tog"></SettingsRow>
                 </tbody>
             </table>
             <h4 className='mt-5 mb-1'>Articulations (switch)</h4>
             <table className='min-w-full table-fixed text-left text-sm'>
                 <thead>
                     <tr>
-                        <th className='p-0.5 w-[05%]' title="Articulation Number">No.</th>
-                        <th className='p-0.5 w-[20%]' title="Set the NAME for this patch. (i.e Staccato)">Name</th>
-                        <th className='p-0.5 w-[25%]' title="Select the TYPE of code for this patch.">Code Type</th>
-                        <th className='p-0.5 w-[09%]' title="Set the CODE for this patch. (i.e. CC58)">Code</th>
-                        <th className='p-0.5 w-[09%]' title="Set the ON setting for this patch. (i.e. CC58, Value 21)">On</th>
-                        <th className='p-0.5 w-[09%]' title="Set the number of playable ranges for this patch.">Range</th>
-                        <th className='p-0.5 w-[09%]' title="Set the default patch.">Default</th>
-                        <th className='p-0.5 w-[14%]' title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
+                        <th className='settingsTh w-[05%]' title="Articulation Number">No.</th>
+                        <th className='settingsTh w-[20%]' title="Set the NAME for this patch. (i.e Staccato)">Name</th>
+                        <th className='settingsTh w-[25%]' title="Select the TYPE of code for this patch.">Code Type</th>
+                        <th className='settingsTh w-[09%]' title="Set the CODE for this patch. (i.e. CC58)">Code</th>
+                        <th className='settingsTh w-[09%]' title="Set the ON setting for this patch. (i.e. CC58, Value 21)">On</th>
+                        <th className='settingsTh w-[09%]' title="Set the number of playable ranges for this patch.">Range</th>
+                        <th className='settingsTh w-[09%]' title="Set the default patch.">Default</th>
+                        <th className='settingsTh w-[14%]' title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
                     </tr>
                 </thead>
                 <tbody>
                     <SettingsRow id="03" type="art" variant={undefined}></SettingsRow>
                     <SettingsRow id="04" type="art" variant={undefined}></SettingsRow>
-                    <SettingsRow id="05" type="art" variant={undefined}></SettingsRow>
-                    <SettingsRow id="06" type="art" variant={undefined}></SettingsRow>
-                    <SettingsRow id="07" type="art" variant={undefined}></SettingsRow>
-                    <SettingsRow id="08" type="art" variant={undefined}></SettingsRow>
-                    <SettingsRow id="09" type="art" variant={undefined}></SettingsRow>
-                    <SettingsRow id="10" type="art" variant={undefined}></SettingsRow>
-                    <SettingsRow id="11" type="art" variant={undefined}></SettingsRow>
-                    <SettingsRow id="12" type="art" variant={undefined}></SettingsRow>
-                    <SettingsRow id="13" type="art" variant={undefined}></SettingsRow>
-                    <SettingsRow id="14" type="art" variant={undefined}></SettingsRow>
-                    <SettingsRow id="15" type="art" variant={undefined}></SettingsRow>
-                    <SettingsRow id="16" type="art" variant={undefined}></SettingsRow>
-                    <SettingsRow id="17" type="art" variant={undefined}></SettingsRow>
-                    <SettingsRow id="18" type="art" variant={undefined}></SettingsRow>
                 </tbody>
             </table>
         </div >

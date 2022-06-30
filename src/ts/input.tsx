@@ -6,10 +6,11 @@ interface TdInputProps {
     placeholder: string;
     codeDisabled?: boolean;
     children?: ReactNode;
+    defaultValue?: string;
 }
 
-export const TdInput: FC<TdInputProps> = ({ id, placeholder, title, codeDisabled }) => {
-    const [valueName, setName] = useState<string>("")
+export const TdInput: FC<TdInputProps> = ({ defaultValue, id, placeholder, title, codeDisabled }) => {
+    const [valueName, setName] = useState<string>(defaultValue ? defaultValue : "")
 
     const nameChange = (event: ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value)
@@ -18,21 +19,17 @@ export const TdInput: FC<TdInputProps> = ({ id, placeholder, title, codeDisabled
     return (
         <input
             type="text"
-            className='            
-            hover:placeholder-zinc-200 dark:hover:placeholder-zinc-600
+            className='  
+            inputTd 
             min-w-full 
             bg-inherit 
-            placeholder-zinc-500 dark:placeholder-zinc-500
-            
             border 
             border-transparent
-            outline-green-500
+            outline-green-600 dark:outline-green-800
             outline-offset-4            
             hover:cursor-pointer                        
             focus:cursor-text 
-            focus:bg-white  
-            focus:placeholder-zinc-500
-            focus:text-zinc-900'
+            focus:bg-white'
             id={id}
             title={title}
             placeholder={placeholder}

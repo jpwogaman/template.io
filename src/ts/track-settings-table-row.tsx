@@ -1,4 +1,5 @@
-import { FC, useState, ChangeEvent, Fragment } from "react";
+import { FC, useState, ChangeEvent, Fragment, ReactNode } from "react";
+import { IconBtnToggle } from "./button-icon-toggle";
 import { TdSwitch } from "./checkbox-switch";
 import { TdInput } from "./input";
 import { TdSelect } from "./select";
@@ -9,55 +10,42 @@ import { TdSelect } from "./select";
 
 interface RangeRowProps {
     id: string;
+    children?: ReactNode;
 }
 
-const RangeRows: FC<RangeRowProps> = (id) => {
+const RangeRows: FC<RangeRowProps> = ({ id }) => {
 
-    const [valueName, setName] = useState<string>("")
     const [RangeList, setRanges] = useState<any[]>([
         {
             id: "01"
         },
     ])
 
-    const nameChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setName(event.target.value)
-    }
+    const addRange = (artId: string, rangeId: string) => {
 
-    const addRange = (id: string) => {
+        let newRangeIdNumb: number = parseInt(rangeId) + 1
 
-        const rangeIndex: number = RangeList.findIndex(i => i.id === id)
-        const selectedRange: string = 'trk_' + id
-
-        let newIdNumb: number = parseInt(id) + 1
-
-        let newIdStr: string = newIdNumb.toLocaleString('en-US', {
+        let newRangeIdStr: string = newRangeIdNumb.toLocaleString('en-US', {
             minimumIntegerDigits: 2,
             useGrouping: false
         })
-
-        console.log(`selectedRange: ${selectedRange} RangeList[Index]: ${rangeIndex}`)
-        console.log(`nextRangeId: ${newIdStr}`)
-
-        // const newRange = { newIdStr }
-        // setRanges([...RangeList, newRange])
+        const newRange = { id: newRangeIdStr }
+        setRanges([...RangeList, newRange])
     }
 
-    const removeRange = (id: string) => {
-        console.log('remove range', id);
+    const removeRange = (artId: string, rangeId: string) => {
 
         if (RangeList.length !== 1) {
-            setRanges(RangeList.filter((range) => range.id !== id));
+            setRanges(RangeList.filter((range) => range.id !== rangeId));
         }
     }
 
     return (
         <Fragment>
             {RangeList.map((range) => (
-                <tr key={`ArtRange_${id}_${range.id}`} id={`ArtRange_${id}_${range.id}`} className="">
-                    <td className="p-0.5 rangeRow"></td>
-                    <td className="p-0.5 rangeRow"></td>
-                    <td className="p-0.5 pl-1">
+                <tr key={`ArtRange_${id}_${range.id}`} id={`ArtRange_${id}_${range.id}`} className="rangeTr">
+                    <td colSpan={2} className="rangeTdEmpty"></td>
+                    <td className="rangeTd">
                         <TdInput
                             id={`ArtRangeName_${id}_${range.id}`}
                             title="Describe this range-group. (i.e hits/rolls)"
@@ -65,24 +53,29 @@ const RangeRows: FC<RangeRowProps> = (id) => {
                             codeDisabled={false}>
                         </TdInput>
                     </td>
-                    <td className="p-0.5">
+                    <td className="rangeTd">
                         <TdSelect id={`ArtRngBot_${id}_${range.id}`} options="allNoteList"></TdSelect>
                     </td>
-                    <td className="p-0.5">
+                    <td className="rangeTd text-center">
+                        <i className='fas fa-arrow-right-long' />
+                    </td>
+                    <td className="rangeTd">
                         <TdSelect id={`ArtRngTop_${id}_${range.id}`} options="allNoteList"></TdSelect>
                     </td>
-                    <td className="p-0.5 text-center align-middle">
-                        <button
-                            className="w-6 h-6 border border-black hover:border-green-50"
-                            title="This patch has more than one set of playable ranges."
-                        // onDelete={() => removeRange(range.id)}
-                        // onAdd={() => addRange(range.id)} 
-                        >
-                            <i className="fa-solid fa-plus"></i>
-                        </button>
+                    <td className="rangeTd text-center">
+                        <IconBtnToggle
+                            classes="w-6 h-6 hover:scale-[1.15] hover:animate-pulse"
+                            titleA="Add another set of playable ranges."
+                            titleB="Remove this set of playable ranges."
+                            id={`ArtRangeAddButton_${id}_${range.id}`}
+                            a="fa-solid fa-plus"
+                            b="fa-solid fa-minus"
+                            defaultIcon="a"
+                            onToggleA={() => addRange(id, range.id)}
+                            onToggleB={() => removeRange(id, range.id)}>
+                        </IconBtnToggle>
                     </td>
-                    <td className="p-0.5 rangeRow"></td>
-                    <td className="p-0.5 rangeRow"></td>
+                    <td className="rangeTdEmpty"></td>
                 </tr>
             ))}
         </Fragment >
@@ -118,16 +111,11 @@ interface SettingsRowProps {
     id: string;
     type: string;
     variant: string | undefined;
-    onDelete?: any;
-    onAdd?: any;
-    // onDelete: (id: string) => MouseEventHandler<HTMLButtonElement>;
-    // onAdd: (id: string) => MouseEventHandler<HTMLButtonElement>;
 }
 
 export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
 
 
-    const [valueName, setName] = useState<string>("")
     const [checkRngTitle, setRngTitle] = useState<string>("Switch to independent playable range.")
 
 
@@ -158,9 +146,7 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
     const togArt: boolean = variant === "tog" ? true : false
     const artFad: boolean = type === "art" ? true : false
 
-    const nameChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setName(event.target.value)
-    }
+
 
     const rangeOptionChange = () => {
         if (isChecked3) {
@@ -329,26 +315,26 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
 
     const justArt =
         <Fragment>
-            <td className='p-0.5'>{onOption}</td>
-            <td className='p-0.5'>{togArt ? offOption : rangeOption}</td>
+            <td className='settingsTd'>{onOption}</td>
+            <td className='settingsTd'>{togArt ? offOption : rangeOption}</td>
         </Fragment>
 
     // const justFad =
     //     <Fragment>
-    //         <td className='p-0.5'></td>
-    //         <td className='p-0.5'></td>
+    //         <td className='settingsTd'></td>
+    //         <td className='settingsTd'></td>
     //     </Fragment>
 
     return (
         <Fragment>
-            <tr id={`${type}_${id}`} className="">
-                <td className='p-0.5' id={`${type}Numb_${id}`} title={`${artFad ? "Articulation" : "Fader"} No. ${parseInt(id)}`}>{parseInt(id)}</td>
-                <td className='p-0.5'>{nameOption}</td>
-                <td className='p-0.5'>{typeOption}</td>
-                <td className='p-0.5'>{codeOption}</td>
+            <tr id={`${type}_${id}`} className="settingsTr">
+                <td className='settingsTd' id={`${type}Numb_${id}`} title={`${artFad ? "Articulation" : "Fader"} No. ${parseInt(id)}`}>{parseInt(id)}</td>
+                <td className='settingsTd'>{nameOption}</td>
+                <td className='settingsTd'>{typeOption}</td>
+                <td className='settingsTd'>{codeOption}</td>
                 {artFad ? justArt : null}
-                <td className='p-0.5'>{deftOption}</td>
-                <td className='p-0.5'>{changeOption}</td>
+                <td className='settingsTd'>{deftOption}</td>
+                <td className='settingsTd'>{changeOption}</td>
             </tr>
             {showRngSelect ? <RangeRows id={id}></RangeRows> : null}
         </Fragment>

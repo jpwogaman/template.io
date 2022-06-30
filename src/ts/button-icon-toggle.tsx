@@ -1,33 +1,36 @@
 import { ReactNode, FC, useState } from "react";
 interface IconBtnToggleProps {
     id: string;
-    title: string;
+    titleA: string;
+    titleB: string;
     classes: string;
     a: string;
     b: string;
     defaultIcon: string;
-    onToggle?: () => void | void | undefined;
+    onToggleA?: () => void | void | undefined;
+    onToggleB?: () => void | void | undefined;
     children?: ReactNode;
 }
 
-const IconBtnToggle: FC<IconBtnToggleProps> = ({ onToggle, classes, defaultIcon, title, id, a, b }) => {
+const IconBtnToggle: FC<IconBtnToggleProps> = ({ onToggleA, onToggleB, classes, defaultIcon, titleA, titleB, id, a, b }) => {
 
     const [isToggleOn, setToggle] = useState<boolean>(defaultIcon === "a" ? true : false)
 
     const handleClick = () => {
-        onToggle!()
 
         if (isToggleOn) {
             setToggle(false)
+            onToggleA!()
         } else {
             setToggle(true)
+            onToggleB!()
         }
     }
 
     return (
         <button
             className={`transition-all duration-100 ${classes}`}
-            title={title}
+            title={isToggleOn ? titleA : titleB}
             onClick={handleClick}
             id={id} >
             <i className={isToggleOn ? a : b}></i>
@@ -40,7 +43,8 @@ export { IconBtnToggle }
 const example =
     <IconBtnToggle
         classes="className"
-        title="title"
+        titleA="titleA"
+        titleB="titleB"
         id="id"
         a="fa-solid fa-lock-open"
         b="fa-solid fa-lock"

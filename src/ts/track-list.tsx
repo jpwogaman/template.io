@@ -1,7 +1,8 @@
-import { FC, ChangeEvent, Fragment, useState } from 'react';
+import { FC, Fragment, ReactNode, useState } from 'react';
 import { TdSelect } from './select';
 import ColorPicker from './color-picker'
 import { TdInput } from './input';
+import { IconBtnToggle } from './button-icon-toggle';
 
 const devMode = true
 
@@ -15,13 +16,12 @@ const settingsOpen = () => {
 }
 interface TrackRowProps {
     id: string;
-    onDelete: any;
-    onAdd: any;
-    // onDelete: (id: string) => MouseEventHandler<HTMLButtonElement>;
-    // onAdd: (id: string) => MouseEventHandler<HTMLButtonElement>;
+    children?: ReactNode;
+    onAdd?: () => void | void | undefined;
+    onDelete?: () => void | void | undefined;
 }
 
-const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
+const TrackRow: FC<TrackRowProps> = ({ id, onAdd, onDelete }) => {
 
     const nameOption =
         <TdInput
@@ -54,28 +54,27 @@ const TrackRow: FC<TrackRowProps> = ({ id, onDelete, onAdd }) => {
                 onClick={settingsOpen}>
                 <i className="fa-solid fa-pen-to-square"></i>
             </button>
-            <button
-                className="w-6 h-6 mr-1 hover:border-green-50"
-                title="Delete Track"
-                onClick={() => onDelete}>
-                <i className="fas fa-xmark" />
-            </button>
-            <button
-                className="w-6 h-6 mr-1 hover:border-green-50"
-                title="Add Track"
-                onClick={() => onAdd}>
-                <i className="fas fa-plus" />
-            </button>
+            <IconBtnToggle
+                classes="w-6 h-6 hover:scale-[1.15] hover:animate-pulse"
+                titleA="Add another set of playable ranges."
+                titleB="Remove this set of playable ranges."
+                id={`AddTrackButton_${id}`}
+                a="fa-solid fa-plus"
+                b="fa-solid fa-minus"
+                defaultIcon="a"
+                onToggleA={onAdd}
+                onToggleB={onDelete}>
+            </IconBtnToggle>
         </div >
 
     return (
-        <tr id={"trk_" + id} className="">
-            <td className='p-0.5' id={`trkNumb_${id}`}>{parseInt(id)}</td>
-            <td className='p-0.5'>{nameOption}</td>
-            <td className='p-0.5'>{chnOption}</td>
-            <td className='p-0.5'>{smpOutOption}</td>
-            <td className='p-0.5'>{vepOutOption}</td>
-            <td className='p-0.5'>{editTrack}</td>
+        <tr id={"trk_" + id} className="trackTr">
+            <td className='trackTd' id={`trkNumb_${id}`}>{parseInt(id)}</td>
+            <td className='trackTd'>{nameOption}</td>
+            <td className='trackTd'>{chnOption}</td>
+            <td className='trackTd'>{smpOutOption}</td>
+            <td className='trackTd'>{vepOutOption}</td>
+            <td className='trackTd'>{editTrack}</td>
         </tr>
     );
 };
@@ -89,58 +88,38 @@ const Tracks: FC<TracksProps> = () => {
     const [TrackList, setTracks] = useState<any[]>([
         {
             id: "01"
-        },
-        {
-            id: "02"
-        },
-        {
-            id: "03"
         }
     ])
 
-    const addTrack = (id: string) => {
+    const addTrack = (trackId: string) => {
 
-        const trackIndex: number = TrackList.findIndex(i => i.id === id)
-        const selectedTrack: string = 'trk_' + id
+        let newTrackIdNumb: number = parseInt(trackId) + 1
 
-        let newIdNumb: number = parseInt(id) + 1
-
-        let newIdStr: string = newIdNumb.toLocaleString('en-US', {
+        let newTrackIdStr: string = newTrackIdNumb.toLocaleString('en-US', {
             minimumIntegerDigits: 2,
             useGrouping: false
         })
-
-        console.log(`selectedTrack: ${selectedTrack} TrackList[Index]: ${trackIndex}`)
-        console.log(`nextTrackId: ${newIdStr}`)
-
-        // const newTrack = { newIdStr }
-        // setTracks([...TrackList, newTrack])
+        const newTrack = { id: newTrackIdStr }
+        setTracks([...TrackList, newTrack])
     }
 
-    const removeTrack = (id: string) => {
-        console.log('remove track', id);
+    const removeTrack = (trackId: string) => {
 
         if (TrackList.length !== 1) {
-            setTracks(TrackList.filter((track) => track.id !== id));
+            setTracks(TrackList.filter((Track) => Track.id !== trackId));
         }
     }
 
     return (
         <Fragment>
             {TrackList.map((track) => (
-                <Fragment>
-                    <TrackRow
-                        key={track.id}
-                        id={track.id}
-                        onDelete={() => removeTrack(track.id)}
-                        onAdd={() => addTrack(track.id)} />
-                    <TrackRow
-                        key={track.id}
-                        id={track.id}
-                        onDelete={() => removeTrack(track.id)}
-                        onAdd={() => addTrack(track.id)} />
+                <TrackRow
+                    key={track.id}
+                    id={track.id}
+                    onAdd={() => addTrack(track.id)}
+                    onDelete={() => removeTrack(track.id)}
 
-                </Fragment>
+                />
             ))}
         </Fragment>
     )
@@ -150,11 +129,6 @@ interface SamplerInfoProps {
 
 }
 const SamplerInfo: FC<SamplerInfoProps> = () => {
-
-    const [valueName, setName] = useState<string>("")
-    const nameChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setName(event.target.value)
-    }
 
     return (
         <Fragment>
@@ -196,12 +170,12 @@ export default function TrackList() {
                 <table className='table-auto border-collapse text-left text-sm min-w-full'>
                     <thead>
                         <tr>
-                            <th className='p-0.5 w-[05%]' title="Unique Track Number">No.</th>
-                            <th className='p-0.5 w-[45%]' title="Set the MIDI channel for this track or multi.">Name</th>
-                            <th className='p-0.5 w-[10%]' title="Set the NAME for this track or multi.">MIDI Channel</th>
-                            <th className='p-0.5 w-[10%]' title="Set the sampler outputs for this track or multi.">Sampler Outputs</th>
-                            <th className='p-0.5 w-[10%]' title="Set the instance outputs for this track or multi.">Instance Outputs</th>
-                            <th className='p-0.5 w-[20%]' title="Edit Track Parameters"></th>
+                            <th className='trackTh w-[05%]' title="Unique Track Number">No.</th>
+                            <th className='trackTh w-[45%]' title="Set the MIDI channel for this track or multi.">Name</th>
+                            <th className='trackTh w-[10%]' title="Set the NAME for this track or multi.">MIDI Channel</th>
+                            <th className='trackTh w-[10%]' title="Set the sampler outputs for this track or multi.">Sampler Outputs</th>
+                            <th className='trackTh w-[10%]' title="Set the instance outputs for this track or multi.">Instance Outputs</th>
+                            <th className='trackTh w-[20%]' title="Edit Track Parameters"></th>
                         </tr>
                     </thead>
                     <tbody>

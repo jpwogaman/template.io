@@ -43,13 +43,13 @@ export const TdSwitch: FC<TdSwitchProps> = ({ onSwitch, artFad, togArt, showVals
     const valSpan1 =
         <span
             title={val1SpanTitle}
-            className={isChecked ? 'text-gray-400 transition-colors cursor-default' :
+            className={isChecked ? 'text-zinc-400 dark:text-zinc-500 transition-colors cursor-default' :
                 'transition-colors cursor-default'}>{a}</span>
 
     const valSpan2 =
         <span
             title={val2SpanTitle}
-            className={!isChecked ? 'text-gray-400 transition-colors cursor-default' :
+            className={!isChecked ? 'text-zinc-400  dark:text-zinc-500 transition-colors cursor-default' :
                 'transition-colors cursor-default'}>{b}</span>
 
     return (
@@ -70,7 +70,7 @@ export const TdSwitch: FC<TdSwitchProps> = ({ onSwitch, artFad, togArt, showVals
                 <div className="
                     w-8 
                     h-4
-                    bg-blue-800
+                    bg-blue-600 dark:bg-blue-800
                     peer-focus:outline-none                    
                     rounded-full                                             
                     peer-checked:after:translate-x-full 
@@ -86,7 +86,7 @@ export const TdSwitch: FC<TdSwitchProps> = ({ onSwitch, artFad, togArt, showVals
                     after:h-4 
                     after:w-4
                     after:transition-all 
-                    peer-checked:bg-green-700">
+                    peer-checked:bg-green-600 dark:peer-checked:bg-green-800">
                 </div>
             </label>
             {showVals ? valSpan2 : null}
