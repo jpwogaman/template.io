@@ -14,7 +14,7 @@ const template = ReactDOM.createRoot(
 template.render(
     <Fragment>
         <TemplateNavbar />
-        <div id="TemplateData">
+        <div id="TemplateData" className='h-[calc(100vh-40px)] w-100'>
             <TrackList />
             <TrackSettings />
         </div>

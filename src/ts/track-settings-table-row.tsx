@@ -4,10 +4,6 @@ import { TdSwitch } from "./checkbox-switch";
 import { TdInput } from "./input";
 import { TdSelect } from "./select";
 
-
-
-
-
 interface RangeRowProps {
     id: string;
     children?: ReactNode;
