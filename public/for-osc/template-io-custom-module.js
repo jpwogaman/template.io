@@ -83,11 +83,27 @@ for (let i = 0; i < 18; i++) {
 	artColor_osc[i] = '/artcolr_' + parseInt(i + 1);
 	artModeA_osc[i] = '/artmodA_' + parseInt(i + 1);
 	artModeB_osc[i] = '/artmodB_' + parseInt(i + 1);
+
+	// artName__osc[i] = '/template-io_artname_' + parseInt(i + 1);
+	// artType__osc[i] = '/template-io_arttype_' + parseInt(i + 1);
+	// artCode__osc[i] = '/template-io_artcode_' + parseInt(i + 1);
+	// artInput_osc[i] = '/template-io_artinpt_' + parseInt(i + 1);
+	// artDeflt_osc[i] = '/template-io_artdeft_' + parseInt(i + 1);
+	// artOn____osc[i] = '/template-io_arton___' + parseInt(i + 1);
+	// artOff___osc[i] = '/template-io_artoff__' + parseInt(i + 1);
+	// artRange_osc[i] = '/template-io_artrang_' + parseInt(i + 1);
+	// artColor_osc[i] = '/template-io_artcolr_' + parseInt(i + 1);
+	// artModeA_osc[i] = '/template-io_artmodA_' + parseInt(i + 1);
+	// artModeB_osc[i] = '/template-io_artmodB_' + parseInt(i + 1);
 }
 for (let i = 0; i < 8; i++) {
 	fadName__osc[i] = '/CC_disp_' + parseInt(i + 1);
 	fadAddr__osc[i] = '/CC_fad__' + parseInt(i + 1);
 	fadCode__osc[i] = '/CC_incr_' + parseInt(i + 1);
+
+	// fadName__osc[i] = '/template-io_CC_disp_' + parseInt(i + 1);
+	// fadAddr__osc[i] = '/template-io_CC_fad__' + parseInt(i + 1);
+	// fadCode__osc[i] = '/template-io_CC_incr_' + parseInt(i + 1);
 }
 //array of all notes (Middle C == C3 == MIDI Code 60)
 const allNotes_loc = [];
@@ -185,8 +201,8 @@ function clickTrk(arg1, arg2) {
 }
 //
 function keyRanges(x) {
-	receive('/keyRangeVar1', x);
-	receive('/keyRangeScript', 1);
+	receive('/template-io_keyRangeVar1', x);
+	receive('/template-io_keyRangeScript', 1);
 }
 module.exports = {
 	init: function () {
@@ -227,8 +243,10 @@ module.exports = {
 		}
 		if (togUpdat_loc) {
 			receive('/trackNameColor', '#70b7ff');
+			receive('/template-io_trackNameColor', '#70b7ff');
 		} else {
 			receive('/trackNameColor', 'red');
+			receive('/template-io_trackNameColor', 'red');
 		}
 		if (togUpdat_loc && togClkTr_loc) {
 			trkUpdate();
@@ -243,6 +261,8 @@ module.exports = {
 
 			receive('/selectedTrackName', trkName);
 			receive('/selectedTrackKeyRanges', trkRang);
+			receive('/template-io_selectedTrackName', trkName);
+			receive('/template-io_selectedTrackKeyRanges', trkRang);
 
 			if (artRng3 === '') {
 				keyRanges(trkRang);
