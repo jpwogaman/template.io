@@ -5,22 +5,28 @@ import { TdInput, Input } from './input';
 import { IconBtnToggle } from './button-icon-toggle';
 import { devMode } from './track-settings'
 
-const settingsOpen = () => {
 
-    if (document.getElementById('TemplateTrackSettings')!.classList.contains('MShide')) {
-        document.getElementById('TemplateTrackSettings')!.classList.replace('MShide', 'MSshow');
-        document.getElementById('TemplateTracks')!.classList.replace('MShideTemplateTracks', 'MSshowTemplateTracks');
-    }
-    else return
-}
+
 interface TrackRowProps {
     id: string;
     children?: ReactNode;
     onAdd?: () => void | void | undefined;
     onDelete?: () => void | void | undefined;
+    setSelectedTrack?: () => void | void | undefined;
 }
 
 const TrackRow: FC<TrackRowProps> = ({ id, onAdd, onDelete }) => {
+
+    const settingsOpen = () => {
+
+        // setSelectedTrack(`Track ${parseInt(id)}`)
+
+        if (document.getElementById('TemplateTrackSettings')!.classList.contains('MShide')) {
+            document.getElementById('TemplateTrackSettings')!.classList.replace('MShide', 'MSshow');
+            document.getElementById('TemplateTracks')!.classList.replace('MShideTemplateTracks', 'MSshowTemplateTracks');
+        }
+        else return
+    }
 
     const nameOption =
         <TdInput
@@ -32,17 +38,26 @@ const TrackRow: FC<TrackRowProps> = ({ id, onAdd, onDelete }) => {
 
     const chnOption =
         <div title="Set the MIDI channel for this track or multi.">
-            <TdSelect id={`trkChn_${id}`} options="chnMidiList"></TdSelect>
+            <TdSelect
+                id={`trkChn_${id}`}
+                options="chnMidiList">
+            </TdSelect>
         </div>
 
     const smpOutOption =
         <div title="Set the sampler outputs for this track or multi." >
-            <TdSelect id={`trkSmpOut_${id}`} options="smpOutsList"></TdSelect>
+            <TdSelect
+                id={`trkSmpOut_${id}`}
+                options="smpOutsList">
+            </TdSelect>
         </div >
 
     const vepOutOption =
         <div title="Set the instance outputs for this track or multi.">
-            <TdSelect id={`trkVepOut_${id}`} options="vepOutsList"></TdSelect>
+            <TdSelect
+                id={`trkVepOut_${id}`}
+                options="vepOutsList">
+            </TdSelect>
         </div >
 
     const editTrack =
@@ -81,7 +96,7 @@ const TrackRow: FC<TrackRowProps> = ({ id, onAdd, onDelete }) => {
 	    p-0.5`
 
     return (
-        <tr id={"trk_" + id} className={`${trackTr}`}>
+        <tr id={`trk_${id}`} className={`${trackTr}`}>
             <td className={`${trackTd}`} id={`trkNumb_${id}`} title="Unique Track Number">{parseInt(id)}</td>
             <td className={`${trackTd}`}>{nameOption}</td>
             <td className={`${trackTd}`}>{chnOption}</td>
@@ -99,10 +114,10 @@ const TrackRow: FC<TrackRowProps> = ({ id, onAdd, onDelete }) => {
 };
 
 interface TracksProps {
-
+    setSelectedTrack: () => void | void | undefined;
 }
 
-const Tracks: FC<TracksProps> = () => {
+const Tracks: FC<TracksProps> = ({ setSelectedTrack }) => {
 
     const [TrackList, setTracks] = useState<any[]>([
         {
@@ -137,8 +152,7 @@ const Tracks: FC<TracksProps> = () => {
                     id={track.id}
                     onAdd={() => addTrack(track.id)}
                     onDelete={() => removeTrack(track.id)}
-
-                />
+                    setSelectedTrack={setSelectedTrack} />
             ))}
         </Fragment>
     )
@@ -188,7 +202,7 @@ const addMultipleTracks = (event: ChangeEvent<HTMLInputElement>) => {
 
 };
 
-export default function TrackList() {
+export default function TrackList({ setSelectedTrack }) {
 
     const trackTh =
         `border-2
@@ -204,7 +218,7 @@ export default function TrackList() {
 
 
     return (
-        <div id="TemplateTracks" className="MShideTemplateTracks h-[100%] overflow-auto float-left transition-all duration-1000">
+        <div id="TemplateTracks" className="MSshowTemplateTracks h-[100%] overflow-auto float-left transition-all duration-1000">
             <div className='p-4 bg-stone-300 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-200'>
                 <div id="trackList_toolbar" className="">
                     <div className='flex justify-between align-middle mb-2' >
@@ -229,8 +243,6 @@ export default function TrackList() {
                                 onSubmit={addMultipleTracks}>
                             </Input>
                         </button>
-
-
                     </div >
                 </div >
 
@@ -250,7 +262,7 @@ export default function TrackList() {
                         </tr>
                     </thead>
                     <tbody>
-                        <Tracks></Tracks>
+                        <Tracks setSelectedTrack={setSelectedTrack}></Tracks>
                     </tbody>
                 </table>
             </div>
