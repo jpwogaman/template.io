@@ -207,7 +207,14 @@ export default function TrackList() {
         <div id="TemplateTracks" className="MShideTemplateTracks h-[100%] overflow-auto float-left transition-all duration-1000">
             <div className='p-4 bg-stone-300 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-200'>
                 <div id="trackList_toolbar" className="">
-                    <div className='flex justify-space align-middle mb-2' >
+                    <div className='flex justify-between align-middle mb-2' >
+                        <button
+                            className="px-4 w-50 h-50 text-xl border-2 border-zinc-900 dark:border-zinc-200 hover:border-red-600 hover:scale-[1.15] hover:animate-pulse"
+                            title="Re-number Tracks. CAREFUL"
+                            id="renumberTracks"
+                            onClick={console.log('renumber') as undefined}>
+                            <i className="fa-solid fa-arrow-down-1-9"></i>
+                        </button>
                         <button
                             className="w-30 h-10 text-xl border-2 border-zinc-900 dark:border-zinc-200 hover:scale-[1.15] hover:animate-pulse"
                             title={`Add Multiple Tracks. (${addMltTrkInput})`}
@@ -222,6 +229,7 @@ export default function TrackList() {
                                 onSubmit={addMultipleTracks}>
                             </Input>
                         </button>
+
 
                     </div >
                 </div >

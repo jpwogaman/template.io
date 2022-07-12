@@ -28,6 +28,12 @@ export default function TrackSettings() {
         dark:font-normal
         p-1`
 
+    const settingsTd =
+        `border-2 
+        border-zinc-400 
+        dark:border-zinc-600
+        p-0.5`
+
     return (
         <div id="TemplateTrackSettings" className="bg-stone-300 dark:bg-zinc-800 h-[100%] overflow-auto text-zinc-900 dark:text-zinc-200 MShide p-4 z-50 transition-all duration-1000">
             <div className='flex justify-space align-middle'>
@@ -80,13 +86,13 @@ export default function TrackSettings() {
                     </TdInput>
                 </div>
 
-                <div className='settingsTd mx-2'>
+                <div className={`${settingsTd} mx-2`}>
                     <TdSelect id={`FullRngBot_${'needtofindtrkid1'}`} options="allNoteList"></TdSelect>
                 </div>
 
                 <i className='fas fa-arrow-right-long' />
 
-                <div className='settingsTd mx-2'>
+                <div className={`${settingsTd} mx-2`}>
                     <TdSelect id={`FullRngTop_${'needtofindtrkid2'}`} options="allNoteList"></TdSelect>
                 </div>
 
