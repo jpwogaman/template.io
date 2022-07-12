@@ -36,12 +36,37 @@ const RangeRows: FC<RangeRowProps> = ({ id }) => {
         }
     }
 
+
+    const rangeTr =
+        `bg-zinc-300 
+        dark:bg-stone-800 
+        hover:bg-zinc-500 
+        dark:hover:bg-zinc-400 
+        hover:text-zinc-50 
+        dark:hover:text-zinc-50`
+
+    const rangeTd =
+        `border-2 
+        border-zinc-400 
+        dark:border-zinc-600
+        p-0.5`
+
+
+    const rangeTdEmpty =
+        `bg-zinc-400 
+        dark:bg-zinc-600
+        border-2 
+        border-zinc-400 
+        dark:border-zinc-600
+        p-0.5`
+
+
     return (
         <Fragment>
             {RangeList.map((range) => (
-                <tr key={`ArtRange_${id}_${range.id}`} id={`ArtRange_${id}_${range.id}`} className="rangeTr">
-                    <td colSpan={2} className="rangeTdEmpty"></td>
-                    <td className="rangeTd">
+                <tr key={`ArtRange_${id}_${range.id}`} id={`ArtRange_${id}_${range.id}`} className={`${rangeTr}`}>
+                    <td colSpan={2} className={`${rangeTdEmpty}`}></td>
+                    <td className={`${rangeTd}`}>
                         <TdInput
                             id={`ArtRangeName_${id}_${range.id}`}
                             title="Describe this range-group. (i.e hits/rolls)"
@@ -49,16 +74,16 @@ const RangeRows: FC<RangeRowProps> = ({ id }) => {
                             codeDisabled={false}>
                         </TdInput>
                     </td>
-                    <td className="rangeTd">
+                    <td className={`${rangeTd}`}>
                         <TdSelect id={`ArtRngBot_${id}_${range.id}`} options="allNoteList"></TdSelect>
                     </td>
-                    <td className="rangeTd text-center">
+                    <td className={`${rangeTd} text-center`}>
                         <i className='fas fa-arrow-right-long' />
                     </td>
-                    <td className="rangeTd">
+                    <td className={`${rangeTd}`}>
                         <TdSelect id={`ArtRngTop_${id}_${range.id}`} options="allNoteList"></TdSelect>
                     </td>
-                    <td className="rangeTd text-center">
+                    <td className={`${rangeTd} text-center`}>
                         <IconBtnToggle
                             classes="w-6 h-6 hover:scale-[1.15] hover:animate-pulse"
                             titleA="Add another set of playable ranges."
@@ -71,7 +96,7 @@ const RangeRows: FC<RangeRowProps> = ({ id }) => {
                             onToggleB={() => removeRange(id, range.id)}>
                         </IconBtnToggle>
                     </td>
-                    <td className="rangeTdEmpty"></td>
+                    <td className={`${rangeTdEmpty}`}></td>
                 </tr>
             ))}
         </Fragment >
@@ -309,28 +334,43 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
             {artFad && !togArt ? deftCheck : deftSelect}
         </Fragment>
 
+    const settingsTr =
+        `bg-zinc-300 
+        dark:bg-stone-800 
+        hover:bg-zinc-500 
+        dark:hover:bg-zinc-400 
+        hover:text-zinc-50 
+        dark:hover:text-zinc-50`
+
+    const settingsTd =
+        `border-2 
+        border-zinc-400 
+        dark:border-zinc-600
+        p-0.5`
+
     const justArt =
         <Fragment>
-            <td className='settingsTd'>{onOption}</td>
-            <td className='settingsTd'>{togArt ? offOption : rangeOption}</td>
+            <td className={`${settingsTd}`}>{onOption}</td>
+            <td className={`${settingsTd}`}>{togArt ? offOption : rangeOption}</td>
         </Fragment>
 
     // const justFad =
     //     <Fragment>
-    //         <td className='settingsTd'></td>
-    //         <td className='settingsTd'></td>
+    //         <td className={`${settingsTd}`}></td>
+    //         <td className={`${settingsTd}`}></td>
     //     </Fragment>
+
 
     return (
         <Fragment>
-            <tr id={`${type}_${id}`} className="settingsTr">
-                <td className='settingsTd' id={`${type}Numb_${id}`} title={`${artFad ? "Articulation" : "Fader"} No. ${parseInt(id)}`}>{parseInt(id)}</td>
-                <td className='settingsTd'>{nameOption}</td>
-                <td className='settingsTd'>{typeOption}</td>
-                <td className='settingsTd'>{codeOption}</td>
+            <tr id={`${type}_${id}`} className={`${settingsTr}`}>
+                <td className={`${settingsTd}`} id={`${type}Numb_${id}`} title={`${artFad ? "Articulation" : "Fader"} No. ${parseInt(id)}`}>{parseInt(id)}</td>
+                <td className={`${settingsTd}`}>{nameOption}</td>
+                <td className={`${settingsTd}`}>{typeOption}</td>
+                <td className={`${settingsTd}`}>{codeOption}</td>
                 {artFad ? justArt : null}
-                <td className='settingsTd'>{deftOption}</td>
-                <td className='settingsTd'>{changeOption}</td>
+                <td className={`${settingsTd}`}>{deftOption}</td>
+                <td className={`${settingsTd}`}>{changeOption}</td>
             </tr>
             {showRngSelect ? <RangeRows id={id}></RangeRows> : null}
         </Fragment>

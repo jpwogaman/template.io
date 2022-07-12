@@ -66,20 +66,34 @@ const TrackRow: FC<TrackRowProps> = ({ id, onAdd, onDelete }) => {
             </IconBtnToggle>
         </div >
 
+    const trackTr =
+        `bg-zinc-300 
+        dark:bg-stone-800 
+        hover:bg-zinc-500 
+        dark:hover:bg-zinc-400 
+	    hover:text-zinc-50 
+        dark:hover:text-zinc-50`
+
+    const trackTd =
+        `border-2 
+        border-zinc-400 
+        dark:border-zinc-600
+	    p-0.5`
+
     return (
-        <tr id={"trk_" + id} className="trackTr">
-            <td className='trackTd' id={`trkNumb_${id}`} title="Unique Track Number">{parseInt(id)}</td>
-            <td className='trackTd'>{nameOption}</td>
-            <td className='trackTd'>{chnOption}</td>
+        <tr id={"trk_" + id} className={`${trackTr}`}>
+            <td className={`${trackTd}`} id={`trkNumb_${id}`} title="Unique Track Number">{parseInt(id)}</td>
+            <td className={`${trackTd}`}>{nameOption}</td>
+            <td className={`${trackTd}`}>{chnOption}</td>
 
             {!devMode ?
                 <Fragment>
-                    <td className='trackTd'>{smpOutOption}</td>
-                    <td className='trackTd'>{vepOutOption}</td>
+                    <td className={`${trackTd}`}>{smpOutOption}</td>
+                    <td className={`${trackTd}`}>{vepOutOption}</td>
                 </Fragment>
                 : null}
 
-            <td className='trackTd'>{editTrack}</td>
+            <td className={`${trackTd}`}>{editTrack}</td>
         </tr>
     );
 };
@@ -176,9 +190,22 @@ const addMultipleTracks = (event: ChangeEvent<HTMLInputElement>) => {
 
 export default function TrackList() {
 
+    const trackTh =
+        `border-2
+        border-zinc-100
+        border-b-transparent
+        dark:border-zinc-400
+        dark:border-b-transparent
+        bg-zinc-200
+        dark:bg-zinc-600
+        font-bold
+        dark:font-normal
+        p-1`
+
+
     return (
-        <div id="TemplateTracks" className="MShideTemplateTracks transition-all duration-1000">
-            <div className='p-4 bg-stone-300 dark:bg-zinc-800'>
+        <div id="TemplateTracks" className="MShideTemplateTracks h-[100%] overflow-auto float-left transition-all duration-1000">
+            <div className='p-4 bg-stone-300 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-200'>
                 <div id="trackList_toolbar" className="">
                     <div className='flex justify-space align-middle mb-2' >
                         <button
@@ -202,16 +229,16 @@ export default function TrackList() {
                 <table className='table-auto border-collapse text-left lg:text-sm md:text-xs w-full'>
                     <thead>
                         <tr>
-                            <th className='trackTh w-[05%]' title="Unique Track Number">No.</th>
-                            <th className='trackTh w-[45%]' title="Set the MIDI channel for this track or multi.">Name</th>
-                            <th className='trackTh w-[10%]' title="Set the NAME for this track or multi.">MIDI Channel</th>
+                            <th className={`${trackTh} w-[05%]`} title="Unique Track Number">No.</th>
+                            <th className={`${trackTh} w-[45%]`} title="Set the MIDI channel for this track or multi.">Name</th>
+                            <th className={`${trackTh} w-[10%]`} title="Set the NAME for this track or multi.">MIDI Channel</th>
                             {!devMode ?
                                 <Fragment>
-                                    <th className='trackTh w-[10%]' title="Set the sampler outputs for this track or multi.">Sampler Outputs</th>
-                                    <th className='trackTh w-[10%]' title="Set the instance outputs for this track or multi.">Instance Outputs</th>
+                                    <th className={`${trackTh} w-[10%]`} title="Set the sampler outputs for this track or multi.">Sampler Outputs</th>
+                                    <th className={`${trackTh} w-[10%]`} title="Set the instance outputs for this track or multi.">Instance Outputs</th>
                                 </Fragment>
                                 : null}
-                            <th className='trackTh w-[20%]' title="Edit Track Parameters"></th>
+                            <th className={`${trackTh} w-[20%]`} title="Edit Track Parameters"></th>
                         </tr>
                     </thead>
                     <tbody>

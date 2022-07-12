@@ -66,14 +66,19 @@ export default class ColorPicker extends Component {
         had to add types in these docs, otherwise "color" and "style" (below) in the return were throwing errors
         */
 
+
+        const { r, g, b, a } = this.state.color
+        const { displayColorPicker, color } = this.state
+
+
         return (
             <Fragment>
                 <div style={styles.swatch} onClick={this.handleClick}>
-                    <div style={styles.color} />
+                    <div className={`h-[14px] rounded-sm bg-[rgba(${r},${g},${b},${a})]`} />
                 </div>
-                {this.state.displayColorPicker ? <div style={styles.popover}>
-                    <div style={styles.cover} onClick={this.handleClose} />
-                    <SketchPicker color={this.state.color} onChange={this.handleChange} />
+                {displayColorPicker ? <div className="absolute z-[2]">
+                    <div className={`h-[14px] rounded-sm bg-[rgba(${r},${g},${b},${a})]`} onClick={this.handleClose} />
+                    <SketchPicker color={color} onChange={this.handleChange} />
                 </div> : null}
             </Fragment>
         )

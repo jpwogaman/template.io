@@ -21,7 +21,11 @@ export const TdInput: FC<TdInputProps> = ({ defaultValue, id, placeholder, title
         <input
             type="text"
             className='  
-            inputTd 
+            hover:placeholder-zinc-200 dark:hover:placeholder-zinc-600
+            placeholder-zinc-400 dark:placeholder-zinc-500
+            focus:placeholder-zinc-500
+            focus:text-zinc-900
+            pl-1 
             w-full 
             bg-inherit 
             border 
@@ -53,7 +57,11 @@ export const Input: FC<TdInputProps> = ({ onSubmit, defaultValue, id, placeholde
         <input
             type="text"
             className='  
-            inputTd 
+            hover:placeholder-zinc-200 dark:hover:placeholder-zinc-600
+            placeholder-zinc-400 dark:placeholder-zinc-500
+            focus:placeholder-zinc-500
+            focus:text-zinc-900
+            pl-1 
             w-10
             mx-2 
             bg-inherit 

@@ -16,8 +16,20 @@ export default function TrackSettings() {
         console.log('lock')
     }
 
+    const settingsTh =
+        `border-2 
+        border-zinc-100 
+        border-b-transparent 
+        dark:border-zinc-400 
+        dark:border-b-transparent
+        bg-zinc-200 
+        dark:bg-zinc-600
+        font-bold 
+        dark:font-normal
+        p-1`
+
     return (
-        <div id="TemplateTrackSettings" className="TrackSettings MShide p-4 z-50 transition-all duration-1000">
+        <div id="TemplateTrackSettings" className="bg-stone-300 dark:bg-zinc-800 h-[100%] overflow-auto text-zinc-900 dark:text-zinc-200 MShide p-4 z-50 transition-all duration-1000">
             <div className='flex justify-space align-middle'>
                 <button
                     className="w-10 h-10 text-xl border-2 border-zinc-900 dark:border-zinc-200 hover:scale-[1.15] hover:animate-pulse"
@@ -91,57 +103,57 @@ export default function TrackSettings() {
             <table className='w-full table-fixed text-left xl:text-sm md:text-xs'>
                 <thead>
                     <tr>
-                        <th className='settingsTh w-[07%] xl:w-[05%]' title="Fader Number">No.</th>
-                        <th className='settingsTh w-[19%] xl:w-[20%]' title="Set the NAME for this parameter. (i.e Dynamics)">Name</th>
-                        <th className='settingsTh w-[24%] xl:w-[25%]' title="Select the TYPE of code for this parameter.">Code Type</th>
-                        <th className='settingsTh w-[18%] xl:w-[18%]' title="Set the CODE for this patch. (i.e. CC11)">Code</th>
-                        <th className='settingsTh w-[18%] xl:w-[18%] hidden xl:table-cell' title="Set the default patch.">Default</th>
-                        <th className='settingsTh w-[18%] xl:w-[18%] table-cell xl:hidden' title="Set the default patch.">Deft.</th>
-                        <th className='settingsTh w-[14%] xl:w-[14%] hidden xl:table-cell' title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
-                        <th className='settingsTh w-[14%] xl:w-[14%] table-cell xl:hidden' title="Switch between Value 1-Based and Value 2-Based Changes">Chng.</th>
-                    </tr>
-                </thead>
+                        <th className={`${settingsTh} w-[07%] xl:w-[05%]`} title="Fader Number">No.</th>
+                        <th className={`${settingsTh} w-[19%] xl:w-[20%]`} title="Set the NAME for this parameter. (i.e Dynamics)">Name</th>
+                        <th className={`${settingsTh} w-[24%] xl:w-[25%]`} title="Select the TYPE of code for this parameter.">Code Type</th>
+                        <th className={`${settingsTh} w-[18%] xl:w-[18%]`} title="Set the CODE for this patch. (i.e. CC11)">Code</th>
+                        <th className={`${settingsTh} w-[18%] xl:w-[18%] hidden xl:table-cell`} title="Set the default patch.">Default</th>
+                        <th className={`${settingsTh} w-[18%] xl:w-[18%] table-cell xl:hidden`} title="Set the default patch.">Deft.</th>
+                        <th className={`${settingsTh} w-[14%] xl:w-[14%] hidden xl:table-cell`} title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
+                        <th className={`${settingsTh} w-[14%] xl:w-[14%] table-cell xl:hidden`} title="Switch between Value 1-Based and Value 2-Based Changes">Chng.</th>
+                    </tr >
+                </thead >
                 <tbody>
                     <SettingsRow id="01" type="fad" variant={undefined}></SettingsRow>
                 </tbody>
-            </table>
+            </table >
 
             <h4 className='mt-5 mb-1'>Articulations (toggle)</h4>
 
             <table className='w-full table-fixed text-left xl:text-sm md:text-xs'>
                 <thead>
                     <tr>
-                        <th className='settingsTh w-[07%] xl:w-[05%]' title="Articulation Number">No.</th>
-                        <th className='settingsTh w-[19%] xl:w-[20%]' title="Set the NAME for this patch. (i.e Legato On/OFF)">Name</th>
-                        <th className='settingsTh w-[24%] xl:w-[25%]' title="Select the TYPE of code for this patch.">Code Type</th>
-                        <th className='settingsTh w-[09%] xl:w-[09%]' title="Set the CODE for this patch. (i.e. CC58)">Code</th>
-                        <th className='settingsTh w-[09%] xl:w-[09%]' title="Set the ON setting for this patch. (i.e. CC58, Value 76)">On</th>
-                        <th className='settingsTh w-[09%] xl:w-[09%]' title="Set the OFF setting for this patch. (i.e. CC58, Value 81)">Off</th>
-                        <th className='settingsTh w-[09%] xl:w-[09%] hidden xl:table-cell' title="Set the default patch.">Default</th>
-                        <th className='settingsTh w-[09%] xl:w-[09%] table-cell xl:hidden' title="Set the default patch.">Deft.</th>
-                        <th className='settingsTh w-[14%] xl:w-[14%] hidden xl:table-cell' title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
-                        <th className='settingsTh w-[14%] xl:w-[14%] table-cell xl:hidden' title="Switch between Value 1-Based and Value 2-Based Changes">Chng.</th>
-                    </tr>
-                </thead>
+                        <th className={`${settingsTh} w-[07%] xl:w-[05%]`} title="Articulation Number">No.</th>
+                        <th className={`${settingsTh} w-[19%] xl:w-[20%]`} title="Set the NAME for this patch. (i.e Legato On/OFF)">Name</th>
+                        <th className={`${settingsTh} w-[24%] xl:w-[25%]`} title="Select the TYPE of code for this patch.">Code Type</th>
+                        <th className={`${settingsTh} w-[09%] xl:w-[09%]`} title="Set the CODE for this patch. (i.e. CC58)">Code</th>
+                        <th className={`${settingsTh} w-[09%] xl:w-[09%]`} title="Set the ON setting for this patch. (i.e. CC58, Value 76)" > On</th >
+                        <th className={`${settingsTh} w-[09%] xl:w-[09%]`} title="Set the OFF setting for this patch. (i.e. CC58, Value 81)" > Off</th >
+                        <th className={`${settingsTh} w-[09%] xl:w-[09%] hidden xl:table-cell`} title="Set the default patch." > Default</th >
+                        <th className={`${settingsTh} w-[09%] xl:w-[09%] table-cell xl:hidden`} title="Set the default patch." > Deft.</th >
+                        <th className={`${settingsTh} w-[14%] xl:w-[14%] hidden xl:table-cell`} title="Switch between Value 1-Based and Value 2-Based Changes" > Change Type</th >
+                        <th className={`${settingsTh} w-[14%] xl:w-[14%] table-cell xl:hidden`} title="Switch between Value 1-Based and Value 2-Based Changes" > Chng.</th >
+                    </tr >
+                </thead >
                 <tbody>
                     <SettingsRow id="01" type="art" variant="tog"></SettingsRow>
                 </tbody>
-            </table>
+            </table >
             <h4 className='mt-5 mb-1'>Articulations (switch)</h4>
             <table className='w-full table-fixed text-left xl:text-sm md:text-xs'>
                 <thead>
                     <tr>
-                        <th className='settingsTh w-[07%] xl:w-[05%]' title="Articulation Number">No.</th>
-                        <th className='settingsTh w-[19%] xl:w-[20%]' title="Set the NAME for this patch. (i.e Staccato)">Name</th>
-                        <th className='settingsTh w-[24%] xl:w-[25%]' title="Select the TYPE of code for this patch.">Code Type</th>
-                        <th className='settingsTh w-[09%] xl:w-[09%]' title="Set the CODE for this patch. (i.e. CC58)">Code</th>
-                        <th className='settingsTh w-[09%] xl:w-[09%]' title="Set the ON setting for this patch. (i.e. CC58, Value 21)">On</th>
-                        <th className='settingsTh w-[09%] xl:w-[09%] hidden xl:table-cell' title="Set the number of playable ranges for this patch.">Range</th>
-                        <th className='settingsTh w-[09%] xl:w-[09%] table-cell xl:hidden' title="Set the number of playable ranges for this patch.">Rng.</th>
-                        <th className='settingsTh w-[09%] xl:w-[09%] hidden xl:table-cell' title="Set the default patch.">Default</th>
-                        <th className='settingsTh w-[09%] xl:w-[09%] table-cell xl:hidden' title="Set the default patch.">Deft.</th>
-                        <th className='settingsTh w-[14%] xl:w-[14%] hidden xl:table-cell' title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
-                        <th className='settingsTh w-[14%] xl:w-[14%] table-cell xl:hidden' title="Switch between Value 1-Based and Value 2-Based Changes">Chng.</th>
+                        <th className={`${settingsTh} w-[07%] xl:w-[05%]`} title="Articulation Number">No.</th>
+                        <th className={`${settingsTh} w-[19%] xl:w-[20%]`} title="Set the NAME for this patch. (i.e Staccato)">Name</th>
+                        <th className={`${settingsTh} w-[24%] xl:w-[25%]`} title="Select the TYPE of code for this patch.">Code Type</th>
+                        <th className={`${settingsTh} w-[09%] xl:w-[09%]`} title="Set the CODE for this patch. (i.e. CC58)">Code</th>
+                        <th className={`${settingsTh} w-[09%] xl:w-[09%]`} title="Set the ON setting for this patch. (i.e. CC58, Value 21)">On</th>
+                        <th className={`${settingsTh} w-[09%] xl:w-[09%] hidden xl:table-cell`} title="Set the number of playable ranges for this patch.">Range</th>
+                        <th className={`${settingsTh} w-[09%] xl:w-[09%] table-cell xl:hidden`} title="Set the number of playable ranges for this patch.">Rng.</th>
+                        <th className={`${settingsTh} w-[09%] xl:w-[09%] hidden xl:table-cell`} title="Set the default patch.">Default</th>
+                        <th className={`${settingsTh} w-[09%] xl:w-[09%] table-cell xl:hidden`} title="Set the default patch.">Deft.</th>
+                        <th className={`${settingsTh} w-[14%] xl:w-[14%] hidden xl:table-cell`} title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
+                        <th className={`${settingsTh} w-[14%] xl:w-[14%] table-cell xl:hidden`} title="Switch between Value 1-Based and Value 2-Based Changes">Chng.</th>
                     </tr>
                 </thead>
                 <tbody>
