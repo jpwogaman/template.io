@@ -1,4 +1,4 @@
-import { FC, useState, ChangeEvent } from "react";
+import { FC, useState, ChangeEvent, ReactNode } from "react";
 import { selectArrays } from "./select-arrays";
 
 interface TdSelectProps {
@@ -6,6 +6,7 @@ interface TdSelectProps {
     options: string | number;
     codeDisabled?: boolean;
     onSelect?: (event: ChangeEvent<HTMLSelectElement>) => void | undefined;
+    children?: ReactNode;
 }
 
 export const TdSelect: FC<TdSelectProps> = ({ onSelect, codeDisabled, id, options }) => {

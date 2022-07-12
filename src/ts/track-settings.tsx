@@ -35,7 +35,7 @@ export default function TrackSettings() {
         p-0.5`
 
     return (
-        <div id="TemplateTrackSettings" className="bg-stone-300 dark:bg-zinc-800 h-[100%] overflow-auto text-zinc-900 dark:text-zinc-200 MShide p-4 z-50 transition-all duration-1000">
+        <div id="TemplateTrackSettings" className="bg-stone-300 dark:bg-zinc-800 h-[100%] overflow-auto text-zinc-900 dark:text-zinc-200 MSshow p-4 z-50 transition-all duration-1000">
             <div className='flex justify-space align-middle'>
                 <button
                     className="w-10 h-10 text-xl border-2 border-zinc-900 dark:border-zinc-200 hover:scale-[1.15] hover:animate-pulse"
@@ -72,11 +72,11 @@ export default function TrackSettings() {
                 </div> : null}
             </div>
 
-            <h2 id="trkEditDisplay" className='my-2'>Track:</h2>
+            <h2 id="trkEditDisplay" className='my-2'>{`selectedTrack`}</h2>
 
             <div className='flex items-center text-xs xl:text-lg'>
 
-                <p className=''>Playable Ranges: </p>
+                <p>Playable Ranges: </p>
                 <div>
                     <TdInput
                         id={`fullRangeName_${'needtofindtrkid1'}`}
