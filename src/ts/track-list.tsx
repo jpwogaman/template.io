@@ -1,10 +1,9 @@
-import { FC, Fragment, ReactNode, useState } from 'react';
+import { ChangeEvent, FC, Fragment, ReactNode, useState } from 'react';
 import { TdSelect } from './select';
 import ColorPicker from './color-picker'
-import { TdInput } from './input';
+import { TdInput, Input } from './input';
 import { IconBtnToggle } from './button-icon-toggle';
-
-const devMode = true
+import { devMode } from './track-settings'
 
 const settingsOpen = () => {
 
@@ -56,8 +55,8 @@ const TrackRow: FC<TrackRowProps> = ({ id, onAdd, onDelete }) => {
             </button>
             <IconBtnToggle
                 classes="w-6 h-6 hover:scale-[1.15] hover:animate-pulse"
-                titleA="Add another set of playable ranges."
-                titleB="Remove this set of playable ranges."
+                titleA="Add Another Track."
+                titleB="Remove This Track."
                 id={`AddTrackButton_${id}`}
                 a="fa-solid fa-plus"
                 b="fa-solid fa-minus"
@@ -69,11 +68,17 @@ const TrackRow: FC<TrackRowProps> = ({ id, onAdd, onDelete }) => {
 
     return (
         <tr id={"trk_" + id} className="trackTr">
-            <td className='trackTd' id={`trkNumb_${id}`}>{parseInt(id)}</td>
+            <td className='trackTd' id={`trkNumb_${id}`} title="Unique Track Number">{parseInt(id)}</td>
             <td className='trackTd'>{nameOption}</td>
             <td className='trackTd'>{chnOption}</td>
-            <td className='trackTd'>{smpOutOption}</td>
-            <td className='trackTd'>{vepOutOption}</td>
+
+            {!devMode ?
+                <Fragment>
+                    <td className='trackTd'>{smpOutOption}</td>
+                    <td className='trackTd'>{vepOutOption}</td>
+                </Fragment>
+                : null}
+
             <td className='trackTd'>{editTrack}</td>
         </tr>
     );
@@ -161,20 +166,51 @@ const SamplerInfo: FC<SamplerInfoProps> = () => {
     )
 }
 
+let addMltTrkInput: string | number | HTMLInputElement = 1
+
+const addMultipleTracks = (event: ChangeEvent<HTMLInputElement>) => {
+
+    addMltTrkInput = event.target.value
+
+};
+
 export default function TrackList() {
 
     return (
         <div id="TemplateTracks" className="MShideTemplateTracks transition-all duration-1000">
-            <div id="trackList_01-01" className="TrackList p-4">
-                {!devMode ? <SamplerInfo /> : null}
-                <table className='table-auto border-collapse text-left text-sm min-w-full'>
+            <div className='p-4 bg-stone-300 dark:bg-zinc-800'>
+                <div id="trackList_toolbar" className="">
+                    <div className='flex justify-space align-middle mb-2' >
+                        <button
+                            className="w-30 h-10 text-xl border-2 border-zinc-900 dark:border-zinc-200 hover:scale-[1.15] hover:animate-pulse"
+                            title={`Add Multiple Tracks. (${addMltTrkInput})`}
+                            id="addMultipleTracks"
+                            onClick={console.log('add') as undefined}>
+                            <i className="pl-2 fa-solid fa-plus"></i>
+                            <Input
+                                id={"addMltTrkInput"}
+                                title='Set the number of tracks to add.'
+                                placeholder="1"
+                                codeDisabled={false}
+                                onSubmit={addMultipleTracks}>
+                            </Input>
+                        </button>
+
+                    </div >
+                </div >
+
+                <table className='table-auto border-collapse text-left lg:text-sm md:text-xs w-full'>
                     <thead>
                         <tr>
                             <th className='trackTh w-[05%]' title="Unique Track Number">No.</th>
                             <th className='trackTh w-[45%]' title="Set the MIDI channel for this track or multi.">Name</th>
                             <th className='trackTh w-[10%]' title="Set the NAME for this track or multi.">MIDI Channel</th>
-                            <th className='trackTh w-[10%]' title="Set the sampler outputs for this track or multi.">Sampler Outputs</th>
-                            <th className='trackTh w-[10%]' title="Set the instance outputs for this track or multi.">Instance Outputs</th>
+                            {!devMode ?
+                                <Fragment>
+                                    <th className='trackTh w-[10%]' title="Set the sampler outputs for this track or multi.">Sampler Outputs</th>
+                                    <th className='trackTh w-[10%]' title="Set the instance outputs for this track or multi.">Instance Outputs</th>
+                                </Fragment>
+                                : null}
                             <th className='trackTh w-[20%]' title="Edit Track Parameters"></th>
                         </tr>
                     </thead>
@@ -183,6 +219,6 @@ export default function TrackList() {
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div >
     );
 };

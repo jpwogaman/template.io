@@ -28,7 +28,7 @@ export const TdSelect: FC<TdSelectProps> = ({ onSelect, codeDisabled, id, option
     return (
         <select
             className="        
-            min-w-full                        
+            w-full                                 
             cursor-pointer 
             overflow-scroll 
             bg-inherit  

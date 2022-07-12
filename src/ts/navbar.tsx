@@ -1,4 +1,6 @@
+import { Fragment } from "react";
 import { IconBtnToggle } from "./button-icon-toggle";
+import { devMode } from './track-settings'
 
 export default function TemplateNavbar() {
 
@@ -10,8 +12,11 @@ export default function TemplateNavbar() {
 
         <div className="bg-zinc-900 sticky top-0 z-50 flex container min-w-full min-h-[40px] h-[40px] max-h-[40px] justify-evenly items-center">
             <ul className="flex text-center">
-                <li className="block py-2 w-60 text-zinc-200">0 VEP Instances</li>
-                <li className="block py-2 w-60 text-zinc-200">0 Samplers</li>
+                {!devMode ?
+                    <Fragment>
+                        <li className="block py-2 w-60 text-zinc-200">0 VEP Instances</li>
+                        <li className="block py-2 w-60 text-zinc-200">0 Samplers</li>
+                    </Fragment> : null}
                 <li className="block py-2 w-60 text-zinc-200">0 Tracks</li>
                 <li className="block py-2 w-60 text-zinc-200 cursor-pointer">
                     <IconBtnToggle
