@@ -47,6 +47,8 @@ const TrackRow: FC<TrackRowProps> = ({ setSelectedTrack, id, onAdd, onDelete }) 
             </TdSelect>
         </div >
 
+    const trkDelay = "~35" //will need to brought over from track-settings
+
     const editTrack =
         <div className='flex justify-evenly'>
             <button
@@ -87,6 +89,7 @@ const TrackRow: FC<TrackRowProps> = ({ setSelectedTrack, id, onAdd, onDelete }) 
             <td className={`${trackTd}`} id={`trkNumb_${id}`} title="Unique Track Number">{parseInt(id)}</td>
             <td className={`${trackTd}`}>{nameOption}</td>
             <td className={`${trackTd}`}>{chnOption}</td>
+            <td className={`${trackTd}`}>{trkDelay}</td>
 
             {!devMode ?
                 <Fragment>
@@ -284,7 +287,8 @@ const TrackList: FC<TrackListProps> = ({ setSelectedTrackName, setSelectedTrack 
                                     <th className={`${trackTh} w-[10%]`} title="Set the instance outputs for this track or multi.">Instance Outputs</th>
                                 </Fragment>
                                 : null}
-                            <th className={`${trackTh} w-[20%]`} title="Edit Track Parameters"></th>
+                            <th className={`${trackTh} w-[10%]`} title="Track Delay in ms (may be average)">Delay (ms)</th>
+                            <th className={`${trackTh} w-[10%]`} title="Edit Track Parameters"></th>
                         </tr>
                     </thead>
                     <tbody>

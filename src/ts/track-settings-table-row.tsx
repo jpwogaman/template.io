@@ -334,6 +334,14 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
             {artFad && !togArt ? deftCheck : deftSelect}
         </Fragment>
 
+    const trkDelay =
+        <TdInput
+            id={`trkDelay_art_${id}`}
+            title="Set the track delay for this patch."
+            placeholder="0"
+            codeDisabled={false}>
+        </TdInput>
+
     const settingsTr =
         `bg-zinc-300 
         dark:bg-stone-800 
@@ -352,6 +360,7 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
         <Fragment>
             <td className={`${settingsTd}`}>{onOption}</td>
             <td className={`${settingsTd}`}>{togArt ? offOption : rangeOption}</td>
+            <td className={`${settingsTd}`}>{trkDelay}</td>
         </Fragment>
 
     // const justFad =
