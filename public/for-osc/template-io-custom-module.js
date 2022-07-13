@@ -203,6 +203,8 @@ function clickTrk(arg1, arg2) {
 function keyRanges(x) {
 	receive('/template-io_keyRangeVar1', x);
 	receive('/template-io_keyRangeScript', 1);
+	receive('/keyRangeVar1', x);
+	receive('/keyRangeScript', 1);
 }
 module.exports = {
 	init: function () {
@@ -255,9 +257,9 @@ module.exports = {
 
 		if (keyP) {
 			const trkNumb = arg1 * 128 + arg2;
-			const trkRang = allTrack_jsn[trkNumb].INFO_XXX_trkRnge____;
-			const trkName = allTrack_jsn[trkNumb].INFO_001_trkName____;
-			const artRng3 = allTrack_jsn[trkNumb].INFO_057_artRange_03;
+			const trkRang = allTrack_jsn[trkNumb].trkRnge____;
+			const trkName = allTrack_jsn[trkNumb].trkName____;
+			const artRng3 = allTrack_jsn[trkNumb].artRange_03;
 
 			receive('/selectedTrackName', trkName);
 			receive('/selectedTrackKeyRanges', trkRang);

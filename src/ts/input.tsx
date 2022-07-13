@@ -7,7 +7,6 @@ interface TdInputProps {
     codeDisabled?: boolean;
     children?: ReactNode;
     defaultValue?: string;
-    onSubmit?: (event: ChangeEvent<HTMLInputElement>) => void | undefined;
 }
 
 export const TdInput: FC<TdInputProps> = ({ defaultValue, id, placeholder, title, codeDisabled }) => {
@@ -45,12 +44,11 @@ export const TdInput: FC<TdInputProps> = ({ defaultValue, id, placeholder, title
     );
 };
 
-export const Input: FC<TdInputProps> = ({ onSubmit, defaultValue, id, placeholder, title, codeDisabled }) => {
+export const Input: FC<TdInputProps> = ({ defaultValue, id, placeholder, title, codeDisabled }) => {
     const [valueName, setName] = useState<string>(defaultValue ? defaultValue : "")
 
     const nameChange = (event: ChangeEvent<HTMLInputElement> | any) => {
         setName(event.target.value)
-        onSubmit!(event.target.value)
     }
 
     return (

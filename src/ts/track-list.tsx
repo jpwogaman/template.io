@@ -1,32 +1,19 @@
-import { ChangeEvent, FC, Fragment, ReactNode, useState } from 'react';
+import { ChangeEvent, Dispatch, FC, Fragment, MouseEventHandler, ReactNode, SetStateAction, useState } from 'react';
 import { TdSelect } from './select';
 import ColorPicker from './color-picker'
 import { TdInput, Input } from './input';
 import { IconBtnToggle } from './button-icon-toggle';
 import { devMode } from './track-settings'
 
-
-
 interface TrackRowProps {
     id: string;
     children?: ReactNode;
     onAdd?: () => void | void | undefined;
     onDelete?: () => void | void | undefined;
-    setSelectedTrack?: () => void | void | undefined;
+    setSelectedTrack?: MouseEventHandler<HTMLButtonElement>;
 }
 
-const TrackRow: FC<TrackRowProps> = ({ id, onAdd, onDelete }) => {
-
-    const settingsOpen = () => {
-
-        // setSelectedTrack(`Track ${parseInt(id)}`)
-
-        if (document.getElementById('TemplateTrackSettings')!.classList.contains('MShide')) {
-            document.getElementById('TemplateTrackSettings')!.classList.replace('MShide', 'MSshow');
-            document.getElementById('TemplateTracks')!.classList.replace('MShideTemplateTracks', 'MSshowTemplateTracks');
-        }
-        else return
-    }
+const TrackRow: FC<TrackRowProps> = ({ setSelectedTrack, id, onAdd, onDelete }) => {
 
     const nameOption =
         <TdInput
@@ -65,7 +52,7 @@ const TrackRow: FC<TrackRowProps> = ({ id, onAdd, onDelete }) => {
             <button
                 className="w-6 h-6 mr-1 hover:border-green-50"
                 title="Edit Track Parameters"
-                onClick={settingsOpen}>
+                onClick={setSelectedTrack}>
                 <i className="fa-solid fa-pen-to-square"></i>
             </button>
             <IconBtnToggle
@@ -82,7 +69,7 @@ const TrackRow: FC<TrackRowProps> = ({ id, onAdd, onDelete }) => {
         </div >
 
     const trackTr =
-        `bg-zinc-300 
+        `bg-zinc-300        
         dark:bg-stone-800 
         hover:bg-zinc-500 
         dark:hover:bg-zinc-400 
@@ -114,10 +101,11 @@ const TrackRow: FC<TrackRowProps> = ({ id, onAdd, onDelete }) => {
 };
 
 interface TracksProps {
-    setSelectedTrack: () => void | void | undefined;
+    setSelectedTrack: Dispatch<SetStateAction<string>>;
+    setSelectedTrackName: Dispatch<SetStateAction<string>>;
 }
 
-const Tracks: FC<TracksProps> = ({ setSelectedTrack }) => {
+const Tracks: FC<TracksProps> = ({ setSelectedTrackName, setSelectedTrack }) => {
 
     const [TrackList, setTracks] = useState<any[]>([
         {
@@ -144,6 +132,35 @@ const Tracks: FC<TracksProps> = ({ setSelectedTrack }) => {
         }
     }
 
+    const settingsOpen = (trackId: string) => {
+
+        const selectedTrackID: HTMLElement | null = document.getElementById(`trk_${trackId}`)
+        const selectedTrackName = document.getElementById(`trkName_${trackId}`) as HTMLInputElement
+        const templateTrackSettings: HTMLElement | null = document.getElementById('TemplateTrackSettings')
+        const templateTrackList: HTMLElement | null = document.getElementById('TemplateTracks')
+
+        setSelectedTrack!(trackId)
+        setSelectedTrackName!(selectedTrackName!.value)
+
+        selectedTrackID!.classList.replace('bg-zinc-300', 'bg-zinc-50')
+        selectedTrackID!.classList.replace('dark:bg-stone-800', 'dark:bg-stone-400')
+
+        for (var track in TrackList) {
+            const trackId: HTMLElement | null = document.getElementById(`trk_${TrackList[track].id}`)
+
+            if (trackId !== selectedTrackID) {
+                trackId!.classList.replace('bg-zinc-50', 'bg-zinc-300')
+                trackId!.classList.replace('dark:bg-stone-400', 'dark:bg-stone-800')
+            }
+        }
+
+        if (templateTrackSettings!.classList.contains('MShide')) {
+            templateTrackSettings!.classList.replace('MShide', 'MSshow');
+            templateTrackList!.classList.replace('MShideTemplateTracks', 'MSshowTemplateTracks');
+        }
+
+    }
+
     return (
         <Fragment>
             {TrackList.map((track) => (
@@ -152,7 +169,8 @@ const Tracks: FC<TracksProps> = ({ setSelectedTrack }) => {
                     id={track.id}
                     onAdd={() => addTrack(track.id)}
                     onDelete={() => removeTrack(track.id)}
-                    setSelectedTrack={setSelectedTrack} />
+                    setSelectedTrack={() => settingsOpen(track.id)}
+                />
             ))}
         </Fragment>
     )
@@ -202,7 +220,16 @@ const addMultipleTracks = (event: ChangeEvent<HTMLInputElement>) => {
 
 };
 
-export default function TrackList({ setSelectedTrack }) {
+interface TrackListProps {
+    setSelectedTrack: Dispatch<SetStateAction<string>>;
+    setSelectedTrackName: Dispatch<SetStateAction<string>>;
+}
+
+const TrackList: FC<TrackListProps> = ({ setSelectedTrackName, setSelectedTrack }) => {
+
+    const stupid = () => {
+        console.log("setSelectedTrack")
+    }
 
     const trackTh =
         `border-2
@@ -216,7 +243,6 @@ export default function TrackList({ setSelectedTrack }) {
         dark:font-normal
         p-1`
 
-
     return (
         <div id="TemplateTracks" className="MSshowTemplateTracks h-[100%] overflow-auto float-left transition-all duration-1000">
             <div className='p-4 bg-stone-300 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-200'>
@@ -226,21 +252,21 @@ export default function TrackList({ setSelectedTrack }) {
                             className="px-4 w-50 h-50 text-xl border-2 border-zinc-900 dark:border-zinc-200 hover:border-red-600 hover:scale-[1.15] hover:animate-pulse"
                             title="Re-number Tracks. CAREFUL"
                             id="renumberTracks"
-                            onClick={console.log('renumber') as undefined}>
+                            onClick={stupid}>
                             <i className="fa-solid fa-arrow-down-1-9"></i>
                         </button>
                         <button
                             className="w-30 h-10 text-xl border-2 border-zinc-900 dark:border-zinc-200 hover:scale-[1.15] hover:animate-pulse"
                             title={`Add Multiple Tracks. (${addMltTrkInput})`}
                             id="addMultipleTracks"
-                            onClick={console.log('add') as undefined}>
+                            onClick={stupid}>
                             <i className="pl-2 fa-solid fa-plus"></i>
                             <Input
                                 id={"addMltTrkInput"}
                                 title='Set the number of tracks to add.'
                                 placeholder="1"
-                                codeDisabled={false}
-                                onSubmit={addMultipleTracks}>
+                                codeDisabled={false} >
+
                             </Input>
                         </button>
                     </div >
@@ -262,10 +288,12 @@ export default function TrackList({ setSelectedTrack }) {
                         </tr>
                     </thead>
                     <tbody>
-                        <Tracks setSelectedTrack={setSelectedTrack}></Tracks>
+                        <Tracks setSelectedTrack={setSelectedTrack} setSelectedTrackName={setSelectedTrackName}></Tracks>
                     </tbody>
                 </table>
             </div>
         </div >
     );
 };
+
+export default TrackList

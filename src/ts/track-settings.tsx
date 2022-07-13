@@ -2,10 +2,17 @@ import { TdSelect } from './select';
 import { IconBtnToggle } from './button-icon-toggle'
 import { SettingsRow } from './track-settings-table-row'
 import { TdInput } from './input';
+import { FC } from 'react';
 
 export const devMode = true
 
-export default function TrackSettings() {
+interface TrackSettingsProps {
+    selectedTrack: string;
+    selectedTrackName: string;
+
+}
+
+const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selectedTrack }) => {
 
     const closeSettingsWindow = () => {
         document.getElementById('TemplateTrackSettings')!.classList.replace('MSshow', 'MShide');
@@ -72,14 +79,14 @@ export default function TrackSettings() {
                 </div> : null}
             </div>
 
-            <h2 id="trkEditDisplay" className='my-2'>{`selectedTrack`}</h2>
+            <h2 id="trkEditDisplay" className='my-2'>{`Track ${parseInt(selectedTrack)}: ${selectedTrackName}`}</h2>
 
             <div className='flex items-center text-xs xl:text-lg'>
 
                 <p>Playable Ranges: </p>
                 <div>
                     <TdInput
-                        id={`fullRangeName_${'needtofindtrkid1'}`}
+                        id={`fullRangeName_trk_${parseInt(selectedTrack)}`}
                         title="Describe this range-group. (i.e hits/rolls)"
                         placeholder="Range"
                         defaultValue='Full Range'>
@@ -87,13 +94,13 @@ export default function TrackSettings() {
                 </div>
 
                 <div className={`${settingsTd} mx-2`}>
-                    <TdSelect id={`FullRngBot_${'needtofindtrkid1'}`} options="allNoteList"></TdSelect>
+                    <TdSelect id={`FullRngBot_trk_${parseInt(selectedTrack)}`} options="allNoteList"></TdSelect>
                 </div>
 
                 <i className='fas fa-arrow-right-long' />
 
                 <div className={`${settingsTd} mx-2`}>
-                    <TdSelect id={`FullRngTop_${'needtofindtrkid2'}`} options="allNoteList"></TdSelect>
+                    <TdSelect id={`FullRngTop_trk_${parseInt(selectedTrack)}`} options="allNoteList"></TdSelect>
                 </div>
 
                 <button
@@ -170,3 +177,5 @@ export default function TrackSettings() {
         </div >
     );
 };
+
+export default TrackSettings
