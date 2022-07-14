@@ -1,7 +1,7 @@
 import { TdSelect } from '../components/select';
 import { IconBtnToggle } from '../components/button-icon-toggle'
-import { TdInput } from '../components/input';
-import { FC } from 'react';
+import { TdInput, Input } from '../components/input';
+import { ChangeEvent, FC, useState } from 'react';
 import { ArtSettingsRow } from '../data/track-settings/art-rows'
 import { FadSettingsRow } from '../data/track-settings/fad-rows'
 interface TrackSettingsProps {
@@ -11,6 +11,15 @@ interface TrackSettingsProps {
 
 export const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selectedTrack }) => {
 
+    const [avgTrkDel, setAvgTrkDel] = useState<number>(0)
+
+    const [delayList, setDelays] = useState<{ id: string, delay: number }[]>([
+        {
+            id: 'base',
+            delay: 0
+        }
+    ])
+
     const closeSettingsWindow = () => {
         document.getElementById('TemplateTrackSettings')!.classList.replace('MSshow', 'MShide');
         document.getElementById('TemplateTracks')!.classList.replace('MSshowTemplateTracks', 'MShideTemplateTracks');
@@ -18,6 +27,38 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selec
 
     const toggleNow = () => {
         console.log('lock')
+    }
+
+    const baseDelayChange = (event: ChangeEvent<HTMLInputElement>) => {
+
+        let x = event.target.value as unknown as number
+        let trkDelTotal = 0
+
+        for (let i = 0; i < delayList.length; i++) {
+            trkDelTotal += delayList[i].delay
+        }
+
+        setAvgTrkDel(trkDelTotal / delayList.length)
+
+        setDelays(prevState => {
+            const newState = prevState.map(obj => {
+                if (obj.id === 'base') {
+                    return { ...obj, delay: x };
+                }
+                return obj;
+            });
+            return newState;
+        });
+
+
+
+    }
+
+    const delayChangeClickTest = () => {
+
+
+        console.log(delayList[0].delay, typeof delayList[0])
+
     }
 
     const settingsTh =
@@ -68,7 +109,8 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selec
                 <button
                     className="w-10 h-10 border-2 border-zinc-900 dark:border-zinc-200 hover:scale-[1.15] hover:animate-pulse"
                     title="Save the Settings for this Track."
-                    id="editSave">
+                    id="editSave"
+                    onClick={delayChangeClickTest}>
                     <i className="fa-solid fa-save"></i>
                 </button>
             </div>
@@ -100,20 +142,47 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selec
                     <i className="fa-solid fa-plus" />
                 </button>
             </div>
+
+
+
+
+
+
+
+
             <div className='flex items-center my-2 text-xs xl:text-lg'>
                 <p>Base Track Delay (ms):</p>
                 <div>
-                    <TdInput
+                    <Input
                         id={`baseDelay_trk_${parseInt(selectedTrack)}`}
                         title="Set the base track delay in ms for this track."
                         placeholder="0"
-                        defaultValue='0'>
-                    </TdInput>
+                        onInput={baseDelayChange}>
+                    </Input>
                 </div>
             </div>
             <div className='flex items-center text-xs xl:text-lg'>
-                <p>Avg. Track Delay (ms): {`fromArtInputs`}</p>
+                <p>Avg. Track Delay (ms):</p>
+                <div>
+                    <Input
+                        id={`avgDelay_trk_${parseInt(selectedTrack)}`}
+                        title="The average delay in ms for this track."
+                        placeholder={avgTrkDel as unknown as string}
+                        defaultValue={avgTrkDel as unknown as string}
+                        onReceive={avgTrkDel as unknown as string}
+                        codeDisabled={true}>
+                    </Input>
+                </div>
             </div>
+
+
+
+
+
+
+
+
+
             <h4 className='mt-5 mb-1'>Faders</h4>
             <table className='w-full table-fixed text-left xl:text-sm md:text-xs'>
                 <thead>
@@ -151,7 +220,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selec
                     </tr >
                 </thead >
                 <tbody>
-                    <ArtSettingsRow id="01" toggle></ArtSettingsRow>
+                    <ArtSettingsRow id="01" toggle setDelays={setDelays}></ArtSettingsRow>
                 </tbody>
             </table >
             <h4 className='mt-5 mb-1'>Articulations (switch)</h4>

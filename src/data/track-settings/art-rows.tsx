@@ -1,4 +1,4 @@
-import { FC, useState, ChangeEvent, Fragment } from "react";
+import { FC, useState, ChangeEvent, Fragment, Dispatch, SetStateAction } from "react";
 import { TdSwitch } from "../../components/checkbox-switch";
 import { TdInput } from "../../components/input";
 import { TdSelect } from "../../components/select";
@@ -7,9 +7,11 @@ import { RangeRows } from "./art-rows-ranges"
 interface ArtSettingsRowProps {
     id: string;
     toggle?: boolean;
+    setDelays?: Dispatch<SetStateAction<any[]>>;
+    delayList?: any[];
 }
 
-export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ id, toggle }) => {
+export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ delayList, setDelays, id, toggle }) => {
 
     const [rngTitle, setRngTitle] = useState<string>("Switch to independent playable range.")
     const [rngVisible, setRngVisible] = useState<boolean>(false)
@@ -83,6 +85,13 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ id, toggle }) => {
                 setMidi("valNoteList")
             }
         }
+    }
+
+    const delayChange = (event: ChangeEvent<HTMLInputElement>) => {
+
+        const newDelay = { id: `art_${id}`, delay: event.target.value as unknown as number }
+        if (setDelays) { setDelays!([...(delayList || []), newDelay]) }
+        else return
     }
 
     const rangeOption =
@@ -165,7 +174,7 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ id, toggle }) => {
                 id={`trkDelay_art_${id}`}
                 title="Set the track delay for this patch."
                 placeholder="0"
-                codeDisabled={false}>
+                onInput={delayChange}>
             </TdInput>
         </div>
 

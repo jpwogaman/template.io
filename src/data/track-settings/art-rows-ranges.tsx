@@ -1,4 +1,4 @@
-import { FC, useState, Fragment, ReactNode } from "react";
+import { FC, useState, Fragment, ReactNode, Dispatch, SetStateAction } from "react";
 import { IconBtnToggle } from "../../components/button-icon-toggle";
 import { TdInput } from "../../components/input";
 import { TdSelect } from "../../components/select";

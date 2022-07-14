@@ -7,13 +7,17 @@ interface TdInputProps {
     codeDisabled?: boolean;
     children?: ReactNode;
     defaultValue?: string;
+    onInput?: (event: ChangeEvent<HTMLInputElement>) => void | undefined;
+    onReceive?: string;
 }
 
-export const TdInput: FC<TdInputProps> = ({ defaultValue, id, placeholder, title, codeDisabled }) => {
+export const TdInput: FC<TdInputProps> = ({ onReceive, onInput, defaultValue, id, placeholder, title, codeDisabled }) => {
     const [valueName, setName] = useState<string>(defaultValue ? defaultValue : "")
 
     const nameChange = (event: ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value)
+        if (onInput) { onInput!(event) }
+        else return
     }
 
     return (
@@ -31,24 +35,26 @@ export const TdInput: FC<TdInputProps> = ({ defaultValue, id, placeholder, title
             border-transparent
             outline-green-600 dark:outline-green-800
             outline-offset-4            
-            hover:cursor-pointer                        
+            hover:cursor-pointer                       
             focus:cursor-text 
             focus:bg-white'
             id={id}
             title={title}
             placeholder={placeholder}
             disabled={codeDisabled}
-            value={valueName}
+            value={onReceive ? onReceive : valueName}
             onChange={nameChange}>
         </input>
     );
 };
 
-export const Input: FC<TdInputProps> = ({ defaultValue, id, placeholder, title, codeDisabled }) => {
+export const Input: FC<TdInputProps> = ({ onReceive, onInput, defaultValue, id, placeholder, title, codeDisabled }) => {
     const [valueName, setName] = useState<string>(defaultValue ? defaultValue : "")
 
     const nameChange = (event: ChangeEvent<HTMLInputElement> | any) => {
         setName(event.target.value)
+        if (onInput) { onInput!(event) }
+        else return
     }
 
     return (
@@ -74,7 +80,7 @@ export const Input: FC<TdInputProps> = ({ defaultValue, id, placeholder, title, 
             title={title}
             placeholder={placeholder}
             disabled={codeDisabled}
-            value={valueName}
+            value={onReceive ? onReceive : valueName}
             onChange={nameChange}>
         </input>
     );

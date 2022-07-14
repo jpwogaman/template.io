@@ -23,7 +23,8 @@ export const TdSelect: FC<TdSelectProps> = ({ onSelect, codeDisabled, id, option
 
     const valChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setVal(event.target.value)
-        onSelect!(event)
+        if (onSelect) { onSelect!(event) }
+        else return
     }
 
     return (
