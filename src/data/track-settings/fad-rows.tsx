@@ -1,13 +1,16 @@
 import { FC, useState, ChangeEvent, Fragment } from "react";
+import { IconBtnToggle } from "../../components/button-icon-toggle";
 import { TdSwitch } from "../../components/checkbox-switch";
 import { TdInput } from "../../components/input";
 import { TdSelect } from "../../components/select";
 
 interface FadSettingsRowProps {
     id: string;
+    onAdd?: () => void | void | undefined;
+    onDelete?: () => void | void | undefined;
 }
 
-export const FadSettingsRow: FC<FadSettingsRowProps> = ({ id }) => {
+export const FadSettingsRow: FC<FadSettingsRowProps> = ({ onAdd, onDelete, id }) => {
 
     const [codeDisabled, setCodeDisabled] = useState<boolean>(false)
     const nameFadTitle: string = "Set the NAME for this parameter. (i.e Dynamics)"
@@ -86,6 +89,21 @@ export const FadSettingsRow: FC<FadSettingsRowProps> = ({ id }) => {
             <TdSelect id={`fadDeft_${id}`} options={valueMidi}></TdSelect>
         </div >
 
+    const addFaders =
+        <div className="text-center">
+            <IconBtnToggle
+                classes="w-6 h-6 hover:scale-[1.15] hover:animate-pulse"
+                titleA="Add Another Fader."
+                titleB="Remove This Fader."
+                id={`AddFaderButton_${id}`}
+                a="fa-solid fa-plus"
+                b="fa-solid fa-minus"
+                defaultIcon="a"
+                onToggleA={onAdd}
+                onToggleB={onDelete}>
+            </IconBtnToggle>
+        </div>
+
     const settingsTr =
         `bg-zinc-300 
         dark:bg-stone-800 
@@ -109,6 +127,7 @@ export const FadSettingsRow: FC<FadSettingsRowProps> = ({ id }) => {
                 <td className={`${settingsTd}`}>{codeOption}</td>
                 <td className={`${settingsTd}`}>{deftSelect}</td>
                 <td className={`${settingsTd}`}>{changeOption}</td>
+                <td className={`${settingsTd}`}>{addFaders}</td>
             </tr>
         </Fragment>
     );

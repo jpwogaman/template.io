@@ -1,4 +1,5 @@
 import { FC, useState, ChangeEvent, Fragment, Dispatch, SetStateAction } from "react";
+import { IconBtnToggle } from "../../components/button-icon-toggle";
 import { TdSwitch } from "../../components/checkbox-switch";
 import { TdInput } from "../../components/input";
 import { TdSelect } from "../../components/select";
@@ -9,9 +10,11 @@ interface ArtSettingsRowProps {
     toggle?: boolean;
     setDelays?: Dispatch<SetStateAction<any[]>>;
     delayList?: any[];
+    onAdd?: () => void | void | undefined;
+    onDelete?: () => void | void | undefined;
 }
 
-export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ delayList, setDelays, id, toggle }) => {
+export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ onAdd, onDelete, delayList, setDelays, id, toggle }) => {
 
     const [rngTitle, setRngTitle] = useState<string>("Switch to independent playable range.")
     const [rngVisible, setRngVisible] = useState<boolean>(false)
@@ -178,6 +181,21 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ delayList, setDelays, 
             </TdInput>
         </div>
 
+    const addArts =
+        <div className="text-center">
+            <IconBtnToggle
+                classes="w-6 h-6 hover:scale-[1.15] hover:animate-pulse"
+                titleA="Add Another Articulation."
+                titleB="Remove This Articulation."
+                id={`AddFaderButton_${id}`}
+                a="fa-solid fa-plus"
+                b="fa-solid fa-minus"
+                defaultIcon="a"
+                onToggleA={onAdd}
+                onToggleB={onDelete}>
+            </IconBtnToggle>
+        </div>
+
     const settingsTr =
         `bg-zinc-300 
         dark:bg-stone-800 
@@ -204,6 +222,7 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ delayList, setDelays, 
                 <td className={`${settingsTd}`}>{toggle ? deftSelect : deftCheck}</td>
                 <td className={`${settingsTd}`}>{trkDelay}</td>
                 <td className={`${settingsTd}`}>{changeOption}</td>
+                <td className={`${settingsTd}`}>{addArts}</td>
             </tr>
             {rngVisible ? <RangeRows id={id}></RangeRows> : null}
         </Fragment>
