@@ -41,6 +41,12 @@ const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selectedTrac
         dark:border-zinc-600
         p-0.5`
 
+    const longNameTh =
+        `hidden xl:table-cell`
+
+    const shrtNameTh =
+        `table-cell xl:hidden`
+
     return (
         <div id="TemplateTrackSettings" className="bg-stone-300 dark:bg-zinc-800 h-[100%] overflow-auto text-zinc-900 dark:text-zinc-200 MSshow p-4 z-50 transition-all duration-1000">
             <div className='flex justify-space align-middle'>
@@ -135,10 +141,10 @@ const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selectedTrac
                         <th className={`${settingsTh} w-[19%] xl:w-[20%]`} title="Set the NAME for this parameter. (i.e Dynamics)">Name</th>
                         <th className={`${settingsTh} w-[24%] xl:w-[25%]`} title="Select the TYPE of code for this parameter.">Code Type</th>
                         <th className={`${settingsTh} w-[18%] xl:w-[18%]`} title="Set the CODE for this patch. (i.e. CC11)">Code</th>
-                        <th className={`${settingsTh} w-[18%] xl:w-[18%] hidden xl:table-cell`} title="Set the default patch.">Default</th>
-                        <th className={`${settingsTh} w-[18%] xl:w-[18%] table-cell xl:hidden`} title="Set the default patch.">Deft.</th>
-                        <th className={`${settingsTh} w-[14%] xl:w-[14%] hidden xl:table-cell`} title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
-                        <th className={`${settingsTh} w-[14%] xl:w-[14%] table-cell xl:hidden`} title="Switch between Value 1-Based and Value 2-Based Changes">Chng.</th>
+                        <th className={`${settingsTh} ${longNameTh} w-[18%] xl:w-[18%]`} title="Set the default patch.">Default</th>
+                        <th className={`${settingsTh} ${shrtNameTh} w-[18%] xl:w-[18%]`} title="Set the default patch.">Deft.</th>
+                        <th className={`${settingsTh} ${longNameTh} w-[14%] xl:w-[14%]`} title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
+                        <th className={`${settingsTh} ${shrtNameTh} w-[14%] xl:w-[14%]`} title="Switch between Value 1-Based and Value 2-Based Changes">Chng.</th>
                     </tr >
                 </thead >
                 <tbody>
@@ -154,16 +160,15 @@ const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selectedTrac
                         <th className={`${settingsTh} w-[07%] xl:w-[05%]`} title="Articulation Number">No.</th>
                         <th className={`${settingsTh} w-[19%] xl:w-[20%]`} title="Set the NAME for this patch. (i.e Legato On/OFF)">Name</th>
                         <th className={`${settingsTh} w-[24%] xl:w-[25%]`} title="Select the TYPE of code for this patch.">Code Type</th>
-                        <th className={`${settingsTh} w-[7.2%] xl:w-[7.2%]`} title="Set the CODE for this patch. (i.e. CC58)">Code</th>
-                        <th className={`${settingsTh} w-[7.2%] xl:w-[7.2%]`} title="Set the ON setting for this patch. (i.e. CC58, Value 76)" > On</th >
-                        <th className={`${settingsTh} w-[7.2%] xl:w-[7.2%]`} title="Set the OFF setting for this patch. (i.e. CC58, Value 81)" > Off</th >
-
-                        <th className={`${settingsTh} w-[7.2%] xl:w-[7.2%] hidden xl:table-cell`} title="Set the track delay for this patch in ms.">Delay</th>
-                        <th className={`${settingsTh} w-[7.2%] xl:w-[7.2%] table-cell xl:hidden`} title="Set the track delay for this patch in ms.">Del.</th>
-                        <th className={`${settingsTh} w-[7.2%] xl:w-[7.2%] hidden xl:table-cell`} title="Set the default patch." > Default</th >
-                        <th className={`${settingsTh} w-[7.2%] xl:w-[7.2%] table-cell xl:hidden`} title="Set the default patch." > Deft.</th >
-                        <th className={`${settingsTh} w-[14%] xl:w-[14%] hidden xl:table-cell`} title="Switch between Value 1-Based and Value 2-Based Changes" > Change Type</th >
-                        <th className={`${settingsTh} w-[14%] xl:w-[14%] table-cell xl:hidden`} title="Switch between Value 1-Based and Value 2-Based Changes" > Chng.</th >
+                        <th className={`${settingsTh} w-[07%] xl:w-[07%]`} title="Set the CODE for this patch. (i.e. CC58)">Code</th>
+                        <th className={`${settingsTh} w-[07%] xl:w-[07%]`} title="Set the ON setting for this patch. (i.e. CC58, Value 76)" > On</th >
+                        <th className={`${settingsTh} w-[07%] xl:w-[07%]`} title="Set the OFF setting for this patch. (i.e. CC58, Value 81)" > Off</th >
+                        <th className={`${settingsTh} ${longNameTh} w-[07%] xl:w-[07%]`} title="Set the track delay for this patch in ms.">Delay</th>
+                        <th className={`${settingsTh} ${shrtNameTh} w-[07%] xl:w-[07%]`} title="Set the track delay for this patch in ms.">Del.</th>
+                        <th className={`${settingsTh} ${longNameTh} w-[07%] xl:w-[07%]`} title="Set the default patch." > Default</th >
+                        <th className={`${settingsTh} ${shrtNameTh} w-[07%] xl:w-[07%]`} title="Set the default patch." > Deft.</th >
+                        <th className={`${settingsTh} ${longNameTh} w-[15%] xl:w-[15%]`} title="Switch between Value 1-Based and Value 2-Based Changes" > Change Type</th >
+                        <th className={`${settingsTh} ${shrtNameTh} w-[15%] xl:w-[15%]`} title="Switch between Value 1-Based and Value 2-Based Changes" > Chng.</th >
                     </tr >
                 </thead >
                 <tbody>
@@ -177,16 +182,16 @@ const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selectedTrac
                         <th className={`${settingsTh} w-[07%] xl:w-[05%]`} title="Articulation Number">No.</th>
                         <th className={`${settingsTh} w-[19%] xl:w-[20%]`} title="Set the NAME for this patch. (i.e Staccato)">Name</th>
                         <th className={`${settingsTh} w-[24%] xl:w-[25%]`} title="Select the TYPE of code for this patch.">Code Type</th>
-                        <th className={`${settingsTh} w-[7.2%] xl:w-[7.2%]`} title="Set the CODE for this patch. (i.e. CC58)">Code</th>
-                        <th className={`${settingsTh} w-[7.2%] xl:w-[7.2%]`} title="Set the ON setting for this patch. (i.e. CC58, Value 21)">On</th>
-                        <th className={`${settingsTh} w-[7.2%] xl:w-[7.2%] hidden xl:table-cell`} title="Set the number of playable ranges for this patch.">Range</th>
-                        <th className={`${settingsTh} w-[7.2%] xl:w-[7.2%] table-cell xl:hidden`} title="Set the number of playable ranges for this patch.">Rng.</th>
-                        <th className={`${settingsTh} w-[7.2%] xl:w-[7.2%] hidden xl:table-cell`} title="Set the track delay for this patch in ms.">Delay</th>
-                        <th className={`${settingsTh} w-[7.2%] xl:w-[7.2%] table-cell xl:hidden`} title="Set the track delay for this patch in ms.">Del.</th>
-                        <th className={`${settingsTh} w-[7.2%] xl:w-[7.2%] hidden xl:table-cell`} title="Set the default patch.">Default</th>
-                        <th className={`${settingsTh} w-[7.2%] xl:w-[7.2%] table-cell xl:hidden`} title="Set the default patch.">Deft.</th>
-                        <th className={`${settingsTh} w-[14%] xl:w-[14%] hidden xl:table-cell`} title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
-                        <th className={`${settingsTh} w-[14%] xl:w-[14%] table-cell xl:hidden`} title="Switch between Value 1-Based and Value 2-Based Changes">Chng.</th>
+                        <th className={`${settingsTh} w-[07%] xl:w-[07%]`} title="Set the CODE for this patch. (i.e. CC58)">Code</th>
+                        <th className={`${settingsTh} w-[07%] xl:w-[07%]`} title="Set the ON setting for this patch. (i.e. CC58, Value 21)">On</th>
+                        <th className={`${settingsTh} ${longNameTh} w-[07%] xl:w-[07%]`} title="Set the number of playable ranges for this patch.">Range</th>
+                        <th className={`${settingsTh} ${shrtNameTh} w-[07%] xl:w-[07%]`} title="Set the number of playable ranges for this patch.">Rng.</th>
+                        <th className={`${settingsTh} ${longNameTh} w-[07%] xl:w-[07%]`} title="Set the track delay for this patch in ms.">Delay</th>
+                        <th className={`${settingsTh} ${shrtNameTh} w-[07%] xl:w-[07%]`} title="Set the track delay for this patch in ms.">Del.</th>
+                        <th className={`${settingsTh} ${longNameTh} w-[07%] xl:w-[07%]`} title="Set the default patch.">Default</th>
+                        <th className={`${settingsTh} ${shrtNameTh} w-[07%] xl:w-[07%]`} title="Set the default patch.">Deft.</th>
+                        <th className={`${settingsTh} ${longNameTh} w-[15%] xl:w-[15%]`} title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
+                        <th className={`${settingsTh} ${shrtNameTh} w-[15%] xl:w-[15%]`} title="Switch between Value 1-Based and Value 2-Based Changes">Chng.</th>
                     </tr>
                 </thead>
                 <tbody>
