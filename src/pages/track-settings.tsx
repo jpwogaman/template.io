@@ -1,7 +1,7 @@
-import { TdSelect } from './select';
-import { IconBtnToggle } from './button-icon-toggle'
-import { SettingsRow } from './track-settings-table-row'
-import { TdInput } from './input';
+import { TdSelect } from '../components/select';
+import { IconBtnToggle } from '../components/button-icon-toggle'
+import { SettingsRow } from '../components/track-settings-table-row'
+import { TdInput } from '../components/input';
 import { FC } from 'react';
 
 export const devMode = true

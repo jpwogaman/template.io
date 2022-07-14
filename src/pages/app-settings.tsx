@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { TdSelect } from './select';
+import { TdSelect } from '../components/select';
 
 interface SettingsFormProps {
 

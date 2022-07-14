@@ -1,10 +1,10 @@
 import { Fragment } from 'react';
 import ReactDOM from 'react-dom/client';
-import './css/index.css';
+import './assets/index.css';
 
-import TemplateNavbar from './ts/navbar';
-import TemplateData from './ts/template-data';
-import reportWebVitals from './ts/react-app/reportWebVitals';
+import TemplateNavbar from './pages/navbar';
+import TemplateData from './pages/template-data';
+import reportWebVitals from './reportWebVitals';
 
 
 const template = ReactDOM.createRoot(

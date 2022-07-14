@@ -1,8 +1,8 @@
 import { ChangeEvent, Dispatch, FC, Fragment, MouseEventHandler, ReactNode, SetStateAction, useState } from 'react';
-import { TdSelect } from './select';
-import ColorPicker from './color-picker'
-import { TdInput, Input } from './input';
-import { IconBtnToggle } from './button-icon-toggle';
+import { TdSelect } from '../components/select';
+import ColorPicker from '../components/color-picker'
+import { TdInput, Input } from '../components/input';
+import { IconBtnToggle } from '../components/button-icon-toggle';
 import { devMode } from './track-settings'
 
 interface TrackRowProps {
