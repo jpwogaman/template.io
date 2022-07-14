@@ -1,6 +1,5 @@
-import { ChangeEvent, Dispatch, FC, Fragment, SetStateAction } from 'react';
+import { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
 import { Input } from '../components/input';
-import { devMode } from './track-settings'
 import { TrackData } from '../data/track-list/track-list-data'
 
 
@@ -70,12 +69,8 @@ export const TrackList: FC<TrackListProps> = ({ setSelectedTrackName, setSelecte
                             <th className={`${trackTh} w-[05%]`} title="Unique Track Number">No.</th>
                             <th className={`${trackTh} w-[45%]`} title="Set the MIDI channel for this track or multi.">Name</th>
                             <th className={`${trackTh} w-[10%]`} title="Set the NAME for this track or multi.">MIDI Channel</th>
-                            {!devMode ?
-                                <Fragment>
-                                    <th className={`${trackTh} w-[10%]`} title="Set the sampler outputs for this track or multi.">Sampler Outputs</th>
-                                    <th className={`${trackTh} w-[10%]`} title="Set the instance outputs for this track or multi.">Instance Outputs</th>
-                                </Fragment>
-                                : null}
+                            {/* <th className={`${trackTh} w-[10%]`} title="Set the sampler outputs for this track or multi.">Sampler Outputs</th>
+                            <th className={`${trackTh} w-[10%]`} title="Set the instance outputs for this track or multi.">Instance Outputs</th> */}
                             <th className={`${trackTh} w-[10%]`} title="Track Delay in ms (may be average)">Delay (ms)</th>
                             <th className={`${trackTh} w-[10%]`} title="Edit Track Parameters"></th>
                         </tr>

@@ -1,8 +1,7 @@
-import { FC, Fragment, MouseEventHandler, ReactNode } from 'react';
+import { FC, MouseEventHandler, ReactNode } from 'react';
 import { TdSelect } from '../../components/select';
 import { TdInput } from '../../components/input';
 import { IconBtnToggle } from '../../components/button-icon-toggle';
-import { devMode } from '../../pages/track-settings'
 
 interface TrackRowProps {
     id: string;
@@ -30,21 +29,21 @@ export const TrackRows: FC<TrackRowProps> = ({ setSelectedTrack, id, onAdd, onDe
             </TdSelect>
         </div>
 
-    const smpOutOption =
-        <div title="Set the sampler outputs for this track or multi." >
-            <TdSelect
-                id={`trkSmpOut_${id}`}
-                options="smpOutsList">
-            </TdSelect>
-        </div >
+    // const smpOutOption =
+    //     <div title="Set the sampler outputs for this track or multi." >
+    //         <TdSelect
+    //             id={`trkSmpOut_${id}`}
+    //             options="smpOutsList">
+    //         </TdSelect>
+    //     </div >
 
-    const vepOutOption =
-        <div title="Set the instance outputs for this track or multi.">
-            <TdSelect
-                id={`trkVepOut_${id}`}
-                options="vepOutsList">
-            </TdSelect>
-        </div >
+    // const vepOutOption =
+    //     <div title="Set the instance outputs for this track or multi.">
+    //         <TdSelect
+    //             id={`trkVepOut_${id}`}
+    //             options="vepOutsList">
+    //         </TdSelect>
+    //     </div >
 
     const trkDelay = "~35" //will need to brought over from track-settings
 
@@ -89,14 +88,8 @@ export const TrackRows: FC<TrackRowProps> = ({ setSelectedTrack, id, onAdd, onDe
             <td className={`${trackTd}`}>{nameOption}</td>
             <td className={`${trackTd}`}>{chnOption}</td>
             <td className={`${trackTd}`}>{trkDelay}</td>
-
-            {!devMode ?
-                <Fragment>
-                    <td className={`${trackTd}`}>{smpOutOption}</td>
-                    <td className={`${trackTd}`}>{vepOutOption}</td>
-                </Fragment>
-                : null}
-
+            {/* <td className={`${trackTd}`}>{smpOutOption}</td>
+            <td className={`${trackTd}`}>{vepOutOption}</td> */}
             <td className={`${trackTd}`}>{editTrack}</td>
         </tr>
     );

@@ -35,7 +35,6 @@ export const RangeRows: FC<RangeRowProps> = ({ id }) => {
         }
     }
 
-
     const rangeTr =
         `bg-zinc-300 
         dark:bg-stone-800 
@@ -50,7 +49,6 @@ export const RangeRows: FC<RangeRowProps> = ({ id }) => {
         dark:border-zinc-600
         p-0.5`
 
-
     const rangeTdEmpty =
         `bg-zinc-400 
         dark:bg-zinc-600
@@ -58,7 +56,6 @@ export const RangeRows: FC<RangeRowProps> = ({ id }) => {
         border-zinc-400 
         dark:border-zinc-600
         p-0.5`
-
 
     return (
         <Fragment>
@@ -95,6 +92,7 @@ export const RangeRows: FC<RangeRowProps> = ({ id }) => {
                             onToggleB={() => removeRange(id, range.id)}>
                         </IconBtnToggle>
                     </td>
+                    <td className={`${rangeTdEmpty}`}></td>
                     <td className={`${rangeTdEmpty}`}></td>
                 </tr>
             ))}

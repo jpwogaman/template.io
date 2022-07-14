@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { TrackList } from '../pages/track-list';
-import TrackSettings from '../pages/track-settings';
+import { TrackSettings } from '../pages/track-settings';
 
 
 export default function TemplateData() {

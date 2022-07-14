@@ -2,11 +2,11 @@ import { FC, useState, ChangeEvent, Fragment } from "react";
 import { TdSwitch } from "../../components/checkbox-switch";
 import { TdInput } from "../../components/input";
 import { TdSelect } from "../../components/select";
-import { RangeRows } from "./art-range-rows"
+import { RangeRows } from "./art-rows-ranges"
 
 interface ArtSettingsRowProps {
     id: string;
-    toggle: boolean | undefined;
+    toggle?: boolean;
 }
 
 export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ id, toggle }) => {

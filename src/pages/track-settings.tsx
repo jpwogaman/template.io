@@ -1,18 +1,15 @@
 import { TdSelect } from '../components/select';
 import { IconBtnToggle } from '../components/button-icon-toggle'
-import { SettingsRow } from '../data/track-settings/track-settings-rows'
 import { TdInput } from '../components/input';
 import { FC } from 'react';
-
-export const devMode = true
-
+import { ArtSettingsRow } from '../data/track-settings/art-rows'
+import { FadSettingsRow } from '../data/track-settings/fad-rows'
 interface TrackSettingsProps {
     selectedTrack: string;
     selectedTrackName: string;
-
 }
 
-const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selectedTrack }) => {
+export const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selectedTrack }) => {
 
     const closeSettingsWindow = () => {
         document.getElementById('TemplateTrackSettings')!.classList.replace('MSshow', 'MShide');
@@ -74,21 +71,9 @@ const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selectedTrac
                     id="editSave">
                     <i className="fa-solid fa-save"></i>
                 </button>
-                {!devMode ? <div className=''>
-                    <ul id="dropdown-item-button">
-                        <li>Print Track Settings</li>
-                        <li>Save Track Settings as Manufacturer Default</li>
-                        <li>Open Manufacturer Default Settings for Track</li>
-                        <li>Save Track Settings as User Default</li>
-                        <li>Open User Default Settings for Track</li>
-                    </ul>
-                </div> : null}
             </div>
-
             <h2 id="trkEditDisplay" className='my-2'>{`Track ${parseInt(selectedTrack)}: ${selectedTrackName}`}</h2>
-
             <div className='flex items-center text-xs xl:text-lg'>
-
                 <p>Playable Ranges: </p>
                 <div>
                     <TdInput
@@ -114,7 +99,6 @@ const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selectedTrac
                     title="This patch has more than one set of playable ranges.">
                     <i className="fa-solid fa-plus" />
                 </button>
-
             </div>
             <div className='flex items-center my-2 text-xs xl:text-lg'>
                 <p>Base Track Delay (ms):</p>
@@ -130,10 +114,7 @@ const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selectedTrac
             <div className='flex items-center text-xs xl:text-lg'>
                 <p>Avg. Track Delay (ms): {`fromArtInputs`}</p>
             </div>
-
-
             <h4 className='mt-5 mb-1'>Faders</h4>
-
             <table className='w-full table-fixed text-left xl:text-sm md:text-xs'>
                 <thead>
                     <tr>
@@ -148,12 +129,10 @@ const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selectedTrac
                     </tr >
                 </thead >
                 <tbody>
-                    <SettingsRow id="01" type="fad"></SettingsRow>
+                    <FadSettingsRow id="01"></FadSettingsRow>
                 </tbody>
             </table >
-
             <h4 className='mt-5 mb-1'>Articulations (toggle)</h4>
-
             <table className='w-full table-fixed text-left xl:text-sm md:text-xs'>
                 <thead>
                     <tr>
@@ -172,7 +151,7 @@ const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selectedTrac
                     </tr >
                 </thead >
                 <tbody>
-                    <SettingsRow id="01" type="art" toggle></SettingsRow>
+                    <ArtSettingsRow id="01" toggle></ArtSettingsRow>
                 </tbody>
             </table >
             <h4 className='mt-5 mb-1'>Articulations (switch)</h4>
@@ -195,12 +174,10 @@ const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selectedTrac
                     </tr>
                 </thead>
                 <tbody>
-                    <SettingsRow id="03" type="art"></SettingsRow>
-                    <SettingsRow id="04" type="art"></SettingsRow>
+                    <ArtSettingsRow id="03"></ArtSettingsRow>
+                    <ArtSettingsRow id="04"></ArtSettingsRow>
                 </tbody>
             </table>
         </div >
     );
 };
-
-export default TrackSettings
