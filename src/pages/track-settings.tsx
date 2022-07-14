@@ -17,8 +17,37 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selec
         {
             id: 'base',
             delay: 0
-        }
+        },
+        {
+            id: 'art_01',
+            delay: 0
+        },
     ])
+
+    const baseDelayChange = (event: ChangeEvent<HTMLInputElement>) => {
+
+        let x = event.target.value as unknown as number
+        let trkDelTotal: number = 0
+
+        // setDelays(prevState => {
+        //     const newState = prevState.map(obj => {
+        //         if (obj.id === 'base') {
+        //             return { ...obj, delay: x };
+        //         }
+        //         return obj;
+        //     });
+        //     return newState;
+        // });
+
+        for (let i = 0; i < delayList.length; i++) {
+            trkDelTotal += delayList[i].delay
+        }
+        setAvgTrkDel(trkDelTotal / delayList.length)
+    }
+
+    const delayChangeClickTest = () => {
+        console.log(delayList[0].delay, typeof delayList[0].delay)
+    }
 
     const closeSettingsWindow = () => {
         document.getElementById('TemplateTrackSettings')!.classList.replace('MSshow', 'MShide');
@@ -27,38 +56,6 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selec
 
     const toggleNow = () => {
         console.log('lock')
-    }
-
-    const baseDelayChange = (event: ChangeEvent<HTMLInputElement>) => {
-
-        let x = event.target.value as unknown as number
-        let trkDelTotal = 0
-
-        for (let i = 0; i < delayList.length; i++) {
-            trkDelTotal += delayList[i].delay
-        }
-
-        setAvgTrkDel(trkDelTotal / delayList.length)
-
-        setDelays(prevState => {
-            const newState = prevState.map(obj => {
-                if (obj.id === 'base') {
-                    return { ...obj, delay: x };
-                }
-                return obj;
-            });
-            return newState;
-        });
-
-
-
-    }
-
-    const delayChangeClickTest = () => {
-
-
-        console.log(delayList[0].delay, typeof delayList[0])
-
     }
 
     const settingsTh =
