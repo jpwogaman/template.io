@@ -1,6 +1,6 @@
 import { TdSelect } from '../components/select';
 import { IconBtnToggle } from '../components/button-icon-toggle'
-import { SettingsRow } from '../components/track-settings-table-row'
+import { SettingsRow } from '../data/track-settings/track-settings-rows'
 import { TdInput } from '../components/input';
 import { FC } from 'react';
 

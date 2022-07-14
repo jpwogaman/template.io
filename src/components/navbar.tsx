@@ -1,6 +1,6 @@
 import { Fragment } from "react";
-import { IconBtnToggle } from "../components/button-icon-toggle";
-import { devMode } from './track-settings'
+import { IconBtnToggle } from "./button-icon-toggle";
+import { devMode } from '../pages/track-settings'
 
 export default function TemplateNavbar() {
 

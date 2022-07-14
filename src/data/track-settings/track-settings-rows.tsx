@@ -1,8 +1,8 @@
 import { FC, useState, ChangeEvent, Fragment, ReactNode } from "react";
-import { IconBtnToggle } from "./button-icon-toggle";
-import { TdSwitch } from "./checkbox-switch";
-import { TdInput } from "./input";
-import { TdSelect } from "./select";
+import { IconBtnToggle } from "../../components/button-icon-toggle";
+import { TdSwitch } from "../../components/checkbox-switch";
+import { TdInput } from "../../components/input";
+import { TdSelect } from "../../components/select";
 
 interface RangeRowProps {
     id: string;
@@ -102,31 +102,6 @@ const RangeRows: FC<RangeRowProps> = ({ id }) => {
         </Fragment >
     )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 interface SettingsRowProps {
     id: string;
@@ -296,25 +271,6 @@ export const SettingsRow: FC<SettingsRowProps> = ({ id, type, variant }) => {
             <TdSelect id={`${type}Deft_${id}`} options={type === "art" ? "valDeftList" : valueMidi}></TdSelect>
         </div >
     //needs to be affected by typeChange() 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     const deftCheck =
         <div title="Set this as the default patch.">
