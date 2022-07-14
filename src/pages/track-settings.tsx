@@ -148,7 +148,7 @@ const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selectedTrac
                     </tr >
                 </thead >
                 <tbody>
-                    <SettingsRow id="01" type="fad" variant={undefined}></SettingsRow>
+                    <SettingsRow id="01" type="fad"></SettingsRow>
                 </tbody>
             </table >
 
@@ -163,16 +163,16 @@ const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selectedTrac
                         <th className={`${settingsTh} w-[07%] xl:w-[07%]`} title="Set the CODE for this patch. (i.e. CC58)">Code</th>
                         <th className={`${settingsTh} w-[07%] xl:w-[07%]`} title="Set the ON setting for this patch. (i.e. CC58, Value 76)" > On</th >
                         <th className={`${settingsTh} w-[07%] xl:w-[07%]`} title="Set the OFF setting for this patch. (i.e. CC58, Value 81)" > Off</th >
-                        <th className={`${settingsTh} ${longNameTh} w-[07%] xl:w-[07%]`} title="Set the track delay for this patch in ms.">Delay</th>
-                        <th className={`${settingsTh} ${shrtNameTh} w-[07%] xl:w-[07%]`} title="Set the track delay for this patch in ms.">Del.</th>
                         <th className={`${settingsTh} ${longNameTh} w-[07%] xl:w-[07%]`} title="Set the default patch." > Default</th >
                         <th className={`${settingsTh} ${shrtNameTh} w-[07%] xl:w-[07%]`} title="Set the default patch." > Deft.</th >
+                        <th className={`${settingsTh} ${longNameTh} w-[07%] xl:w-[07%]`} title="Set the track delay for this patch in ms.">Delay</th>
+                        <th className={`${settingsTh} ${shrtNameTh} w-[07%] xl:w-[07%]`} title="Set the track delay for this patch in ms.">Del.</th>
                         <th className={`${settingsTh} ${longNameTh} w-[15%] xl:w-[15%]`} title="Switch between Value 1-Based and Value 2-Based Changes" > Change Type</th >
                         <th className={`${settingsTh} ${shrtNameTh} w-[15%] xl:w-[15%]`} title="Switch between Value 1-Based and Value 2-Based Changes" > Chng.</th >
                     </tr >
                 </thead >
                 <tbody>
-                    <SettingsRow id="01" type="art" variant="tog"></SettingsRow>
+                    <SettingsRow id="01" type="art" toggle></SettingsRow>
                 </tbody>
             </table >
             <h4 className='mt-5 mb-1'>Articulations (switch)</h4>
@@ -186,17 +186,17 @@ const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selectedTrac
                         <th className={`${settingsTh} w-[07%] xl:w-[07%]`} title="Set the ON setting for this patch. (i.e. CC58, Value 21)">On</th>
                         <th className={`${settingsTh} ${longNameTh} w-[07%] xl:w-[07%]`} title="Set the number of playable ranges for this patch.">Range</th>
                         <th className={`${settingsTh} ${shrtNameTh} w-[07%] xl:w-[07%]`} title="Set the number of playable ranges for this patch.">Rng.</th>
-                        <th className={`${settingsTh} ${longNameTh} w-[07%] xl:w-[07%]`} title="Set the track delay for this patch in ms.">Delay</th>
-                        <th className={`${settingsTh} ${shrtNameTh} w-[07%] xl:w-[07%]`} title="Set the track delay for this patch in ms.">Del.</th>
                         <th className={`${settingsTh} ${longNameTh} w-[07%] xl:w-[07%]`} title="Set the default patch.">Default</th>
                         <th className={`${settingsTh} ${shrtNameTh} w-[07%] xl:w-[07%]`} title="Set the default patch.">Deft.</th>
+                        <th className={`${settingsTh} ${longNameTh} w-[07%] xl:w-[07%]`} title="Set the track delay for this patch in ms.">Delay</th>
+                        <th className={`${settingsTh} ${shrtNameTh} w-[07%] xl:w-[07%]`} title="Set the track delay for this patch in ms.">Del.</th>
                         <th className={`${settingsTh} ${longNameTh} w-[15%] xl:w-[15%]`} title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
                         <th className={`${settingsTh} ${shrtNameTh} w-[15%] xl:w-[15%]`} title="Switch between Value 1-Based and Value 2-Based Changes">Chng.</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <SettingsRow id="03" type="art" variant={undefined}></SettingsRow>
-                    <SettingsRow id="04" type="art" variant={undefined}></SettingsRow>
+                    <SettingsRow id="03" type="art"></SettingsRow>
+                    <SettingsRow id="04" type="art"></SettingsRow>
                 </tbody>
             </table>
         </div >

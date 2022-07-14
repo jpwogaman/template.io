@@ -7,13 +7,13 @@ interface TdSwitchProps {
     b: string | number;
     defaultVal: string;
     artFad?: boolean | undefined;
-    togArt?: boolean | undefined;
+    toggle?: boolean | undefined;
     showVals?: boolean;
     children?: ReactNode;
     onSwitch?: any;
 }
 
-export const TdSwitch: FC<TdSwitchProps> = ({ onSwitch, artFad, togArt, showVals, title, defaultVal, id, a, b }) => {
+export const TdSwitch: FC<TdSwitchProps> = ({ onSwitch, artFad, toggle, showVals, title, defaultVal, id, a, b }) => {
 
     const [isChecked, setChecked] = useState<boolean>(defaultVal === "b" ? true : false)
 
@@ -30,12 +30,12 @@ export const TdSwitch: FC<TdSwitchProps> = ({ onSwitch, artFad, togArt, showVals
     let val1SpanTitle = "the DEFAULT value relates to the CODE itself (i.e. DEFAULT = CC11)"
     let val2SpanTitle = "the DEFAULT value relates to the CODE's second Value (i.e. CODE = C#3, DEFAULT = Velocity 20)"
 
-    if (artFad && togArt) {
+    if (artFad && toggle) {
         val1SpanTitle = "the ON and OFF values relate to the CODE itself (i.e. ON = CC18, OFF = CC35)"
         val2SpanTitle = "the ON and OFF values relate to the CODE's second Value (i.e. CODE = C#3, ON = Velocity 20, OFF = Velocity 21)"
     }
 
-    if (artFad && !togArt) {
+    if (artFad && !toggle) {
         val1SpanTitle = "the ON value relates to the CODE itself (i.e. ON = CC18)"
         val2SpanTitle = "the ON value relates to the CODE's second Value (i.e. CODE = C#3, ON = Velocity 20)"
     }

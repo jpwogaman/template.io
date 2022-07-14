@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './assets/index.css';
 
 import TemplateNavbar from './components/navbar';
-import TemplateData from './data/template-data-wrapper';
+import TemplateData from './context/template-data-wrapper';
 import reportWebVitals from './reportWebVitals';
 
 

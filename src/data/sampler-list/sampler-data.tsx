@@ -1,7 +1,7 @@
 import { FC, Fragment } from 'react';
-import { TdSelect } from '../components/select';
-import ColorPicker from '../components/color-picker'
-import { TdInput } from '../components/input';
+import { TdSelect } from '../../components/select';
+import ColorPicker from '../../components/color-picker'
+import { TdInput } from '../../components/input';
 
 interface SamplerInfoProps {
 
