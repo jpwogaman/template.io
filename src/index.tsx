@@ -2,8 +2,7 @@ import { Fragment } from 'react';
 import ReactDOM from 'react-dom/client';
 import './assets/index.css';
 
-import TemplateNavbar from './components/navbar';
-import TemplateData from './context/template-data-wrapper';
+import TemplateData from './pages/template-data-wrapper';
 import reportWebVitals from './reportWebVitals';
 
 
@@ -12,10 +11,7 @@ const template = ReactDOM.createRoot(
 );
 
 template.render(
-    <Fragment>
-        <TemplateNavbar />
-        <TemplateData />
-    </Fragment>
+    <TemplateData />
 );
 
 reportWebVitals();

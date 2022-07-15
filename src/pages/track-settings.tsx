@@ -150,7 +150,11 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                     <i className="fa-solid fa-save"></i>
                 </button>
             </div>
+
+
             <h2 id="trkEditDisplay" className='my-2'>{`Track ${parseInt(selectedTrack)}: ${selectedTrackName}`}</h2>
+
+
             <div className={`flex text-xs xl:text-lg ${onlyRange ? 'bg-zinc-300 dark:bg-stone-800' : null}`}>
                 <p className='py-1'>Playable Ranges: </p>
                 <table className=''>
@@ -269,8 +273,8 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                         <th className={`${settingsTh} w-[06%] xl:w-[06%]`} title="Set the ON setting for this patch. (i.e. CC58, Value 76)" > On</th >
                         <th className={`${settingsTh} w-[06%] xl:w-[06%]`} title="Set the OFF setting for this patch. (i.e. CC58, Value 81)" > Off</th >
 
-                        <th className={`${settingsTh} ${longNameTh} w-[06%] xl:w-[06%]`} title="Set the default patch." > Default</th >
-                        <th className={`${settingsTh} ${shrtNameTh} w-[06%] xl:w-[06%]`} title="Set the default patch." > Deft.</th >
+                        <th className={`${settingsTh} ${longNameTh} w-[06%] xl:w-[06%]`} title="Set the DEFAULT default setting for this patch." > Default</th >
+                        <th className={`${settingsTh} ${shrtNameTh} w-[06%] xl:w-[06%]`} title="Set the DEFAULT default setting for this patch." > Deft.</th >
 
                         <th className={`${settingsTh} ${longNameTh} w-[06%] xl:w-[06%]`} title="Set the track delay for this patch in ms.">Delay</th>
                         <th className={`${settingsTh} ${shrtNameTh} w-[06%] xl:w-[06%]`} title="Set the track delay for this patch in ms.">Del.</th>

@@ -14,10 +14,11 @@ const addMultipleTracks = (event: ChangeEvent<HTMLInputElement>) => {
 interface TrackListProps {
     setSelectedTrack: Dispatch<SetStateAction<string>>;
     setSelectedTrackName: Dispatch<SetStateAction<string>>;
+    setTrackCount: Dispatch<SetStateAction<number>>;
     selectedTrackDelay: string;
 }
 
-export const TrackList: FC<TrackListProps> = ({ selectedTrackDelay, setSelectedTrackName, setSelectedTrack }) => {
+export const TrackList: FC<TrackListProps> = ({ setTrackCount, selectedTrackDelay, setSelectedTrackName, setSelectedTrack }) => {
 
     const stupid = () => {
         console.log("setSelectedTrack")
@@ -77,7 +78,7 @@ export const TrackList: FC<TrackListProps> = ({ selectedTrackDelay, setSelectedT
                         </tr>
                     </thead>
                     <tbody>
-                        <TrackData setSelectedTrack={setSelectedTrack} setSelectedTrackName={setSelectedTrackName} selectedTrackDelay={selectedTrackDelay}></TrackData>
+                        <TrackData setSelectedTrack={setSelectedTrack} setSelectedTrackName={setSelectedTrackName} selectedTrackDelay={selectedTrackDelay} setTrackCount={setTrackCount}></TrackData>
                     </tbody>
                 </table>
             </div>

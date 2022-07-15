@@ -1,6 +1,11 @@
-import { IconBtnToggle } from "./button-icon-toggle";
+import { FC } from "react";
+import { IconBtnToggle } from "../components/button-icon-toggle";
 
-export default function TemplateNavbar() {
+interface TemplateNavbarProps {
+    trackCount: number;
+}
+
+export const TemplateNavbar: FC<TemplateNavbarProps> = ({ trackCount }) => {
 
     const changeTheme = () => {
         document.body.classList.toggle('dark', undefined)
@@ -12,7 +17,7 @@ export default function TemplateNavbar() {
             <ul className="flex text-center">
                 {/* <li className="block py-2 w-60 text-zinc-200">0 VEP Instances</li>
                 <li className="block py-2 w-60 text-zinc-200">0 Samplers</li> */}
-                <li className="block py-2 w-60 text-zinc-200">0 Tracks</li>
+                <li className="block py-2 w-60 text-zinc-200">{trackCount} Tracks</li>
                 <li className="block py-2 w-60 text-zinc-200 cursor-pointer">
                     <IconBtnToggle
                         classes="w-10"
