@@ -34,8 +34,6 @@ export const TdSelect: FC<TdSelectProps> = ({ onSelect, codeDisabled, id, option
             cursor-pointer 
             overflow-scroll 
             bg-inherit  
-            border 
-            border-transparent  
             outline-green-600 dark:outline-green-800
             outline-offset-4
             focus:text-zinc-900

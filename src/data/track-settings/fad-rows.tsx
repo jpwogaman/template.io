@@ -18,14 +18,6 @@ export const FadSettingsRow: FC<FadSettingsRowProps> = ({ onAdd, onDelete, id })
     const codeFadTitle: string = "Set the CODE for this parameter. (i.e CC11)"
     const deftTitleFad: string = "Set the DEFAULT value for this parameter."
 
-    const nameOption =
-        <TdInput
-            id={`fadName_${id}`}
-            title={nameFadTitle}
-            placeholder='Fader Name'
-            codeDisabled={false}>
-        </TdInput>
-
     const [valueMidi, setMidi] = useState<string>("valMidiList")
     const [valueCodeMidi, setCodeMidi] = useState<string>("valMidiList")
 
@@ -62,6 +54,15 @@ export const FadSettingsRow: FC<FadSettingsRowProps> = ({ onAdd, onDelete, id })
             }
         }
     }
+
+    const nameOption =
+        <TdInput
+            td={true}
+            id={`fadName_${id}`}
+            title={nameFadTitle}
+            placeholder='Fader Name'
+            codeDisabled={false}>
+        </TdInput>
 
     const typeOption =
         <div title={typeCodeFad}>
@@ -120,7 +121,7 @@ export const FadSettingsRow: FC<FadSettingsRowProps> = ({ onAdd, onDelete, id })
 
     return (
         <Fragment>
-            <tr id={`$fad_${id}`} className={`${settingsTr}`}>
+            <tr id={`$fad_${id}`} className={`${settingsTr}`} draggable>
                 <td className={`${settingsTd}`} id={`FadNumb_${id}`} title={`Fader No. ${parseInt(id)}`}>{parseInt(id)}</td>
                 <td className={`${settingsTd}`}>{nameOption}</td>
                 <td className={`${settingsTd}`}>{typeOption}</td>

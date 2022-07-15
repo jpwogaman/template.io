@@ -9,12 +9,14 @@ interface TrackRowProps {
     onAdd?: () => void | void | undefined;
     onDelete?: () => void | void | undefined;
     setSelectedTrack?: MouseEventHandler<HTMLButtonElement>;
+    selectedTrackDelay: string;
 }
 
-export const TrackRows: FC<TrackRowProps> = ({ setSelectedTrack, id, onAdd, onDelete }) => {
+export const TrackRows: FC<TrackRowProps> = ({ selectedTrackDelay, setSelectedTrack, id, onAdd, onDelete }) => {
 
     const nameOption =
         <TdInput
+            td={true}
             id={`trkName_${id}`}
             title="Set the NAME for this track or multi."
             placeholder="Track Name"
@@ -45,7 +47,7 @@ export const TrackRows: FC<TrackRowProps> = ({ setSelectedTrack, id, onAdd, onDe
     //         </TdSelect>
     //     </div >
 
-    const trkDelay = "~35" //will need to brought over from track-settings
+    const trkDelay = selectedTrackDelay //will need to brought over from track-settings
 
     const editTrack =
         <div className='flex justify-evenly'>
@@ -83,7 +85,7 @@ export const TrackRows: FC<TrackRowProps> = ({ setSelectedTrack, id, onAdd, onDe
 	    p-0.5`
 
     return (
-        <tr id={`trk_${id}`} className={`${trackTr}`}>
+        <tr id={`trk_${id}`} className={`${trackTr}`} draggable>
             <td className={`${trackTd}`} id={`trkNumb_${id}`} title="Unique Track Number">{parseInt(id)}</td>
             <td className={`${trackTd}`}>{nameOption}</td>
             <td className={`${trackTd}`}>{chnOption}</td>

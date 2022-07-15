@@ -8,7 +8,7 @@ import { RangeRows } from "./art-rows-ranges"
 interface ArtSettingsRowProps {
     id: string;
     toggle?: boolean;
-    setDelays?: Dispatch<SetStateAction<any[]>>;
+    setDelays?: Dispatch<SetStateAction<{ id: string, delay: number }[]>>;
     delayList?: any[];
     onAdd?: () => void | void | undefined;
     onDelete?: () => void | void | undefined;
@@ -93,7 +93,10 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ onAdd, onDelete, delay
     const delayChange = (event: ChangeEvent<HTMLInputElement>) => {
 
         const newDelay = { id: `art_${id}`, delay: event.target.value as unknown as number }
-        if (setDelays) { setDelays!([...(delayList || []), newDelay]) }
+
+        if (setDelays) {
+            setDelays!([...(delayList || []), newDelay])
+        }
         else return
     }
 
@@ -106,7 +109,6 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ onAdd, onDelete, delay
                     checked={rngChecked}
                     onChange={rangeOptionChange}
                     title={rngTitle}
-                    aria-label="Does this patch have the same playable range as the default?"
                     id={`ArtRangeOption_${id}`}>
                 </input>
             </div>
@@ -114,6 +116,7 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ onAdd, onDelete, delay
 
     const nameOption =
         <TdInput
+            td={true}
             id={`artName_${id}`}
             title={toggle ? artToggleNameTitle : artSwitchNameTitle}
             placeholder='Articulation Name'
@@ -174,8 +177,9 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ onAdd, onDelete, delay
     const trkDelay =
         <div>
             <TdInput
+                td={true}
                 id={`trkDelay_art_${id}`}
-                title="Set the track delay for this patch."
+                title="Set the track delay for this patch in ms."
                 placeholder="0"
                 onInput={delayChange}>
             </TdInput>
@@ -212,7 +216,7 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ onAdd, onDelete, delay
 
     return (
         <Fragment>
-            <tr id={`art_${id}`} className={`${settingsTr}`}>
+            <tr id={`art_${id}`} className={`${settingsTr}`} draggable>
                 <td className={`${settingsTd}`} id={`artNumb_${id}`} title={`Articulation No. ${parseInt(id)}`}>{parseInt(id)}</td>
                 <td className={`${settingsTd}`}>{nameOption}</td>
                 <td className={`${settingsTd}`}>{typeOption}</td>

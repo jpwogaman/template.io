@@ -1,15 +1,16 @@
 import { TdSelect } from '../components/select';
 import { IconBtnToggle } from '../components/button-icon-toggle'
-import { TdInput, Input } from '../components/input';
-import { ChangeEvent, FC, useState } from 'react';
+import { TdInput } from '../components/input';
+import { ChangeEvent, Dispatch, FC, Fragment, SetStateAction, useState } from 'react';
 import { FaderData } from '../data/track-settings/fad-rows-data';
 import { ArtData } from '../data/track-settings/art-rows-data';
 interface TrackSettingsProps {
     selectedTrack: string;
     selectedTrackName: string;
+    setSelectedDelay: Dispatch<SetStateAction<string>>;
 }
 
-export const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selectedTrack }) => {
+export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, selectedTrackName, selectedTrack }) => {
 
     const [avgTrkDel, setAvgTrkDel] = useState<number>(0)
 
@@ -29,24 +30,57 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selec
         let x = event.target.value as unknown as number
         let trkDelTotal: number = 0
 
-        // setDelays(prevState => {
-        //     const newState = prevState.map(obj => {
-        //         if (obj.id === 'base') {
-        //             return { ...obj, delay: x };
-        //         }
-        //         return obj;
-        //     });
-        //     return newState;
-        // });
+        setDelays(prevState => {
+            const newState = prevState.map(obj => {
+                if (obj.id === 'base') {
+                    return { ...obj, delay: x };
+                }
+                return obj;
+            });
+            return newState;
+        });
 
         for (let i = 0; i < delayList.length; i++) {
             trkDelTotal += delayList[i].delay
         }
+
         setAvgTrkDel(trkDelTotal + x / delayList.length)
+
+        if (delayList.length < 2) {
+            setSelectedDelay(`${avgTrkDel}`)
+        } else {
+            setSelectedDelay(`~${avgTrkDel}/${delayList.length}`)
+        }
     }
 
     const delayChangeClickTest = () => {
         console.log(delayList[0].delay, typeof delayList[0].delay)
+    }
+
+    const [FullRangeList, setFullRanges] = useState<{ id: string }[]>([
+        {
+            id: "01"
+        },
+    ])
+    const onlyRange: boolean = FullRangeList.length > 1 ? true : false
+
+    const addFullRange = (artId: string, fullRangeId: string) => {
+
+        let newFullRangeIdNumb: number = parseInt(fullRangeId) + 1
+
+        let newFullRangeIdStr: string = newFullRangeIdNumb.toLocaleString('en-US', {
+            minimumIntegerDigits: 2,
+            useGrouping: false
+        })
+        const newFullRange = { id: newFullRangeIdStr }
+        setFullRanges([...FullRangeList, newFullRange])
+    }
+
+    const removeFullRange = (artId: string, fullRangeId: string) => {
+
+        if (FullRangeList.length !== 1) {
+            setFullRanges(FullRangeList.filter((fullRange) => fullRange.id !== fullRangeId));
+        }
     }
 
     const closeSettingsWindow = () => {
@@ -54,7 +88,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selec
         document.getElementById('TemplateTracks')!.classList.replace('MSshowTemplateTracks', 'MShideTemplateTracks');
     }
 
-    const toggleNow = () => {
+    const toggleLock = () => {
         console.log('lock')
     }
 
@@ -70,17 +104,22 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selec
         dark:font-normal
         p-1`
 
-    const settingsTd =
-        `border-2 
-        border-zinc-400 
-        dark:border-zinc-600
-        p-0.5`
-
     const longNameTh =
         `hidden xl:table-cell`
 
     const shrtNameTh =
         `table-cell xl:hidden`
+
+    const rangeTr =
+        `bg-stone-300
+        dark:bg-zinc-800
+        ${onlyRange ? 'bg-zinc-300 dark:bg-stone-800' : null}`
+
+    const rangeTd =
+        `border-2 
+        border-zinc-400 
+        dark:border-zinc-600
+        p-0.5`
 
     return (
         <div id="TemplateTrackSettings" className="bg-stone-300 dark:bg-zinc-800 h-[100%] overflow-auto text-zinc-900 dark:text-zinc-200 MSshow p-4 z-50 transition-all duration-1000">
@@ -100,8 +139,8 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selec
                     a="fa-solid fa-lock-open"
                     b="fa-solid fa-lock"
                     defaultIcon="a"
-                    onToggleA={toggleNow}
-                    onToggleB={toggleNow}>
+                    onToggleA={toggleLock}
+                    onToggleB={toggleLock}>
                 </IconBtnToggle>
                 <button
                     className="w-10 h-10 border-2 border-zinc-900 dark:border-zinc-200 hover:scale-[1.15] hover:animate-pulse"
@@ -112,33 +151,51 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selec
                 </button>
             </div>
             <h2 id="trkEditDisplay" className='my-2'>{`Track ${parseInt(selectedTrack)}: ${selectedTrackName}`}</h2>
-            <div className='flex items-center text-xs xl:text-lg'>
-                <p>Playable Ranges: </p>
-                <div>
-                    <TdInput
-                        id={`fullRangeName_trk_${parseInt(selectedTrack)}`}
-                        title="Describe this range-group. (i.e hits/rolls)"
-                        placeholder="Range"
-                        defaultValue='Full Range'>
-                    </TdInput>
-                </div>
-
-                <div className={`${settingsTd} mx-2`}>
-                    <TdSelect id={`FullRngBot_trk_${parseInt(selectedTrack)}`} options="allNoteList"></TdSelect>
-                </div>
-
-                <i className='fas fa-arrow-right-long' />
-
-                <div className={`${settingsTd} mx-2`}>
-                    <TdSelect id={`FullRngTop_trk_${parseInt(selectedTrack)}`} options="allNoteList"></TdSelect>
-                </div>
-
-                <button
-                    className="w-6 h-6 hover:scale-[1.15] hover:animate-pulse"
-                    title="This patch has more than one set of playable ranges.">
-                    <i className="fa-solid fa-plus" />
-                </button>
+            <div className={`flex text-xs xl:text-lg ${onlyRange ? 'bg-zinc-300 dark:bg-stone-800' : null}`}>
+                <p className='py-1'>Playable Ranges: </p>
+                <table className=''>
+                    <tbody>
+                        {FullRangeList.map((range) => (
+                            <tr key={`FullRange_trk_${parseInt(selectedTrack)}_${range.id}`} id={`FullRange_trk_${parseInt(selectedTrack)}_${range.id}`} className={`${rangeTr}`}>
+                                <td className={`pr-2`}>
+                                    <TdInput
+                                        td={true}
+                                        id={`FullRangeName_trk_${parseInt(selectedTrack)}_${range.id}`}
+                                        title="Describe this range-group. (i.e hits/rolls)"
+                                        placeholder="Range Description"
+                                        defaultValue={onlyRange ? undefined : "Full Range"}
+                                        codeDisabled={false}>
+                                    </TdInput>
+                                </td>
+                                <td className={`${rangeTd}`}>
+                                    <TdSelect id={`FullRngBot_trk_${parseInt(selectedTrack)}_${range.id}`} options="allNoteList"></TdSelect>
+                                </td>
+                                <td className={`p-0.5 text-center`}>
+                                    <i className='fas fa-arrow-right-long' />
+                                </td>
+                                <td className={`${rangeTd}`}>
+                                    <TdSelect id={`FullRngTop_trk_${parseInt(selectedTrack)}_${range.id}`} options="allNoteList"></TdSelect>
+                                </td>
+                                <td className={`text-center`}>
+                                    <IconBtnToggle
+                                        classes="w-6 h-6 hover:scale-[1.15] hover:animate-pulse"
+                                        titleA="Add another set of playable ranges."
+                                        titleB="Remove this set of playable ranges."
+                                        id={`FullRangeAddButton_trk_${parseInt(selectedTrack)}_${range.id}`}
+                                        a="fa-solid fa-plus"
+                                        b="fa-solid fa-minus"
+                                        defaultIcon="a"
+                                        onToggleA={() => addFullRange(`${parseInt(selectedTrack)}`, range.id)}
+                                        onToggleB={() => removeFullRange(`${parseInt(selectedTrack)}`, range.id)}>
+                                    </IconBtnToggle>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
+
+
 
 
 
@@ -150,25 +207,27 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selec
             <div className='flex items-center my-2 text-xs xl:text-lg'>
                 <p>Base Track Delay (ms):</p>
                 <div>
-                    <Input
+                    <TdInput
+                        td={false}
                         id={`baseDelay_trk_${parseInt(selectedTrack)}`}
                         title="Set the base track delay in ms for this track."
                         placeholder="0"
                         onInput={baseDelayChange}>
-                    </Input>
+                    </TdInput>
                 </div>
             </div>
             <div className='flex items-center text-xs xl:text-lg'>
                 <p>Avg. Track Delay (ms):</p>
                 <div>
-                    <Input
+                    <TdInput
                         id={`avgDelay_trk_${parseInt(selectedTrack)}`}
                         title="The average delay in ms for this track."
-                        placeholder={avgTrkDel as unknown as string}
-                        defaultValue={avgTrkDel as unknown as string}
-                        onReceive={avgTrkDel as unknown as string}
+                        placeholder={avgTrkDel as unknown as number}
+                        defaultValue={avgTrkDel as unknown as number}
+                        onReceive={avgTrkDel as unknown as number}
+                        td={true}
                         codeDisabled={true}>
-                    </Input>
+                    </TdInput>
                 </div>
             </div>
 
@@ -223,7 +282,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selec
                     </tr >
                 </thead >
                 <tbody>
-                    <ArtData></ArtData>
+                    <ArtData setDelays={setDelays} toggle></ArtData>
                 </tbody>
             </table >
             <h4 className='mt-5 mb-1'>Articulations (switch)</h4>
@@ -252,7 +311,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ selectedTrackName, selec
                     </tr>
                 </thead>
                 <tbody>
-                    <ArtData></ArtData>
+                    <ArtData setDelays={setDelays} ></ArtData>
                 </tbody>
             </table>
         </div >

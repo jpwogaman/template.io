@@ -1,5 +1,5 @@
 import { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
-import { Input } from '../components/input';
+import { TdInput } from '../components/input';
 import { TrackData } from '../data/track-list/track-list-data'
 
 
@@ -14,9 +14,10 @@ const addMultipleTracks = (event: ChangeEvent<HTMLInputElement>) => {
 interface TrackListProps {
     setSelectedTrack: Dispatch<SetStateAction<string>>;
     setSelectedTrackName: Dispatch<SetStateAction<string>>;
+    selectedTrackDelay: string;
 }
 
-export const TrackList: FC<TrackListProps> = ({ setSelectedTrackName, setSelectedTrack }) => {
+export const TrackList: FC<TrackListProps> = ({ selectedTrackDelay, setSelectedTrackName, setSelectedTrack }) => {
 
     const stupid = () => {
         console.log("setSelectedTrack")
@@ -51,14 +52,14 @@ export const TrackList: FC<TrackListProps> = ({ setSelectedTrackName, setSelecte
                             title={`Add Multiple Tracks. (${addMltTrkInput})`}
                             id="addMultipleTracks"
                             onClick={stupid}>
-                            <i className="pl-2 fa-solid fa-plus"></i>
-                            <Input
+                            <i className="pl-2 mr-2 fa-solid fa-plus"></i>
+                            <TdInput
+                                td={false}
                                 id={"addMltTrkInput"}
                                 title='Set the number of tracks to add.'
                                 placeholder="1"
                                 codeDisabled={false} >
-
-                            </Input>
+                            </TdInput>
                         </button>
                     </div >
                 </div >
@@ -76,7 +77,7 @@ export const TrackList: FC<TrackListProps> = ({ setSelectedTrackName, setSelecte
                         </tr>
                     </thead>
                     <tbody>
-                        <TrackData setSelectedTrack={setSelectedTrack} setSelectedTrackName={setSelectedTrackName}></TrackData>
+                        <TrackData setSelectedTrack={setSelectedTrack} setSelectedTrackName={setSelectedTrackName} selectedTrackDelay={selectedTrackDelay}></TrackData>
                     </tbody>
                 </table>
             </div>

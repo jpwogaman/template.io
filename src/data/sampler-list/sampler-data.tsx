@@ -23,6 +23,7 @@ export const SamplerInfo: FC<SamplerInfoProps> = () => {
                 </div>
                 <div className='ml-1 w-11/12'>
                     <TdInput
+                        td={false}
                         id={"smpName_"}
                         title='Set the name for this sampler.'
                         placeholder="Instrument/Multi Name"

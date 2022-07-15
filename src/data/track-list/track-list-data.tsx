@@ -4,9 +4,10 @@ import { TrackRows } from './track-list-rows'
 interface TracksProps {
     setSelectedTrack: Dispatch<SetStateAction<string>>;
     setSelectedTrackName: Dispatch<SetStateAction<string>>;
+    selectedTrackDelay: string;
 }
 
-export const TrackData: FC<TracksProps> = ({ setSelectedTrackName, setSelectedTrack }) => {
+export const TrackData: FC<TracksProps> = ({ selectedTrackDelay, setSelectedTrackName, setSelectedTrack }) => {
 
     const [TrackList, setTracks] = useState<any[]>([
         {
@@ -71,7 +72,7 @@ export const TrackData: FC<TracksProps> = ({ setSelectedTrackName, setSelectedTr
                     onAdd={() => addTrack(track.id)}
                     onDelete={() => removeTrack(track.id)}
                     setSelectedTrack={() => settingsOpen(track.id)}
-                />
+                    selectedTrackDelay={selectedTrackDelay} />
             ))}
         </Fragment>
     )

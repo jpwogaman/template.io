@@ -1,11 +1,12 @@
-import { FC, Fragment, useState } from 'react';
+import { Dispatch, FC, Fragment, SetStateAction, useState } from 'react';
 import { ArtSettingsRow } from './art-rows'
 
 interface ArtDataProps {
     toggle?: boolean;
+    setDelays: Dispatch<SetStateAction<{ id: string, delay: number }[]>>;
 }
 
-export const ArtData: FC<ArtDataProps> = ({ toggle }) => {
+export const ArtData: FC<ArtDataProps> = ({ setDelays, toggle }) => {
 
     const [ArtList, setArts] = useState<{ id: string }[]>([
         {
@@ -15,14 +16,19 @@ export const ArtData: FC<ArtDataProps> = ({ toggle }) => {
 
     const addArt = (artId: string) => {
 
-        let newArtIdNumb: number = parseInt(artId) + 1
 
-        let newArtIdStr: string = newArtIdNumb.toLocaleString('en-US', {
-            minimumIntegerDigits: 2,
-            useGrouping: false
-        })
-        const newArt = { id: newArtIdStr }
-        setArts([...ArtList, newArt])
+        if (ArtList.length < 24) {
+            let newArtIdNumb: number = parseInt(artId) + 1
+
+            let newArtIdStr: string = newArtIdNumb.toLocaleString('en-US', {
+                minimumIntegerDigits: 2,
+                useGrouping: false
+            })
+            const newArt = { id: newArtIdStr }
+            setArts([...ArtList, newArt])
+        } else {
+            alert('Are you sure you need this many articulation buttons?')
+        }
     }
 
     const removeArt = (artId: string) => {
@@ -36,6 +42,7 @@ export const ArtData: FC<ArtDataProps> = ({ toggle }) => {
         <Fragment>
             {ArtList.map((art) => (
                 <ArtSettingsRow
+                    setDelays={setDelays}
                     key={art.id}
                     id={art.id}
                     onAdd={() => addArt(art.id)}

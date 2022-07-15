@@ -10,7 +10,7 @@ interface RangeRowProps {
 
 export const RangeRows: FC<RangeRowProps> = ({ id }) => {
 
-    const [RangeList, setRanges] = useState<any[]>([
+    const [RangeList, setRanges] = useState<{ id: string }[]>([
         {
             id: "01"
         },
@@ -64,6 +64,7 @@ export const RangeRows: FC<RangeRowProps> = ({ id }) => {
                     <td colSpan={2} className={`${rangeTdEmpty}`}></td>
                     <td className={`${rangeTd}`}>
                         <TdInput
+                            td={true}
                             id={`ArtRangeName_${id}_${range.id}`}
                             title="Describe this range-group. (i.e hits/rolls)"
                             placeholder="Range Description"
