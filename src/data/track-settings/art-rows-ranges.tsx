@@ -95,6 +95,7 @@ export const RangeRows: FC<RangeRowProps> = ({ id }) => {
                     </td>
                     <td className={`${rangeTdEmpty}`}></td>
                     <td className={`${rangeTdEmpty}`}></td>
+                    <td className={`${rangeTdEmpty}`}></td>
                 </tr>
             ))}
         </Fragment >

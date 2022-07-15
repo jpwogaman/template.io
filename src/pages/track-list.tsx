@@ -1,15 +1,6 @@
-import { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
+import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
 import { TdInput } from '../components/input';
 import { TrackData } from '../data/track-list/track-list-data'
-
-
-let addMltTrkInput: string | number | HTMLInputElement = 1
-
-const addMultipleTracks = (event: ChangeEvent<HTMLInputElement>) => {
-
-    addMltTrkInput = event.target.value
-
-};
 
 interface TrackListProps {
     setSelectedTrack: Dispatch<SetStateAction<string>>;
@@ -19,6 +10,39 @@ interface TrackListProps {
 }
 
 export const TrackList: FC<TrackListProps> = ({ setTrackCount, selectedTrackDelay, setSelectedTrackName, setSelectedTrack }) => {
+
+    const [TrackList, setTracks] = useState<{ id: string }[]>([
+        {
+            id: "01"
+        }
+    ])
+
+    let [addMltTrkInput, setMltTrkInput] = useState<number>(1)
+
+    const setTrackAddNumber = (event: ChangeEvent<HTMLInputElement>) => {
+        const input = event.target.value as unknown as number
+        if (input > 1) {
+            setMltTrkInput(input)
+        }
+        else {
+            setMltTrkInput(1)
+        }
+    }
+
+    const addMultipleTracks = () => {
+
+        for (let i = 0; i < 10; i++) {
+            const trackId = TrackList[TrackList.length - 1].id
+            let newTrackIdNumb: number = parseInt(trackId) + 1
+            let newTrackIdStr: string = newTrackIdNumb.toLocaleString('en-US', {
+                minimumIntegerDigits: 2,
+                useGrouping: false
+            })
+            const newTrack = { id: newTrackIdStr }
+            setTracks([...TrackList, newTrack])
+            setTrackCount(TrackList.length + 1)
+        }
+    };
 
     const stupid = () => {
         console.log("setSelectedTrack")
@@ -42,26 +66,31 @@ export const TrackList: FC<TrackListProps> = ({ setTrackCount, selectedTrackDela
                 <div id="trackList_toolbar" className="">
                     <div className='flex justify-between align-middle mb-2' >
                         <button
-                            className="px-4 w-50 h-50 text-xl border-2 border-zinc-900 dark:border-zinc-200 hover:border-red-600 hover:scale-[1.15] hover:animate-pulse"
+                            className="px-4 w-50 h-50 text-lg border-2 border-zinc-900 dark:border-zinc-200 hover:border-red-600 dark:hover:border-red-600
+                            hover:scale-[1.15] hover:animate-pulse"
                             title="Re-number Tracks. CAREFUL"
                             id="renumberTracks"
                             onClick={stupid}>
                             <i className="fa-solid fa-arrow-down-1-9"></i>
                         </button>
-                        <button
-                            className="w-30 h-10 text-xl border-2 border-zinc-900 dark:border-zinc-200 hover:scale-[1.15] hover:animate-pulse"
-                            title={`Add Multiple Tracks. (${addMltTrkInput})`}
-                            id="addMultipleTracks"
-                            onClick={stupid}>
-                            <i className="pl-2 mr-2 fa-solid fa-plus"></i>
+                        <div className=' text-xl border-2 border-zinc-900 dark:border-zinc-200 
+                            hover:border-green-600 dark:hover:border-green-600 
+                            hover:scale-[1.15] hover:animate-pulse'>
+                            <button
+                                className="w-30 h-10"
+                                title={`Add Multiple Tracks. (${addMltTrkInput})`}
+                                id="addMultipleTracks"
+                                onClick={addMultipleTracks}>
+                                <i className="pl-2 mr-2 fa-solid fa-plus"></i>
+                            </button>
                             <TdInput
                                 td={false}
-                                id={"addMltTrkInput"}
+                                id="addMltTrkInput"
                                 title='Set the number of tracks to add.'
                                 placeholder="1"
-                                codeDisabled={false} >
+                                onInput={setTrackAddNumber}>
                             </TdInput>
-                        </button>
+                        </div>
                     </div >
                 </div >
 
@@ -78,7 +107,7 @@ export const TrackList: FC<TrackListProps> = ({ setTrackCount, selectedTrackDela
                         </tr>
                     </thead>
                     <tbody>
-                        <TrackData setSelectedTrack={setSelectedTrack} setSelectedTrackName={setSelectedTrackName} selectedTrackDelay={selectedTrackDelay} setTrackCount={setTrackCount}></TrackData>
+                        <TrackData setSelectedTrack={setSelectedTrack} setSelectedTrackName={setSelectedTrackName} selectedTrackDelay={selectedTrackDelay} setTrackCount={setTrackCount} TrackList={TrackList} setTracks={setTracks}></TrackData>
                     </tbody>
                 </table>
             </div>

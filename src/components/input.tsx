@@ -16,7 +16,8 @@ export const TdInput: FC<TdInputProps> = ({ td, onReceive, onInput, defaultValue
     const [valueName, setName] = useState<string | number>(defaultValue ? defaultValue : "")
 
     const nameChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setName(event.target.value)
+
+        setName(event.target.value as unknown as number)
         if (onInput) { onInput!(event) }
         else return
     }

@@ -5,16 +5,12 @@ interface TracksProps {
     setSelectedTrack: Dispatch<SetStateAction<string>>;
     setSelectedTrackName: Dispatch<SetStateAction<string>>;
     setTrackCount: Dispatch<SetStateAction<number>>;
+    setTracks: Dispatch<SetStateAction<{ id: string }[]>>;
     selectedTrackDelay: string;
+    TrackList: { id: string }[];
 }
 
-export const TrackData: FC<TracksProps> = ({ setTrackCount, selectedTrackDelay, setSelectedTrackName, setSelectedTrack }) => {
-
-    const [TrackList, setTracks] = useState<any[]>([
-        {
-            id: "01"
-        }
-    ])
+export const TrackData: FC<TracksProps> = ({ TrackList, setTracks, setTrackCount, selectedTrackDelay, setSelectedTrackName, setSelectedTrack }) => {
 
     const addTrack = (trackId: string) => {
 

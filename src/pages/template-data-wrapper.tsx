@@ -7,7 +7,7 @@ import { TemplateNavbar } from './navbar';
 export default function TemplateData() {
 
     const [selectedTrack, setSelectedTrack] = useState<string>("01")
-    const [selectedTrackName, setSelectedTrackName] = useState<string>("01")
+    const [selectedTrackName, setSelectedTrackName] = useState<string>("")
     const [selectedTrackDelay, setSelectedTrackDelay] = useState<string>('0')
     const [trackCount, setTrackCount] = useState<number>(1)
 

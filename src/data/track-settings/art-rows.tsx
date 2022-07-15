@@ -9,7 +9,7 @@ interface ArtSettingsRowProps {
     id: string;
     toggle?: boolean;
     setDelays?: Dispatch<SetStateAction<{ id: string, delay: number }[]>>;
-    delayList?: any[];
+    delayList?: { id: string, delay: number }[];
     onAdd?: () => void | void | undefined;
     onDelete?: () => void | void | undefined;
 }
@@ -92,10 +92,17 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ onAdd, onDelete, delay
 
     const delayChange = (event: ChangeEvent<HTMLInputElement>) => {
 
-        const newDelay = { id: `art_${id}`, delay: event.target.value as unknown as number }
-
+        const x = event.target.value as unknown as number
         if (setDelays) {
-            setDelays!([...(delayList || []), newDelay])
+            setDelays!(prevState => {
+                const newState = prevState.map(obj => {
+                    if (obj.id === `art_${id}`) {
+                        return { id: `art_${id}`, delay: x };
+                    }
+                    return obj;
+                });
+                return newState;
+            });
         }
         else return
     }
