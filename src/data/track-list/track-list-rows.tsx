@@ -47,7 +47,10 @@ export const TrackRows: FC<TrackRowProps> = ({ selectedTrackDelay, setSelectedTr
     //         </TdSelect>
     //     </div >
 
-    const trkDelay = selectedTrackDelay //will need to brought over from track-settings
+    const trkDelay =
+        <div title="Track Delay in ms (may be average)">
+            {selectedTrackDelay}
+        </div>   //will need to brought over from track-settings
 
     const editTrack =
         <div className='flex justify-evenly'>
