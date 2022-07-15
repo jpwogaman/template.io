@@ -13,12 +13,12 @@ export const TemplateNavbar: FC<TemplateNavbarProps> = ({ trackCount }) => {
 
     return (
 
-        <div className="bg-zinc-900 sticky top-0 z-50 flex container min-w-full min-h-[40px] h-[40px] max-h-[40px] justify-evenly items-center">
-            <ul className="flex text-center">
+        <div className="bg-zinc-900 sticky top-0 z-50 container min-w-full min-h-[40px] h-[40px] max-h-[40px] items-center">
+            <ul className="flex justify-between">
                 {/* <li className="block py-2 w-60 text-zinc-200">0 VEP Instances</li>
                 <li className="block py-2 w-60 text-zinc-200">0 Samplers</li> */}
-                <li className="block py-2 w-60 text-zinc-200">{trackCount} Tracks</li>
-                <li className="block py-2 w-60 text-zinc-200 cursor-pointer">
+                <li className="block p-2 pl-5 w-60 text-zinc-200 text-left">{trackCount} {trackCount > 1 ? 'Tracks' : 'Track'}</li>
+                <li className="block p-2 w-60 text-zinc-200 cursor-pointer text-right">
                     <IconBtnToggle
                         classes="w-10"
                         titleA="Change to Dark Mode."
