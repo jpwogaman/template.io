@@ -14,6 +14,8 @@ export const ArtData: FC<ArtDataProps> = ({ setDelays, toggle }) => {
         }
     ])
 
+    const [defaultSwitchArt, setDefaultSwitchArt] = useState<string>('artDeftOption_01')
+
     const addArt = (artId: string) => {
 
 
@@ -48,6 +50,8 @@ export const ArtData: FC<ArtDataProps> = ({ setDelays, toggle }) => {
                     onAdd={() => addArt(art.id)}
                     onDelete={() => removeArt(art.id)}
                     toggle={toggle}
+                    defaultSwitchArt={defaultSwitchArt}
+                    setDefaultSwitchArt={setDefaultSwitchArt}
                 />
             ))}
         </Fragment>

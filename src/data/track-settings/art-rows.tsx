@@ -12,9 +12,11 @@ interface ArtSettingsRowProps {
     delayList?: { id: string, delay: number }[];
     onAdd?: () => void | void | undefined;
     onDelete?: () => void | void | undefined;
+    setDefaultSwitchArt: Dispatch<SetStateAction<string>>;
+    defaultSwitchArt: string;
 }
 
-export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ onAdd, onDelete, delayList, setDelays, id, toggle }) => {
+export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ onAdd, setDefaultSwitchArt, defaultSwitchArt, onDelete, delayList, setDelays, id, toggle }) => {
 
     const [rngTitle, setRngTitle] = useState<string>("Switch to independent playable range.")
     const [rngVisible, setRngVisible] = useState<boolean>(false)
@@ -24,7 +26,7 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ onAdd, onDelete, delay
     const [valueCodeMidi, setCodeMidi] = useState<string>("valMidiList")
 
     const [artCodeDisabled, setArtCodeDisabled] = useState<boolean>(false)
-    const [artDeftChecked, setArtDeftChecked] = useState<boolean>(false)
+    const [artDeftChecked, setArtDeftChecked] = useState<boolean>(defaultSwitchArt === `artDeftOption_${id}` ? true : false)
     const artTypeTitle: string = "Select the TYPE of code for this patch."
     const artCodeTitle: string = "Set the CODE for this patch. (i.e. CC58)"
     const artDeftTitle: string = "Set the DEFAULT setting for this patch."
@@ -47,12 +49,15 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ onAdd, onDelete, delay
         }
     }
 
-    const deftPatchChange = () => {
-        if (artDeftChecked) {
-            setArtDeftChecked(false)
-        } else {
-            setArtDeftChecked(true)
-        }
+    const deftPatchChange = (id: string) => {
+
+
+        setArtDeftChecked(true)
+        const prevDefault = document.getElementById(`${defaultSwitchArt}`) as HTMLInputElement
+        prevDefault.checked = false
+        setDefaultSwitchArt(`artDeftOption_${id}`)
+        console.log(defaultSwitchArt, `artDeftOption_${id}`)
+
     }
 
     const typeChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -174,7 +179,7 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ onAdd, onDelete, delay
                 type="checkbox"
                 className='min-w-full cursor-pointer'
                 checked={artDeftChecked}
-                onChange={deftPatchChange}
+                onChange={() => deftPatchChange(id)}
                 title="Set this as the default patch."
                 aria-label="Set this as the default patch."
                 id={`artDeftOption_${id}`}>
