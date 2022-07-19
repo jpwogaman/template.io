@@ -255,6 +255,8 @@ module.exports = {
 			togClkTr_loc = false; // need this to avoid infinite loop
 		}
 
+		//if I receive more than 4 in less than, maybe a half-second, then halt. this should help prevent issues when selecting all tracks, etc. 
+
 		if (keyP) {
 			const trkNumb = arg1 * 128 + arg2;
 			const trkRang = allTrack_jsn[trkNumb].trkRnge____;
@@ -320,19 +322,20 @@ module.exports = {
 				if (typeJsn === '/control') {
 					codeDsp = 'CC';
 				} else if (typeJsn === '/note') {
-					codeDsp = allNotes_loc[codeJsn] + '/';
+					codeDsp = `${allNotes_loc[codeJsn]}/`;
 				} else {
 					codeDsp = '';
 				}
 
 				if (togCodes_loc && nameJsn !== '') {
-					receive(nameOsc, nameJsn + ' (' + codeDsp + codeJsn + '/' + on__Jsn + ')');
+					receive(nameOsc, `${nameJsn} (${codeDsp}${codeJsn}/${on__Jsn}${off_Jsn ? '/' + off_Jsn : ''})`)
+
 				} else {
 					receive(nameOsc, nameJsn);
 				}
 
 				if (rangJsn === '') {
-					receive(rangOsc, ' ');
+					receive(rangOsc, '');
 				} else {
 					receive(rangOsc, rangJsn);
 				}

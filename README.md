@@ -3,8 +3,12 @@
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/jpwogaman/template.io/LICENSE) 
 
 
-# Getting Started
+# Disclaimer: 
 
+**This app is not complete and there are no binaries available yet.** That being said, please feel free to read the "Getting Started" text below, it does outline the reasoning behind this app, as well as what my goals are for this app. To actually use the app in the same way that I do currently, please see [**below**](#running-templateio-from-source).
+
+
+# Getting Started 
 There are a two main paths you can take with this application depending on how you want to use it:
 
 A. If you simply want to keep track of a large template of orchestral VSTs and other sample libraries, then download the Template.io binary for your system and say goodbye to that hideous Microsoft Excel document, you're all set!
@@ -21,7 +25,7 @@ B. If you want to keep track of your template AND have a touchscreen application
     ![loopMIDI Setup](./public/Images/loopMIDI.png)
 
 
-## 2. Setup Template.io
+## 2. Setup Template.io (eventually...)
 
 Download the Template.io binary for your system, run the installer, and set your preferred location for the Template.io directory, which will automatically contain the following files (feel free to rename these):
 
@@ -69,33 +73,33 @@ Now in Cubase, setup your MIDI ports to match the scheme above, create a new Gen
 
 ![Generic Remote Setup](./public/Images/template-io-generic-remote.png)
 
-## 5. Build Your Template! 
+## 5. Build Your Template! (evntually...)
 
 *Note: Unfortunately, for the time being, since there is no MIDI send feature on instrument tracks, audio tracks, or any other track other than MIDI tracks, your template will have to primarily use MIDI tracks routed to instrument tracks or a hosting companion such as Vienna Ensemble Pro.*
 
 Create empty MIDI tracks and start naming and routing them as you would normally, however, be sure to add a transformer on the MIDI sends for the track. This will receive the signal that Open Stage Control just sent (in response to the signal Cubase sent when the track was selected) and return a Polyphonic Key Pressure signal on port OSC3 that is completely unique to every track. 
 
-I know this seems like a hassle, so I took the liberty of setting up these transformers on over 2,000 empty MIDI tracks so you wouldn't have to! I recommend you import these into your template (or just use the file provided to start a new one). These tracks are available in the **template-io-empty-tracks.cpr** file and are all disabled for you to activate anytime you wish to add a new instrument.
+I know this seems like a hassle, so I took the liberty of setting up these transformers on over 2,000 empty MIDI tracks so you wouldn't have to! **Disclaimer: only about 384 tracks are currently setup.** I recommend you import these into your template (or just use the file provided to start a new one). These tracks are available in the **template-io-empty-tracks.cpr** file and are all disabled for you to activate anytime you wish to add a new instrument.
 
 ![transformer setup](./public/Images/cubase-transformer.png)
 
 You can now use Template.io to add information about your tracks and when you save, it will automatically update the **template-io-tracks.json**, which the custom-module is reading. This will update your instance of Open Stage Control and put all of the parameters that each track can use right at the tip of your fingers. 
 # Running Template.io from Source
 
-[**Tauri Prerequisites**](https://tauri.app/v1/guides/getting-started/prerequisites) - this includes downloading Rust, as well as configuring your PATH. 
+1) [**Tauri Prerequisites**](https://tauri.app/v1/guides/getting-started/prerequisites) - this includes downloading Rust, as well as configuring your PATH. 
 
-```
-git clone https://github.com/jpwogaman/template.io
-```
-```
-cd template.io
-```
-```
-npm install
-```
-```
-npm run tauri dev
-```
+2) ```
+    git clone https://github.com/jpwogaman/template.io
+    ```
+3)  ```
+    cd template.io
+    ```
+4)  ```
+    npm install
+    ```
+5)  ```
+    npm run tauri dev
+    ```
 
 You can now go back to [**Step 3**](#3-setup-open-stage-control) above and continue with setup.
 
