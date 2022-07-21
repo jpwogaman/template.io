@@ -34,6 +34,10 @@ export const TrackList: FC<TrackListProps> = ({ setTrackCount, selectedTrackDela
         const lastTrackId = TrackList[TrackList.length - 1].id
         const newTrackIdStrArr: string[] = []
 
+        if (addMltTrkInput > 200) {
+            return alert('You can only add 200 tracks at a time.')
+        }
+
         for (let i = 0; i < addMltTrkInput; i++) {
 
             const newTrackIdNumb: number = parseInt(lastTrackId) + 1 + i
@@ -54,23 +58,28 @@ export const TrackList: FC<TrackListProps> = ({ setTrackCount, selectedTrackDela
 
     const renumberTracks = () => {
 
-        const newTrackIdStrArr: string[] = []
+        //React is ignoring the window.confirm! it is just renumbering the tracks anyway and showing the message...
 
-        for (let i = 0; i < TrackList.length; i++) {
+        if (window.confirm('CAREFUL - this might completely mess up your beautiful template, especially if this track list is synced with an instance of Open Stage Control. \n\nAre you sure you want to renumber your track list?')) {
 
-            const newTrackIdNumb: number = 1 + i
-            const newTrackIdStr: string = newTrackIdNumb.toLocaleString('en-US', {
-                minimumIntegerDigits: 2,
-                useGrouping: false
-            })
-            newTrackIdStrArr.push(newTrackIdStr)
+            const newTrackIdStrArr: string[] = []
+
+            for (let i = 0; i < TrackList.length; i++) {
+
+                const newTrackIdNumb: number = 1 + i
+                const newTrackIdStr: string = newTrackIdNumb.toLocaleString('en-US', {
+                    minimumIntegerDigits: 2,
+                    useGrouping: false
+                })
+                newTrackIdStrArr.push(newTrackIdStr)
+            }
+
+            const newTrack = newTrackIdStrArr.map((newTrackId) => (
+                { id: newTrackId }
+            ))
+
+            setTracks(newTrack)
         }
-
-        const newTrack = newTrackIdStrArr.map((newTrackId) => (
-            { id: newTrackId }
-        ))
-
-        setTracks(newTrack)
 
     }
 
