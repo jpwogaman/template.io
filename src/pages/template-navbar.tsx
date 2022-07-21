@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { IconBtnToggle } from "../components/button-icon-toggle";
+import { IconBtnToggle } from "../components/icon-btn-toggle";
 
 interface TemplateNavbarProps {
     trackCount: number;

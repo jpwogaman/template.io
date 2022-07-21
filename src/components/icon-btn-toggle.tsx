@@ -12,7 +12,7 @@ interface IconBtnToggleProps {
     children?: ReactNode;
 }
 
-const IconBtnToggle: FC<IconBtnToggleProps> = ({ onToggleA, onToggleB, classes, defaultIcon, titleA, titleB, id, a, b }) => {
+export const IconBtnToggle: FC<IconBtnToggleProps> = ({ onToggleA, onToggleB, classes, defaultIcon, titleA, titleB, id, a, b }) => {
 
     const [isToggleOn, setToggle] = useState<boolean>(defaultIcon === "a" ? true : false)
 
@@ -37,16 +37,3 @@ const IconBtnToggle: FC<IconBtnToggleProps> = ({ onToggleA, onToggleB, classes, 
         </button >
     );
 }
-
-export { IconBtnToggle }
-
-const example =
-    <IconBtnToggle
-        classes="className"
-        titleA="titleA"
-        titleB="titleB"
-        id="id"
-        a="fa-solid fa-lock-open"
-        b="fa-solid fa-lock"
-        defaultIcon="a">
-    </IconBtnToggle>

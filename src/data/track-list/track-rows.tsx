@@ -1,7 +1,7 @@
 import { FC, MouseEventHandler, ReactNode } from 'react';
-import { TdSelect } from '../../components/select';
-import { TdInput } from '../../components/input';
-import { IconBtnToggle } from '../../components/button-icon-toggle';
+import { TdSelect } from '../../components/td-select';
+import { TdInput } from '../../components/td-input';
+import { IconBtnToggle } from '../../components/icon-btn-toggle';
 
 interface TrackRowProps {
     id: string;

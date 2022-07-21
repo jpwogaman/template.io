@@ -50,12 +50,3 @@ export const TdInput: FC<TdInputProps> = ({ td, onReceive, onInput, defaultValue
         </input>
     );
 };
-
-const example =
-    <TdInput
-        td={false}
-        id="id"
-        title="title"
-        placeholder="placeholder"
-        codeDisabled={false}>
-    </TdInput>

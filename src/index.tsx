@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import ReactDOM from 'react-dom/client';
 import './assets/index.css';
 
-import TemplateData from './pages/template-data-wrapper';
+import TemplateData from './pages/template-data';
 import reportWebVitals from './reportWebVitals';
 
 

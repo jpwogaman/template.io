@@ -1,5 +1,5 @@
 import { FC, Fragment, useState } from 'react';
-import { FadSettingsRow } from './fad-rows'
+import { FadSettingsRow } from './fad-settings-row'
 
 interface FaderDataProps {
 }

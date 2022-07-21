@@ -1,9 +1,9 @@
 import { FC, useState, ChangeEvent, Fragment, Dispatch, SetStateAction } from "react";
-import { IconBtnToggle } from "../../components/button-icon-toggle";
-import { TdSwitch } from "../../components/checkbox-switch";
-import { TdInput } from "../../components/input";
-import { TdSelect } from "../../components/select";
-import { RangeRows } from "./art-rows-ranges"
+import { IconBtnToggle } from "../../components/icon-btn-toggle";
+import { TdSwitch } from "../../components/td-switch";
+import { TdInput } from "../../components/td-input";
+import { TdSelect } from "../../components/td-select";
+import { RangeRows } from "./range-rows"
 
 interface ArtSettingsRowProps {
     id: string;

@@ -46,7 +46,3 @@ export const TdSelect: FC<TdSelectProps> = ({ onSelect, codeDisabled, id, option
         </select>
     );
 };
-
-
-const example =
-    <TdSelect id="exampleTdSelect" options="setOutsList" codeDisabled={false}></TdSelect>

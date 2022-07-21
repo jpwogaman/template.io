@@ -1,9 +1,9 @@
-import { TdSelect } from '../components/select';
-import { IconBtnToggle } from '../components/button-icon-toggle'
-import { TdInput } from '../components/input';
+import { TdSelect } from '../components/td-select';
+import { IconBtnToggle } from '../components/icon-btn-toggle'
+import { TdInput } from '../components/td-input';
 import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
-import { FaderData } from '../data/track-settings/fad-rows-data';
-import { ArtData } from '../data/track-settings/art-rows-data';
+import { FaderData } from '../data/track-settings/fad-data';
+import { ArtData } from '../data/track-settings/art-data';
 interface TrackSettingsProps {
     selectedTrack: string;
     selectedTrackName: string;

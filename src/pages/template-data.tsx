@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react';
 import { TrackList } from './track-list';
 import { TrackSettings } from './track-settings';
-import { TemplateNavbar } from './navbar';
+import { TemplateNavbar } from './template-navbar';
 
 
 export default function TemplateData() {

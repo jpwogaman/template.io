@@ -1,6 +1,6 @@
 import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
-import { TdInput } from '../components/input';
-import { TrackData } from '../data/track-list/track-list-data'
+import { TdInput } from '../components/td-input';
+import { TrackData } from '../data/track-list/track-data'
 
 interface TrackListProps {
     setSelectedTrack: Dispatch<SetStateAction<string>>;
