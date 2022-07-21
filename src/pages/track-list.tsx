@@ -50,9 +50,11 @@ export const TrackList: FC<TrackListProps> = ({ setTrackCount, selectedTrackDela
         ))
 
         setTracks(TrackList.concat(newTrack))
+        setTrackCount(TrackList.length + newTrackIdStrArr.length)
+
     };
 
-    const stupid = () => {
+    const renumberTracks = () => {
         console.log("setSelectedTrack")
     }
 
@@ -78,7 +80,7 @@ export const TrackList: FC<TrackListProps> = ({ setTrackCount, selectedTrackDela
                             hover:scale-[1.15] hover:animate-pulse"
                             title="Re-number Tracks. CAREFUL"
                             id="renumberTracks"
-                            onClick={stupid}>
+                            onClick={renumberTracks}>
                             <i className="fa-solid fa-arrow-down-1-9"></i>
                         </button>
                         <div className=' text-xl border-2 border-zinc-900 dark:border-zinc-200 
