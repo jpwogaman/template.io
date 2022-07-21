@@ -93,12 +93,3 @@ export const TdSwitch: FC<TdSwitchProps> = ({ onSwitch, artFad, toggle, showVals
         </div >
     )
 }
-
-const example =
-    <TdSwitch
-        id="exampleTdSwitch"
-        title="Switch between VAL1 and VAL2"
-        a="value 1"
-        b="value 2"
-        defaultVal="a">
-    </TdSwitch>

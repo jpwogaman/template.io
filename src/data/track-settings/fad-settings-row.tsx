@@ -1,8 +1,8 @@
 import { FC, useState, ChangeEvent, Fragment } from "react";
-import { IconBtnToggle } from "../../components/button-icon-toggle";
-import { TdSwitch } from "../../components/checkbox-switch";
-import { TdInput } from "../../components/input";
-import { TdSelect } from "../../components/select";
+import { IconBtnToggle } from "../../components/icon-btn-toggle";
+import { TdSwitch } from "../../components/td-switch";
+import { TdInput } from "../../components/td-input";
+import { TdSelect } from "../../components/td-select";
 
 interface FadSettingsRowProps {
     id: string;

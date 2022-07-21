@@ -1,5 +1,5 @@
 import { Dispatch, FC, Fragment, SetStateAction, useState } from 'react';
-import { TrackRows } from './track-list-rows'
+import { TrackRows } from './track-rows'
 
 interface TracksProps {
     setSelectedTrack: Dispatch<SetStateAction<string>>;

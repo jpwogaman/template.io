@@ -1,5 +1,5 @@
 import { Dispatch, FC, Fragment, SetStateAction, useState } from 'react';
-import { ArtSettingsRow } from './art-rows'
+import { ArtSettingsRow } from './art-settings-row'
 
 interface ArtDataProps {
     toggle?: boolean;

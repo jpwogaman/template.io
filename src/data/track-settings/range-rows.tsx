@@ -1,7 +1,7 @@
 import { FC, useState, Fragment, ReactNode, Dispatch, SetStateAction } from "react";
-import { IconBtnToggle } from "../../components/button-icon-toggle";
-import { TdInput } from "../../components/input";
-import { TdSelect } from "../../components/select";
+import { IconBtnToggle } from "../../components/icon-btn-toggle";
+import { TdInput } from "../../components/td-input";
+import { TdSelect } from "../../components/td-select";
 
 interface RangeRowProps {
     id: string;
