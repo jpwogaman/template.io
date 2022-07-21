@@ -32,7 +32,6 @@ export const TrackList: FC<TrackListProps> = ({ setTrackCount, selectedTrackDela
     const addMultipleTracks = () => {
 
         const lastTrackId = TrackList[TrackList.length - 1].id
-
         const newTrackIdStrArr: string[] = []
 
         for (let i = 0; i < addMltTrkInput; i++) {
@@ -51,11 +50,28 @@ export const TrackList: FC<TrackListProps> = ({ setTrackCount, selectedTrackDela
 
         setTracks(TrackList.concat(newTrack))
         setTrackCount(TrackList.length + newTrackIdStrArr.length)
-
     };
 
     const renumberTracks = () => {
-        console.log("setSelectedTrack")
+
+        const newTrackIdStrArr: string[] = []
+
+        for (let i = 0; i < TrackList.length; i++) {
+
+            const newTrackIdNumb: number = 1 + i
+            const newTrackIdStr: string = newTrackIdNumb.toLocaleString('en-US', {
+                minimumIntegerDigits: 2,
+                useGrouping: false
+            })
+            newTrackIdStrArr.push(newTrackIdStr)
+        }
+
+        const newTrack = newTrackIdStrArr.map((newTrackId) => (
+            { id: newTrackId }
+        ))
+
+        setTracks(newTrack)
+
     }
 
     const trackTh =
