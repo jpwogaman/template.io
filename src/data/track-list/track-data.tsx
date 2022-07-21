@@ -1,4 +1,4 @@
-import { Dispatch, FC, Fragment, SetStateAction, useState } from 'react';
+import { Dispatch, FC, Fragment, SetStateAction } from 'react';
 import { TrackRows } from './track-rows'
 
 interface TracksProps {
@@ -14,9 +14,9 @@ export const TrackData: FC<TracksProps> = ({ TrackList, setTracks, setTrackCount
 
     const addTrack = (trackId: string) => {
 
-        let newTrackIdNumb: number = parseInt(trackId) + 1
+        const newTrackIdNumb: number = parseInt(trackId) + 1
 
-        let newTrackIdStr: string = newTrackIdNumb.toLocaleString('en-US', {
+        const newTrackIdStr: string = newTrackIdNumb.toLocaleString('en-US', {
             minimumIntegerDigits: 2,
             useGrouping: false
         })

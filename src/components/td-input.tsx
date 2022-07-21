@@ -31,7 +31,7 @@ export const TdInput: FC<TdInputProps> = ({ td, onReceive, onInput, defaultValue
             placeholder-zinc-400 dark:placeholder-zinc-500
             focus:placeholder-zinc-500
             focus:text-zinc-900
-            pl-1 
+            pl-1
            ${td ? 'w-full' : 'w-10'} 
             bg-inherit 
             border 

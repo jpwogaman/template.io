@@ -60,17 +60,24 @@ export const TrackRows: FC<TrackRowProps> = ({ selectedTrackDelay, setSelectedTr
                 onClick={setSelectedTrack}>
                 <i className="fa-solid fa-pen-to-square"></i>
             </button>
-            <IconBtnToggle
+            <button
+                className="w-6 h-6 hover:scale-[1.15] hover:animate-pulse"
+                title="Remove This Track."
+                id={`AddTrackButton_${id}`}
+                onClick={onDelete}>
+                <i className="fa-solid fa-minus"></i>
+            </button>
+            {/* <IconBtnToggle
                 classes="w-6 h-6 hover:scale-[1.15] hover:animate-pulse"
                 titleA="Add Another Track."
                 titleB="Remove This Track."
                 id={`AddTrackButton_${id}`}
                 a="fa-solid fa-plus"
                 b="fa-solid fa-minus"
-                defaultIcon="a"
+                defaultIcon={"a"}
                 onToggleA={onAdd}
                 onToggleB={onDelete}>
-            </IconBtnToggle>
+            </IconBtnToggle> */}
         </div >
 
     const trackTr =
