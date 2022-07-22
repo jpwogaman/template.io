@@ -1,13 +1,14 @@
 import { Dispatch, FC, Fragment, SetStateAction, useState } from 'react';
+import { ArtListProps } from '../../pages/track-settings';
 import { ArtSettingsRow } from './art-settings-row'
 
 interface ArtDataProps {
-    setDelays: Dispatch<SetStateAction<{ id: string, delay: number }[]>>;
-    ArtList: { id: string, toggle: boolean }[];
-    setArts: Dispatch<SetStateAction<{ id: string, toggle: boolean }[]>>;
+    ArtList: ArtListProps[];
+    setArts: Dispatch<SetStateAction<ArtListProps[]>>;
+    setAvgDelAvail: Dispatch<SetStateAction<boolean>>;
 }
 
-export const ArtToggleData: FC<ArtDataProps> = ({ setDelays, ArtList, setArts }) => {
+export const ArtToggleData: FC<ArtDataProps> = ({ ArtList, setArts, setAvgDelAvail }) => {
 
     const removeArt = (artId: string) => {
 
@@ -22,7 +23,9 @@ export const ArtToggleData: FC<ArtDataProps> = ({ setDelays, ArtList, setArts })
             {ArtList.map((art) => (
                 art.toggle ?
                     <ArtSettingsRow
-                        setDelays={setDelays}
+                        setArts={setArts}
+                        ArtList={ArtList}
+                        setAvgDelAvail={setAvgDelAvail}
                         key={art.id}
                         id={art.id}
                         onDelete={() => removeArt(art.id)}
@@ -35,7 +38,7 @@ export const ArtToggleData: FC<ArtDataProps> = ({ setDelays, ArtList, setArts })
     )
 }
 
-export const ArtSwitchData: FC<ArtDataProps> = ({ setDelays, ArtList, setArts }) => {
+export const ArtSwitchData: FC<ArtDataProps> = ({ ArtList, setArts, setAvgDelAvail }) => {
 
     const [defaultSwitchArt, setDefaultSwitchArt] = useState<string>('artDeftOption_02')
 
@@ -52,7 +55,9 @@ export const ArtSwitchData: FC<ArtDataProps> = ({ setDelays, ArtList, setArts })
             {ArtList.map((art) => (
                 !art.toggle ?
                     <ArtSettingsRow
-                        setDelays={setDelays}
+                        setArts={setArts}
+                        ArtList={ArtList}
+                        setAvgDelAvail={setAvgDelAvail}
                         key={art.id}
                         id={art.id}
                         onDelete={() => removeArt(art.id)}
