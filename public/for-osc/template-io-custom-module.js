@@ -1,4 +1,5 @@
 //variable & input values to be sent to OSC
+const workFile_jsn = loadJSON('template-io-workfile.json')
 const allTrack_jsn = loadJSON('template-io-track-data.json'); //`${or whatever the user names their file}`
 const artName__jsn = [];
 const artType__jsn = [];
@@ -258,6 +259,9 @@ module.exports = {
 		//if I receive more than 4 in less than, maybe a half-second, then halt. this should help prevent issues when selecting all tracks, etc. 
 
 		if (keyP) {
+
+
+
 			const trkNumb = arg1 * 128 + arg2;
 			const trkRang = allTrack_jsn[trkNumb].trkRnge____;
 			const trkName = allTrack_jsn[trkNumb].trkName____;
@@ -368,6 +372,21 @@ module.exports = {
 					}
 				}
 			}
+
+			let workFileTestArray = []
+
+			for (var i in workFile_jsn.content.widgets[0].tabs[1].widgets) {
+
+				if (workFile_jsn.content.widgets[0].tabs[1].widgets[i].type === 'fader')
+					workFileTestArray.push(workFile_jsn.content.widgets[0].tabs[1].widgets[i].id)
+			}
+
+			console.log(
+				"////////////////////\n",
+				workFileTestArray,
+				"\n////////////////////"
+			)
+
 		}
 		return { address, args, host, port };
 	},
