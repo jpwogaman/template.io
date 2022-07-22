@@ -3,19 +3,21 @@ import { TdSwitch } from "../../components/td-switch";
 import { TdInput } from "../../components/td-input";
 import { TdSelect } from "../../components/td-select";
 import { RangeRows } from "./range-rows"
+import { ArtListProps } from "../../pages/track-settings";
 
 interface ArtSettingsRowProps {
     id: string;
     toggle?: boolean;
-    setDelays?: Dispatch<SetStateAction<{ id: string, delay: number }[]>>;
-    delayList?: { id: string, delay: number }[];
+    setArts?: Dispatch<SetStateAction<ArtListProps[]>>;
+    ArtList?: ArtListProps[];
     onAdd?: () => void | void | undefined;
     onDelete?: () => void | void | undefined;
     setDefaultSwitchArt?: Dispatch<SetStateAction<string>>;
     defaultSwitchArt?: string;
+    setAvgDelAvail: Dispatch<SetStateAction<boolean>>;
 }
 
-export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ setDefaultSwitchArt, defaultSwitchArt, onDelete, delayList, setDelays, id, toggle }) => {
+export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ setAvgDelAvail, setDefaultSwitchArt, defaultSwitchArt, onDelete, ArtList, setArts, id, toggle }) => {
 
     const [rngTitle, setRngTitle] = useState<string>("Switch to independent playable range.")
     const [rngVisible, setRngVisible] = useState<boolean>(false)
@@ -96,19 +98,19 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ setDefaultSwitchArt, d
 
     const delayChange = (event: ChangeEvent<HTMLInputElement>) => {
 
-        const x = event.target.value as unknown as number
-        if (setDelays) {
-            setDelays!(prevState => {
-                const newState = prevState.map(obj => {
-                    if (obj.id === `art_${id}`) {
-                        return { id: `art_${id}`, delay: x };
-                    }
-                    return obj;
-                });
-                return newState;
+        let y = event.target.value
+        let x: number = parseInt(y)
+
+        setArts!(prevState => {
+            const newState = prevState.map(obj => {
+                if (obj.id === id) {
+                    return { ...obj, delay: x };
+                }
+                return obj;
             });
-        }
-        else return
+            return newState;
+        });
+        setAvgDelAvail(true)
     }
 
     const rangeOption =

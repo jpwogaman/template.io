@@ -10,17 +10,24 @@ interface TrackSettingsProps {
     setSelectedDelay: Dispatch<SetStateAction<string>>;
 }
 
+export interface ArtListProps {
+    id: string,
+    toggle: boolean,
+    delay: number
+}
+
 export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, selectedTrackName, selectedTrack }) => {
 
-
-    const [ArtList, setArts] = useState<{ id: string, toggle: boolean }[]>([
+    const [ArtList, setArts] = useState<ArtListProps[]>([
         {
             id: "01",
-            toggle: true
+            toggle: true,
+            delay: 0
         },
         {
             id: "02",
-            toggle: false
+            toggle: false,
+            delay: 0
         }
     ])
 
@@ -37,7 +44,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
             minimumIntegerDigits: 2,
             useGrouping: false
         })
-        const newArt = { id: newArtIdStr, toggle: toggle }
+        const newArt = { id: newArtIdStr, toggle: toggle, delay: 0 }
 
         setArts([...ArtList, newArt])
 
@@ -85,49 +92,36 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
         }
     }
 
-    const [avgTrkDel, setAvgTrkDel] = useState<number>(0)
-
-    const [delayList, setDelays] = useState<{ id: string, delay: number }[]>([
-        {
-            id: 'base',
-            delay: 0
-        },
-        {
-            id: 'art_01',
-            delay: 0
-        }
-    ])
+    const [baseDelay, setBaseDelay] = useState<number>(0)
+    const [avgTrkDel, setAvgTrkDel] = useState<number | string>(0)
+    const [avgDelAvail, setAvgDelAvail] = useState<boolean>(false)
 
     const baseDelayChange = (event: ChangeEvent<HTMLInputElement>) => {
 
-        let x = event.target.value as unknown as number
-        let trkDelTotal: number = 0
+        let y = event.target.value
+        let x: number = parseInt(y)
+        let trkDelArray: number[] = [x]
 
-        setDelays(prevState => {
-            const newState = prevState.map(obj => {
-                if (obj.id === 'base') {
-                    return { ...obj, delay: x };
-                }
-                return obj;
-            });
-            return newState;
-        });
-
-        for (let i = 0; i < delayList.length; i++) {
-            trkDelTotal += delayList[i].delay
+        for (let i = 0; i < ArtList.length; i++) {
+            trkDelArray.push(ArtList[i].delay)
         }
 
-        setAvgTrkDel(trkDelTotal / delayList.length)
+        let trkDelTotal: number = trkDelArray.reduce((a, b) => a + b, 0)
+        let newAvgNumb: number = trkDelTotal / trkDelArray.length
+        let newAvgStr: string = newAvgNumb % 1 === 0 ? newAvgNumb.toFixed(0) : newAvgNumb.toFixed(2)
 
-        if (delayList.length < 2) {
+        setAvgTrkDel(newAvgStr)
+        setBaseDelay(x)
+
+        if (!avgDelAvail) {
             setSelectedDelay(`${trkDelTotal}`)
         } else {
-            setSelectedDelay(`~${trkDelTotal / delayList.length}/${delayList.length}`)
+            setSelectedDelay(`~${newAvgStr}/${trkDelArray.length}`)
         }
     }
 
     const delayChangeClickTest = () => {
-        console.log(delayList[0].delay, typeof delayList[0].delay)
+
     }
 
     const [FullRangeList, setFullRanges] = useState<{ id: string }[]>([
@@ -287,13 +281,13 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                     </TdInput>
                 </div>
             </div>
-            <div className={`items-center text-xs xl:text-lg ${delayList.length < 2 ? 'hidden' : 'flex'}`}>
+            <div className={`items-center text-xs xl:text-lg ${!avgDelAvail ? 'hidden' : 'flex'}`}>
                 <p>Avg. Track Delay (ms):</p>
                 <div>
                     <TdInput
                         id={`avgDelay_trk_${parseInt(selectedTrack)}`}
                         title="The average delay in ms for this track."
-                        placeholder={avgTrkDel as unknown as number}
+                        placeholder={avgTrkDel as unknown as string}
                         defaultValue={avgTrkDel as unknown as number}
                         onReceive={avgTrkDel as unknown as number}
                         td={true}
@@ -365,7 +359,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                     </tr >
                 </thead >
                 <tbody>
-                    <ArtToggleData setDelays={setDelays} ArtList={ArtList} setArts={setArts} ></ArtToggleData>
+                    <ArtToggleData ArtList={ArtList} setArts={setArts} setAvgDelAvail={setAvgDelAvail}></ArtToggleData>
                 </tbody>
             </table >
 
@@ -396,7 +390,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                     </tr>
                 </thead>
                 <tbody>
-                    <ArtSwitchData setDelays={setDelays} ArtList={ArtList} setArts={setArts} ></ArtSwitchData>
+                    <ArtSwitchData ArtList={ArtList} setArts={setArts} setAvgDelAvail={setAvgDelAvail} ></ArtSwitchData>
                 </tbody>
             </table>
         </div >
