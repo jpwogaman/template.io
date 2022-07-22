@@ -2,58 +2,69 @@ import { Dispatch, FC, Fragment, SetStateAction, useState } from 'react';
 import { ArtSettingsRow } from './art-settings-row'
 
 interface ArtDataProps {
-    toggle?: boolean;
     setDelays: Dispatch<SetStateAction<{ id: string, delay: number }[]>>;
+    ArtList: { id: string, toggle: boolean }[];
+    setArts: Dispatch<SetStateAction<{ id: string, toggle: boolean }[]>>;
 }
 
-export const ArtData: FC<ArtDataProps> = ({ setDelays, toggle }) => {
-
-    const [ArtList, setArts] = useState<{ id: string }[]>([
-        {
-            id: "01"
-        }
-    ])
-
-    const [defaultSwitchArt, setDefaultSwitchArt] = useState<string>('artDeftOption_01')
-
-    const addArt = (artId: string) => {
-
-
-        if (ArtList.length < 24) {
-            let newArtIdNumb: number = parseInt(artId) + 1
-
-            let newArtIdStr: string = newArtIdNumb.toLocaleString('en-US', {
-                minimumIntegerDigits: 2,
-                useGrouping: false
-            })
-            const newArt = { id: newArtIdStr }
-            setArts([...ArtList, newArt])
-        } else {
-            alert('Are you sure you need this many articulation buttons?')
-        }
-    }
+export const ArtToggleData: FC<ArtDataProps> = ({ setDelays, ArtList, setArts }) => {
 
     const removeArt = (artId: string) => {
 
-        if (ArtList.length !== 1) {
+        if (ArtList.length !== 2) {
             setArts(ArtList.filter((art) => art.id !== artId));
         }
     }
 
     return (
+
         <Fragment>
             {ArtList.map((art) => (
-                <ArtSettingsRow
-                    setDelays={setDelays}
-                    key={art.id}
-                    id={art.id}
-                    onAdd={() => addArt(art.id)}
-                    onDelete={() => removeArt(art.id)}
-                    toggle={toggle}
-                    defaultSwitchArt={defaultSwitchArt}
-                    setDefaultSwitchArt={setDefaultSwitchArt}
-                />
+                art.toggle ?
+                    <ArtSettingsRow
+                        setDelays={setDelays}
+                        key={art.id}
+                        id={art.id}
+                        onDelete={() => removeArt(art.id)}
+                        toggle
+                    />
+                    : null
             ))}
         </Fragment>
+
+    )
+}
+
+export const ArtSwitchData: FC<ArtDataProps> = ({ setDelays, ArtList, setArts }) => {
+
+    const [defaultSwitchArt, setDefaultSwitchArt] = useState<string>('artDeftOption_02')
+
+    const removeArt = (artId: string) => {
+
+        if (ArtList.length !== 2) {
+            setArts(ArtList.filter((art) => art.id !== artId));
+        }
+    }
+
+    // if (ArtList[0].toggle)
+
+    return (
+
+        <Fragment>
+            {ArtList.map((art) => (
+
+                !art.toggle ?
+                    <ArtSettingsRow
+                        setDelays={setDelays}
+                        key={art.id}
+                        id={art.id}
+                        onDelete={() => removeArt(art.id)}
+                        defaultSwitchArt={defaultSwitchArt}
+                        setDefaultSwitchArt={setDefaultSwitchArt}
+                    />
+                    : null
+            ))}
+        </Fragment>
+
     )
 }

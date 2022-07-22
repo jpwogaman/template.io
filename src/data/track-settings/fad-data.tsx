@@ -1,36 +1,12 @@
-import { FC, Fragment, useState } from 'react';
+import { Dispatch, FC, Fragment, SetStateAction, useState } from 'react';
 import { FadSettingsRow } from './fad-settings-row'
 
 interface FaderDataProps {
+    setFaders: Dispatch<SetStateAction<{ id: string }[]>>;
+    FaderList: { id: string }[];
 }
 
-export const FaderData: FC<FaderDataProps> = () => {
-
-    const [FaderList, setFaders] = useState<{ id: string }[]>([
-        {
-            id: "01"
-        }
-    ])
-
-    const addFader = (fadId: string) => {
-
-        if (FaderList.length < 12) {
-            let newfadIdNumb: number = parseInt(fadId) + 1
-
-            let newfadIdStr: string = newfadIdNumb.toLocaleString('en-US', {
-                minimumIntegerDigits: 2,
-                useGrouping: false
-            })
-            const newFader = { id: newfadIdStr }
-            setFaders([...FaderList, newFader])
-        } else {
-            alert('Are you sure you need this many faders?')
-        }
-
-        if (fadId === FaderList![FaderList.length - 1].id) {
-            console.log('it does')
-        }
-    }
+export const FaderData: FC<FaderDataProps> = ({ setFaders, FaderList }) => {
 
     const removeFader = (fadId: string) => {
 
@@ -49,7 +25,6 @@ export const FaderData: FC<FaderDataProps> = () => {
                 <FadSettingsRow
                     key={fader.id}
                     id={fader.id}
-                    onAdd={() => addFader(fader.id)}
                     onDelete={() => removeFader(fader.id)} />
             ))}
         </Fragment>

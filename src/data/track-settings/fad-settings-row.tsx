@@ -6,11 +6,10 @@ import { TdSelect } from "../../components/td-select";
 
 interface FadSettingsRowProps {
     id: string;
-    onAdd?: () => void | void | undefined;
     onDelete?: () => void | void | undefined;
 }
 
-export const FadSettingsRow: FC<FadSettingsRowProps> = ({ onAdd, onDelete, id }) => {
+export const FadSettingsRow: FC<FadSettingsRowProps> = ({ onDelete, id }) => {
 
     const [codeDisabled, setCodeDisabled] = useState<boolean>(false)
     const nameFadTitle: string = "Set the NAME for this parameter. (i.e Dynamics)"
@@ -92,17 +91,13 @@ export const FadSettingsRow: FC<FadSettingsRowProps> = ({ onAdd, onDelete, id })
 
     const addFaders =
         <div className="text-center">
-            <IconBtnToggle
-                classes="w-6 h-6 hover:scale-[1.15] hover:animate-pulse"
-                titleA="Add Another Fader."
-                titleB="Remove This Fader."
+            <button
+                className="w-6 h-6 hover:scale-[1.15] hover:animate-pulse"
+                title="Remove This Fader."
                 id={`AddFaderButton_${id}`}
-                a="fa-solid fa-plus"
-                b="fa-solid fa-minus"
-                defaultIcon="a"
-                onToggleA={onAdd}
-                onToggleB={onDelete}>
-            </IconBtnToggle>
+                onClick={onDelete}>
+                <i className="fa-solid fa-minus"></i>
+            </button>
         </div>
 
     const settingsTr =

@@ -1,9 +1,9 @@
 import { TdSelect } from '../components/td-select';
 import { IconBtnToggle } from '../components/icon-btn-toggle'
 import { TdInput } from '../components/td-input';
-import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
+import { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { FaderData } from '../data/track-settings/fad-data';
-import { ArtData } from '../data/track-settings/art-data';
+import { ArtToggleData, ArtSwitchData } from '../data/track-settings/art-data';
 interface TrackSettingsProps {
     selectedTrack: string;
     selectedTrackName: string;
@@ -11,6 +11,95 @@ interface TrackSettingsProps {
 }
 
 export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, selectedTrackName, selectedTrack }) => {
+
+
+    const [ArtList, setArts] = useState<{ id: string, toggle: boolean }[]>([
+        {
+            id: "01",
+            toggle: true
+        },
+        {
+            id: "02",
+            toggle: false
+        }
+    ])
+
+    const addArt = (toggle: boolean) => {
+
+        const lastArtId = ArtList[ArtList.length - 1].id
+
+        if (ArtList.length > 23) {
+            return alert('Are you sure you need this many articulation buttons?')
+        }
+
+        const newArtIdNumb: number = parseInt(lastArtId) + 1
+        const newArtIdStr: string = newArtIdNumb.toLocaleString('en-US', {
+            minimumIntegerDigits: 2,
+            useGrouping: false
+        })
+        const newArt = { id: newArtIdStr, toggle: toggle }
+
+        setArts([...ArtList, newArt])
+
+        useEffect(() => {
+            (async () => {
+
+                const newArtArr: { id: string, toggle: boolean }[] = []
+
+                for (let i = 0; i < ArtList.length; i++) {
+
+                    const newArtIdNumb: number = 1 + i
+                    const newArtIdStr: string = newArtIdNumb.toLocaleString('en-US', {
+                        minimumIntegerDigits: 2,
+                        useGrouping: false
+                    })
+                    newArtArr.push({ id: newArtIdStr, toggle: ArtList[i].toggle })
+                }
+
+                console.log(newArtArr)
+                console.log(ArtList)
+
+                setArts(newArtArr)
+
+                // const newArts = newArtArr.map((newArt) => (
+                //     { id: newArt.id, toggle: newArt.toggle }
+                // ))
+            })();
+
+            return () => {
+
+            }
+        }, [])
+
+    }
+
+    const [FaderList, setFaders] = useState<{ id: string }[]>([
+        {
+            id: "01"
+        }
+    ])
+
+    const addFader = () => {
+
+        const lastFadId = FaderList[FaderList.length - 1].id
+
+        if (FaderList.length > 11) {
+
+            return alert('Are you sure you need this many faders?')
+        }
+
+        let newfadIdNumb: number = parseInt(lastFadId) + 1
+        let newfadIdStr: string = newfadIdNumb.toLocaleString('en-US', {
+            minimumIntegerDigits: 2,
+            useGrouping: false
+        })
+        const newFader = { id: newfadIdStr }
+        setFaders([...FaderList, newFader])
+
+        if (lastFadId === FaderList![FaderList.length - 1].id) {
+            console.log('it does')
+        }
+    }
 
     const [avgTrkDel, setAvgTrkDel] = useState<number>(0)
 
@@ -237,7 +326,10 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
 
 
 
-            <h4 className='mt-5 mb-1'>Faders</h4>
+
+
+            <h4 className='mt-5 mb-2'>Faders</h4>
+
             <table className='w-full table-fixed text-left xl:text-sm md:text-xs'>
                 <thead>
                     <tr>
@@ -247,14 +339,24 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                         <th className={`${settingsTh} w-[17.5%]`} title="Set the CODE for this patch. (i.e. CC11)">Code</th>
                         <th className={`${settingsTh} w-[17.5%]`} title="Set the default patch.">Default</th>
                         <th className={`${settingsTh} w-[15%]`} title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
-                        <th className={`${settingsTh} w-[05%]`} title=""></th>
+                        <th className={`${settingsTh} w-[05%] text-center`} title="">
+                            <button
+                                className="w-full h-full text-base hover:scale-[1.15] hover:animate-pulse"
+                                title="Add Another Fader."
+                                id="addFader"
+                                onClick={addFader}>
+                                <i className="fa-solid fa-plus"></i>
+                            </button>
+                        </th>
                     </tr >
                 </thead >
                 <tbody>
-                    <FaderData></FaderData>
+                    <FaderData FaderList={FaderList} setFaders={setFaders}></FaderData>
                 </tbody>
             </table >
-            <h4 className='mt-5 mb-1'>Articulations (toggle)</h4>
+
+            <h4 className='mt-5 mb-2'>Articulations (toggle)</h4>
+
             <table className='w-full table-fixed text-left xl:text-sm md:text-xs'>
                 <thead>
                     <tr>
@@ -267,14 +369,25 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                         <th className={`${settingsTh} w-[07%]`} title="Set the DEFAULT default setting for this patch." > Default</th >
                         <th className={`${settingsTh} w-[07%]`} title="Set the track delay for this patch in ms.">Delay</th>
                         <th className={`${settingsTh} w-[15%]`} title="Switch between Value 1-Based and Value 2-Based Changes" > Change Type</th >
-                        <th className={`${settingsTh} w-[05%]`} title=""></th>
+                        <th className={`${settingsTh} w-[05%] text-center`} title="">
+                            <button
+                                className="w-full h-full text-base hover:scale-[1.15] hover:animate-pulse"
+                                title="Add Another Toggle Articulation."
+                                id="addToggleArticulation"
+                                onClick={() => addArt(true)}>
+                                <i className="fa-solid fa-plus"></i>
+                            </button>
+                        </th>
                     </tr >
                 </thead >
                 <tbody>
-                    <ArtData setDelays={setDelays} toggle></ArtData>
+                    <ArtToggleData setDelays={setDelays} ArtList={ArtList} setArts={setArts} ></ArtToggleData>
                 </tbody>
             </table >
-            <h4 className='mt-5 mb-1'>Articulations (switch)</h4>
+
+
+            <h4 className='mt-5 mb-2'>Articulations (switch)</h4>
+
             <table className='w-full table-fixed text-left xl:text-sm md:text-xs'>
                 <thead>
                     <tr>
@@ -287,11 +400,19 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                         <th className={`${settingsTh} w-[07%]`} title="Set the default patch.">Default</th>
                         <th className={`${settingsTh} w-[07%]`} title="Set the track delay for this patch in ms.">Delay</th>
                         <th className={`${settingsTh} w-[15%]`} title="Switch between Value 1-Based and Value 2-Based Changes">Change Type</th>
-                        <th className={`${settingsTh} w-[05%]`} title=""></th>
+                        <th className={`${settingsTh} w-[05%] text-center`} title="">
+                            <button
+                                className="w-full h-full text-base hover:scale-[1.15] hover:animate-pulse"
+                                title="Add Another Switch Articulation."
+                                id="addSwitchArticulation"
+                                onClick={() => addArt(false)}>
+                                <i className="fa-solid fa-plus"></i>
+                            </button>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <ArtData setDelays={setDelays} ></ArtData>
+                    <ArtSwitchData setDelays={setDelays} ArtList={ArtList} setArts={setArts} ></ArtSwitchData>
                 </tbody>
             </table>
         </div >

@@ -1,5 +1,4 @@
 import { FC, useState, ChangeEvent, Fragment, Dispatch, SetStateAction } from "react";
-import { IconBtnToggle } from "../../components/icon-btn-toggle";
 import { TdSwitch } from "../../components/td-switch";
 import { TdInput } from "../../components/td-input";
 import { TdSelect } from "../../components/td-select";
@@ -12,11 +11,11 @@ interface ArtSettingsRowProps {
     delayList?: { id: string, delay: number }[];
     onAdd?: () => void | void | undefined;
     onDelete?: () => void | void | undefined;
-    setDefaultSwitchArt: Dispatch<SetStateAction<string>>;
-    defaultSwitchArt: string;
+    setDefaultSwitchArt?: Dispatch<SetStateAction<string>>;
+    defaultSwitchArt?: string;
 }
 
-export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ onAdd, setDefaultSwitchArt, defaultSwitchArt, onDelete, delayList, setDelays, id, toggle }) => {
+export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ setDefaultSwitchArt, defaultSwitchArt, onDelete, delayList, setDelays, id, toggle }) => {
 
     const [rngTitle, setRngTitle] = useState<string>("Switch to independent playable range.")
     const [rngVisible, setRngVisible] = useState<boolean>(false)
@@ -55,7 +54,7 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ onAdd, setDefaultSwitc
         setArtDeftChecked(true)
         const prevDefault = document.getElementById(`${defaultSwitchArt}`) as HTMLInputElement
         prevDefault.checked = false
-        setDefaultSwitchArt(`artDeftOption_${id}`)
+        setDefaultSwitchArt!(`artDeftOption_${id}`)
         console.log(defaultSwitchArt, `artDeftOption_${id}`)
 
     }
@@ -199,17 +198,13 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ onAdd, setDefaultSwitc
 
     const addArts =
         <div className="text-center">
-            <IconBtnToggle
-                classes="w-6 h-6 hover:scale-[1.15] hover:animate-pulse"
-                titleA="Add Another Articulation."
-                titleB="Remove This Articulation."
-                id={`AddFaderButton_${id}`}
-                a="fa-solid fa-plus"
-                b="fa-solid fa-minus"
-                defaultIcon="a"
-                onToggleA={onAdd}
-                onToggleB={onDelete}>
-            </IconBtnToggle>
+            <button
+                className="w-6 h-6 hover:scale-[1.15] hover:animate-pulse"
+                title="Remove This Articulation."
+                id={`AddArtButton_${id}`}
+                onClick={onDelete}>
+                <i className="fa-solid fa-minus"></i>
+            </button>
         </div>
 
     const settingsTr =
