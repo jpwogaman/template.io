@@ -62,7 +62,7 @@ export const TrackList: FC<TrackListProps> = ({ setTrackCount, selectedTrackDela
 
         if (window.confirm('CAREFUL - this might completely mess up your beautiful template, especially if this track list is synced with an instance of Open Stage Control. \n\nAre you sure you want to renumber your track list?')) {
 
-            const newTrackIdStrArr: string[] = []
+            const newTrackIdStrArr: { id: string }[] = []
 
             for (let i = 0; i < TrackList.length; i++) {
 
@@ -71,14 +71,9 @@ export const TrackList: FC<TrackListProps> = ({ setTrackCount, selectedTrackDela
                     minimumIntegerDigits: 2,
                     useGrouping: false
                 })
-                newTrackIdStrArr.push(newTrackIdStr)
+                newTrackIdStrArr.push({ id: newTrackIdStr })
             }
-
-            const newTrack = newTrackIdStrArr.map((newTrackId) => (
-                { id: newTrackId }
-            ))
-
-            setTracks(newTrack)
+            setTracks(newTrackIdStrArr)
         }
 
     }

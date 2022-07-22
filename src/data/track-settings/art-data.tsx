@@ -46,13 +46,10 @@ export const ArtSwitchData: FC<ArtDataProps> = ({ setDelays, ArtList, setArts })
         }
     }
 
-    // if (ArtList[0].toggle)
-
     return (
 
         <Fragment>
             {ArtList.map((art) => (
-
                 !art.toggle ?
                     <ArtSettingsRow
                         setDelays={setDelays}

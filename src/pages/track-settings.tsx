@@ -41,35 +41,19 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
 
         setArts([...ArtList, newArt])
 
-        useEffect(() => {
-            (async () => {
+        // const newArtArr: { id: string, toggle: boolean }[] = []
 
-                const newArtArr: { id: string, toggle: boolean }[] = []
+        // for (let i = 0; i < ArtList.length; i++) {
 
-                for (let i = 0; i < ArtList.length; i++) {
+        //     const newArtIdNumb: number = 1 + i
+        //     const newArtIdStr: string = newArtIdNumb.toLocaleString('en-US', {
+        //         minimumIntegerDigits: 2,
+        //         useGrouping: false
+        //     })
+        //     newArtArr.push({ id: newArtIdStr, toggle: ArtList[i].toggle })
+        // }
 
-                    const newArtIdNumb: number = 1 + i
-                    const newArtIdStr: string = newArtIdNumb.toLocaleString('en-US', {
-                        minimumIntegerDigits: 2,
-                        useGrouping: false
-                    })
-                    newArtArr.push({ id: newArtIdStr, toggle: ArtList[i].toggle })
-                }
-
-                console.log(newArtArr)
-                console.log(ArtList)
-
-                setArts(newArtArr)
-
-                // const newArts = newArtArr.map((newArt) => (
-                //     { id: newArt.id, toggle: newArt.toggle }
-                // ))
-            })();
-
-            return () => {
-
-            }
-        }, [])
+        // setArts(newArtArr)
 
     }
 
