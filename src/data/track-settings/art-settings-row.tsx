@@ -203,6 +203,7 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ baseDelay, setAvgDelAv
                 id={`trkDelay_art_${id}`}
                 title="Set the track delay for this patch in ms."
                 placeholder={`${baseDelay}`}
+                valueType='number'
                 onInput={delayChange}>
             </TdInput>
         </div>
