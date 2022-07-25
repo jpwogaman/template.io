@@ -93,7 +93,7 @@ export const TrackList: FC<TrackListProps> = ({ setTrackCount, selectedTrackDela
         `
 
     return (
-        <div id="TemplateTracks" className="MSshowTemplateTracks h-[100%] overflow-auto float-left transition-all duration-1000">
+        <div id="TemplateTracks" className="MSshowTemplateTracks h-[100%] overflow-y-scroll float-left transition-all duration-1000">
             <div className='w-full h-[1rem] sticky top-0 bg-stone-300 dark:bg-zinc-800'></div>
             <div className='px-4 pb-4 bg-stone-300 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-200'>
                 {/* <div id="trackList_toolbar" className="sticky top-[1rem]">

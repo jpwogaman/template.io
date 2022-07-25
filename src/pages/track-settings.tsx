@@ -191,7 +191,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
         p-0.5`
 
     return (
-        <div id="TemplateTrackSettings" className="bg-stone-300 dark:bg-zinc-800 h-[100%] overflow-auto text-zinc-900 dark:text-zinc-200 MSshow p-4 z-50 transition-all duration-1000">
+        <div id="TemplateTrackSettings" className="bg-stone-300 dark:bg-zinc-800 h-[100%] overflow-y-scroll text-zinc-900 dark:text-zinc-200 MSshow p-4 z-50 transition-all duration-1000">
             <div className='flex justify-space align-middle'>
                 <button
                     className="w-[40px] h-[40px] text-xl border-2 border-zinc-900 dark:border-zinc-200 hover:scale-[1.15] hover:animate-pulse"
