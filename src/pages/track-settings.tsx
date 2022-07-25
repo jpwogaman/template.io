@@ -194,14 +194,14 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
         <div id="TemplateTrackSettings" className="bg-stone-300 dark:bg-zinc-800 h-[100%] overflow-auto text-zinc-900 dark:text-zinc-200 MSshow p-4 z-50 transition-all duration-1000">
             <div className='flex justify-space align-middle'>
                 <button
-                    className="w-10 h-10 text-xl border-2 border-zinc-900 dark:border-zinc-200 hover:scale-[1.15] hover:animate-pulse"
+                    className="w-[40px] h-[40px] text-xl border-2 border-zinc-900 dark:border-zinc-200 hover:scale-[1.15] hover:animate-pulse"
                     title="Close the Track Settings Window."
                     id="editClose"
                     onClick={closeSettingsWindow}>
                     <i className="fa-solid fa-xmark"></i>
                 </button>
                 <IconBtnToggle
-                    classes="w-10 h-10 mx-2 border-2 border-zinc-900 dark:border-zinc-200 hover:scale-[1.15] hover:animate-pulse"
+                    classes="w-[40px] h-[40px] mx-2 border-2 border-zinc-900 dark:border-zinc-200 hover:scale-[1.15] hover:animate-pulse"
                     titleA="Lock the Settings for this Track."
                     titleB="Unlock the Settings for this Track."
                     id="editLock"
@@ -212,7 +212,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                     onToggleB={toggleLock}>
                 </IconBtnToggle>
                 <button
-                    className="w-10 h-10 border-2 border-zinc-900 dark:border-zinc-200 hover:scale-[1.15] hover:animate-pulse"
+                    className="w-[40px] h-[40px] border-2 border-zinc-900 dark:border-zinc-200 hover:scale-[1.15] hover:animate-pulse"
                     title="Save the Settings for this Track."
                     id="editSave"
                     onClick={delayChangeClickTest}>

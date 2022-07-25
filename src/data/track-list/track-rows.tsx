@@ -89,7 +89,7 @@ export const TrackRows: FC<TrackRowProps> = ({ selectedTrackDelay, setSelectedTr
         dark:hover:text-zinc-50`
 
     const trackTd =
-        `border-2 
+        `border-[1.5px]
         border-zinc-400 
         dark:border-zinc-600
 	    p-0.5`

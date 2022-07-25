@@ -79,53 +79,37 @@ export const TrackList: FC<TrackListProps> = ({ setTrackCount, selectedTrackDela
     }
 
     const trackTh =
-        `border-2
+        `border-[1.5px]
         border-zinc-100
-        border-b-transparent
         dark:border-zinc-400
-        dark:border-b-transparent
         bg-zinc-200
         dark:bg-zinc-600
         font-bold
+        z-50
         dark:font-normal
-        p-1`
+        p-1
+        sticky top-[1rem]
+        `
 
     return (
         <div id="TemplateTracks" className="MSshowTemplateTracks h-[100%] overflow-auto float-left transition-all duration-1000">
-            <div className='p-4 bg-stone-300 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-200'>
-                <div id="trackList_toolbar" className="">
-                    <div className='flex justify-between align-middle mb-2' >
+            <div className='w-full h-[1rem] sticky top-0 bg-stone-300 dark:bg-zinc-800'></div>
+            <div className='px-4 pb-4 bg-stone-300 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-200'>
+                {/* <div id="trackList_toolbar" className="sticky top-[1rem]">
+                    <div className='h-[35px] max-h-[35px] flex justify-between align-middle mb-2' >
                         <button
-                            className="px-4 w-50 h-50 text-lg border-2 border-zinc-900 dark:border-zinc-200 hover:border-red-600 dark:hover:border-red-600
+                            className="px-4 text-lg border-2 border-zinc-900 dark:border-zinc-200 hover:border-red-600 dark:hover:border-red-600
                             hover:scale-[1.15] hover:animate-pulse"
                             title="Re-number Tracks. CAREFUL"
                             id="renumberTracks"
                             onClick={renumberTracks}>
                             <i className="fa-solid fa-arrow-down-1-9"></i>
-                        </button>
-                        <div className=' text-xl border-2 border-zinc-900 dark:border-zinc-200 
-                            hover:border-green-600 dark:hover:border-green-600 
-                            hover:scale-[1.15] hover:animate-pulse'>
-                            <button
-                                className="w-30 h-10"
-                                title={`Add Multiple Tracks. (${addMltTrkInput})`}
-                                id="addMultipleTracks"
-                                onClick={addMultipleTracks}>
-                                <i className="pl-2 mr-2 fa-solid fa-plus"></i>
-                            </button>
-                            <TdInput
-                                td={false}
-                                id="addMltTrkInput"
-                                title='Set the number of tracks to add.'
-                                placeholder="1"
-                                onInput={setTrackAddNumber}>
-                            </TdInput>
-                        </div>
+                        </button>                     
                     </div >
-                </div >
+                </div > */}
 
-                <table className='table-auto border-collapse text-left lg:text-sm md:text-xs w-full'>
-                    <thead>
+                <table className='table-auto border-separate border-spacing-0 text-left lg:text-sm md:text-xs w-full'>
+                    <thead >
                         <tr>
                             <th className={`${trackTh} w-[05%]`} title="Unique Track Number">No.</th>
                             <th className={`${trackTh} w-[45%]`} title="Set the MIDI channel for this track or multi.">Name</th>
@@ -133,7 +117,25 @@ export const TrackList: FC<TrackListProps> = ({ setTrackCount, selectedTrackDela
                             {/* <th className={`${trackTh} w-[10%]`} title="Set the sampler outputs for this track or multi.">Sampler Outputs</th>
                             <th className={`${trackTh} w-[10%]`} title="Set the instance outputs for this track or multi.">Instance Outputs</th> */}
                             <th className={`${trackTh} w-[10%]`} title="Track Delay in ms (may be average)">Delay (ms)</th>
-                            <th className={`${trackTh} w-[10%]`} title="Edit Track Parameters"></th>
+                            <th className={`${trackTh} w-[10%]`} title="Edit Track Parameters">
+                                <div className='text-xl text-center
+                                     hover:scale-[1.15] hover:animate-pulse'>
+                                    <button
+                                        className=""
+                                        title={`Add Tracks. (${addMltTrkInput})`}
+                                        id="addMultipleTracks"
+                                        onClick={addMultipleTracks}>
+                                        <i className="pl-2 mr-2 fa-solid fa-plus"></i>
+                                    </button>
+                                    <TdInput
+                                        td={false}
+                                        id="addMltTrkInput"
+                                        title='Set the number of tracks to add.'
+                                        placeholder="1"
+                                        onInput={setTrackAddNumber}>
+                                    </TdInput>
+                                </div>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
