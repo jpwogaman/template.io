@@ -11,9 +11,10 @@ interface TrackSettingsProps {
 }
 
 export interface ArtListProps {
-    id: string,
-    toggle: boolean,
-    delay: number
+    id: string;
+    toggle: boolean;
+    delay: number;
+    default: string | boolean;
 }
 
 export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, selectedTrackName, selectedTrack }) => {
@@ -22,12 +23,14 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
         {
             id: "01",
             toggle: true,
-            delay: 0
+            delay: 0,
+            default: 'on' //setting choice later
         },
         {
             id: "02",
             toggle: false,
-            delay: 0
+            delay: 0,
+            default: true
         }
     ])
 
@@ -44,7 +47,12 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
             minimumIntegerDigits: 2,
             useGrouping: false
         })
-        const newArt = { id: newArtIdStr, toggle: toggle, delay: 0 }
+        const newArt = {
+            id: newArtIdStr,
+            toggle: toggle,
+            delay: 0,
+            default: toggle ? 'on' : false //setting choice later
+        }
 
         setArts([...ArtList, newArt])
 
@@ -211,11 +219,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                     <i className="fa-solid fa-save"></i>
                 </button>
             </div>
-
-
             <h2 id="trkEditDisplay" className='my-2'>{`Track ${parseInt(selectedTrack)}: ${selectedTrackName}`}</h2>
-
-
             <div className={`flex text-xs xl:text-lg ${onlyRange ? 'bg-zinc-300 dark:bg-stone-800' : null}`}>
                 <p className='py-1'>Playable Ranges: </p>
                 <table className=''>
@@ -259,16 +263,6 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                     </tbody>
                 </table>
             </div>
-
-
-
-
-
-
-
-
-
-
             <div className='flex items-center my-2 text-xs xl:text-lg'>
                 <p>Base Track Delay (ms):</p>
                 <div>
@@ -296,16 +290,6 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                 </div>
             </div>
 
-
-
-
-
-
-
-
-
-
-
             <h4 className='mt-5 mb-2'>Faders</h4>
 
             <table className='w-full table-fixed text-left xl:text-sm md:text-xs'>
@@ -332,9 +316,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                     <FaderData FaderList={FaderList} setFaders={setFaders}></FaderData>
                 </tbody>
             </table >
-
             <h4 className='mt-5 mb-2'>Articulations (toggle)</h4>
-
             <table className='w-full table-fixed text-left xl:text-sm md:text-xs'>
                 <thead>
                     <tr>
@@ -362,10 +344,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                     <ArtToggleData ArtList={ArtList} setArts={setArts} setAvgDelAvail={setAvgDelAvail}></ArtToggleData>
                 </tbody>
             </table >
-
-
             <h4 className='mt-5 mb-2'>Articulations (switch)</h4>
-
             <table className='w-full table-fixed text-left xl:text-sm md:text-xs'>
                 <thead>
                     <tr>

@@ -12,12 +12,10 @@ interface ArtSettingsRowProps {
     ArtList?: ArtListProps[];
     onAdd?: () => void | void | undefined;
     onDelete?: () => void | void | undefined;
-    setDefaultSwitchArt?: Dispatch<SetStateAction<string>>;
-    defaultSwitchArt?: string;
     setAvgDelAvail: Dispatch<SetStateAction<boolean>>;
 }
 
-export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ setAvgDelAvail, setDefaultSwitchArt, defaultSwitchArt, onDelete, ArtList, setArts, id, toggle }) => {
+export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ setAvgDelAvail, onDelete, ArtList, setArts, id, toggle }) => {
 
     const [rngTitle, setRngTitle] = useState<string>("Switch to independent playable range.")
     const [rngVisible, setRngVisible] = useState<boolean>(false)
@@ -27,7 +25,7 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ setAvgDelAvail, setDef
     const [valueCodeMidi, setCodeMidi] = useState<string>("valMidiList")
 
     const [artCodeDisabled, setArtCodeDisabled] = useState<boolean>(false)
-    const [artDeftChecked, setArtDeftChecked] = useState<boolean>(defaultSwitchArt === `artDeftOption_${id}` ? true : false)
+
     const artTypeTitle: string = "Select the TYPE of code for this patch."
     const artCodeTitle: string = "Set the CODE for this patch. (i.e. CC58)"
     const artDeftTitle: string = "Set the DEFAULT setting for this patch."
@@ -37,6 +35,11 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ setAvgDelAvail, setDef
 
     const artSwitchNameTitle: string = "Set the NAME for this patch. (i.e Staccato)"
     const artSwitchOnTitle: string = "Set the ON setting for this patch. (i.e. CC58, Value 21)"
+
+
+    // const artDeftChecked: boolean =
+    //     ArtList![ArtList!.findIndex(function (art) { return art.id === id })].default
+
 
     const rangeOptionChange = () => {
         if (rngChecked) {
@@ -50,15 +53,20 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ setAvgDelAvail, setDef
         }
     }
 
-    const deftPatchChange = (id: string) => {
+    const deftPatchChange = () => {
 
-
-        setArtDeftChecked(true)
-        const prevDefault = document.getElementById(`${defaultSwitchArt}`) as HTMLInputElement
-        prevDefault.checked = false
-        setDefaultSwitchArt!(`artDeftOption_${id}`)
-        console.log(defaultSwitchArt, `artDeftOption_${id}`)
-
+        setArts!(prevState => {
+            const newState = prevState.map(obj => {
+                if (obj.id === id) {
+                    return { ...obj, default: true };
+                }
+                if (obj.default === true) { //some obj.default will be 'on' or 'off'
+                    return { ...obj, default: false };
+                }
+                return obj;
+            });
+            return newState;
+        });
     }
 
     const typeChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -179,8 +187,8 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ setAvgDelAvail, setDef
             <input
                 type="checkbox"
                 className='min-w-full cursor-pointer'
-                checked={artDeftChecked}
-                onChange={() => deftPatchChange(id)}
+                checked={ArtList![ArtList!.findIndex(function (art) { return art.id === id })].default as boolean}
+                onChange={deftPatchChange}
                 title="Set this as the default patch."
                 aria-label="Set this as the default patch."
                 id={`artDeftOption_${id}`}>

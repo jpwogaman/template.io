@@ -13,11 +13,16 @@ interface TdInputProps {
 }
 
 export const TdInput: FC<TdInputProps> = ({ td, onReceive, onInput, defaultValue, id, placeholder, title, codeDisabled }) => {
-    const [valueName, setName] = useState<string | number>(defaultValue ? defaultValue : "")
+    const [valueName, setName] = useState<string | number>(defaultValue ? defaultValue : '')
 
     const nameChange = (event: ChangeEvent<HTMLInputElement>) => {
 
-        setName(event.target.value as unknown as number)
+        if (event.target.value === '' && placeholder === '0') {
+            event.target.value = '0'
+        }
+
+        setName(event.target.value)
+
         if (onInput) { onInput!(event) }
         else return
     }

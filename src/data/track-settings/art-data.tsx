@@ -40,8 +40,6 @@ export const ArtToggleData: FC<ArtDataProps> = ({ ArtList, setArts, setAvgDelAva
 
 export const ArtSwitchData: FC<ArtDataProps> = ({ ArtList, setArts, setAvgDelAvail }) => {
 
-    const [defaultSwitchArt, setDefaultSwitchArt] = useState<string>('artDeftOption_02')
-
     const removeArt = (artId: string) => {
 
         if (ArtList.length !== 2) {
@@ -61,8 +59,6 @@ export const ArtSwitchData: FC<ArtDataProps> = ({ ArtList, setArts, setAvgDelAva
                         key={art.id}
                         id={art.id}
                         onDelete={() => removeArt(art.id)}
-                        defaultSwitchArt={defaultSwitchArt}
-                        setDefaultSwitchArt={setDefaultSwitchArt}
                     />
                     : null
             ))}
