@@ -1,7 +1,7 @@
 import { TdSelect } from '../components/td-select';
 import { IconBtnToggle } from '../components/icon-btn-toggle'
 import { TdInput } from '../components/td-input';
-import { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
 import { FaderData } from '../data/track-settings/fad-data';
 import { ArtToggleData, ArtSwitchData } from '../data/track-settings/art-data';
 interface TrackSettingsProps {
