@@ -6,9 +6,10 @@ interface ArtDataProps {
     ArtList: ArtListProps[];
     setArts: Dispatch<SetStateAction<ArtListProps[]>>;
     setAvgDelAvail: Dispatch<SetStateAction<boolean>>;
+    baseDelay: number;
 }
 
-export const ArtToggleData: FC<ArtDataProps> = ({ ArtList, setArts, setAvgDelAvail }) => {
+export const ArtToggleData: FC<ArtDataProps> = ({ baseDelay, ArtList, setArts, setAvgDelAvail }) => {
 
     const removeArt = (artId: string) => {
 
@@ -30,6 +31,7 @@ export const ArtToggleData: FC<ArtDataProps> = ({ ArtList, setArts, setAvgDelAva
                         id={art.id}
                         onDelete={() => removeArt(art.id)}
                         toggle
+                        baseDelay={baseDelay}
                     />
                     : null
             ))}
@@ -38,7 +40,7 @@ export const ArtToggleData: FC<ArtDataProps> = ({ ArtList, setArts, setAvgDelAva
     )
 }
 
-export const ArtSwitchData: FC<ArtDataProps> = ({ ArtList, setArts, setAvgDelAvail }) => {
+export const ArtSwitchData: FC<ArtDataProps> = ({ baseDelay, ArtList, setArts, setAvgDelAvail }) => {
 
     const removeArt = (artId: string) => {
 
@@ -59,6 +61,7 @@ export const ArtSwitchData: FC<ArtDataProps> = ({ ArtList, setArts, setAvgDelAva
                         key={art.id}
                         id={art.id}
                         onDelete={() => removeArt(art.id)}
+                        baseDelay={baseDelay}
                     />
                     : null
             ))}

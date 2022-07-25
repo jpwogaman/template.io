@@ -13,9 +13,10 @@ interface ArtSettingsRowProps {
     onAdd?: () => void | void | undefined;
     onDelete?: () => void | void | undefined;
     setAvgDelAvail: Dispatch<SetStateAction<boolean>>;
+    baseDelay: number;
 }
 
-export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ setAvgDelAvail, onDelete, ArtList, setArts, id, toggle }) => {
+export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ baseDelay, setAvgDelAvail, onDelete, ArtList, setArts, id, toggle }) => {
 
     const [rngTitle, setRngTitle] = useState<string>("Switch to independent playable range.")
     const [rngVisible, setRngVisible] = useState<boolean>(false)
@@ -201,7 +202,7 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ setAvgDelAvail, onDele
                 td={true}
                 id={`trkDelay_art_${id}`}
                 title="Set the track delay for this patch in ms."
-                placeholder="0"
+                placeholder={`${baseDelay}`}
                 onInput={delayChange}>
             </TdInput>
         </div>

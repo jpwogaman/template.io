@@ -341,7 +341,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                     </tr >
                 </thead >
                 <tbody>
-                    <ArtToggleData ArtList={ArtList} setArts={setArts} setAvgDelAvail={setAvgDelAvail}></ArtToggleData>
+                    <ArtToggleData ArtList={ArtList} setArts={setArts} setAvgDelAvail={setAvgDelAvail} baseDelay={baseDelay}></ArtToggleData>
                 </tbody>
             </table >
             <h4 className='mt-5 mb-2'>Articulations (switch)</h4>
@@ -369,7 +369,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                     </tr>
                 </thead>
                 <tbody>
-                    <ArtSwitchData ArtList={ArtList} setArts={setArts} setAvgDelAvail={setAvgDelAvail} ></ArtSwitchData>
+                    <ArtSwitchData ArtList={ArtList} setArts={setArts} setAvgDelAvail={setAvgDelAvail} baseDelay={baseDelay}></ArtSwitchData>
                 </tbody>
             </table>
         </div >

@@ -80,6 +80,7 @@ export const TrackList: FC<TrackListProps> = ({ setTrackCount, selectedTrackDela
 
     const trackTh =
         `border-[1.5px]
+        border-b-transparent
         border-zinc-100
         dark:border-zinc-400
         bg-zinc-200
