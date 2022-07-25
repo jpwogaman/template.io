@@ -18,6 +18,10 @@ export const TdInput: FC<TdInputProps> = ({ valueType, td, onReceive, onInput, d
 
     const nameChange = (event: ChangeEvent<HTMLInputElement>) => {
 
+        if (event.target.value === '' && valueType === 'number') {
+            event.target.value = placeholder as string
+        }
+
         setName(event.target.value)
 
         if (onInput) { onInput!(event) }

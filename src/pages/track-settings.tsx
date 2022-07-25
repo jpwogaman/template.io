@@ -271,6 +271,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                         id={`baseDelay_trk_${parseInt(selectedTrack)}`}
                         title="Set the base track delay in ms for this track."
                         placeholder="0"
+                        valueType='number'
                         onInput={baseDelayChange}>
                     </TdInput>
                 </div>
@@ -285,6 +286,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                         defaultValue={avgTrkDel as unknown as number}
                         onReceive={avgTrkDel as unknown as number}
                         td={true}
+                        valueType='number'
                         codeDisabled={true}>
                     </TdInput>
                 </div>
