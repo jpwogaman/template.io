@@ -201,12 +201,13 @@ function clickTrk(arg1, arg2) {
 	}
 }
 //
-function keyRanges(x) {
-	receive('/template-io_keyRangeVar1', x);
+function keyRanges(range) {
+	receive('/template-io_keyRangeVar1', range);
 	receive('/template-io_keyRangeScript', 1);
-	receive('/keyRangeVar1', x);
+	receive('/keyRangeVar1', range);
 	receive('/keyRangeScript', 1);
 }
+
 module.exports = {
 	init: function () {
 		send('midi', 'OSC1', '/control', 3, 17, 1); //'whole notes'
@@ -218,6 +219,7 @@ module.exports = {
 	},
 
 	oscInFilter: function (data) {
+
 		var { address, args, host, port } = data;
 
 		portAddr(address, port);
@@ -259,8 +261,6 @@ module.exports = {
 		//if I receive more than 4 in less than, maybe a half-second, then halt. this should help prevent issues when selecting all tracks, etc. 
 
 		if (keyP) {
-
-
 
 			const trkNumb = arg1 * 128 + arg2;
 			const trkRang = allTrack_jsn[trkNumb].trkRnge____;
