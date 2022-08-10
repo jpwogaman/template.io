@@ -1,21 +1,19 @@
 import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
 import { TdInput } from '../components/td-input';
-import { TrackData } from '../data/track-list/track-data'
+import { TrackRows } from '../data/track-list/track-rows';
+import { TrackListProps } from './template-data';
 
-interface TrackListProps {
+
+interface TrackListTableProps {
     setSelectedTrack: Dispatch<SetStateAction<string>>;
     setSelectedTrackName: Dispatch<SetStateAction<string>>;
     setTrackCount: Dispatch<SetStateAction<number>>;
     selectedTrackDelay: string;
+    TrackList: TrackListProps[];
+    setTracks: Dispatch<SetStateAction<TrackListProps[]>>;
 }
 
-export const TrackList: FC<TrackListProps> = ({ setTrackCount, selectedTrackDelay, setSelectedTrackName, setSelectedTrack }) => {
-
-    const [TrackList, setTracks] = useState<{ id: string }[]>([
-        {
-            id: "01"
-        }
-    ])
+export const TrackListTable: FC<TrackListTableProps> = ({ TrackList, setTracks, setTrackCount, selectedTrackDelay, setSelectedTrackName, setSelectedTrack }) => {
 
     let [addMltTrkInput, setMltTrkInput] = useState<number>(1)
 
@@ -48,35 +46,79 @@ export const TrackList: FC<TrackListProps> = ({ setTrackCount, selectedTrackDela
             newTrackIdStrArr.push(newTrackIdStr)
         }
 
-        const newTrack = newTrackIdStrArr.map((newTrackId) => (
-            { id: newTrackId }
+        const NewTracks = newTrackIdStrArr.map((newTrackId) => (
+            {
+                id: newTrackId,
+                name: ''
+            }
         ))
 
-        setTracks(TrackList.concat(newTrack))
-        setTrackCount(TrackList.length + newTrackIdStrArr.length)
+        setTracks(TrackList.concat(NewTracks) as TrackListProps[])
+        setTrackCount(TrackList.length + NewTracks.length)
     };
 
-    const renumberTracks = () => {
+    const removeTrack = (trackId: string) => {
 
-        //React is ignoring the window.confirm! it is just renumbering the tracks anyway and showing the message...
+        if (TrackList.length !== 1) {
+            setTracks(TrackList.filter((Track) => Track.id !== trackId));
+        }
+        setTrackCount(TrackList.length - 1)
+    }
 
-        if (window.confirm('CAREFUL - this might completely mess up your beautiful template, especially if this track list is synced with an instance of Open Stage Control. \n\nAre you sure you want to renumber your track list?')) {
+    const settingsOpen = (trackId: string) => {
 
-            const newTrackIdStrArr: { id: string }[] = []
+        const selectedTrackID: HTMLElement | null = document.getElementById(`trk_${trackId}`)
+        const selectedTrackName = document.getElementById(`trkName_${trackId}`) as HTMLInputElement
+        const templateTrackSettings: HTMLElement | null = document.getElementById('TemplateTrackSettings')
+        const templateTrackList: HTMLElement | null = document.getElementById('TemplateTracks')
 
-            for (let i = 0; i < TrackList.length; i++) {
+        setSelectedTrack!(trackId)
+        setSelectedTrackName!(selectedTrackName!.value)
 
-                const newTrackIdNumb: number = 1 + i
-                const newTrackIdStr: string = newTrackIdNumb.toLocaleString('en-US', {
-                    minimumIntegerDigits: 2,
-                    useGrouping: false
-                })
-                newTrackIdStrArr.push({ id: newTrackIdStr })
+        selectedTrackID!.classList.replace('bg-zinc-300 dark:bg-stone-800', 'bg-zinc-50 dark:bg-stone-400')
+
+        for (var track in TrackList) {
+            const trackId: HTMLElement | null = document.getElementById(`trk_${TrackList[track].id}`)
+
+            if (trackId !== selectedTrackID) {
+                trackId!.classList.replace('bg-zinc-50', 'bg-zinc-300')
+                trackId!.classList.replace('dark:bg-stone-400', 'dark:bg-stone-800')
             }
-            setTracks(newTrackIdStrArr)
+        }
+
+        if (templateTrackSettings!.classList.contains('MShide')) {
+            templateTrackSettings!.classList.replace('MShide', 'MSshow');
+            templateTrackList!.classList.replace('MShideTemplateTracks', 'MSshowTemplateTracks');
         }
 
     }
+
+    // const renumberTracks = () => {
+
+    //     //React is ignoring the window.confirm! it is just renumbering the tracks anyway and showing the message...
+
+    //     if (window.confirm('CAREFUL - this might completely mess up your beautiful template, especially if this track list is synced with an instance of Open Stage Control. \n\nAre you sure you want to renumber your track list?')) {
+
+    //         const newTrackIdStrArr: TrackListProps[] = []
+
+    //         for (let i = 0; i < TrackList.length; i++) {
+
+    //             const newTrackIdNumb: number = 1 + i
+    //             const newTrackIdStr: string = newTrackIdNumb.toLocaleString('en-US', {
+    //                 minimumIntegerDigits: 2,
+    //                 useGrouping: false
+    //             })
+    //             newTrackIdStrArr.push(
+    //                 {
+    //                     id: newTrackIdStr,
+    //                     name: ''
+    //                     // name: original track data...
+    //                 }
+    //             )
+    //         }
+    //         setTracks(newTrackIdStrArr)
+    //     }
+    // }
 
     const trackTh =
         `border-[1.5px]
@@ -140,7 +182,16 @@ export const TrackList: FC<TrackListProps> = ({ setTrackCount, selectedTrackDela
                         </tr>
                     </thead>
                     <tbody>
-                        <TrackData setSelectedTrack={setSelectedTrack} setSelectedTrackName={setSelectedTrackName} selectedTrackDelay={selectedTrackDelay} setTrackCount={setTrackCount} TrackList={TrackList} setTracks={setTracks}></TrackData>
+                        {
+                            TrackList.map((track) => (
+                                <TrackRows
+                                    key={track.id}
+                                    id={track.id}
+                                    onDelete={() => removeTrack(track.id)}
+                                    setSelectedTrack={() => settingsOpen(track.id)}
+                                    selectedTrackDelay={selectedTrackDelay} />
+                            ))
+                        }
                     </tbody>
                 </table>
             </div>

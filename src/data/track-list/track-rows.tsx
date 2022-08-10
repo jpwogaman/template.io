@@ -1,18 +1,19 @@
-import { FC, MouseEventHandler, ReactNode } from 'react';
+import { FC, useContext, MouseEventHandler, ReactNode } from 'react';
 import { TdSelect } from '../../components/td-select';
 import { TdInput } from '../../components/td-input';
-import { IconBtnToggle } from '../../components/icon-btn-toggle';
+import { SelectedTrackContext } from '../../pages/template-data';
 
 interface TrackRowProps {
     id: string;
     children?: ReactNode;
-    onAdd?: () => void | void | undefined;
     onDelete?: () => void | void | undefined;
     setSelectedTrack?: MouseEventHandler<HTMLButtonElement>;
     selectedTrackDelay: string;
 }
 
-export const TrackRows: FC<TrackRowProps> = ({ selectedTrackDelay, setSelectedTrack, id, onAdd, onDelete }) => {
+export const TrackRows: FC<TrackRowProps> = ({ selectedTrackDelay, setSelectedTrack, id, onDelete }) => {
+
+    const SelectedTrack = useContext(SelectedTrackContext)
 
     const nameOption =
         <TdInput
@@ -49,8 +50,11 @@ export const TrackRows: FC<TrackRowProps> = ({ selectedTrackDelay, setSelectedTr
 
     const trkDelay =
         <div title="Track Delay in ms (may be average)">
-            {selectedTrackDelay}
-        </div>   //will need to brought over from track-settings
+            {
+                SelectedTrack === id ?
+                    selectedTrackDelay : 0}
+        </div>
+    //will need to brought over from track-settings
 
     const editTrack =
         <div className='flex justify-evenly'>
@@ -67,17 +71,6 @@ export const TrackRows: FC<TrackRowProps> = ({ selectedTrackDelay, setSelectedTr
                 onClick={onDelete}>
                 <i className="fa-solid fa-minus"></i>
             </button>
-            {/* <IconBtnToggle
-                classes="w-6 h-6 hover:scale-[1.15] hover:animate-pulse"
-                titleA="Add Another Track."
-                titleB="Remove This Track."
-                id={`AddTrackButton_${id}`}
-                a="fa-solid fa-plus"
-                b="fa-solid fa-minus"
-                defaultIcon={"a"}
-                onToggleA={onAdd}
-                onToggleB={onDelete}>
-            </IconBtnToggle> */}
         </div >
 
     const trackTr =
@@ -95,6 +88,7 @@ export const TrackRows: FC<TrackRowProps> = ({ selectedTrackDelay, setSelectedTr
 	    p-0.5`
 
     return (
+
         <tr id={`trk_${id}`} className={`${trackTr}`} draggable>
             <td className={`${trackTd}`} id={`trkNumb_${id}`} title="Unique Track Number">{parseInt(id)}</td>
             <td className={`${trackTd}`}>{nameOption}</td>
@@ -104,5 +98,6 @@ export const TrackRows: FC<TrackRowProps> = ({ selectedTrackDelay, setSelectedTr
             <td className={`${trackTd}`}>{vepOutOption}</td> */}
             <td className={`${trackTd}`}>{editTrack}</td>
         </tr>
+
     );
 };
