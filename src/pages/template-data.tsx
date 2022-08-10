@@ -39,7 +39,6 @@ export default function TemplateData() {
                         setSelectedTrackName={setSelectedTrackName}
                         setTrackCount={setTrackCount}
 
-
                         selectedTrackDelay={selectedTrackDelay}
                     />
                     <TrackSettings

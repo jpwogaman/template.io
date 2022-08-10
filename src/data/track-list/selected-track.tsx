@@ -19,19 +19,15 @@ export const SelectedTrackContext: FC<SelectedTrackContextProps> = ({ children }
         }
     ])
 
-
-    const SelectedTrack = createContext(TrackList[0].id)
+    const SelectedTrack = createContext(TrackList[0])
     const SelectedTrackUpdate = createContext('01')
 
     // const [selectedTrack, setSelectedTrack] = useState<TrackListProps>(TrackList[0])
-
     return (
-        <SelectedTrack.Provider value={'01'}>
+        <SelectedTrack.Provider value={TrackList[0]}>
             <SelectedTrackUpdate.Provider value={''}>
                 {children}
             </SelectedTrackUpdate.Provider>
         </SelectedTrack.Provider>
     )
-
-
 }

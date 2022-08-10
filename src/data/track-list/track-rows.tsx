@@ -50,9 +50,7 @@ export const TrackRows: FC<TrackRowProps> = ({ selectedTrackDelay, setSelectedTr
 
     const trkDelay =
         <div title="Track Delay in ms (may be average)">
-            {
-                SelectedTrack === id ?
-                    selectedTrackDelay : 0}
+            {SelectedTrack === id ? selectedTrackDelay : 0}
         </div>
     //will need to brought over from track-settings
 
