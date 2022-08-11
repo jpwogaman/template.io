@@ -1,7 +1,7 @@
 import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
 import { TdInput } from '../components/td-input';
 import { TrackRows } from '../data/track-list/track-rows';
-import { TrackListProps } from './template-data';
+import { TrackListProps } from './template-app';
 
 
 interface TrackListTableProps {

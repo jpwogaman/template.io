@@ -1,7 +1,6 @@
-import { FC, useContext, MouseEventHandler, ReactNode } from 'react';
+import { FC, MouseEventHandler, ReactNode } from 'react';
 import { TdSelect } from '../../components/td-select';
 import { TdInput } from '../../components/td-input';
-import { SelectedTrackContext } from '../../pages/template-data';
 
 interface TrackRowProps {
     id: string;
@@ -12,8 +11,6 @@ interface TrackRowProps {
 }
 
 export const TrackRows: FC<TrackRowProps> = ({ selectedTrackDelay, setSelectedTrack, id, onDelete }) => {
-
-    const SelectedTrack = useContext(SelectedTrackContext)
 
     const nameOption =
         <TdInput
@@ -50,7 +47,7 @@ export const TrackRows: FC<TrackRowProps> = ({ selectedTrackDelay, setSelectedTr
 
     const trkDelay =
         <div title="Track Delay in ms (may be average)">
-            {SelectedTrack === id ? selectedTrackDelay : 0}
+            {selectedTrackDelay}
         </div>
     //will need to brought over from track-settings
 
