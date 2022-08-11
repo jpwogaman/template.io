@@ -1,19 +1,18 @@
 import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
 import { TdInput } from '../components/td-input';
+import { SelectedTrack } from '../data/track-list/track-context';
 import { TrackRows } from '../data/track-list/track-rows';
 import { TrackListProps } from './template-app';
 
 
 interface TrackListTableProps {
-    setSelectedTrack: Dispatch<SetStateAction<string>>;
-    setSelectedTrackName: Dispatch<SetStateAction<string>>;
-    setTrackCount: Dispatch<SetStateAction<number>>;
-    selectedTrackDelay: string;
     TrackList: TrackListProps[];
     setTracks: Dispatch<SetStateAction<TrackListProps[]>>;
+    setSelectedTrack: Dispatch<SetStateAction<TrackListProps>>;
+    setTrackCount: Dispatch<SetStateAction<number>>;
 }
 
-export const TrackListTable: FC<TrackListTableProps> = ({ TrackList, setTracks, setTrackCount, selectedTrackDelay, setSelectedTrackName, setSelectedTrack }) => {
+export const TrackListTable: FC<TrackListTableProps> = ({ TrackList, setTracks, setTrackCount, setSelectedTrack }) => {
 
     let [addMltTrkInput, setMltTrkInput] = useState<number>(1)
 
@@ -49,7 +48,24 @@ export const TrackListTable: FC<TrackListTableProps> = ({ TrackList, setTracks, 
         const NewTracks = newTrackIdStrArr.map((newTrackId) => (
             {
                 id: newTrackId,
-                name: ''
+                name: '',
+                baseDelay: 0,
+                avgDelay: undefined,
+                artList: [
+                    {
+                        id: "01",
+                        toggle: true,
+                        delay: 0,
+                        default: 'on' //setting choice later
+                    },
+                    {
+                        id: "02",
+                        toggle: false,
+                        delay: 0,
+                        default: true
+                    }
+                ],
+                fadList: []
             }
         ))
 
@@ -67,28 +83,28 @@ export const TrackListTable: FC<TrackListTableProps> = ({ TrackList, setTracks, 
 
     const settingsOpen = (trackId: string) => {
 
-        const selectedTrackID: HTMLElement | null = document.getElementById(`trk_${trackId}`)
-        const selectedTrackName = document.getElementById(`trkName_${trackId}`) as HTMLInputElement
+        const selectedTrackElement: HTMLElement | null = document.getElementById(`trk_${trackId}`)
+
         const templateTrackSettings: HTMLElement | null = document.getElementById('TemplateTrackSettings')
         const templateTrackList: HTMLElement | null = document.getElementById('TemplateTracks')
 
-        setSelectedTrack!(trackId)
-        setSelectedTrackName!(selectedTrackName!.value)
+        setSelectedTrack(TrackList.filter((Track) => Track.id === trackId)[0])
 
-        selectedTrackID!.classList.replace('bg-zinc-300 dark:bg-stone-800', 'bg-zinc-50 dark:bg-stone-400')
+        selectedTrackElement?.classList.replace('bg-zinc-300', 'bg-zinc-50')
+        selectedTrackElement?.classList.replace('dark:bg-stone-800', 'dark:bg-stone-400')
 
         for (var track in TrackList) {
-            const trackId: HTMLElement | null = document.getElementById(`trk_${TrackList[track].id}`)
+            const trackIdElement: HTMLElement | null = document.getElementById(`trk_${TrackList[track].id}`)
 
-            if (trackId !== selectedTrackID) {
-                trackId!.classList.replace('bg-zinc-50', 'bg-zinc-300')
-                trackId!.classList.replace('dark:bg-stone-400', 'dark:bg-stone-800')
+            if (trackIdElement !== selectedTrackElement) {
+                trackIdElement?.classList.replace('bg-zinc-50', 'bg-zinc-300')
+                trackIdElement?.classList.replace('dark:bg-stone-400', 'dark:bg-stone-800')
             }
         }
 
-        if (templateTrackSettings!.classList.contains('MShide')) {
-            templateTrackSettings!.classList.replace('MShide', 'MSshow');
-            templateTrackList!.classList.replace('MShideTemplateTracks', 'MSshowTemplateTracks');
+        if (templateTrackSettings?.classList.contains('MShide')) {
+            templateTrackSettings?.classList.replace('MShide', 'MSshow');
+            templateTrackList?.classList.replace('MShideTemplateTracks', 'MSshowTemplateTracks');
         }
 
     }
@@ -189,7 +205,7 @@ export const TrackListTable: FC<TrackListTableProps> = ({ TrackList, setTracks, 
                                     id={track.id}
                                     onDelete={() => removeTrack(track.id)}
                                     setSelectedTrack={() => settingsOpen(track.id)}
-                                    selectedTrackDelay={selectedTrackDelay} />
+                                />
                             ))
                         }
                     </tbody>

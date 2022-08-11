@@ -7,10 +7,9 @@ interface TrackRowProps {
     children?: ReactNode;
     onDelete?: () => void | void | undefined;
     setSelectedTrack?: MouseEventHandler<HTMLButtonElement>;
-    selectedTrackDelay: string;
 }
 
-export const TrackRows: FC<TrackRowProps> = ({ selectedTrackDelay, setSelectedTrack, id, onDelete }) => {
+export const TrackRows: FC<TrackRowProps> = ({ setSelectedTrack, id, onDelete }) => {
 
     const nameOption =
         <TdInput
@@ -47,7 +46,7 @@ export const TrackRows: FC<TrackRowProps> = ({ selectedTrackDelay, setSelectedTr
 
     const trkDelay =
         <div title="Track Delay in ms (may be average)">
-            {selectedTrackDelay}
+
         </div>
     //will need to brought over from track-settings
 

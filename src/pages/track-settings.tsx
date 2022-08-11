@@ -4,10 +4,12 @@ import { TdInput } from '../components/td-input';
 import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
 import { FaderData } from '../data/track-settings/fad-data';
 import { ArtToggleData, ArtSwitchData } from '../data/track-settings/art-data';
+import { TrackListProps } from './template-app';
 interface TrackSettingsProps {
-    selectedTrack: string;
-    selectedTrackName: string;
-    setSelectedDelay: Dispatch<SetStateAction<string>>;
+    TrackList: TrackListProps[];
+    setTracks: Dispatch<SetStateAction<TrackListProps[]>>;
+    setSelectedTrack: Dispatch<SetStateAction<TrackListProps>>;
+    selectedTrack: TrackListProps;
 }
 
 export interface ArtListProps {
@@ -17,22 +19,9 @@ export interface ArtListProps {
     default: string | boolean;
 }
 
-export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, selectedTrackName, selectedTrack }) => {
+export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, selectedTrack, setTracks, TrackList }) => {
 
-    const [ArtList, setArts] = useState<ArtListProps[]>([
-        {
-            id: "01",
-            toggle: true,
-            delay: 0,
-            default: 'on' //setting choice later
-        },
-        {
-            id: "02",
-            toggle: false,
-            delay: 0,
-            default: true
-        }
-    ])
+    const [ArtList, setArts] = useState<ArtListProps[]>(selectedTrack.artList)
 
     const addArt = (toggle: boolean) => {
 
@@ -54,21 +43,24 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
             default: toggle ? 'on' : false //setting choice later
         }
 
-        setArts([...ArtList, newArt])
+        const updatedTrack = {
+            id: selectedTrack.id,
+            name: selectedTrack.name,
+            baseDelay: selectedTrack.baseDelay,
+            avgDelay: selectedTrack.avgDelay,
+            artList: [...ArtList, newArt],
+            fadList: selectedTrack.fadList
+        }
 
-        // const newArtArr: { id: string, toggle: boolean }[] = []
+        const selectedTrackIndex = TrackList.indexOf(selectedTrack)
+        const trackListFilter = TrackList.splice(selectedTrackIndex, 1, updatedTrack)
 
-        // for (let i = 0; i < ArtList.length; i++) {
+        setArts(updatedTrack.artList)
+        setTracks(trackListFilter)
+        setSelectedTrack(updatedTrack)
 
-        //     const newArtIdNumb: number = 1 + i
-        //     const newArtIdStr: string = newArtIdNumb.toLocaleString('en-US', {
-        //         minimumIntegerDigits: 2,
-        //         useGrouping: false
-        //     })
-        //     newArtArr.push({ id: newArtIdStr, toggle: ArtList[i].toggle })
-        // }
-
-        // setArts(newArtArr)
+        console.log(trackListFilter)
+        console.log('trackList', TrackList)
 
     }
 
@@ -121,11 +113,11 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
         setAvgTrkDel(newAvgStr)
         setBaseDelay(x)
 
-        if (!avgDelAvail) {
-            setSelectedDelay(`${trkDelTotal}`)
-        } else {
-            setSelectedDelay(`~${newAvgStr}/${trkDelArray.length}`)
-        }
+        // if (!avgDelAvail) {
+        //     setSelectedDelay(`${trkDelTotal}`)
+        // } else {
+        //     setSelectedDelay(`~${newAvgStr}/${trkDelArray.length}`)
+        // }
     }
 
     const delayChangeClickTest = () => {
@@ -219,17 +211,17 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                     <i className="fa-solid fa-save"></i>
                 </button>
             </div>
-            <h2 id="trkEditDisplay" className='my-2'>{`Track ${parseInt(selectedTrack)}: ${selectedTrackName}`}</h2>
+            <h2 id="trkEditDisplay" className='my-2'>{`Track ${parseInt(selectedTrack.id)}: ${selectedTrack.name}`}</h2>
             <div className={`flex text-xs xl:text-lg ${onlyRange ? 'bg-zinc-300 dark:bg-stone-800' : null}`}>
                 <p className='py-1'>Playable Ranges: </p>
                 <table className=''>
                     <tbody>
                         {FullRangeList.map((range) => (
-                            <tr key={`FullRange_trk_${parseInt(selectedTrack)}_${range.id}`} id={`FullRange_trk_${parseInt(selectedTrack)}_${range.id}`} className={`${rangeTr}`}>
+                            <tr key={`FullRange_trk_${parseInt(selectedTrack.id)}_${range.id}`} id={`FullRange_trk_${parseInt(selectedTrack.id)}_${range.id}`} className={`${rangeTr}`}>
                                 <td className={`pr-2`}>
                                     <TdInput
                                         td={true}
-                                        id={`FullRangeName_trk_${parseInt(selectedTrack)}_${range.id}`}
+                                        id={`FullRangeName_trk_${parseInt(selectedTrack.id)}_${range.id}`}
                                         title="Describe this range-group. (i.e hits/rolls)"
                                         placeholder="Range Description"
                                         defaultValue={onlyRange ? undefined : "Full Range"}
@@ -237,25 +229,25 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                                     </TdInput>
                                 </td>
                                 <td className={`${rangeTd}`}>
-                                    <TdSelect id={`FullRngBot_trk_${parseInt(selectedTrack)}_${range.id}`} options="allNoteList"></TdSelect>
+                                    <TdSelect id={`FullRngBot_trk_${parseInt(selectedTrack.id)}_${range.id}`} options="allNoteList"></TdSelect>
                                 </td>
                                 <td className={`p-0.5 text-center`}>
                                     <i className='fas fa-arrow-right-long' />
                                 </td>
                                 <td className={`${rangeTd}`}>
-                                    <TdSelect id={`FullRngTop_trk_${parseInt(selectedTrack)}_${range.id}`} options="allNoteList"></TdSelect>
+                                    <TdSelect id={`FullRngTop_trk_${parseInt(selectedTrack.id)}_${range.id}`} options="allNoteList"></TdSelect>
                                 </td>
                                 <td className={`text-center`}>
                                     <IconBtnToggle
                                         classes="w-6 h-6 hover:scale-[1.15] hover:animate-pulse"
                                         titleA="Add another set of playable ranges."
                                         titleB="Remove this set of playable ranges."
-                                        id={`FullRangeAddButton_trk_${parseInt(selectedTrack)}_${range.id}`}
+                                        id={`FullRangeAddButton_trk_${parseInt(selectedTrack.id)}_${range.id}`}
                                         a="fa-solid fa-plus"
                                         b="fa-solid fa-minus"
                                         defaultIcon="a"
-                                        onToggleA={() => addFullRange(`${parseInt(selectedTrack)}`, range.id)}
-                                        onToggleB={() => removeFullRange(`${parseInt(selectedTrack)}`, range.id)}>
+                                        onToggleA={() => addFullRange(`${parseInt(selectedTrack.id)}`, range.id)}
+                                        onToggleB={() => removeFullRange(`${parseInt(selectedTrack.id)}`, range.id)}>
                                     </IconBtnToggle>
                                 </td>
                             </tr>
@@ -268,7 +260,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                 <div>
                     <TdInput
                         td={false}
-                        id={`baseDelay_trk_${parseInt(selectedTrack)}`}
+                        id={`baseDelay_trk_${parseInt(selectedTrack.id)}`}
                         title="Set the base track delay in ms for this track."
                         placeholder="0"
                         valueType='number'
@@ -280,7 +272,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                 <p>Avg. Track Delay (ms):</p>
                 <div>
                     <TdInput
-                        id={`avgDelay_trk_${parseInt(selectedTrack)}`}
+                        id={`avgDelay_trk_${parseInt(selectedTrack.id)}`}
                         title="The average delay in ms for this track."
                         placeholder={avgTrkDel as unknown as string}
                         defaultValue={avgTrkDel as unknown as number}
@@ -315,7 +307,9 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                     </tr >
                 </thead >
                 <tbody>
-                    <FaderData FaderList={FaderList} setFaders={setFaders}></FaderData>
+                    <FaderData
+                        FaderList={FaderList}
+                        setFaders={setFaders} />
                 </tbody>
             </table >
             <h4 className='mt-5 mb-2'>Articulations (toggle)</h4>
@@ -343,7 +337,11 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                     </tr >
                 </thead >
                 <tbody>
-                    <ArtToggleData ArtList={ArtList} setArts={setArts} setAvgDelAvail={setAvgDelAvail} baseDelay={baseDelay}></ArtToggleData>
+                    <ArtToggleData
+                        selectedTrack={selectedTrack}
+                        setArts={setArts}
+                        setAvgDelAvail={setAvgDelAvail}
+                        baseDelay={baseDelay} />
                 </tbody>
             </table >
             <h4 className='mt-5 mb-2'>Articulations (switch)</h4>
@@ -371,7 +369,11 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedDelay, select
                     </tr>
                 </thead>
                 <tbody>
-                    <ArtSwitchData ArtList={ArtList} setArts={setArts} setAvgDelAvail={setAvgDelAvail} baseDelay={baseDelay}></ArtSwitchData>
+                    <ArtSwitchData
+                        selectedTrack={selectedTrack}
+                        setArts={setArts}
+                        setAvgDelAvail={setAvgDelAvail}
+                        baseDelay={baseDelay} />
                 </tbody>
             </table>
         </div >

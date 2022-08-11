@@ -1,27 +1,30 @@
 import { Dispatch, FC, Fragment, SetStateAction, useState } from 'react';
 import { ArtListProps } from '../../pages/track-settings';
 import { ArtSettingsRow } from './art-settings-row'
+import { TrackListProps } from '../../pages/template-app';
 
 interface ArtDataProps {
-    ArtList: ArtListProps[];
+    selectedTrack: TrackListProps;
     setArts: Dispatch<SetStateAction<ArtListProps[]>>;
     setAvgDelAvail: Dispatch<SetStateAction<boolean>>;
     baseDelay: number;
 }
 
-export const ArtToggleData: FC<ArtDataProps> = ({ baseDelay, ArtList, setArts, setAvgDelAvail }) => {
+export const ArtToggleData: FC<ArtDataProps> = ({ baseDelay, setArts, setAvgDelAvail, selectedTrack }) => {
+
+    const ArtList = selectedTrack?.artList
 
     const removeArt = (artId: string) => {
 
-        if (ArtList.length !== 2) {
-            setArts(ArtList.filter((art) => art.id !== artId));
+        if (ArtList?.length !== 2) {
+            setArts(ArtList!.filter((art) => art.id !== artId));
         }
     }
 
     return (
 
         <Fragment>
-            {ArtList.map((art) => (
+            {ArtList?.map((art) => (
                 art.toggle ?
                     <ArtSettingsRow
                         setArts={setArts}
@@ -40,19 +43,21 @@ export const ArtToggleData: FC<ArtDataProps> = ({ baseDelay, ArtList, setArts, s
     )
 }
 
-export const ArtSwitchData: FC<ArtDataProps> = ({ baseDelay, ArtList, setArts, setAvgDelAvail }) => {
+export const ArtSwitchData: FC<ArtDataProps> = ({ baseDelay, selectedTrack, setArts, setAvgDelAvail }) => {
+
+    const ArtList = selectedTrack?.artList
 
     const removeArt = (artId: string) => {
 
-        if (ArtList.length !== 2) {
-            setArts(ArtList.filter((art) => art.id !== artId));
+        if (ArtList?.length !== 2) {
+            setArts(ArtList!.filter((art) => art.id !== artId));
         }
     }
 
     return (
 
         <Fragment>
-            {ArtList.map((art) => (
+            {ArtList?.map((art) => (
                 !art.toggle ?
                     <ArtSettingsRow
                         setArts={setArts}
