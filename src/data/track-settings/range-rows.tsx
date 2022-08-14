@@ -1,16 +1,21 @@
-import { FC, useState, Fragment, ReactNode, Dispatch, SetStateAction } from "react";
+import { FC, useState, Fragment, ReactNode } from "react";
 import { IconBtnToggle } from "../../components/icon-btn-toggle";
 import { TdInput } from "../../components/td-input";
 import { TdSelect } from "../../components/td-select";
+import { TrackListProps } from '../../pages/template-app';
 
 interface RangeRowProps {
     id: string;
+    selectedTrack: TrackListProps;
     children?: ReactNode;
 }
 
-export const RangeRows: FC<RangeRowProps> = ({ id }) => {
+export const RangeRows: FC<RangeRowProps> = ({ id, selectedTrack }) => {
 
-    const [RangeList, setRanges] = useState<{ id: string }[]>([
+
+    const RangeList1 = selectedTrack.artList
+
+    const [RangeList, setRanges] = useState<TrackListProps["artList"] | { id: string }[]>([
         {
             id: "01"
         },
@@ -18,6 +23,7 @@ export const RangeRows: FC<RangeRowProps> = ({ id }) => {
 
     const addRange = (artId: string, rangeId: string) => {
 
+        console.log(RangeList1)
         let newRangeIdNumb: number = parseInt(rangeId) + 1
 
         let newRangeIdStr: string = newRangeIdNumb.toLocaleString('en-US', {

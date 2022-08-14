@@ -37,7 +37,14 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
             code: undefined,
             on: toggle ? undefined : null,
             off: toggle ? undefined : null,
-            range: toggle ? null : undefined,
+            range: toggle ? null : [
+                {
+                    id: '01',
+                    name: undefined,
+                    low: undefined,
+                    high: undefined
+                }
+            ],
             default: toggle ? 'on' : false, //setting choice later
             delay: 0,
             changeType: undefined

@@ -4,8 +4,6 @@ import { TdInput } from "../../components/td-input";
 import { TdSelect } from "../../components/td-select";
 import { RangeRows } from "./range-rows"
 import { TrackListProps } from '../../pages/template-app';
-
-
 interface ArtSettingsRowProps {
     id: string;
     toggle?: boolean;
@@ -15,9 +13,10 @@ interface ArtSettingsRowProps {
     onDelete?: () => void | void | undefined;
     setAvgDelAvail: Dispatch<SetStateAction<boolean>>;
     baseDelay: number;
+    selectedTrack: TrackListProps;
 }
 
-export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ baseDelay, setAvgDelAvail, onDelete, ArtList, setArts, id, toggle }) => {
+export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ selectedTrack, baseDelay, setAvgDelAvail, onDelete, ArtList, setArts, id, toggle }) => {
 
     const [rngTitle, setRngTitle] = useState<string>("Switch to independent playable range.")
     const [rngVisible, setRngVisible] = useState<boolean>(false)
@@ -248,7 +247,7 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ baseDelay, setAvgDelAv
                 <td className={`${settingsTd}`}>{changeOption}</td>
                 <td className={`${settingsTd}`}>{addArts}</td>
             </tr>
-            {rngVisible ? <RangeRows id={id}></RangeRows> : null}
+            {rngVisible ? <RangeRows id={id} selectedTrack={selectedTrack} /> : null}
         </Fragment>
     );
 };

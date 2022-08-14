@@ -27,6 +27,7 @@ export const ArtToggleData: FC<ArtDataProps> = ({ baseDelay, setArts, setAvgDelA
                 art.toggle ?
                     <ArtSettingsRow
                         setArts={setArts}
+                        selectedTrack={selectedTrack}
                         ArtList={ArtList}
                         setAvgDelAvail={setAvgDelAvail}
                         key={art.id}
@@ -60,6 +61,7 @@ export const ArtSwitchData: FC<ArtDataProps> = ({ baseDelay, selectedTrack, setA
                 !art.toggle ?
                     <ArtSettingsRow
                         setArts={setArts}
+                        selectedTrack={selectedTrack}
                         ArtList={ArtList}
                         setAvgDelAvail={setAvgDelAvail}
                         key={art.id}

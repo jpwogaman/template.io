@@ -1,8 +1,7 @@
-import { Fragment, useContext, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { TrackListTable } from './track-list';
 import { TrackSettings } from './track-settings';
 import { TemplateNavbar } from './template-navbar';
-import { SelectedTrack } from '../data/track-list/track-context'
 import { SelectedTrackProvider } from '../data/track-list/track-context'
 
 export interface TrackListProps {
@@ -10,7 +9,7 @@ export interface TrackListProps {
     locked: boolean
     name: string | undefined
     channel: number | undefined
-    fullRange: undefined | null | {
+    fullRange: {
         id: string
         name: string | undefined
         low: string | number | undefined
@@ -26,7 +25,7 @@ export interface TrackListProps {
         code: string | number | undefined
         on: number | undefined | null
         off: number | undefined | null
-        range: undefined | null | {
+        range: null | {
             id: string
             name: string | undefined
             low: string | number | undefined
@@ -51,7 +50,14 @@ const defaultTrackData = {
     locked: false,
     name: '',
     channel: 1,
-    fullRange: undefined,
+    fullRange: [
+        {
+            id: '01',
+            name: undefined,
+            low: undefined,
+            high: undefined
+        }
+    ],
     baseDelay: 0,
     avgDelay: undefined,
     artList: [
@@ -76,7 +82,14 @@ const defaultTrackData = {
             code: undefined,
             on: undefined,
             off: undefined,
-            range: undefined,
+            range: [
+                {
+                    id: '01',
+                    name: undefined,
+                    low: undefined,
+                    high: undefined
+                }
+            ],
             default: true,
             delay: 0,
             changeType: undefined

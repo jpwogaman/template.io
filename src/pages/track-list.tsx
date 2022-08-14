@@ -1,6 +1,5 @@
 import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
 import { TdInput } from '../components/td-input';
-import { SelectedTrack } from '../data/track-list/track-context';
 import { TrackRows } from '../data/track-list/track-rows';
 import { TrackListProps } from './template-app';
 
@@ -49,9 +48,16 @@ export const TrackListTable: FC<TrackListTableProps> = ({ TrackList, setTracks, 
             {
                 id: newTrackId,
                 locked: false,
-                name: '',
+                name: undefined,
                 channel: 1,
-                fullRange: undefined,
+                fullRange: [
+                    {
+                        id: '01',
+                        name: undefined,
+                        low: undefined,
+                        high: undefined
+                    }
+                ],
                 baseDelay: 0,
                 avgDelay: undefined,
                 artList: [
@@ -76,7 +82,14 @@ export const TrackListTable: FC<TrackListTableProps> = ({ TrackList, setTracks, 
                         code: undefined,
                         on: undefined,
                         off: undefined,
-                        range: undefined,
+                        range: [
+                            {
+                                id: '01',
+                                name: undefined,
+                                low: undefined,
+                                high: undefined
+                            }
+                        ],
                         default: true,
                         delay: 0,
                         changeType: undefined
