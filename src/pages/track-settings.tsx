@@ -12,16 +12,9 @@ interface TrackSettingsProps {
     selectedTrack: TrackListProps;
 }
 
-export interface ArtListProps {
-    id: string;
-    toggle: boolean;
-    delay: number;
-    default: string | boolean;
-}
-
 export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, selectedTrack, setTracks, TrackList }) => {
 
-    const [ArtList, setArts] = useState<ArtListProps[]>(selectedTrack.artList)
+    const [ArtList, setArts] = useState<TrackListProps["artList"]>(selectedTrack.artList)
 
     const addArt = (toggle: boolean) => {
 
@@ -36,19 +29,29 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
             minimumIntegerDigits: 2,
             useGrouping: false
         })
-        const newArt = {
+        const newArtToggle = {
             id: newArtIdStr,
+            name: undefined,
             toggle: toggle,
+            codeType: undefined,
+            code: undefined,
+            on: toggle ? undefined : null,
+            off: toggle ? undefined : null,
+            range: toggle ? null : undefined,
+            default: toggle ? 'on' : false, //setting choice later
             delay: 0,
-            default: toggle ? 'on' : false //setting choice later
+            changeType: undefined
         }
 
         const updatedTrack = {
             id: selectedTrack.id,
+            locked: selectedTrack.locked,
             name: selectedTrack.name,
+            channel: selectedTrack.channel,
+            fullRange: selectedTrack.fullRange,
             baseDelay: selectedTrack.baseDelay,
             avgDelay: selectedTrack.avgDelay,
-            artList: [...ArtList, newArt],
+            artList: [...ArtList, newArtToggle],
             fadList: selectedTrack.fadList
         }
 
@@ -64,11 +67,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
 
     }
 
-    const [FaderList, setFaders] = useState<{ id: string }[]>([
-        {
-            id: "01"
-        }
-    ])
+    const [FaderList, setFaders] = useState<TrackListProps["fadList"]>(selectedTrack.fadList)
 
     const addFader = () => {
 
@@ -84,7 +83,14 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
             minimumIntegerDigits: 2,
             useGrouping: false
         })
-        const newFader = { id: newfadIdStr }
+        const newFader = {
+            id: newfadIdStr,
+            name: undefined,
+            codeType: undefined,
+            code: undefined,
+            default: undefined,
+            changeType: undefined
+        }
         setFaders([...FaderList, newFader])
 
         if (lastFadId === FaderList![FaderList.length - 1].id) {
@@ -124,12 +130,9 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
 
     }
 
-    const [FullRangeList, setFullRanges] = useState<{ id: string }[]>([
-        {
-            id: "01"
-        },
-    ])
-    const onlyRange: boolean = FullRangeList.length > 1 ? true : false
+    const [FullRangeList, setFullRanges] = useState<TrackListProps["fullRange"]>(selectedTrack.fullRange)
+
+    const onlyRange: boolean = FullRangeList?.length! > 1 ? true : false
 
     const addFullRange = (trkId: string, fullRangeId: string) => {
 
@@ -139,14 +142,20 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
             minimumIntegerDigits: 2,
             useGrouping: false
         })
-        const newFullRange = { id: newFullRangeIdStr }
+        const newFullRange = {
+            id: newFullRangeIdStr,
+            name: undefined,
+            low: undefined,
+            high: undefined,
+        }
+
         setFullRanges([...FullRangeList, newFullRange])
     }
 
     const removeFullRange = (artId: string, fullRangeId: string) => {
 
-        if (FullRangeList.length !== 1) {
-            setFullRanges(FullRangeList.filter((fullRange) => fullRange.id !== fullRangeId));
+        if (FullRangeList?.length !== 1) {
+            setFullRanges(FullRangeList?.filter((fullRange) => fullRange.id !== fullRangeId));
         }
     }
 
@@ -216,7 +225,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
                 <p className='py-1'>Playable Ranges: </p>
                 <table className=''>
                     <tbody>
-                        {FullRangeList.map((range) => (
+                        {FullRangeList?.map((range) => (
                             <tr key={`FullRange_trk_${parseInt(selectedTrack.id)}_${range.id}`} id={`FullRange_trk_${parseInt(selectedTrack.id)}_${range.id}`} className={`${rangeTr}`}>
                                 <td className={`pr-2`}>
                                     <TdInput
@@ -308,8 +317,9 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
                 </thead >
                 <tbody>
                     <FaderData
-                        FaderList={FaderList}
-                        setFaders={setFaders} />
+                        setFaders={setFaders}
+                        selectedTrack={selectedTrack}
+                    />
                 </tbody>
             </table >
             <h4 className='mt-5 mb-2'>Articulations (toggle)</h4>

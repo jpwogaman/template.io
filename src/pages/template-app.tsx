@@ -7,43 +7,96 @@ import { SelectedTrackProvider } from '../data/track-list/track-context'
 
 export interface TrackListProps {
     id: string
-    name: string
-    baseDelay: number
-    avgDelay: number | undefined
+    locked: boolean
+    name: string | undefined
+    channel: number | undefined
+    fullRange: undefined | null | {
+        id: string
+        name: string | undefined
+        low: string | number | undefined
+        high: string | number | undefined
+    }[]
+    baseDelay: number | undefined
+    avgDelay: number | undefined | null
     artList: {
-        id: string;
-        toggle: boolean;
-        delay: number;
-        default: string | boolean;
+        id: string
+        name: string | undefined
+        toggle: boolean
+        codeType: string | undefined
+        code: string | number | undefined
+        on: number | undefined | null
+        off: number | undefined | null
+        range: undefined | null | {
+            id: string
+            name: string | undefined
+            low: string | number | undefined
+            high: string | number | undefined
+        }[]
+        default: string | boolean
+        delay: number
+        changeType: boolean | undefined
     }[],
-    fadList: any[]
+    fadList: {
+        id: string
+        name: string | undefined
+        codeType: string | undefined
+        code: string | number | undefined
+        default: number | undefined
+        changeType: boolean | undefined
+    }[]
+}
+
+const defaultTrackData = {
+    id: "01",
+    locked: false,
+    name: '',
+    channel: 1,
+    fullRange: undefined,
+    baseDelay: 0,
+    avgDelay: undefined,
+    artList: [
+        {
+            id: "01",
+            name: undefined,
+            toggle: true,
+            codeType: undefined,
+            code: undefined,
+            on: undefined,
+            off: undefined,
+            range: null,
+            default: 'on', //setting choice later
+            delay: 0,
+            changeType: undefined
+        },
+        {
+            id: "02",
+            name: undefined,
+            toggle: false,
+            codeType: undefined,
+            code: undefined,
+            on: undefined,
+            off: undefined,
+            range: undefined,
+            default: true,
+            delay: 0,
+            changeType: undefined
+        }
+    ],
+    fadList: [
+        {
+            id: '01',
+            name: undefined,
+            codeType: undefined,
+            code: undefined,
+            default: undefined,
+            changeType: undefined
+        }
+    ]
 }
 
 export default function TemplateData() {
 
-    const [TrackList, setTracks] = useState<TrackListProps[]>([
-        {
-            id: "01",
-            name: '',
-            baseDelay: 0,
-            avgDelay: undefined,
-            artList: [
-                {
-                    id: "01",
-                    toggle: true,
-                    delay: 0,
-                    default: 'on' //setting choice later
-                },
-                {
-                    id: "02",
-                    toggle: false,
-                    delay: 0,
-                    default: true
-                }
-            ],
-            fadList: []
-        }
-    ])
+    const [TrackList, setTracks] = useState<TrackListProps[]>([defaultTrackData])
 
     const [selectedTrack, setSelectedTrack] = useState<TrackListProps>(TrackList[0])
 

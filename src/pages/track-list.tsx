@@ -48,24 +48,50 @@ export const TrackListTable: FC<TrackListTableProps> = ({ TrackList, setTracks, 
         const NewTracks = newTrackIdStrArr.map((newTrackId) => (
             {
                 id: newTrackId,
+                locked: false,
                 name: '',
+                channel: 1,
+                fullRange: undefined,
                 baseDelay: 0,
                 avgDelay: undefined,
                 artList: [
                     {
                         id: "01",
+                        name: undefined,
                         toggle: true,
+                        codeType: undefined,
+                        code: undefined,
+                        on: undefined,
+                        off: undefined,
+                        range: null,
+                        default: 'on', //setting choice later
                         delay: 0,
-                        default: 'on' //setting choice later
+                        changeType: undefined
                     },
                     {
                         id: "02",
+                        name: undefined,
                         toggle: false,
+                        codeType: undefined,
+                        code: undefined,
+                        on: undefined,
+                        off: undefined,
+                        range: undefined,
+                        default: true,
                         delay: 0,
-                        default: true
+                        changeType: undefined
                     }
                 ],
-                fadList: []
+                fadList: [
+                    {
+                        id: '01',
+                        name: undefined,
+                        codeType: undefined,
+                        code: undefined,
+                        default: undefined,
+                        changeType: undefined
+                    }
+                ]
             }
         ))
 

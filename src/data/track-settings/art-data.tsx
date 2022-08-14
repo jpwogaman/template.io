@@ -1,11 +1,10 @@
 import { Dispatch, FC, Fragment, SetStateAction, useState } from 'react';
-import { ArtListProps } from '../../pages/track-settings';
 import { ArtSettingsRow } from './art-settings-row'
 import { TrackListProps } from '../../pages/template-app';
 
 interface ArtDataProps {
     selectedTrack: TrackListProps;
-    setArts: Dispatch<SetStateAction<ArtListProps[]>>;
+    setArts: Dispatch<SetStateAction<TrackListProps["artList"]>>;
     setAvgDelAvail: Dispatch<SetStateAction<boolean>>;
     baseDelay: number;
 }

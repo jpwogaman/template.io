@@ -3,13 +3,14 @@ import { TdSwitch } from "../../components/td-switch";
 import { TdInput } from "../../components/td-input";
 import { TdSelect } from "../../components/td-select";
 import { RangeRows } from "./range-rows"
-import { ArtListProps } from "../../pages/track-settings";
+import { TrackListProps } from '../../pages/template-app';
+
 
 interface ArtSettingsRowProps {
     id: string;
     toggle?: boolean;
-    setArts?: Dispatch<SetStateAction<ArtListProps[]>>;
-    ArtList?: ArtListProps[];
+    setArts?: Dispatch<SetStateAction<TrackListProps["artList"]>>;
+    ArtList?: TrackListProps["artList"];
     onAdd?: () => void | void | undefined;
     onDelete?: () => void | void | undefined;
     setAvgDelAvail: Dispatch<SetStateAction<boolean>>;

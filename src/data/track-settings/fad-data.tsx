@@ -1,12 +1,15 @@
 import { Dispatch, FC, Fragment, SetStateAction, useState } from 'react';
+import { TrackListProps } from '../../pages/template-app';
 import { FadSettingsRow } from './fad-settings-row'
 
 interface FaderDataProps {
-    setFaders: Dispatch<SetStateAction<{ id: string }[]>>;
-    FaderList: { id: string }[];
+    selectedTrack: TrackListProps;
+    setFaders: Dispatch<SetStateAction<TrackListProps["fadList"]>>;
 }
 
-export const FaderData: FC<FaderDataProps> = ({ setFaders, FaderList }) => {
+export const FaderData: FC<FaderDataProps> = ({ selectedTrack, setFaders }) => {
+
+    const FaderList = selectedTrack?.fadList
 
     const removeFader = (fadId: string) => {
 
