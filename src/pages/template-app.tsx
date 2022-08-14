@@ -25,8 +25,8 @@ export interface TrackListProps {
         code: string | number | undefined
         on: number | undefined | null
         off: number | undefined | null
-        range: null | {
-            id: string
+        range: {
+            id: string | undefined
             name: string | undefined
             low: string | number | undefined
             high: string | number | undefined
@@ -69,7 +69,14 @@ const defaultTrackData = {
             code: undefined,
             on: undefined,
             off: undefined,
-            range: null,
+            range: [
+                {
+                    id: null,
+                    name: null,
+                    low: null,
+                    high: null
+                }
+            ],
             default: 'on', //setting choice later
             delay: 0,
             changeType: undefined

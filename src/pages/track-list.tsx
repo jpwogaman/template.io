@@ -69,7 +69,14 @@ export const TrackListTable: FC<TrackListTableProps> = ({ TrackList, setTracks, 
                         code: undefined,
                         on: undefined,
                         off: undefined,
-                        range: null,
+                        range: [
+                            {
+                                id: null,
+                                name: null,
+                                low: null,
+                                high: null
+                            }
+                        ],
                         default: 'on', //setting choice later
                         delay: 0,
                         changeType: undefined

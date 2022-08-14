@@ -12,32 +12,31 @@ interface RangeRowProps {
 
 export const RangeRows: FC<RangeRowProps> = ({ id, selectedTrack }) => {
 
+    const artIndex: number = parseInt(id) - 1 // first id would be "01"... need to figure out "indexOf" here
 
-    const RangeList1 = selectedTrack.artList
+    const [RangeList, setRanges] = useState<TrackListProps["artList"][0]["range"]>(selectedTrack.artList[artIndex].range)
 
-    const [RangeList, setRanges] = useState<TrackListProps["artList"] | { id: string }[]>([
-        {
-            id: "01"
-        },
-    ])
+    const addRange = (artId: string, rangeId: string | undefined) => {
 
-    const addRange = (artId: string, rangeId: string) => {
-
-        console.log(RangeList1)
         let newRangeIdNumb: number = parseInt(rangeId) + 1
 
         let newRangeIdStr: string = newRangeIdNumb.toLocaleString('en-US', {
             minimumIntegerDigits: 2,
             useGrouping: false
         })
-        const newRange = { id: newRangeIdStr }
+        const newRange = {
+            id: newRangeIdStr,
+            name: undefined,
+            low: undefined,
+            high: undefined
+        }
         setRanges([...RangeList, newRange])
     }
 
-    const removeRange = (artId: string, rangeId: string) => {
+    const removeRange = (artId: string, rangeId: string | undefined) => {
 
-        if (RangeList.length !== 1) {
-            setRanges(RangeList.filter((range) => range.id !== rangeId));
+        if (RangeList?.length !== 1) {
+            setRanges(RangeList!.filter((range) => range.id !== rangeId));
         }
     }
 
@@ -65,7 +64,7 @@ export const RangeRows: FC<RangeRowProps> = ({ id, selectedTrack }) => {
 
     return (
         <Fragment>
-            {RangeList.map((range) => (
+            {RangeList?.map((range) => (
                 <tr key={`ArtRange_${id}_${range.id}`} id={`ArtRange_${id}_${range.id}`} className={`${rangeTr}`}>
                     <td colSpan={2} className={`${rangeTdEmpty}`}></td>
                     <td className={`${rangeTd}`}>
