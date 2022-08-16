@@ -69,7 +69,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
         setTracks(trackListFilter)
         setSelectedTrack(updatedTrack)
 
-        console.log(trackListFilter)
+        console.log('trackListFilter', trackListFilter)
         console.log('trackList', TrackList)
     }
 
@@ -115,7 +115,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
         setTracks(trackListFilter)
         setSelectedTrack(updatedTrack)
 
-        console.log(trackListFilter)
+        console.log('trackListFilter', trackListFilter)
         console.log('trackList', TrackList)
     }
 
@@ -170,7 +170,28 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
             high: undefined,
         }
 
-        setFullRanges([...FullRangeList, newFullRange])
+        const updatedTrack = {
+            id: selectedTrack.id,
+            locked: selectedTrack.locked,
+            name: selectedTrack.name,
+            channel: selectedTrack.channel,
+            fullRange: [...FullRangeList, newFullRange],
+            baseDelay: selectedTrack.baseDelay,
+            avgDelay: selectedTrack.avgDelay,
+            artList: selectedTrack.artList,
+            fadList: selectedTrack.fadList,
+        }
+
+        const selectedTrackIndex = TrackList.indexOf(selectedTrack)
+        const trackListFilter = TrackList.splice(selectedTrackIndex, 1, updatedTrack)
+
+        setFullRanges(updatedTrack.fullRange)
+        setTracks(trackListFilter)
+        setSelectedTrack(updatedTrack)
+
+        console.log('trackListFilter', trackListFilter)
+        console.log('trackList', TrackList)
+
     }
 
     const removeFullRange = (artId: string, fullRangeId: string) => {
@@ -241,7 +262,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
                     <i className="fa-solid fa-save"></i>
                 </button>
             </div>
-            <h2 id="trkEditDisplay" className='my-2'>{`Track ${parseInt(selectedTrack.id)}: ${selectedTrack.name}`}</h2>
+            <h2 id="trkEditDisplay" className='my-2'>{`Track ${parseInt(selectedTrack.id)}: ${selectedTrack.name !== undefined ? selectedTrack.name : ''}`}</h2>
             <div className={`flex text-xs xl:text-lg ${onlyRange ? 'bg-zinc-300 dark:bg-stone-800' : null}`}>
                 <p className='py-1'>Playable Ranges: </p>
                 <table className=''>
