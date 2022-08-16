@@ -35,42 +35,46 @@ export const RangeRows: FC<RangeRowProps> = ({ id, setSelectedTrack, selectedTra
             high: undefined
         }
 
-        const updatedArt = {
-            id: selectedTrack.artList[artIndex].id,
-            name: selectedTrack.artList[artIndex].name,
-            toggle: selectedTrack.artList[artIndex].toggle,
-            codeType: selectedTrack.artList[artIndex].codeType,
-            code: selectedTrack.artList[artIndex].code,
-            on: selectedTrack.artList[artIndex].on,
-            off: selectedTrack.artList[artIndex].off,
-            range: [...RangeList, newRange],
-            default: selectedTrack.artList[artIndex].default,
-            delay: selectedTrack.artList[artIndex].delay,
-            changeType: selectedTrack.artList[artIndex].changeType
-        }
+        setRanges([...RangeList, newRange])
 
-        setRanges(updatedArt.range)
+        // const updatedArt = {
+        //     id: selectedTrack.artList[artIndex].id,
+        //     name: selectedTrack.artList[artIndex].name,
+        //     toggle: selectedTrack.artList[artIndex].toggle,
+        //     codeType: selectedTrack.artList[artIndex].codeType,
+        //     code: selectedTrack.artList[artIndex].code,
+        //     on: selectedTrack.artList[artIndex].on,
+        //     off: selectedTrack.artList[artIndex].off,
+        //     range: [...RangeList, newRange],
+        //     default: selectedTrack.artList[artIndex].default,
+        //     delay: selectedTrack.artList[artIndex].delay,
+        //     changeType: selectedTrack.artList[artIndex].changeType
+        // }
 
-        const selectedTrackArtIndex = selectedTrack.artList.indexOf(selectedTrack.artList[artIndex])
-        const trackListArtFilter = selectedTrack.artList.splice(selectedTrackArtIndex, 1, updatedArt)
+        // setRanges(updatedArt.range)
 
-        const updatedTrack = {
-            id: selectedTrack.id,
-            locked: selectedTrack.locked,
-            name: selectedTrack.name,
-            channel: selectedTrack.channel,
-            fullRange: selectedTrack.fullRange,
-            baseDelay: selectedTrack.baseDelay,
-            avgDelay: selectedTrack.avgDelay,
-            artList: trackListArtFilter,
-            fadList: selectedTrack.fadList
-        }
 
-        const selectedTrackIndex = TrackList?.indexOf(selectedTrack)
-        const trackListFilter = TrackList?.splice(selectedTrackIndex, 1, updatedTrack)
 
-        setTracks(trackListFilter)
-        setSelectedTrack!(updatedTrack)
+        // const selectedTrackArtIndex = selectedTrack.artList.indexOf(selectedTrack.artList[artIndex])
+        // const trackListArtFilter = selectedTrack.artList.splice(selectedTrackArtIndex, 1, updatedArt)
+
+        // const updatedTrack = {
+        //     id: selectedTrack.id,
+        //     locked: selectedTrack.locked,
+        //     name: selectedTrack.name,
+        //     channel: selectedTrack.channel,
+        //     fullRange: selectedTrack.fullRange,
+        //     baseDelay: selectedTrack.baseDelay,
+        //     avgDelay: selectedTrack.avgDelay,
+        //     artList: trackListArtFilter,
+        //     fadList: selectedTrack.fadList
+        // }
+
+        // const selectedTrackIndex = TrackList?.indexOf(selectedTrack)
+        // const trackListFilter = TrackList?.splice(selectedTrackIndex, 1, updatedTrack)
+
+        // setTracks(trackListFilter)
+        // setSelectedTrack!(updatedTrack)
 
     }
 
