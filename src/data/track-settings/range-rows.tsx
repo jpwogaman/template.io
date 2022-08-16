@@ -1,4 +1,4 @@
-import { FC, useState, Fragment, ReactNode } from "react";
+import { FC, useState, Fragment, ReactNode, Dispatch, SetStateAction } from "react";
 import { IconBtnToggle } from "../../components/icon-btn-toggle";
 import { TdInput } from "../../components/td-input";
 import { TdSelect } from "../../components/td-select";
@@ -7,10 +7,13 @@ import { TrackListProps } from '../../pages/template-app';
 interface RangeRowProps {
     id: string;
     selectedTrack: TrackListProps;
+    TrackList: TrackListProps[];
+    setSelectedTrack?: Dispatch<SetStateAction<TrackListProps>>;
+    setTracks: Dispatch<SetStateAction<TrackListProps[]>>;
     children?: ReactNode;
 }
 
-export const RangeRows: FC<RangeRowProps> = ({ id, selectedTrack }) => {
+export const RangeRows: FC<RangeRowProps> = ({ id, setSelectedTrack, selectedTrack, setTracks, TrackList }) => {
 
     const artIndex: number = parseInt(id) - 1 // first id would be "01"... need to figure out "indexOf" here
 
@@ -24,13 +27,51 @@ export const RangeRows: FC<RangeRowProps> = ({ id, selectedTrack }) => {
             minimumIntegerDigits: 2,
             useGrouping: false
         })
+
         const newRange = {
             id: newRangeIdStr,
             name: undefined,
             low: undefined,
             high: undefined
         }
-        setRanges([...RangeList, newRange])
+
+        const updatedArt = {
+            id: selectedTrack.artList[artIndex].id,
+            name: selectedTrack.artList[artIndex].name,
+            toggle: selectedTrack.artList[artIndex].toggle,
+            codeType: selectedTrack.artList[artIndex].codeType,
+            code: selectedTrack.artList[artIndex].code,
+            on: selectedTrack.artList[artIndex].on,
+            off: selectedTrack.artList[artIndex].off,
+            range: [...RangeList, newRange],
+            default: selectedTrack.artList[artIndex].default,
+            delay: selectedTrack.artList[artIndex].delay,
+            changeType: selectedTrack.artList[artIndex].changeType
+        }
+
+        setRanges(updatedArt.range)
+
+        const selectedTrackArtIndex = selectedTrack.artList.indexOf(selectedTrack.artList[artIndex])
+        const trackListArtFilter = selectedTrack.artList.splice(selectedTrackArtIndex, 1, updatedArt)
+
+        const updatedTrack = {
+            id: selectedTrack.id,
+            locked: selectedTrack.locked,
+            name: selectedTrack.name,
+            channel: selectedTrack.channel,
+            fullRange: selectedTrack.fullRange,
+            baseDelay: selectedTrack.baseDelay,
+            avgDelay: selectedTrack.avgDelay,
+            artList: trackListArtFilter,
+            fadList: selectedTrack.fadList
+        }
+
+        const selectedTrackIndex = TrackList?.indexOf(selectedTrack)
+        const trackListFilter = TrackList?.splice(selectedTrackIndex, 1, updatedTrack)
+
+        setTracks(trackListFilter)
+        setSelectedTrack!(updatedTrack)
+
     }
 
     const removeRange = (artId: string, rangeId: string | null | undefined) => {

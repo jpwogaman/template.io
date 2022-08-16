@@ -403,6 +403,9 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
                     <ArtSwitchData
                         selectedTrack={selectedTrack}
                         setArts={setArts}
+                        setTracks={setTracks}
+                        setSelectedTrack={setSelectedTrack}
+                        TrackList={TrackList}
                         setAvgDelAvail={setAvgDelAvail}
                         baseDelay={baseDelay} />
                 </tbody>

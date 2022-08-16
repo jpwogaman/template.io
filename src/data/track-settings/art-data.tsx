@@ -4,8 +4,11 @@ import { TrackListProps } from '../../pages/template-app';
 
 interface ArtDataProps {
     selectedTrack: TrackListProps;
+    TrackList?: TrackListProps[];
+    setTracks?: Dispatch<SetStateAction<TrackListProps[]>>;
     setArts: Dispatch<SetStateAction<TrackListProps["artList"]>>;
     setAvgDelAvail: Dispatch<SetStateAction<boolean>>;
+    setSelectedTrack?: Dispatch<SetStateAction<TrackListProps>>;
     baseDelay: number;
 }
 
@@ -43,7 +46,7 @@ export const ArtToggleData: FC<ArtDataProps> = ({ baseDelay, setArts, setAvgDelA
     )
 }
 
-export const ArtSwitchData: FC<ArtDataProps> = ({ baseDelay, selectedTrack, setArts, setAvgDelAvail }) => {
+export const ArtSwitchData: FC<ArtDataProps> = ({ setSelectedTrack, baseDelay, selectedTrack, setArts, setAvgDelAvail, TrackList, setTracks }) => {
 
     const ArtList = selectedTrack?.artList
 
@@ -62,10 +65,13 @@ export const ArtSwitchData: FC<ArtDataProps> = ({ baseDelay, selectedTrack, setA
                     <ArtSettingsRow
                         setArts={setArts}
                         selectedTrack={selectedTrack}
+                        setSelectedTrack={setSelectedTrack}
                         ArtList={ArtList}
                         setAvgDelAvail={setAvgDelAvail}
                         key={art.id}
                         id={art.id}
+                        setTracks={setTracks}
+                        TrackList={TrackList}
                         onDelete={() => removeArt(art.id)}
                         baseDelay={baseDelay}
                     />

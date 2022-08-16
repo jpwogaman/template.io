@@ -8,6 +8,9 @@ interface ArtSettingsRowProps {
     id: string;
     toggle?: boolean;
     setArts?: Dispatch<SetStateAction<TrackListProps["artList"]>>;
+    setTracks?: Dispatch<SetStateAction<TrackListProps[]>>;
+    setSelectedTrack?: Dispatch<SetStateAction<TrackListProps>>;
+    TrackList?: TrackListProps[];
     ArtList?: TrackListProps["artList"];
     onAdd?: () => void | void | undefined;
     onDelete?: () => void | void | undefined;
@@ -16,7 +19,7 @@ interface ArtSettingsRowProps {
     selectedTrack: TrackListProps;
 }
 
-export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ selectedTrack, baseDelay, setAvgDelAvail, onDelete, ArtList, setArts, id, toggle }) => {
+export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ setSelectedTrack, selectedTrack, baseDelay, setAvgDelAvail, onDelete, ArtList, setArts, setTracks, TrackList, id, toggle }) => {
 
     const [rngTitle, setRngTitle] = useState<string>("Switch to independent playable range.")
     const [rngVisible, setRngVisible] = useState<boolean>(false)
@@ -247,7 +250,13 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ selectedTrack, baseDel
                 <td className={`${settingsTd}`}>{changeOption}</td>
                 <td className={`${settingsTd}`}>{addArts}</td>
             </tr>
-            {rngVisible ? <RangeRows id={id} selectedTrack={selectedTrack} /> : null}
+            {rngVisible ? <RangeRows
+                id={id}
+                selectedTrack={selectedTrack}
+                setSelectedTrack={setSelectedTrack as Dispatch<SetStateAction<TrackListProps>>}
+                setTracks={setTracks as Dispatch<SetStateAction<TrackListProps[]>>}
+                TrackList={TrackList as TrackListProps[]}
+            /> : null}
         </Fragment>
     );
 };
