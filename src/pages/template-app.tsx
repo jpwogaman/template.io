@@ -26,10 +26,10 @@ export interface TrackListProps {
         on: number | undefined | null
         off: number | undefined | null
         range: {
-            id: string | undefined
-            name: string | undefined
-            low: string | number | undefined
-            high: string | number | undefined
+            id: string | undefined | null
+            name: string | undefined | null
+            low: string | number | undefined | null
+            high: string | number | undefined | null
         }[]
         default: string | boolean
         delay: number

@@ -16,9 +16,9 @@ export const RangeRows: FC<RangeRowProps> = ({ id, selectedTrack }) => {
 
     const [RangeList, setRanges] = useState<TrackListProps["artList"][0]["range"]>(selectedTrack.artList[artIndex].range)
 
-    const addRange = (artId: string, rangeId: string | undefined) => {
+    const addRange = (artId: string, rangeId: string | null | undefined) => {
 
-        let newRangeIdNumb: number = parseInt(rangeId) + 1
+        let newRangeIdNumb: number = parseInt(rangeId as string) + 1
 
         let newRangeIdStr: string = newRangeIdNumb.toLocaleString('en-US', {
             minimumIntegerDigits: 2,
@@ -33,7 +33,7 @@ export const RangeRows: FC<RangeRowProps> = ({ id, selectedTrack }) => {
         setRanges([...RangeList, newRange])
     }
 
-    const removeRange = (artId: string, rangeId: string | undefined) => {
+    const removeRange = (artId: string, rangeId: string | null | undefined) => {
 
         if (RangeList?.length !== 1) {
             setRanges(RangeList!.filter((range) => range.id !== rangeId));

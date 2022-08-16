@@ -71,7 +71,6 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
 
         console.log(trackListFilter)
         console.log('trackList', TrackList)
-
     }
 
     const [FaderList, setFaders] = useState<TrackListProps["fadList"]>(selectedTrack.fadList)
@@ -81,7 +80,6 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
         const lastFadId = FaderList[FaderList.length - 1].id
 
         if (FaderList.length > 11) {
-
             return alert('Are you sure you need this many faders?')
         }
 
@@ -98,11 +96,27 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
             default: undefined,
             changeType: undefined
         }
-        setFaders([...FaderList, newFader])
-
-        if (lastFadId === FaderList![FaderList.length - 1].id) {
-            console.log('it does')
+        const updatedTrack = {
+            id: selectedTrack.id,
+            locked: selectedTrack.locked,
+            name: selectedTrack.name,
+            channel: selectedTrack.channel,
+            fullRange: selectedTrack.fullRange,
+            baseDelay: selectedTrack.baseDelay,
+            avgDelay: selectedTrack.avgDelay,
+            artList: selectedTrack.artList,
+            fadList: [...FaderList, newFader]
         }
+
+        const selectedTrackIndex = TrackList.indexOf(selectedTrack)
+        const trackListFilter = TrackList.splice(selectedTrackIndex, 1, updatedTrack)
+
+        setFaders(updatedTrack.fadList)
+        setTracks(trackListFilter)
+        setSelectedTrack(updatedTrack)
+
+        console.log(trackListFilter)
+        console.log('trackList', TrackList)
     }
 
     const [baseDelay, setBaseDelay] = useState<number>(0)
