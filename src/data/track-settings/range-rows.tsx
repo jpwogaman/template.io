@@ -32,7 +32,8 @@ export const RangeRows: FC<RangeRowProps> = ({ id, setSelectedTrack, selectedTra
             id: newRangeIdStr,
             name: undefined,
             low: undefined,
-            high: undefined
+            high: undefined,
+            whiteKeysOnly: false
         }
 
         setRanges([...RangeList, newRange])
@@ -143,8 +144,20 @@ export const RangeRows: FC<RangeRowProps> = ({ id, setSelectedTrack, selectedTra
                             onToggleB={() => removeRange(id, range.id)}>
                         </IconBtnToggle>
                     </td>
-                    <td className={`${rangeTdEmpty}`}></td>
-                    <td className={`${rangeTdEmpty}`}></td>
+                    <td className={`${rangeTd} text-center border-r-transparent`}>
+                        <input
+                            type="checkbox"
+                            className='min-w-full cursor-pointer'
+                            checked={range.whiteKeysOnly as boolean}
+                            title="This playable range is white keys only. "
+                            aria-label="This playable range is white keys only."
+                            id={`FullRangeWhiteKeysCheck_trk_${parseInt(selectedTrack.id)}_${range.id}`}>
+                        </input>
+
+                    </td>
+                    <td className={`${rangeTd} text-xs text-left`}>
+                        <p>white-keys-only</p>
+                    </td>
                     <td className={`${rangeTdEmpty}`}></td>
                 </tr>
             ))}

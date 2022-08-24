@@ -42,7 +42,8 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
                     id: toggle ? '01' : undefined,
                     name: undefined,
                     low: undefined,
-                    high: undefined
+                    high: undefined,
+                    whiteKeysOnly: false
                 }
             ],
             default: toggle ? 'on' : false, //setting choice later
@@ -168,6 +169,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
             name: undefined,
             low: undefined,
             high: undefined,
+            whiteKeysOnly: false
         }
 
         const updatedTrack = {
@@ -282,15 +284,15 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
                                 <td className={`${rangeTd}`}>
                                     <TdSelect id={`FullRngBot_trk_${parseInt(selectedTrack.id)}_${range.id}`} options="allNoteList"></TdSelect>
                                 </td>
-                                <td className={`p-0.5 text-center`}>
+                                <td className={`px-2 text-center`}>
                                     <i className='fas fa-arrow-right-long' />
                                 </td>
                                 <td className={`${rangeTd}`}>
                                     <TdSelect id={`FullRngTop_trk_${parseInt(selectedTrack.id)}_${range.id}`} options="allNoteList"></TdSelect>
                                 </td>
-                                <td className={`text-center`}>
+                                <td className={`text-center px-2`}>
                                     <IconBtnToggle
-                                        classes="w-6 h-6 hover:scale-[1.15] hover:animate-pulse"
+                                        classes="h-6 hover:scale-[1.15] hover:animate-pulse"
                                         titleA="Add another set of playable ranges."
                                         titleB="Remove this set of playable ranges."
                                         id={`FullRangeAddButton_trk_${parseInt(selectedTrack.id)}_${range.id}`}
@@ -300,6 +302,20 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
                                         onToggleA={() => addFullRange(`${parseInt(selectedTrack.id)}`, range.id)}
                                         onToggleB={() => removeFullRange(`${parseInt(selectedTrack.id)}`, range.id)}>
                                     </IconBtnToggle>
+                                </td>
+                                <td>
+                                    <input
+                                        type="checkbox"
+                                        className='min-w-full mt-[6px] h-4 cursor-pointer'
+                                        checked={range.whiteKeysOnly}
+                                        title="This playable range is white keys only. "
+                                        aria-label="This playable range is white keys only."
+                                        id={`FullRangeWhiteKeysCheck_trk_${parseInt(selectedTrack.id)}_${range.id}`}>
+                                    </input>
+
+                                </td>
+                                <td className='text-xs px-2'>
+                                    <p>white-keys-only</p>
                                 </td>
                             </tr>
                         ))}

@@ -55,7 +55,8 @@ export const TrackListTable: FC<TrackListTableProps> = ({ TrackList, setTracks, 
                         id: '01',
                         name: undefined,
                         low: undefined,
-                        high: undefined
+                        high: undefined,
+                        whiteKeysOnly: false,
                     }
                 ],
                 baseDelay: 0,
@@ -74,7 +75,8 @@ export const TrackListTable: FC<TrackListTableProps> = ({ TrackList, setTracks, 
                                 id: null,
                                 name: null,
                                 low: null,
-                                high: null
+                                high: null,
+                                whiteKeysOnly: null,
                             }
                         ],
                         default: 'on', //setting choice later
@@ -94,7 +96,8 @@ export const TrackListTable: FC<TrackListTableProps> = ({ TrackList, setTracks, 
                                 id: '01',
                                 name: undefined,
                                 low: undefined,
-                                high: undefined
+                                high: undefined,
+                                whiteKeysOnly: false,
                             }
                         ],
                         default: true,

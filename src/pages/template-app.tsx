@@ -14,6 +14,7 @@ export interface TrackListProps {
         name: string | undefined
         low: string | number | undefined
         high: string | number | undefined
+        whiteKeysOnly: boolean | undefined
     }[]
     baseDelay: number | undefined
     avgDelay: number | undefined | null
@@ -30,6 +31,7 @@ export interface TrackListProps {
             name: string | undefined | null
             low: string | number | undefined | null
             high: string | number | undefined | null
+            whiteKeysOnly: boolean | undefined | null
         }[]
         default: string | boolean
         delay: number
@@ -55,7 +57,8 @@ const defaultTrackData = {
             id: '01',
             name: undefined,
             low: undefined,
-            high: undefined
+            high: undefined,
+            whiteKeysOnly: false
         }
     ],
     baseDelay: 0,
@@ -74,7 +77,8 @@ const defaultTrackData = {
                     id: null,
                     name: null,
                     low: null,
-                    high: null
+                    high: null,
+                    whiteKeysOnly: null
                 }
             ],
             default: 'on', //setting choice later
@@ -94,7 +98,8 @@ const defaultTrackData = {
                     id: '01',
                     name: undefined,
                     low: undefined,
-                    high: undefined
+                    high: undefined,
+                    whiteKeysOnly: false
                 }
             ],
             default: true,
