@@ -127,7 +127,7 @@ export const TrackListTable: FC<TrackListTableProps> = ({ TrackList, setTracks, 
         if (TrackList.length !== 1) {
             setTracks(TrackList.filter((Track) => Track.id !== trackId));
         }
-        setTrackCount(TrackList.length - 1)
+        setTrackCount(TrackList.length > 1 ? TrackList.length - 1 : 1)
     }
 
     const settingsOpen = (trackId: string) => {
