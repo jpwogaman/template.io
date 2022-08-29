@@ -1,11 +1,13 @@
 import { FC } from "react";
 import { IconBtnToggle } from "../components/icon-btn-toggle";
-
+import { useTrackListCount } from '../data/track-list/track-context';
 interface TemplateNavbarProps {
-    trackCount: number;
+
 }
 
-export const TemplateNavbar: FC<TemplateNavbarProps> = ({ trackCount }) => {
+export const TemplateNavbar: FC<TemplateNavbarProps> = () => {
+
+    const trackCount = useTrackListCount()
 
     const changeTheme = () => {
         document.body.classList.toggle('dark', undefined)

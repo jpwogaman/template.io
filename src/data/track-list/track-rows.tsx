@@ -1,7 +1,7 @@
 import { FC, ReactNode } from 'react';
 import { TdSelect } from '../../components/td-select';
 import { TdInput } from '../../components/td-input';
-import { useSelectedTrackUpdate, useTrackListUpdate } from '../../data/track-list/track-context'
+import { useSelectedTrackUpdate, useTrackListRemove } from './track-context'
 interface TrackRowProps {
     id: string;
     children?: ReactNode;
@@ -10,7 +10,7 @@ interface TrackRowProps {
 export const TrackRows: FC<TrackRowProps> = ({ id }) => {
 
     const changeSelectedTrack = useSelectedTrackUpdate()
-    const removeSelectedTrack = useTrackListUpdate()
+    const removeSelectedTrack = useTrackListRemove()
 
     const nameOption =
         <TdInput

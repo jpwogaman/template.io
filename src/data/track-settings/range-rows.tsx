@@ -1,19 +1,16 @@
-import { FC, useState, Fragment, ReactNode, Dispatch, SetStateAction } from "react";
+import { FC, useState, Fragment, ReactNode } from "react";
 import { IconBtnToggle } from "../../components/icon-btn-toggle";
 import { TdInput } from "../../components/td-input";
 import { TdSelect } from "../../components/td-select";
-import { TrackListProps } from '../../pages/template-app';
-
+import { TrackListProps, useSelectedTrack } from '../../data/track-list/track-context';
 interface RangeRowProps {
     id: string;
-    selectedTrack: TrackListProps;
-    TrackList: TrackListProps[];
-    setSelectedTrack?: Dispatch<SetStateAction<TrackListProps>>;
-    setTracks: Dispatch<SetStateAction<TrackListProps[]>>;
     children?: ReactNode;
 }
 
-export const RangeRows: FC<RangeRowProps> = ({ id, setSelectedTrack, selectedTrack, setTracks, TrackList }) => {
+export const RangeRows: FC<RangeRowProps> = ({ id }) => {
+
+    const selectedTrack = useSelectedTrack()
 
     const artIndex: number = parseInt(id) - 1 // first id would be "01"... need to figure out "indexOf" here
 

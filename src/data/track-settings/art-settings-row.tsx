@@ -3,23 +3,19 @@ import { TdSwitch } from "../../components/td-switch";
 import { TdInput } from "../../components/td-input";
 import { TdSelect } from "../../components/td-select";
 import { RangeRows } from "./range-rows"
-import { TrackListProps } from '../../pages/template-app';
+import { useSelectedArtList, useSelectedArtListRemove } from '../../data/track-list/track-context';
+
 interface ArtSettingsRowProps {
     id: string;
     toggle?: boolean;
-    setArts?: Dispatch<SetStateAction<TrackListProps["artList"]>>;
-    setTracks?: Dispatch<SetStateAction<TrackListProps[]>>;
-    setSelectedTrack?: Dispatch<SetStateAction<TrackListProps>>;
-    TrackList?: TrackListProps[];
-    ArtList?: TrackListProps["artList"];
-    onAdd?: () => void | void | undefined;
-    onDelete?: () => void | void | undefined;
     setAvgDelAvail: Dispatch<SetStateAction<boolean>>;
     baseDelay: number;
-    selectedTrack: TrackListProps;
 }
 
-export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ setSelectedTrack, selectedTrack, baseDelay, setAvgDelAvail, onDelete, ArtList, setArts, setTracks, TrackList, id, toggle }) => {
+export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ baseDelay, setAvgDelAvail, id, toggle }) => {
+
+    const ArtList = useSelectedArtList()
+    const removeArt = useSelectedArtListRemove()
 
     const [rngTitle, setRngTitle] = useState<string>("Switch to independent playable range.")
     const [rngVisible, setRngVisible] = useState<boolean>(false)
@@ -59,18 +55,18 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ setSelectedTrack, sele
 
     const deftPatchChange = () => {
 
-        setArts!(prevState => {
-            const newState = prevState.map(obj => {
-                if (obj.id === id) {
-                    return { ...obj, default: true };
-                }
-                if (obj.default === true) { //some obj.default will be 'on' or 'off'
-                    return { ...obj, default: false };
-                }
-                return obj;
-            });
-            return newState;
-        });
+        // setArts!(prevState => {
+        //     const newState = prevState.map(obj => {
+        //         if (obj.id === id) {
+        //             return { ...obj, default: true };
+        //         }
+        //         if (obj.default === true) { //some obj.default will be 'on' or 'off'
+        //             return { ...obj, default: false };
+        //         }
+        //         return obj;
+        //     });
+        //     return newState;
+        // });
     }
 
     const typeChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -113,15 +109,15 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ setSelectedTrack, sele
         let y = event.target.value
         let x: number = parseInt(y)
 
-        setArts!(prevState => {
-            const newState = prevState.map(obj => {
-                if (obj.id === id) {
-                    return { ...obj, delay: x };
-                }
-                return obj;
-            });
-            return newState;
-        });
+        // setArts!(prevState => {
+        //     const newState = prevState.map(obj => {
+        //         if (obj.id === id) {
+        //             return { ...obj, delay: x };
+        //         }
+        //         return obj;
+        //     });
+        //     return newState;
+        // });
         setAvgDelAvail(true)
     }
 
@@ -217,7 +213,7 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ setSelectedTrack, sele
                 className="w-6 h-6 hover:scale-[1.15] hover:animate-pulse"
                 title="Remove This Articulation."
                 id={`AddArtButton_${id}`}
-                onClick={onDelete}>
+                onClick={() => removeArt(id)}>
                 <i className="fa-solid fa-minus"></i>
             </button>
         </div>
@@ -250,13 +246,7 @@ export const ArtSettingsRow: FC<ArtSettingsRowProps> = ({ setSelectedTrack, sele
                 <td className={`${settingsTd}`}>{changeOption}</td>
                 <td className={`${settingsTd}`}>{addArts}</td>
             </tr>
-            {rngVisible ? <RangeRows
-                id={id}
-                selectedTrack={selectedTrack}
-                setSelectedTrack={setSelectedTrack as Dispatch<SetStateAction<TrackListProps>>}
-                setTracks={setTracks as Dispatch<SetStateAction<TrackListProps[]>>}
-                TrackList={TrackList as TrackListProps[]}
-            /> : null}
+            {rngVisible ? <RangeRows id={id} /> : null}
         </Fragment>
     );
 };

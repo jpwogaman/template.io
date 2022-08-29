@@ -13,7 +13,6 @@ export interface TrackListProps {
         name: string | undefined
         low: string | number | undefined
         high: string | number | undefined
-        whiteKeysOnly: boolean | undefined
     }[]
     baseDelay: number | undefined
     avgDelay: number | undefined | null
@@ -30,7 +29,6 @@ export interface TrackListProps {
             name: string | undefined | null
             low: string | number | undefined | null
             high: string | number | undefined | null
-            whiteKeysOnly: boolean | undefined | null
         }[]
         default: string | boolean
         delay: number
@@ -57,8 +55,7 @@ const defaultTrackData: TrackListProps[] = [
                 id: '01',
                 name: undefined,
                 low: undefined,
-                high: undefined,
-                whiteKeysOnly: false
+                high: undefined
             }
         ],
         baseDelay: 0,
@@ -77,8 +74,7 @@ const defaultTrackData: TrackListProps[] = [
                         id: null,
                         name: null,
                         low: null,
-                        high: null,
-                        whiteKeysOnly: null
+                        high: null
                     }
                 ],
                 default: 'on', //setting choice later
@@ -98,8 +94,7 @@ const defaultTrackData: TrackListProps[] = [
                         id: '01',
                         name: undefined,
                         low: undefined,
-                        high: undefined,
-                        whiteKeysOnly: false
+                        high: undefined
                     }
                 ],
                 default: true,
@@ -128,45 +123,31 @@ const getDefaultSelectedTrack = () => {
     return defaultTrackData[0]
 }
 
-const getDefaultSelectedArtListAdd = (argument: boolean) => {
-    return defaultTrackData[0].artList
-}
-const getDefaultSelectedArtListRemove = (argument: string) => {
-    return defaultTrackData[0].artList
+interface TrackListContextTypes {
+    TrackList: TrackListProps[],
+    TrackCount: number,
+    TrackListAdd: (arg: number) => void
+    TrackListRemove: (arg: string) => void
 }
 
-export const TrackList = createContext(defaultTrackData as TrackListProps[])
-export const TrackListAdd = createContext(getDefaultTrackList as (argument: string | number) => TrackListProps[])
-export const TrackListRemove = createContext(getDefaultTrackList as (argument: string | number) => TrackListProps[])
-export const TrackListCount = createContext(defaultTrackData.length as number)
-export const SelectedArtList = createContext(defaultTrackData[0].artList as TrackListProps["artList"])
-export const SelectedArtListAdd = createContext(getDefaultSelectedArtListAdd as (argument: boolean) => TrackListProps["artList"])
-export const SelectedArtListRemove = createContext(getDefaultSelectedArtListRemove as (argument: string) => TrackListProps["artList"])
+export const TrackListContext = createContext<TrackListContextTypes>({
+    TrackList: defaultTrackData,
+    TrackCount: defaultTrackData.length,
+    TrackListAdd: () => defaultTrackData,
+    TrackListRemove: () => defaultTrackData
+})
 
-export const SelectedTrack = createContext(defaultTrackData[0] as TrackListProps)
+export const TrackListUpdate = createContext(getDefaultTrackList as (argument: string | number) => TrackListProps[])
+
+export const SelectedTrack = createContext(trackWorkFile ? trackWorkFile[0] : defaultTrackData[0] as TrackListProps)
 export const SelectedTrackUpdate = createContext(getDefaultSelectedTrack as (trackId: string) => TrackListProps)
 
 export function useTrackList() {
-    return useContext(TrackList)
-}
-export function useTrackListAdd() {
-    return useContext(TrackListAdd)
-}
-export function useTrackListRemove() {
-    return useContext(TrackListRemove)
-}
-export function useTrackListCount() {
-    return useContext(TrackListCount)
+    return useContext(TrackListContext)
 }
 
-export function useSelectedArtList() {
-    return useContext(SelectedArtList)
-}
-export function useSelectedArtListAdd() {
-    return useContext(SelectedArtListAdd)
-}
-export function useSelectedArtListRemove() {
-    return useContext(SelectedArtListRemove)
+export function useTrackListUpdate() {
+    return useContext(TrackListUpdate)
 }
 
 export function useSelectedTrack() {
@@ -184,13 +165,13 @@ interface TrackListProviderProps {
 export const TrackListProvider: FC<TrackListProviderProps> = ({ children }) => {
 
     const [trackList, setTracks] = useState<TrackListProps[]>(defaultTrackData)
+
     const [selectedTrack, setSelectedTrack] = useState<TrackListProps>(trackList[0])
     const [trackCount, setTrackCount] = useState<number>(trackList.length)
 
     const changeSelectedTrack = (trackId: string) => {
 
         if (selectedTrack === trackList.filter((Track) => Track.id === trackId)[0]) return
-
         setSelectedTrack(trackList[trackList.indexOf(trackList.filter((Track) => Track.id === trackId)[0])])
 
         const selectedTrackElement: HTMLElement | null = document.getElementById(`trk_${trackId}`)
@@ -319,91 +300,17 @@ export const TrackListProvider: FC<TrackListProviderProps> = ({ children }) => {
         setTrackCount(trackList.length + NewTracks.length)
     };
 
-    const [ArtList, setArts] = useState<TrackListProps["artList"]>(selectedTrack.artList)
-
-    const addArt = (toggle: boolean) => {
-
-        const lastArtId = ArtList[ArtList.length - 1].id
-
-        if (ArtList.length > 23) {
-            return alert('Are you sure you need this many articulation buttons?')
-        }
-
-        const newArtIdNumb: number = parseInt(lastArtId) + 1
-        const newArtIdStr: string = newArtIdNumb.toLocaleString('en-US', {
-            minimumIntegerDigits: 2,
-            useGrouping: false
-        })
-        const newArtToggle = {
-            id: newArtIdStr,
-            name: undefined,
-            toggle: toggle,
-            codeType: undefined,
-            code: undefined,
-            on: toggle ? undefined : null,
-            off: toggle ? undefined : null,
-            range: [
-                {
-                    id: toggle ? '01' : null,
-                    name: toggle ? undefined : null,
-                    low: toggle ? undefined : null,
-                    high: toggle ? undefined : null,
-                    whiteKeysOnly: toggle ? false : null,
-                }
-            ],
-            default: toggle ? 'on' : false, //setting choice later
-            delay: 0,
-            changeType: undefined
-        }
-
-        setArts([...ArtList, newArtToggle])
-
-        // const updatedTrack = {
-        //     id: selectedTrack.id,
-        //     locked: selectedTrack.locked,
-        //     name: selectedTrack.name,
-        //     channel: selectedTrack.channel,
-        //     fullRange: selectedTrack.fullRange,
-        //     baseDelay: selectedTrack.baseDelay,
-        //     avgDelay: selectedTrack.avgDelay,
-        //     artList: [...ArtList, newArtToggle],
-        //     fadList: selectedTrack.fadList
-        // }
-
-        // const selectedTrackIndex = trackList.indexOf(selectedTrack)
-        // const trackListFilter = trackList.splice(selectedTrackIndex, 1, updatedTrack)
-
-        // setTracks(trackListFilter)
-        // setSelectedTrack(updatedTrack)
-
-    }
-
-    const removeArt = (artId: string) => {
-
-        if (ArtList.length !== 2) {
-            setArts(ArtList.filter((art) => art.id !== artId));
-        }
-    }
-
     return (
-        <TrackList.Provider value={trackList as unknown as TrackListProps[]}>
-            <TrackListAdd.Provider value={addMultipleTracks as unknown as () => TrackListProps[]}>
-                <TrackListRemove.Provider value={removeTrack as unknown as () => TrackListProps[]}>
-                    <TrackListCount.Provider value={trackCount as unknown as number}>
-                        <SelectedArtList.Provider value={ArtList as unknown as TrackListProps["artList"]}>
-                            <SelectedArtListAdd.Provider value={addArt as unknown as (toggle: boolean) => TrackListProps["artList"]}>
-                                <SelectedArtListRemove.Provider value={removeArt as unknown as (artId: string) => TrackListProps["artList"]}>
-                                    <SelectedTrack.Provider value={selectedTrack as unknown as TrackListProps}>
-                                        <SelectedTrackUpdate.Provider value={changeSelectedTrack as unknown as () => TrackListProps}>
-                                            {children}
-                                        </SelectedTrackUpdate.Provider>
-                                    </SelectedTrack.Provider >
-                                </SelectedArtListRemove.Provider>
-                            </SelectedArtListAdd.Provider>
-                        </SelectedArtList.Provider>
-                    </TrackListCount.Provider>
-                </TrackListRemove.Provider>
-            </TrackListAdd.Provider>
-        </TrackList.Provider>
+        <TrackListContext.Provider value={
+            { trackList, trackCount, addMultipleTracks, removeTrack } as unknown as TrackListContextTypes
+        }>
+
+            <SelectedTrack.Provider value={selectedTrack as unknown as TrackListProps}>
+                <SelectedTrackUpdate.Provider value={changeSelectedTrack as unknown as () => TrackListProps}>
+                    {children}
+                </SelectedTrackUpdate.Provider>
+            </SelectedTrack.Provider >
+
+        </TrackListContext.Provider>
     )
 }

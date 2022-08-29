@@ -1,79 +1,19 @@
 import { TdSelect } from '../components/td-select';
 import { IconBtnToggle } from '../components/icon-btn-toggle'
 import { TdInput } from '../components/td-input';
-import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 import { FaderData } from '../data/track-settings/fad-data';
 import { ArtToggleData, ArtSwitchData } from '../data/track-settings/art-data';
-import { TrackListProps } from './template-app';
-import { useSelectedTrack } from '../data/track-list/track-context';
+import { TrackListProps, useSelectedTrack, useSelectedArtListAdd, useSelectedArtList } from '../data/track-list/track-context';
 interface TrackSettingsProps {
-    TrackList: TrackListProps[];
-    setTracks: Dispatch<SetStateAction<TrackListProps[]>>;
-    setSelectedTrack: Dispatch<SetStateAction<TrackListProps>>;
-    selectedTrack: TrackListProps;
+
 }
 
-export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, selectedTrack, setTracks, TrackList }) => {
+export const TrackSettings: FC<TrackSettingsProps> = () => {
 
-    const [ArtList, setArts] = useState<TrackListProps["artList"]>(selectedTrack.artList)
-
-    const addArt = (toggle: boolean) => {
-
-        const lastArtId = ArtList[ArtList.length - 1].id
-
-        if (ArtList.length > 23) {
-            return alert('Are you sure you need this many articulation buttons?')
-        }
-
-        const newArtIdNumb: number = parseInt(lastArtId) + 1
-        const newArtIdStr: string = newArtIdNumb.toLocaleString('en-US', {
-            minimumIntegerDigits: 2,
-            useGrouping: false
-        })
-        const newArtToggle = {
-            id: newArtIdStr,
-            name: undefined,
-            toggle: toggle,
-            codeType: undefined,
-            code: undefined,
-            on: toggle ? undefined : null,
-            off: toggle ? undefined : null,
-            range: [
-                {
-                    id: toggle ? '01' : undefined,
-                    name: undefined,
-                    low: undefined,
-                    high: undefined,
-                    whiteKeysOnly: false
-                }
-            ],
-            default: toggle ? 'on' : false, //setting choice later
-            delay: 0,
-            changeType: undefined
-        }
-
-        const updatedTrack = {
-            id: selectedTrack.id,
-            locked: selectedTrack.locked,
-            name: selectedTrack.name,
-            channel: selectedTrack.channel,
-            fullRange: selectedTrack.fullRange,
-            baseDelay: selectedTrack.baseDelay,
-            avgDelay: selectedTrack.avgDelay,
-            artList: [...ArtList, newArtToggle],
-            fadList: selectedTrack.fadList
-        }
-
-        const selectedTrackIndex = TrackList.indexOf(selectedTrack)
-        const trackListFilter = TrackList.splice(selectedTrackIndex, 1, updatedTrack)
-
-        setArts(updatedTrack.artList)
-        setTracks(trackListFilter)
-        setSelectedTrack(updatedTrack)
-
-        console.log('trackListFilter', trackListFilter)
-        console.log('trackList', TrackList)
-    }
+    const ArtList = useSelectedArtList()
+    const addArt = useSelectedArtListAdd()
+    const selectedTrack = useSelectedTrack()
 
     const [FaderList, setFaders] = useState<TrackListProps["fadList"]>(selectedTrack.fadList)
 
@@ -98,27 +38,8 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
             default: undefined,
             changeType: undefined
         }
-        const updatedTrack = {
-            id: selectedTrack.id,
-            locked: selectedTrack.locked,
-            name: selectedTrack.name,
-            channel: selectedTrack.channel,
-            fullRange: selectedTrack.fullRange,
-            baseDelay: selectedTrack.baseDelay,
-            avgDelay: selectedTrack.avgDelay,
-            artList: selectedTrack.artList,
-            fadList: [...FaderList, newFader]
-        }
+        setFaders([...FaderList, newFader])
 
-        const selectedTrackIndex = TrackList.indexOf(selectedTrack)
-        const trackListFilter = TrackList.splice(selectedTrackIndex, 1, updatedTrack)
-
-        setFaders(updatedTrack.fadList)
-        setTracks(trackListFilter)
-        setSelectedTrack(updatedTrack)
-
-        console.log('trackListFilter', trackListFilter)
-        console.log('trackList', TrackList)
     }
 
     const [baseDelay, setBaseDelay] = useState<number>(0)
@@ -173,28 +94,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
             whiteKeysOnly: false
         }
 
-        const updatedTrack = {
-            id: selectedTrack.id,
-            locked: selectedTrack.locked,
-            name: selectedTrack.name,
-            channel: selectedTrack.channel,
-            fullRange: [...FullRangeList, newFullRange],
-            baseDelay: selectedTrack.baseDelay,
-            avgDelay: selectedTrack.avgDelay,
-            artList: selectedTrack.artList,
-            fadList: selectedTrack.fadList,
-        }
-
-        const selectedTrackIndex = TrackList.indexOf(selectedTrack)
-        const trackListFilter = TrackList.splice(selectedTrackIndex, 1, updatedTrack)
-
-        setFullRanges(updatedTrack.fullRange)
-        setTracks(trackListFilter)
-        setSelectedTrack(updatedTrack)
-
-        console.log('trackListFilter', trackListFilter)
-        console.log('trackList', TrackList)
-
+        setFullRanges([...FullRangeList, newFullRange])
     }
 
     const removeFullRange = (artId: string, fullRangeId: string) => {
@@ -408,8 +308,6 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
                 </thead >
                 <tbody>
                     <ArtToggleData
-                        selectedTrack={selectedTrack}
-                        setArts={setArts}
                         setAvgDelAvail={setAvgDelAvail}
                         baseDelay={baseDelay} />
                 </tbody>
@@ -440,11 +338,6 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
                 </thead>
                 <tbody>
                     <ArtSwitchData
-                        selectedTrack={selectedTrack}
-                        setArts={setArts}
-                        setTracks={setTracks}
-                        setSelectedTrack={setSelectedTrack}
-                        TrackList={TrackList}
                         setAvgDelAvail={setAvgDelAvail}
                         baseDelay={baseDelay} />
                 </tbody>

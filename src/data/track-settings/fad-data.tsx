@@ -1,5 +1,5 @@
-import { Dispatch, FC, Fragment, SetStateAction, useState } from 'react';
-import { TrackListProps } from '../../pages/template-app';
+import { Dispatch, FC, Fragment, SetStateAction } from 'react';
+import { TrackListProps } from '../../data/track-list/track-context';
 import { FadSettingsRow } from './fad-settings-row'
 
 interface FaderDataProps {

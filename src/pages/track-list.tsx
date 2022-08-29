@@ -1,7 +1,7 @@
-import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 import { TdInput } from '../components/td-input';
 import { TrackRows } from '../data/track-list/track-rows';
-import { useTrackList, useTrackListUpdate } from '../data/track-list/track-context'
+import { useTrackList, useTrackListAdd, } from '../data/track-list/track-context'
 
 
 interface TrackListTableProps {
@@ -10,10 +10,10 @@ interface TrackListTableProps {
 
 export const TrackListTable: FC<TrackListTableProps> = () => {
 
-    const TrackList = useTrackList()
-    const setTracks = useTrackListUpdate()
-
     let [addMltTrkInput, setMltTrkInput] = useState<number>(1)
+
+    const TrackList = useTrackList()
+    const setTracks = useTrackListAdd()
 
     const setTrackAddNumber = (event: ChangeEvent<HTMLInputElement>) => {
         const input = event.target.value as unknown as number
