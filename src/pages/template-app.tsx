@@ -2,7 +2,7 @@ import { Fragment, useState } from 'react';
 import { TrackListTable } from './track-list';
 import { TrackSettings } from './track-settings';
 import { TemplateNavbar } from './template-navbar';
-import { SelectedTrackProvider } from '../data/track-list/track-context'
+import { TrackListProvider } from '../data/track-list/track-context'
 
 export interface TrackListProps {
     id: string
@@ -142,7 +142,7 @@ export default function TemplateData() {
 
     return (
         <Fragment>
-            <SelectedTrackProvider>
+            <TrackListProvider>
                 {/* <div
                     className='bg-black h-10 w-10 absolute top-[200px] left-16'
                     onClick={showTrack}
@@ -150,11 +150,7 @@ export default function TemplateData() {
                 ></div> */}
                 <TemplateNavbar trackCount={trackCount} />
                 <div id="TemplateData" className='h-[calc(100vh-40px)] w-100'>
-                    <TrackListTable
-                        TrackList={TrackList}
-                        setTracks={setTracks}
-                        setSelectedTrack={setSelectedTrack}
-                        setTrackCount={setTrackCount} />
+                    <TrackListTable />
 
                     <TrackSettings
                         setSelectedTrack={setSelectedTrack}
@@ -162,7 +158,7 @@ export default function TemplateData() {
                         setTracks={setTracks}
                         TrackList={TrackList} />
                 </div>
-            </SelectedTrackProvider>
+            </TrackListProvider>
         </Fragment>
     )
 }

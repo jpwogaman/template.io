@@ -1,17 +1,17 @@
 import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
 import { TdInput } from '../components/td-input';
 import { TrackRows } from '../data/track-list/track-rows';
-import { TrackListProps } from './template-app';
+import { useTrackList, useTrackListUpdate } from '../data/track-list/track-context'
 
 
 interface TrackListTableProps {
-    TrackList: TrackListProps[];
-    setTracks: Dispatch<SetStateAction<TrackListProps[]>>;
-    setSelectedTrack: Dispatch<SetStateAction<TrackListProps>>;
-    setTrackCount: Dispatch<SetStateAction<number>>;
+
 }
 
-export const TrackListTable: FC<TrackListTableProps> = ({ TrackList, setTracks, setTrackCount, setSelectedTrack }) => {
+export const TrackListTable: FC<TrackListTableProps> = () => {
+
+    const TrackList = useTrackList()
+    const setTracks = useTrackListUpdate()
 
     let [addMltTrkInput, setMltTrkInput] = useState<number>(1)
 
@@ -25,138 +25,104 @@ export const TrackListTable: FC<TrackListTableProps> = ({ TrackList, setTracks, 
         }
     }
 
-    const addMultipleTracks = () => {
+    // const addMultipleTracks = () => {
 
-        const lastTrackId = TrackList[TrackList.length - 1].id
-        const newTrackIdStrArr: string[] = []
+    //     const lastTrackId = TrackList[TrackList.length - 1].id
+    //     const newTrackIdStrArr: string[] = []
 
-        if (addMltTrkInput > 200) {
-            return alert('You can only add 200 tracks at a time.')
-        }
+    //     if (addMltTrkInput > 200) {
+    //         return alert('You can only add 200 tracks at a time.')
+    //     }
 
-        for (let i = 0; i < addMltTrkInput; i++) {
+    //     for (let i = 0; i < addMltTrkInput; i++) {
 
-            const newTrackIdNumb: number = parseInt(lastTrackId) + 1 + i
-            const newTrackIdStr: string = newTrackIdNumb.toLocaleString('en-US', {
-                minimumIntegerDigits: 2,
-                useGrouping: false
-            })
-            newTrackIdStrArr.push(newTrackIdStr)
-        }
+    //         const newTrackIdNumb: number = parseInt(lastTrackId) + 1 + i
+    //         const newTrackIdStr: string = newTrackIdNumb.toLocaleString('en-US', {
+    //             minimumIntegerDigits: 2,
+    //             useGrouping: false
+    //         })
+    //         newTrackIdStrArr.push(newTrackIdStr)
+    //     }
 
-        const NewTracks = newTrackIdStrArr.map((newTrackId) => (
-            {
-                id: newTrackId,
-                locked: false,
-                name: undefined,
-                channel: 1,
-                fullRange: [
-                    {
-                        id: '01',
-                        name: undefined,
-                        low: undefined,
-                        high: undefined,
-                        whiteKeysOnly: false,
-                    }
-                ],
-                baseDelay: 0,
-                avgDelay: undefined,
-                artList: [
-                    {
-                        id: "01",
-                        name: undefined,
-                        toggle: true,
-                        codeType: undefined,
-                        code: undefined,
-                        on: undefined,
-                        off: undefined,
-                        range: [
-                            {
-                                id: null,
-                                name: null,
-                                low: null,
-                                high: null,
-                                whiteKeysOnly: null,
-                            }
-                        ],
-                        default: 'on', //setting choice later
-                        delay: 0,
-                        changeType: undefined
-                    },
-                    {
-                        id: "02",
-                        name: undefined,
-                        toggle: false,
-                        codeType: undefined,
-                        code: undefined,
-                        on: undefined,
-                        off: undefined,
-                        range: [
-                            {
-                                id: '01',
-                                name: undefined,
-                                low: undefined,
-                                high: undefined,
-                                whiteKeysOnly: false,
-                            }
-                        ],
-                        default: true,
-                        delay: 0,
-                        changeType: undefined
-                    }
-                ],
-                fadList: [
-                    {
-                        id: '01',
-                        name: undefined,
-                        codeType: undefined,
-                        code: undefined,
-                        default: undefined,
-                        changeType: undefined
-                    }
-                ]
-            }
-        ))
+    //     const NewTracks = newTrackIdStrArr.map((newTrackId) => (
+    //         {
+    //             id: newTrackId,
+    //             locked: false,
+    //             name: undefined,
+    //             channel: 1,
+    //             fullRange: [
+    //                 {
+    //                     id: '01',
+    //                     name: undefined,
+    //                     low: undefined,
+    //                     high: undefined,
+    //                     whiteKeysOnly: false,
+    //                 }
+    //             ],
+    //             baseDelay: 0,
+    //             avgDelay: undefined,
+    //             artList: [
+    //                 {
+    //                     id: "01",
+    //                     name: undefined,
+    //                     toggle: true,
+    //                     codeType: undefined,
+    //                     code: undefined,
+    //                     on: undefined,
+    //                     off: undefined,
+    //                     range: [
+    //                         {
+    //                             id: null,
+    //                             name: null,
+    //                             low: null,
+    //                             high: null,
+    //                             whiteKeysOnly: null,
+    //                         }
+    //                     ],
+    //                     default: 'on', //setting choice later
+    //                     delay: 0,
+    //                     changeType: undefined
+    //                 },
+    //                 {
+    //                     id: "02",
+    //                     name: undefined,
+    //                     toggle: false,
+    //                     codeType: undefined,
+    //                     code: undefined,
+    //                     on: undefined,
+    //                     off: undefined,
+    //                     range: [
+    //                         {
+    //                             id: '01',
+    //                             name: undefined,
+    //                             low: undefined,
+    //                             high: undefined,
+    //                             whiteKeysOnly: false,
+    //                         }
+    //                     ],
+    //                     default: true,
+    //                     delay: 0,
+    //                     changeType: undefined
+    //                 }
+    //             ],
+    //             fadList: [
+    //                 {
+    //                     id: '01',
+    //                     name: undefined,
+    //                     codeType: undefined,
+    //                     code: undefined,
+    //                     default: undefined,
+    //                     changeType: undefined
+    //                 }
+    //             ]
+    //         }
+    //     ))
 
-        setTracks(TrackList.concat(NewTracks) as TrackListProps[])
-        setTrackCount(TrackList.length + NewTracks.length)
-    };
+    //     setTracks(TrackList.concat(NewTracks) as TrackListProps[])
+    //     setTrackCount(TrackList.length + NewTracks.length)
+    // };
 
-    const removeTrack = (trackId: string) => {
 
-        if (TrackList.length !== 1) {
-            setTracks(TrackList.filter((Track) => Track.id !== trackId));
-        }
-        setTrackCount(TrackList.length > 1 ? TrackList.length - 1 : 1)
-    }
-
-    const settingsOpen = (trackId: string) => {
-
-        const selectedTrackElement: HTMLElement | null = document.getElementById(`trk_${trackId}`)
-
-        const templateTrackSettings: HTMLElement | null = document.getElementById('TemplateTrackSettings')
-        const templateTrackList: HTMLElement | null = document.getElementById('TemplateTracks')
-
-        setSelectedTrack(TrackList.filter((Track) => Track.id === trackId)[0])
-
-        selectedTrackElement?.classList.replace('bg-zinc-300', 'bg-zinc-50')
-        selectedTrackElement?.classList.replace('dark:bg-stone-800', 'dark:bg-stone-400')
-
-        for (var track in TrackList) {
-            const trackIdElement: HTMLElement | null = document.getElementById(`trk_${TrackList[track].id}`)
-
-            if (trackIdElement !== selectedTrackElement) {
-                trackIdElement?.classList.replace('bg-zinc-50', 'bg-zinc-300')
-                trackIdElement?.classList.replace('dark:bg-stone-400', 'dark:bg-stone-800')
-            }
-        }
-
-        if (templateTrackSettings?.classList.contains('MShide')) {
-            templateTrackSettings?.classList.replace('MShide', 'MSshow');
-            templateTrackList?.classList.replace('MShideTemplateTracks', 'MSshowTemplateTracks');
-        }
-
-    }
 
     // const renumberTracks = () => {
 
@@ -232,7 +198,7 @@ export const TrackListTable: FC<TrackListTableProps> = ({ TrackList, setTracks, 
                                         className=""
                                         title={`Add Tracks. (${addMltTrkInput})`}
                                         id="addMultipleTracks"
-                                        onClick={addMultipleTracks}>
+                                        onClick={() => setTracks(addMltTrkInput)}>
                                         <i className="pl-2 mr-2 fa-solid fa-plus"></i>
                                     </button>
                                     <TdInput
@@ -252,8 +218,6 @@ export const TrackListTable: FC<TrackListTableProps> = ({ TrackList, setTracks, 
                                 <TrackRows
                                     key={track.id}
                                     id={track.id}
-                                    onDelete={() => removeTrack(track.id)}
-                                    setSelectedTrack={() => settingsOpen(track.id)}
                                 />
                             ))
                         }

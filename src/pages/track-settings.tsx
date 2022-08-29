@@ -5,6 +5,7 @@ import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
 import { FaderData } from '../data/track-settings/fad-data';
 import { ArtToggleData, ArtSwitchData } from '../data/track-settings/art-data';
 import { TrackListProps } from './template-app';
+import { useSelectedTrack } from '../data/track-list/track-context';
 interface TrackSettingsProps {
     TrackList: TrackListProps[];
     setTracks: Dispatch<SetStateAction<TrackListProps[]>>;
@@ -308,6 +309,7 @@ export const TrackSettings: FC<TrackSettingsProps> = ({ setSelectedTrack, select
                                         type="checkbox"
                                         className='min-w-full mt-[6px] h-4 cursor-pointer'
                                         checked={range.whiteKeysOnly}
+                                        onChange={toggleLock}
                                         title="This playable range is white keys only. "
                                         aria-label="This playable range is white keys only."
                                         id={`FullRangeWhiteKeysCheck_trk_${parseInt(selectedTrack.id)}_${range.id}`}>

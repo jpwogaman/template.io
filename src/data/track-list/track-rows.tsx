@@ -1,15 +1,16 @@
-import { FC, MouseEventHandler, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 import { TdSelect } from '../../components/td-select';
 import { TdInput } from '../../components/td-input';
-
+import { useSelectedTrackUpdate, useTrackListUpdate } from '../../data/track-list/track-context'
 interface TrackRowProps {
     id: string;
     children?: ReactNode;
-    onDelete?: () => void | void | undefined;
-    setSelectedTrack?: MouseEventHandler<HTMLButtonElement>;
 }
 
-export const TrackRows: FC<TrackRowProps> = ({ setSelectedTrack, id, onDelete }) => {
+export const TrackRows: FC<TrackRowProps> = ({ id }) => {
+
+    const changeSelectedTrack = useSelectedTrackUpdate()
+    const removeSelectedTrack = useTrackListUpdate()
 
     const nameOption =
         <TdInput
@@ -55,14 +56,14 @@ export const TrackRows: FC<TrackRowProps> = ({ setSelectedTrack, id, onDelete })
             <button
                 className="w-6 h-6 mr-1 hover:border-green-50"
                 title="Edit Track Parameters"
-                onClick={setSelectedTrack}>
+                onClick={() => changeSelectedTrack(id)}>
                 <i className="fa-solid fa-pen-to-square"></i>
             </button>
             <button
                 className="w-6 h-6 hover:scale-[1.15] hover:animate-pulse"
                 title="Remove This Track."
                 id={`AddTrackButton_${id}`}
-                onClick={onDelete}>
+                onClick={() => removeSelectedTrack(id)}>
                 <i className="fa-solid fa-minus"></i>
             </button>
         </div >
