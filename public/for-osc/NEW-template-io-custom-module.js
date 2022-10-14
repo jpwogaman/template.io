@@ -1,127 +1,25 @@
 //variable & input values to be sent to OSC
 const workFile_jsn = loadJSON('template-io-workfile.json')
-const allTrack_jsn = loadJSON('template-io-track-data.json'); //`${or whatever the user names their file}`
-const artName__jsn = [];
-const artType__jsn = [];
-const artCode__jsn = [];
-const artDeflt_jsn = [];
-const artOn____jsn = [];
-const artOff___jsn = [];
-const artRange_jsn = [];
-const fadName__jsn = [];
-const fadType__jsn = [];
-const fadCode__jsn = [];
-const fadDeflt_jsn = [];
+const allTrack_jsn = loadJSON('Tracklist_10.13.2022_V1.2.json'); //`${or whatever the user names their file}`
 
-for (i in allTrack_jsn) {
-	var trackArrays = [allTrack_jsn[i]];
-	for (var key in trackArrays) {
-		if (!trackArrays.hasOwnProperty(key)) continue;
-		var obj = trackArrays[key];
-		for (var prop in obj) {
-			if (!obj.hasOwnProperty(prop)) continue;
-			if (prop.includes('artName__')) {
-				artName__jsn.push(obj[prop]);
-			}
-			if (prop.includes('artType__')) {
-				artType__jsn.push(obj[prop]);
-			}
-			if (prop.includes('artCode__')) {
-				artCode__jsn.push(obj[prop]);
-			}
-			if (prop.includes('artDeflt_')) {
-				artDeflt_jsn.push(obj[prop]);
-			}
-			if (prop.includes('artOn____')) {
-				artOn____jsn.push(obj[prop]);
-			}
-			if (prop.includes('artOff___')) {
-				artOff___jsn.push(obj[prop]);
-			}
-			if (prop.includes('artRange_')) {
-				artRange_jsn.push(obj[prop]);
-			}
-			if (prop.includes('fadName__')) {
-				fadName__jsn.push(obj[prop]);
-			}
-			if (prop.includes('fadType__')) {
-				fadType__jsn.push(obj[prop]);
-			}
-			if (prop.includes('fadCode__')) {
-				fadCode__jsn.push(obj[prop]);
-			}
-			if (prop.includes('fadDeflt_')) {
-				fadDeflt_jsn.push(obj[prop]);
-			}
-		}
-	}
-}
-//variable & input ID's/addresses in OSC
-const artName__osc = [];
-const artType__osc = [];
-const artCode__osc = [];
-const artInput_osc = [];
-const artDeflt_osc = [];
-const artOn____osc = [];
-const artOff___osc = [];
-const artRange_osc = [];
-const artColor_osc = [];
-const artModeA_osc = [];
-const artModeB_osc = [];
-const fadName__osc = [];
-const fadAddr__osc = [];
-const fadCode__osc = [];
+const items = allTrack_jsn.items
+const fileInfo = allTrack_jsn.fileInfo
 
-for (let i = 0; i < 18; i++) {
-	artName__osc[i] = '/artname_' + parseInt(i + 1);
-	artType__osc[i] = '/arttype_' + parseInt(i + 1);
-	artCode__osc[i] = '/artcode_' + parseInt(i + 1);
-	artInput_osc[i] = '/artinpt_' + parseInt(i + 1);
-	artDeflt_osc[i] = '/artdeft_' + parseInt(i + 1);
-	artOn____osc[i] = '/arton___' + parseInt(i + 1);
-	artOff___osc[i] = '/artoff__' + parseInt(i + 1);
-	artRange_osc[i] = '/artrang_' + parseInt(i + 1);
-	artColor_osc[i] = '/artcolr_' + parseInt(i + 1);
-	artModeA_osc[i] = '/artmodA_' + parseInt(i + 1);
-	artModeB_osc[i] = '/artmodB_' + parseInt(i + 1);
+//go through workFile and get number of faders and articulations
+let artListOsc = []
+let fadListOsc = []
+for (var i in workFile_jsn.content.widgets[0].tabs[1].widgets) {
+	if (workFile_jsn.content.widgets[0].tabs[0].widgets[i].id.includes('Art'))
+		artListOsc.push(workFile_jsn.content.widgets[0].tabs[0].widgets[i].id)
 
-	// artName__osc[i] = '/template-io_artname_' + parseInt(i + 1);
-	// artType__osc[i] = '/template-io_arttype_' + parseInt(i + 1);
-	// artCode__osc[i] = '/template-io_artcode_' + parseInt(i + 1);
-	// artInput_osc[i] = '/template-io_artinpt_' + parseInt(i + 1);
-	// artDeflt_osc[i] = '/template-io_artdeft_' + parseInt(i + 1);
-	// artOn____osc[i] = '/template-io_arton___' + parseInt(i + 1);
-	// artOff___osc[i] = '/template-io_artoff__' + parseInt(i + 1);
-	// artRange_osc[i] = '/template-io_artrang_' + parseInt(i + 1);
-	// artColor_osc[i] = '/template-io_artcolr_' + parseInt(i + 1);
-	// artModeA_osc[i] = '/template-io_artmodA_' + parseInt(i + 1);
-	// artModeB_osc[i] = '/template-io_artmodB_' + parseInt(i + 1);
-}
-for (let i = 0; i < 8; i++) {
-	fadName__osc[i] = '/CC_disp_' + parseInt(i + 1);
-	fadAddr__osc[i] = '/CC_fad__' + parseInt(i + 1);
-	fadCode__osc[i] = '/CC_incr_' + parseInt(i + 1);
-
-	// fadName__osc[i] = '/template-io_CC_disp_' + parseInt(i + 1);
-	// fadAddr__osc[i] = '/template-io_CC_fad__' + parseInt(i + 1);
-	// fadCode__osc[i] = '/template-io_CC_incr_' + parseInt(i + 1);
+	if (workFile_jsn.content.widgets[0].tabs[0].widgets[i].id.includes('CC_fad'))
+		fadListOsc.push(workFile_jsn.content.widgets[0].tabs[0].widgets[i].id)
 }
 //array of all notes (Middle C == C3 == MIDI Code 60)
-const allNotes_loc = [];
+const allNotes_loc = []
 for (let i = -2; i < 9; i++) {
-	let cn = String('C' + i);
-	let cs = String('C#' + i);
-	let dn = String('D' + i);
-	let ds = String('D#' + i);
-	let en = String('E' + i);
-	let fn = String('F' + i);
-	let fs = String('F#' + i);
-	let gn = String('G' + i);
-	let gs = String('G#' + i);
-	let an = String('A' + i);
-	let as = String('A#' + i);
-	let bn = String('B' + i);
-	allNotes_loc.push(cn, cs, dn, ds, en, fn, fs, gn, gs, an, as, bn);
+	allNotes_loc.push('C' + i, 'C#' + i, 'D' + i, 'D#' + i, 'E' + i, 'F' + i,
+		'F#' + i, 'G' + i, 'G#' + i, 'A' + i, 'A#' + i, 'B' + i);
 }
 //update current MIDI track
 function trkUpdate() {
@@ -207,7 +105,6 @@ function keyRanges(range) {
 	receive('/keyRangeVar1', range);
 	receive('/keyRangeScript', 1);
 }
-
 module.exports = {
 	init: function () {
 		send('midi', 'OSC1', '/control', 3, 17, 1); //'whole notes'
@@ -263,64 +160,76 @@ module.exports = {
 		if (keyP) {
 
 			const trkNumb = arg1 * 128 + arg2;
-			const trkRang = allTrack_jsn[trkNumb].trkRnge____;
-			const trkName = allTrack_jsn[trkNumb].trkName____;
-			const artRng3 = allTrack_jsn[trkNumb].artRange_03;
+			if (!items[trkNumb]) return receive('/selectedTrackName', 'No Track Data!');
+			const trkRang = items[trkNumb].fullRange[0];
+			const trkName = items[trkNumb].name;
 
 			receive('/selectedTrackName', trkName);
-			receive('/selectedTrackKeyRanges', trkRang);
 			receive('/template-io_selectedTrackName', trkName);
-			receive('/template-io_selectedTrackKeyRanges', trkRang);
 
-			if (artRng3 === '') {
-				keyRanges(trkRang);
+			keyRanges(trkRang);
+
+			if (items[trkNumb].fadList.length > 4) {
+				receive('/faderPanel-color-2', '1px solid red');
+			} else {
+				receive('/faderPanel-color-2', '');
 			}
 
-			for (let i = 0; i < 8; i++) {
-				const fadIndx = trkNumb * 8 + i;
-				const nameOsc = fadName__osc[i];
-				const addrOsc = fadAddr__osc[i];
-				const codeOsc = fadCode__osc[i];
-				const nameJsn = fadName__jsn[fadIndx];
-				const typeJsn = '/control'; // will be fadType__jsn[fadIndx] in future
-				const codeJsn = parseInt(fadCode__jsn[fadIndx]);
-				const deftJsn = parseInt(fadDeflt_jsn[fadIndx]);
-				const fadPage = fadCode__jsn[4];
-
+			for (let i = 0; i < fadListOsc.length; i++) {
+				const nameOsc = '/CC_disp_' + parseInt(i + 1);
+				const addrOsc = '/CC_fad__' + parseInt(i + 1);
+				const codeOsc = '/CC_incr_' + parseInt(i + 1);
+				receive(nameOsc, '');
+				receive(addrOsc, 0);
+				receive(codeOsc, 0);
+			}
+			const fadListJsn = items[trkNumb].fadList
+			for (let i = 0; i < fadListJsn.length; i++) {
+				const nameOsc = '/CC_disp_' + parseInt(i + 1);
+				const addrOsc = '/CC_fad__' + parseInt(i + 1);
+				const codeOsc = '/CC_incr_' + parseInt(i + 1);
+				const nameJsn = fadListJsn[i].name;
+				const typeJsn = fadListJsn[i].codeType
+				const codeJsn = parseInt(fadListJsn[i].code);
+				const deftJsn = parseInt(fadListJsn[i].default);
 				receive(nameOsc, nameJsn);
 				receive(addrOsc, deftJsn);
 				receive(codeOsc, codeJsn);
-
-				if (codeJsn !== null) {
-					prmUpdate(4, typeJsn, codeJsn, deftJsn);
-				} else continue;
-
-				if (fadPage !== null) {
-					receive('/faderPanel-color-2', '1px solid red');
-				} else {
-					receive('/faderPanel-color-2', '');
-				}
+				prmUpdate(4, typeJsn, codeJsn, deftJsn);
 			}
-			for (let i = 0; i < 18; i++) {
-				const artIndx = trkNumb * 18 + i;
-				const nameOsc = artName__osc[i];
-				const typeOsc = artType__osc[i];
-				const codeOsc = artCode__osc[i];
-				const inptOsc = artInput_osc[i];
-				const deftOsc = artDeflt_osc[i];
-				const on__Osc = artOn____osc[i];
-				const off_Osc = artOff___osc[i];
-				const rangOsc = artRange_osc[i];
-				const colrOsc = artColor_osc[i];
-				const modAOsc = artModeA_osc[i];
-				const modBOsc = artModeB_osc[i];
-				const nameJsn = artName__jsn[artIndx];
-				const typeJsn = artType__jsn[artIndx];
-				const codeJsn = parseInt(artCode__jsn[artIndx]);
-				const deftJsn = parseInt(artDeflt_jsn[artIndx]);
-				const on__Jsn = parseInt(artOn____jsn[artIndx]);
-				const off_Jsn = parseInt(artOff___jsn[artIndx]);
-				const rangJsn = String(artRange_jsn[artIndx]);
+
+			for (let i = 0; i < artListOsc.length; i++) {
+				const nameOsc = '/artname_' + parseInt(i + 1);
+				const inptOsc = '/artinpt_' + parseInt(i + 1);
+				const colrOsc = '/artcolr_' + parseInt(i + 1);
+				const modAOsc = '/artmodA_' + parseInt(i + 1);
+				const modBOsc = '/artmodB_' + parseInt(i + 1);
+				receive(nameOsc, ' ');
+				receive(inptOsc, 'true');
+				receive(colrOsc, '#A9A9A9');
+				receive(modAOsc, 0.15);
+				receive(modBOsc, 0.15);
+			}
+			const artListJsn = [...items[trkNumb].artList, ...items[trkNumb].artListTog]
+			for (let i = 0; i < artListJsn.length; i++) {
+				const nameOsc = '/artname_' + parseInt(i + 1);
+				const typeOsc = '/arttype_' + parseInt(i + 1);
+				const codeOsc = '/artcode_' + parseInt(i + 1);
+				const inptOsc = '/artinpt_' + parseInt(i + 1);
+				const deftOsc = '/artdeft_' + parseInt(i + 1);
+				const on__Osc = '/arton___' + parseInt(i + 1);
+				const off_Osc = '/artoff__' + parseInt(i + 1);
+				const colrOsc = '/artcolr_' + parseInt(i + 1);
+				const modAOsc = '/artmodA_' + parseInt(i + 1);
+				const modBOsc = '/artmodB_' + parseInt(i + 1);
+				const modeOsc = '/artMode_' + parseInt(i + 1);
+				const nameJsn = artListJsn[i].name;
+				const typeJsn = artListJsn[i].codeType
+				const deftJsn = artListJsn[i].default;
+				const codeJsn = parseInt(artListJsn[i].code);
+				const on__Jsn = parseInt(artListJsn[i].on);
+				const off_Jsn = parseInt(artListJsn[i].off);
+
 				let codeDsp;
 
 				if (typeJsn === '/control') {
@@ -333,43 +242,31 @@ module.exports = {
 
 				if (togCodes_loc && nameJsn !== '') {
 					receive(nameOsc, `${nameJsn} (${codeDsp}${codeJsn}/${on__Jsn}${off_Jsn ? '/' + off_Jsn : ''})`)
-
 				} else {
 					receive(nameOsc, nameJsn);
 				}
 
-				if (rangJsn === '') {
-					receive(rangOsc, '');
-				} else {
-					receive(rangOsc, rangJsn);
-				}
-
 				receive(typeOsc, typeJsn);
 				receive(codeOsc, codeJsn);
-				receive(deftOsc, deftJsn);
+				receive(deftOsc, off_Jsn);
 				receive(on__Osc, on__Jsn);
 				receive(off_Osc, off_Jsn);
-				receive(modAOsc, 0.15);
-				receive(modBOsc, 0.15);
+				receive(inptOsc, 'false');
+				receive(colrOsc, '#6dfdbb');
 
-				if (nameJsn === '') {
-					receive(nameOsc, ' ');
-					receive(inptOsc, 'true');
-					receive(colrOsc, '#A9A9A9');
-				} else {
-					receive(inptOsc, 'false');
-					if (i <= 1) {
-						receive(colrOsc, '#a86739');
-						prmUpdate(3, typeJsn, codeJsn, deftJsn);
-					} else {
-						receive(colrOsc, '#6dfdbb');
-						receive(deftOsc, deftJsn);
-						if (deftJsn !== 0) {
-							receive(modAOsc, 0.75);
-							prmUpdate(4, typeJsn, codeJsn, deftJsn);
-							keyRanges(rangJsn);
-						}
-					}
+				if (!artListJsn[i].toggle) {
+					receive(modeOsc, 'toggle')
+					receive(colrOsc, '#a86739')
+					prmUpdate(4, typeJsn, codeJsn, off_Jsn)
+					continue
+				}
+
+				receive(modeOsc, 'tap')
+
+				if (deftJsn === 'On' || deftJsn === true) {
+					receive(modAOsc, 0.75)
+					receive(deftOsc, on__Jsn);
+					prmUpdate(4, typeJsn, codeJsn, on__Jsn)
 				}
 			}
 		}
