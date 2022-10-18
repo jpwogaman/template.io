@@ -25,13 +25,12 @@ if (thisMode === 'toggle') {
     set(`artmodB_${id}`, 0.75)
     set(`artmodA_${id}`, 0.15)
 }
-
 if (thisMode === 'tap') {
     for (var i = 0; i < modes.length; i++) {
         if (modes[i] === 'toggle') {
             continue
         }
-        if (i + 1 === id) {
+        if (i === id) {
             set(`artmodA_${id}`, 0.75)
             set(`artmodB_${id}`, 0.75)
             continue

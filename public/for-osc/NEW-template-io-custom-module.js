@@ -232,6 +232,8 @@ module.exports = {
 				const off_Jsn = parseInt(artListJsn[i].off);
 				const rangJsn = artListJsn[i].ranges;
 
+				if (!artListJsn[i].name) continue
+
 				let codeDsp;
 
 				if (typeJsn === '/control') {

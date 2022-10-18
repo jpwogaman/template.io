@@ -9,22 +9,21 @@ for (var i = 1; i < 19; i++) {
     var mode = get(`artMode_${i}`)
     modes.push(mode)
 }
-
 var thisMode = modes[parseInt(id - 1)]
-let selectedRanges = []
+if (thisMode === 'toggle') return
 
-if (thisMode === 'toggle') {
-    return
-}
 for (let i = 0; i < allNotes.length; i++) {
     set('myKey-' + i, 0)
     set('template-io_myKey-' + i, 0)
 }
-if (thisMode === 'tap') {
-    for (var i in indArtRanges) {
-        selectedRanges.push(allArtRanges.filter((range) => range.id === indArtRanges[i])[0])
-    }
+let selectedRanges = []
+let selectedNames = []
+for (var i in indArtRanges) {
+    selectedRanges.push(allArtRanges.filter((range) => range.id === indArtRanges[i])[0])
+    selectedNames.push(allArtRanges.filter((range) => range.id === indArtRanges[i])[0].name)
 }
+set('selectedTrackKeyRanges', selectedNames)
+
 for (var range in selectedRanges) {
     var high = selectedRanges[range].high
     var low = selectedRanges[range].low
