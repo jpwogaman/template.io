@@ -1,6 +1,6 @@
 {
     "fileInfo": {
-        "fileName": "Tracklist_10.13.2022_V1.2",
+        "fileName": "Tracklist_10.13.2022_V1.3",
         "createdOn": "",
         "modifiedOn": "",
         "defaultColors": [
@@ -318,7 +318,9 @@
                     "default": "On",
                     "delay": "100",
                     "changeType": "Value 2",
-                    "ranges": []
+                    "ranges": [
+                        "T_0_FR_0"
+                    ]
                 },
                 {
                     "id": "T_0_AL_1",
@@ -331,7 +333,9 @@
                     "default": "Off",
                     "delay": "100",
                     "changeType": "Value 2",
-                    "ranges": []
+                    "ranges": [
+                        "T_0_FR_0"
+                    ]
                 }
             ],
             "artListTog": [
@@ -346,7 +350,9 @@
                     "default": true,
                     "delay": "100",
                     "changeType": "Value 2",
-                    "ranges": []
+                    "ranges": [
+                        "T_0_FR_0"
+                    ]
                 },
                 {
                     "id": "T_0_AL_3",
@@ -359,7 +365,9 @@
                     "default": false,
                     "delay": "100",
                     "changeType": "Value 2",
-                    "ranges": []
+                    "ranges": [
+                        "T_0_FR_0"
+                    ]
                 }
             ],
             "fadList": [
@@ -416,7 +424,7 @@
                 {
                     "id": "T_1_FR_1",
                     "name": "Harmonics",
-                    "low": "C-2",
+                    "low": "C2",
                     "high": "C6",
                     "whiteKeysOnly": false
                 }
@@ -430,7 +438,7 @@
                     "code": "58",
                     "on": "76",
                     "off": "81",
-                    "default": "On",
+                    "default": "Off",
                     "delay": "100",
                     "changeType": "Value 2",
                     "ranges": [
@@ -462,7 +470,7 @@
                     "code": "58",
                     "on": "6",
                     "off": "",
-                    "default": true,
+                    "default": false,
                     "delay": "100",
                     "changeType": "Value 2",
                     "ranges": [
@@ -507,7 +515,7 @@
                     "code": "58",
                     "on": "51",
                     "off": "",
-                    "default": false,
+                    "default": true,
                     "delay": "100",
                     "changeType": "Value 2",
                     "ranges": [
@@ -765,6 +773,223 @@
                     "codeType": "/control",
                     "code": "10",
                     "default": "100",
+                    "changeType": "Value 2"
+                }
+            ]
+        },
+        {
+            "id": "T_3",
+            "locked": false,
+            "name": "Harp Gliss [SF]",
+            "channel": 1,
+            "baseDelay": 0,
+            "avgDelay": "0.00",
+            "color": "#71717A",
+            "fullRange": [
+                {
+                    "id": "T_3_FR_0",
+                    "name": "Full Range",
+                    "low": "F1",
+                    "high": "F2",
+                    "whiteKeysOnly": false
+                },
+                {
+                    "id": "T_3_FR_1",
+                    "name": "Swirl",
+                    "low": "F2",
+                    "high": "F3",
+                    "whiteKeysOnly": false
+                },
+                {
+                    "id": "T_3_FR_2",
+                    "name": "Low 8ve",
+                    "low": "F3",
+                    "high": "F4",
+                    "whiteKeysOnly": false
+                },
+                {
+                    "id": "T_3_FR_3",
+                    "name": "Mid 8ve 1",
+                    "low": "F4",
+                    "high": "F5",
+                    "whiteKeysOnly": false
+                },
+                {
+                    "id": "T_3_FR_4",
+                    "name": "Mid 8ve 2",
+                    "low": "F5",
+                    "high": "F6",
+                    "whiteKeysOnly": false
+                },
+                {
+                    "id": "T_3_FR_5",
+                    "name": "High 8ve",
+                    "low": "F6",
+                    "high": "F7",
+                    "whiteKeysOnly": false
+                }
+            ],
+            "artList": [
+                {
+                    "id": "T_3_AL_0",
+                    "name": "",
+                    "toggle": false,
+                    "codeType": "/control",
+                    "code": 0,
+                    "on": 0,
+                    "off": 0,
+                    "default": "Off",
+                    "delay": 0,
+                    "changeType": "Value 2",
+                    "ranges": [
+                        "T_1_FR_0"
+                    ]
+                }
+            ],
+            "artListTog": [
+                {
+                    "id": "T_3_AL_1",
+                    "name": "Whole Tone",
+                    "toggle": true,
+                    "codeType": "/control",
+                    "code": "32",
+                    "on": "121",
+                    "off": 0,
+                    "default": true,
+                    "delay": 0,
+                    "changeType": "Value 2",
+                    "ranges": [
+                        "T_3_FR_0",
+                        "T_3_FR_1",
+                        "T_3_FR_2",
+                        "T_3_FR_3",
+                        "T_3_FR_4",
+                        "T_3_FR_5"
+                    ]
+                },
+                {
+                    "id": "T_3_AL_2",
+                    "name": "Minor Harmonic",
+                    "toggle": true,
+                    "codeType": "/control",
+                    "code": "32",
+                    "on": "122",
+                    "off": 0,
+                    "default": false,
+                    "delay": 0,
+                    "changeType": "Value 2",
+                    "ranges": [
+                        "T_3_FR_0",
+                        "T_3_FR_1",
+                        "T_3_FR_2",
+                        "T_3_FR_3",
+                        "T_3_FR_4",
+                        "T_3_FR_5"
+                    ]
+                },
+                {
+                    "id": "T_3_AL_3",
+                    "name": "Minor Melodic",
+                    "toggle": true,
+                    "codeType": "/control",
+                    "code": "32",
+                    "on": "123",
+                    "off": 0,
+                    "default": false,
+                    "delay": 0,
+                    "changeType": "Value 2",
+                    "ranges": [
+                        "T_3_FR_0",
+                        "T_3_FR_1",
+                        "T_3_FR_2",
+                        "T_3_FR_3",
+                        "T_3_FR_4"
+                    ]
+                },
+                {
+                    "id": "T_3_AL_4",
+                    "name": "Major",
+                    "toggle": true,
+                    "codeType": "/control",
+                    "code": "32",
+                    "on": "124",
+                    "off": 0,
+                    "default": false,
+                    "delay": 0,
+                    "changeType": "Value 2",
+                    "ranges": [
+                        "T_3_FR_0",
+                        "T_3_FR_1",
+                        "T_3_FR_2",
+                        "T_3_FR_3",
+                        "T_3_FR_4",
+                        "T_3_FR_5"
+                    ]
+                },
+                {
+                    "id": "T_3_AL_5",
+                    "name": "Pentatonic",
+                    "toggle": true,
+                    "codeType": "/control",
+                    "code": "32",
+                    "on": "125",
+                    "off": 0,
+                    "default": false,
+                    "delay": 0,
+                    "changeType": "Value 2",
+                    "ranges": [
+                        "T_3_FR_0",
+                        "T_3_FR_1",
+                        "T_3_FR_2",
+                        "T_3_FR_3",
+                        "T_3_FR_4",
+                        "T_3_FR_5"
+                    ]
+                },
+                {
+                    "id": "T_3_AL_6",
+                    "name": "Diminished",
+                    "toggle": true,
+                    "codeType": "/control",
+                    "code": "32",
+                    "on": "126",
+                    "off": 0,
+                    "default": false,
+                    "delay": 0,
+                    "changeType": "Value 2",
+                    "ranges": [
+                        "T_3_FR_0",
+                        "T_3_FR_1",
+                        "T_3_FR_2",
+                        "T_3_FR_3",
+                        "T_3_FR_4",
+                        "T_3_FR_5"
+                    ]
+                }
+            ],
+            "fadList": [
+                {
+                    "id": "T_3_FL_0",
+                    "name": "CC-Mapped Velocity",
+                    "codeType": "/control",
+                    "code": "1",
+                    "default": "127",
+                    "changeType": "Value 2"
+                },
+                {
+                    "id": "T_3_FL_1",
+                    "name": "Gliss Speed",
+                    "codeType": "/control",
+                    "code": "16",
+                    "default": "90",
+                    "changeType": "Value 2"
+                },
+                {
+                    "id": "T_3_FL_2",
+                    "name": "Gliss Direction",
+                    "codeType": "/control",
+                    "code": "2",
+                    "default": "127",
                     "changeType": "Value 2"
                 }
             ]

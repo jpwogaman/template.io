@@ -985,7 +985,7 @@
                 "ignoreDefaults": true,
                 "bypass": "@{artinpt_1}",
                 "onCreate": "",
-                "onValue": "var ranges = get('artrang_1') \nvar bypassInput = get('artinpt_1')\nif (bypassInput) {\n    set('artmodB_1', 0.15)\n    set('artmodA_1', 0.15)\n    return\n}\nset('template-io_articulationVarID', 1)\nset('template-io_articulationScript', 1)\nset('template-io_keyRangeVar2', ranges)\nset('template-io_keyRangeScript', 1)"
+                "onValue": "var ranges = get('artrang_1') \nvar bypassInput = get('artinpt_1')\nif (bypassInput) {\n    set('artmodB_1', 0.15)\n    set('artmodA_1', 0.15)\n    return\n}\nset('template-io_articulationVarID', 1)\nset('template-io_articulationScript', 1)"
               },
               {
                 "type": "input",
@@ -1237,7 +1237,7 @@
                 "ignoreDefaults": true,
                 "bypass": "@{artinpt_2}",
                 "onCreate": "",
-                "onValue": "var ranges = get('artrang_2') \nvar bypassInput = get('artinpt_2')\nif (bypassInput) {\n    set('artmodB_2', 0.15)\n    set('artmodA_2', 0.15)\n    return\n}\nset('template-io_articulationVarID', 2)\nset('template-io_articulationScript', 1)\nset('template-io_keyRangeVar2', ranges)\nset('template-io_keyRangeScript', 1)"
+                "onValue": "var ranges = get('artrang_2') \nvar bypassInput = get('artinpt_2')\nif (bypassInput) {\n    set('artmodB_2', 0.15)\n    set('artmodA_2', 0.15)\n    return\n}\nset('template-io_articulationVarID', 2)\nset('template-io_articulationScript', 1)"
               },
               {
                 "type": "input",
@@ -1445,7 +1445,7 @@
                 "ignoreDefaults": true,
                 "bypass": "@{artinpt_3}",
                 "onCreate": "",
-                "onValue": "var ranges = get('artrang_3') \nvar bypassInput = get('artinpt_3')\nif (bypassInput) {\n    set('artmodB_3', 0.15)\n    set('artmodA_3', 0.15)\n    return\n}\nset('template-io_articulationVarID', 3)\nset('template-io_articulationScript', 1)\nset('template-io_keyRangeVar2', ranges)\nset('template-io_keyRangeScript', 1)",
+                "onValue": "var ranges = get('artrang_3') \nvar bypassInput = get('artinpt_3')\nif (bypassInput) {\n    set('artmodB_3', 0.15)\n    set('artmodA_3', 0.15)\n    return\n}\nset('template-io_articulationVarID', 3)\nset('template-io_articulationScript', 1)",
                 "top": 750,
                 "left": 1490,
                 "visible": true,
@@ -1705,7 +1705,7 @@
                 "ignoreDefaults": true,
                 "bypass": "@{artinpt_4}",
                 "onCreate": "",
-                "onValue": "var ranges = get('artrang_4') \nvar bypassInput = get('artinpt_4')\nif (bypassInput) {\n    set('artmodB_4', 0.15)\n    set('artmodA_4', 0.15)\n    return\n}\nset('template-io_articulationVarID', 4)\nset('template-io_articulationScript', 1)\nset('template-io_keyRangeVar2', ranges)\nset('template-io_keyRangeScript', 1)"
+                "onValue": "var ranges = get('artrang_4') \nvar bypassInput = get('artinpt_4')\nif (bypassInput) {\n    set('artmodB_4', 0.15)\n    set('artmodA_4', 0.15)\n    return\n}\nset('template-io_articulationVarID', 4)\nset('template-io_articulationScript', 1)"
               },
               {
                 "type": "input",
@@ -1913,7 +1913,7 @@
                 "ignoreDefaults": true,
                 "bypass": "@{artinpt_5}",
                 "onCreate": "",
-                "onValue": "var ranges = get('artrang_5') \nvar bypassInput = get('artinpt_5')\nif (bypassInput) {\n    set('artmodB_5', 0.15)\n    set('artmodA_5', 0.15)\n    return\n}\nset('template-io_articulationVarID', 5)\nset('template-io_articulationScript', 1)\nset('template-io_keyRangeVar2', ranges)\nset('template-io_keyRangeScript', 1)",
+                "onValue": "var ranges = get('artrang_5') \nvar bypassInput = get('artinpt_5')\nif (bypassInput) {\n    set('artmodB_5', 0.15)\n    set('artmodA_5', 0.15)\n    return\n}\nset('template-io_articulationVarID', 5)\nset('template-io_articulationScript', 1)",
                 "top": 750,
                 "left": 1690,
                 "visible": true,
@@ -2173,7 +2173,7 @@
                 "ignoreDefaults": true,
                 "bypass": "@{artinpt_6}",
                 "onCreate": "",
-                "onValue": "var ranges = get('artrang_6') \nvar bypassInput = get('artinpt_6')\nif (bypassInput) {\n    set('artmodB_6', 0.15)\n    set('artmodA_6', 0.15)\n    return\n}\nset('template-io_articulationVarID', 6)\nset('template-io_articulationScript', 1)\nset('template-io_keyRangeVar2', ranges)\nset('template-io_keyRangeScript', 1)"
+                "onValue": "var ranges = get('artrang_6') \nvar bypassInput = get('artinpt_6')\nif (bypassInput) {\n    set('artmodB_6', 0.15)\n    set('artmodA_6', 0.15)\n    return\n}\nset('template-io_articulationVarID', 6)\nset('template-io_articulationScript', 1)"
               },
               {
                 "type": "input",
@@ -2381,7 +2381,7 @@
                 "ignoreDefaults": true,
                 "bypass": "@{artinpt_7}",
                 "onCreate": "",
-                "onValue": "var ranges = get('artrang_7') \nvar bypassInput = get('artinpt_7')\nif (bypassInput) {\n    set('artmodB_7', 0.15)\n    set('artmodA_7', 0.15)\n    return\n}\nset('template-io_articulationVarID', 7)\nset('template-io_articulationScript', 1)\nset('template-io_keyRangeVar2', ranges)\nset('template-io_keyRangeScript', 1)",
+                "onValue": "var ranges = get('artrang_7') \nvar bypassInput = get('artinpt_7')\nif (bypassInput) {\n    set('artmodB_7', 0.15)\n    set('artmodA_7', 0.15)\n    return\n}\nset('template-io_articulationVarID', 7)\nset('template-io_articulationScript', 1)",
                 "top": 800,
                 "left": 1290,
                 "visible": true,
@@ -2641,7 +2641,7 @@
                 "ignoreDefaults": true,
                 "bypass": "@{artinpt_8}",
                 "onCreate": "",
-                "onValue": "var ranges = get('artrang_8') \nvar bypassInput = get('artinpt_8')\nif (bypassInput) {\n    set('artmodB_8', 0.15)\n    set('artmodA_8', 0.15)\n    return\n}\nset('template-io_articulationVarID', 8)\nset('template-io_articulationScript', 1)\nset('template-io_keyRangeVar2', ranges)\nset('template-io_keyRangeScript', 1)"
+                "onValue": "var ranges = get('artrang_8') \nvar bypassInput = get('artinpt_8')\nif (bypassInput) {\n    set('artmodB_8', 0.15)\n    set('artmodA_8', 0.15)\n    return\n}\nset('template-io_articulationVarID', 8)\nset('template-io_articulationScript', 1)"
               },
               {
                 "type": "input",
@@ -2849,7 +2849,7 @@
                 "ignoreDefaults": true,
                 "bypass": "@{artinpt_8}",
                 "onCreate": "",
-                "onValue": "var ranges = get('artrang_9') \nvar bypassInput = get('artinpt_9')\nif (bypassInput) {\n    set('artmodB_9', 0.15)\n    set('artmodA_9', 0.15)\n    return\n}\nset('template-io_articulationVarID', 9)\nset('template-io_articulationScript', 1)\nset('template-io_keyRangeVar2', ranges)\nset('template-io_keyRangeScript', 1)",
+                "onValue": "var ranges = get('artrang_9') \nvar bypassInput = get('artinpt_9')\nif (bypassInput) {\n    set('artmodB_9', 0.15)\n    set('artmodA_9', 0.15)\n    return\n}\nset('template-io_articulationVarID', 9)\nset('template-io_articulationScript', 1)",
                 "top": 800,
                 "left": 1490,
                 "visible": true,
@@ -3109,7 +3109,7 @@
                 "ignoreDefaults": true,
                 "bypass": "@{artinpt_10}",
                 "onCreate": "",
-                "onValue": "var ranges = get('artrang_10') \nvar bypassInput = get('artinpt_10')\nif (bypassInput) {\n    set('artmodB_10', 0.15)\n    set('artmodA_10', 0.15)\n    return\n}\nset('template-io_articulationVarID', 10)\nset('template-io_articulationScript', 1)\nset('template-io_keyRangeVar2', ranges)\nset('template-io_keyRangeScript', 1)"
+                "onValue": "var ranges = get('artrang_10') \nvar bypassInput = get('artinpt_10')\nif (bypassInput) {\n    set('artmodB_10', 0.15)\n    set('artmodA_10', 0.15)\n    return\n}\nset('template-io_articulationVarID', 10)\nset('template-io_articulationScript', 1)"
               },
               {
                 "type": "input",
@@ -3317,7 +3317,7 @@
                 "ignoreDefaults": true,
                 "bypass": "@{artinpt_11}",
                 "onCreate": "",
-                "onValue": "var ranges = get('artrang_11') \nvar bypassInput = get('artinpt_11')\nif (bypassInput) {\n    set('artmodB_11', 0.15)\n    set('artmodA_11', 0.15)\n    return\n}\nset('template-io_articulationVarID', 11)\nset('template-io_articulationScript', 1)\nset('template-io_keyRangeVar2', ranges)\nset('template-io_keyRangeScript', 1)",
+                "onValue": "var ranges = get('artrang_11') \nvar bypassInput = get('artinpt_11')\nif (bypassInput) {\n    set('artmodB_11', 0.15)\n    set('artmodA_11', 0.15)\n    return\n}\nset('template-io_articulationVarID', 11)\nset('template-io_articulationScript', 1)",
                 "top": 800,
                 "left": 1690,
                 "visible": true,
@@ -3577,7 +3577,7 @@
                 "ignoreDefaults": true,
                 "bypass": "@{artinpt_12}",
                 "onCreate": "",
-                "onValue": "var ranges = get('artrang_12') \nvar bypassInput = get('artinpt_12')\nif (bypassInput) {\n    set('artmodB_12', 0.15)\n    set('artmodA_12', 0.15)\n    return\n}\nset('template-io_articulationVarID', 12)\nset('template-io_articulationScript', 1)\nset('template-io_keyRangeVar2', ranges)\nset('template-io_keyRangeScript', 1)"
+                "onValue": "var ranges = get('artrang_12') \nvar bypassInput = get('artinpt_12')\nif (bypassInput) {\n    set('artmodB_12', 0.15)\n    set('artmodA_12', 0.15)\n    return\n}\nset('template-io_articulationVarID', 12)\nset('template-io_articulationScript', 1)"
               },
               {
                 "type": "input",
@@ -3785,7 +3785,7 @@
                 "ignoreDefaults": true,
                 "bypass": "@{artinpt_13}",
                 "onCreate": "",
-                "onValue": "var ranges = get('artrang_13') \nvar bypassInput = get('artinpt_13')\nif (bypassInput) {\n    set('artmodB_13', 0.15)\n    set('artmodA_13', 0.15)\n    return\n}\nset('template-io_articulationVarID', 13)\nset('template-io_articulationScript', 1)\nset('template-io_keyRangeVar2', ranges)\nset('template-io_keyRangeScript', 1)",
+                "onValue": "var ranges = get('artrang_13') \nvar bypassInput = get('artinpt_13')\nif (bypassInput) {\n    set('artmodB_13', 0.15)\n    set('artmodA_13', 0.15)\n    return\n}\nset('template-io_articulationVarID', 13)\nset('template-io_articulationScript', 1)",
                 "top": 850,
                 "left": 1290,
                 "visible": true,
@@ -4045,7 +4045,7 @@
                 "ignoreDefaults": true,
                 "bypass": "@{artinpt_14}",
                 "onCreate": "",
-                "onValue": "var ranges = get('artrang_14') \nvar bypassInput = get('artinpt_14')\nif (bypassInput) {\n    set('artmodB_14', 0.15)\n    set('artmodA_14', 0.15)\n    return\n}\nset('template-io_articulationVarID', 14)\nset('template-io_articulationScript', 1)\nset('template-io_keyRangeVar2', ranges)\nset('template-io_keyRangeScript', 1)"
+                "onValue": "\nvar bypassInput = get('artinpt_14')\nif (bypassInput) {\n    set('artmodB_14', 0.15)\n    set('artmodA_14', 0.15)\n    return\n}\nset('template-io_articulationVarID', 14)\nset('template-io_articulationScript', 1)"
               },
               {
                 "type": "input",
@@ -4253,7 +4253,7 @@
                 "ignoreDefaults": true,
                 "bypass": "@{artinpt_15}",
                 "onCreate": "",
-                "onValue": "var ranges = get('artrang_15') \nvar bypassInput = get('artinpt_15')\nif (bypassInput) {\n    set('artmodB_15', 0.15)\n    set('artmodA_15', 0.15)\n    return\n}\nset('template-io_articulationVarID', 15)\nset('template-io_articulationScript', 1)\nset('template-io_keyRangeVar2', ranges)\nset('template-io_keyRangeScript', 1)",
+                "onValue": "var bypassInput = get('artinpt_15')\nif (bypassInput) {\n    set('artmodB_15', 0.15)\n    set('artmodA_15', 0.15)\n    return\n}\nset('template-io_articulationVarID', 15)\nset('template-io_articulationScript', 1)",
                 "top": 850,
                 "left": 1490,
                 "visible": true,
@@ -4505,7 +4505,7 @@
                 "ignoreDefaults": true,
                 "bypass": "@{artinpt_16}",
                 "onCreate": "",
-                "onValue": "var ranges = get('artrang_16') \nvar bypassInput = get('artinpt_16')\nif (bypassInput) {\n    set('artmodB_16', 0.15)\n    set('artmodA_16', 0.15)\n    return\n}\nset('template-io_articulationVarID', 16)\nset('template-io_articulationScript', 1)\nset('template-io_keyRangeVar2', ranges)\nset('template-io_keyRangeScript', 1)",
+                "onValue": "var bypassInput = get('artinpt_16')\nif (bypassInput) {\n    set('artmodB_16', 0.15)\n    set('artmodA_16', 0.15)\n    return\n}\nset('template-io_articulationVarID', 16)\nset('template-io_articulationScript', 1)",
                 "top": 850,
                 "left": 1590,
                 "visible": true,
@@ -4757,7 +4757,7 @@
                 "ignoreDefaults": true,
                 "bypass": "@{artinpt_17}",
                 "onCreate": "",
-                "onValue": "var ranges = get('artrang_17') \nvar bypassInput = get('artinpt_17')\nif (bypassInput) {\n    set('artmodB_17', 0.15)\n    set('artmodA_17', 0.15)\n    return\n}\nset('template-io_articulationVarID', 17)\nset('template-io_articulationScript', 1)\nset('template-io_keyRangeVar2', ranges)\nset('template-io_keyRangeScript', 1)",
+                "onValue": "var bypassInput = get('artinpt_17')\nif (bypassInput) {\n    set('artmodB_17', 0.15)\n    set('artmodA_17', 0.15)\n    return\n}\nset('template-io_articulationVarID', 17)\nset('template-io_articulationScript', 1)",
                 "top": 850,
                 "left": 1690,
                 "visible": true,
@@ -5009,7 +5009,7 @@
                 "ignoreDefaults": true,
                 "bypass": "@{artinpt_18}",
                 "onCreate": "",
-                "onValue": "var ranges = get('artrang_18') \nvar bypassInput = get('artinpt_18')\nif (bypassInput) {\n    set('artmodB_18', 0.15)\n    set('artmodA_18', 0.15)\n    return\n}\nset('template-io_articulationVarID', 18)\nset('template-io_articulationScript', 1)\nset('template-io_keyRangeVar2', ranges)\nset('template-io_keyRangeScript', 1)",
+                "onValue": "var bypassInput = get('artinpt_18')\nif (bypassInput) {\n    set('artmodB_18', 0.15)\n    set('artmodA_18', 0.15)\n    return\n}\nset('template-io_articulationVarID', 18)\nset('template-io_articulationScript', 1)",
                 "top": 850,
                 "left": 1790,
                 "visible": true,
@@ -38743,7 +38743,7 @@
         "ignoreDefaults": false,
         "bypass": false,
         "onCreate": "",
-        "onValue": "const allArtRanges = JSON.parse(get('template-io_keyRangeVar1'))\nconst indArtRanges = JSON.parse(get('template-io_keyRangeVar2'))\nvar id = get('template-io_articulationVarID')\nconst allNotes = get('template-io_allNotes')\nconst keyRangeColors = get('template-io_keyRangeColors')\n\nvar modes = []\nfor (var i = 1; i < 19; i++) {\n    var mode = get(`artMode_${i}`)\n    modes.push(mode)\n}\n\nvar thisMode = modes[parseInt(id - 1)]\nlet selectedRanges = []\n\nif (thisMode === 'toggle') {\n    return\n}\nfor (let i = 0; i < allNotes.length; i++) {\n    set('myKey-' + i, 0)\n    set('template-io_myKey-' + i, 0)\n}\nif (thisMode === 'tap') {\n    for (var i in indArtRanges) {\n        selectedRanges.push(allArtRanges.filter((range) => range.id === indArtRanges[i])[0])\n    }\n}\nfor (var range in selectedRanges) {\n    var high = selectedRanges[range].high\n    var low = selectedRanges[range].low\n\n    var indexA = allNotes.indexOf(low)\n    var indexB = allNotes.indexOf(high)\n\n    for (let i = 0; i < allNotes.length; i++) {\n        if (i >= indexA && i <= indexB) {\n            set('myKey-' + i, 1)\n            set('keyColor-' + i, keyRangeColors[range])\n            set('template-io_myKey-' + i, 1)\n            set('template-io_keyColor-' + i, keyRangeColors[range])\n        }\n    }\n}\n\n\n",
+        "onValue": "var range = get('template-io_keyRangeVar1')\nvar allNotes = get('template-io_allNotes')\nvar keyRangeColors = get('template-io_keyRangeColors')\n\nfor (let j = 0; j < allNotes.length; j++) {\n    set('myKey-' + j, 0)\n    set('template-io_myKey-' + j, 0)\n}\n\nvar high = range.high\nvar low = range.low\n\nvar indexA = allNotes.indexOf(low)\nvar indexB = allNotes.indexOf(high)\n\nfor (let i = 0; i < allNotes.length; i++) {\n    if (i >= indexA && i <= indexB) {\n        set('myKey-' + i, 1)\n        set('keyColor-' + i, keyRangeColors[0])\n        set('template-io_myKey-' + i, 1)\n        set('template-io_keyColor-' + i, keyRangeColors[0])\n    }\n}\n\n\n",
         "onKeyboard": "",
         "keyBinding": "",
         "keyRepeat": true,
@@ -38765,7 +38765,7 @@
         "ignoreDefaults": false,
         "bypass": false,
         "onCreate": "",
-        "onValue": "var id = get('template-io_articulationVarID')\n\nvar modes = []\nfor (var i = 1; i < 19; i++) {\n    var mode = get(`artMode_${i}`)\n    modes.push(mode)\n}\n\nvar thisMode = modes[parseInt(id - 1)]\n\nif (thisMode === 'toggle') {\n    set(`artmodB_${id}`, 0.75)\n    set(`artmodA_${id}`, 0.15)\n}\n\nif (thisMode === 'tap') {\n    for (var i = 0; i < modes.length; i++) {\n        if (modes[i] === 'toggle') {\n            continue\n        }\n        if (i + 1 === id) {\n            set(`artmodA_${id}`, 0.75)\n            set(`artmodB_${id}`, 0.75)\n            continue\n        }\n        set(`artmodA_${i}`, 0.15)\n        set(`artmodB_${i}`, 0.15)\n    }\n}",
+        "onValue": "var id = get('template-io_articulationVarID')\n\nvar modes = []\nfor (var i = 1; i < 19; i++) {\n    var mode = get(`artMode_${i}`)\n    modes.push(mode)\n}\n\nvar thisMode = modes[parseInt(id - 1)]\n\nif (thisMode === 'toggle') {\n    set(`artmodB_${id}`, 0.75)\n}\n\nif (thisMode === 'tap') {\n    for (var i = 1; i < modes.length; i++) {\n        if (modes[i] === 'toggle') {\n            continue\n        }\n        if (i === id) {\n            set(`artmodA_${id}`, 0.75)\n            set(`artmodB_${id}`, 0.75)\n            continue\n        }\n        set(`artmodA_${i}`, 0.15)\n        set(`artmodB_${i}`, 0.15)\n    }\n}",
         "onKeyboard": "",
         "keyBinding": "",
         "keyRepeat": true,

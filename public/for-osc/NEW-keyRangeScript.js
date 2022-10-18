@@ -1,25 +1,44 @@
-var ranges = get('template-io_keyRangeVar1')
+const allArtRanges = JSON.parse(get('template-io_keyRangeVar1'))
+const indArtRanges = JSON.parse(get('template-io_keyRangeVar2'))
+var id = get('template-io_articulationVarID')
+const allNotes = get('template-io_allNotes')
+const keyRangeColors = get('template-io_keyRangeColors')
 
-var allNotes = get('template-io_allNotes')
-var keyRangeColors = get('template-io_keyRangeColors')
-
-for (let j = 0; j < 128; j++) {
-    set('myKey-' + j, 0)
-    set('template-io_myKey-' + j, 0)
+var modes = []
+for (var i = 1; i < 19; i++) {
+    var mode = get(`artMode_${i}`)
+    modes.push(mode)
 }
 
-var high = ranges[0].high
-var low = ranges[0].low
+var thisMode = modes[parseInt(id - 1)]
+let selectedRanges = []
 
-var indexA = allNotes.indexOf(low)
-var indexB = allNotes.indexOf(high)
-
+if (thisMode === 'toggle') {
+    return
+}
 for (let i = 0; i < allNotes.length; i++) {
-    if (i >= indexA && i <= indexB) {
-        set('myKey-' + i, 1)
-        set('keyColor-' + i, keyRangeColors[0])
-        set('template-io_myKey-' + i, 1)
-        set('template-io_keyColor-' + i, keyRangeColors[0])
+    set('myKey-' + i, 0)
+    set('template-io_myKey-' + i, 0)
+}
+if (thisMode === 'tap') {
+    for (var i in indArtRanges) {
+        selectedRanges.push(allArtRanges.filter((range) => range.id === indArtRanges[i])[0])
+    }
+}
+for (var range in selectedRanges) {
+    var high = selectedRanges[range].high
+    var low = selectedRanges[range].low
+
+    var indexA = allNotes.indexOf(low)
+    var indexB = allNotes.indexOf(high)
+
+    for (let i = 0; i < allNotes.length; i++) {
+        if (i >= indexA && i <= indexB) {
+            set('myKey-' + i, 1)
+            set('keyColor-' + i, keyRangeColors[range])
+            set('template-io_myKey-' + i, 1)
+            set('template-io_keyColor-' + i, keyRangeColors[range])
+        }
     }
 }
 

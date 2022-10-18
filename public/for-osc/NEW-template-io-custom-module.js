@@ -1,20 +1,20 @@
 //variable & input values to be sent to OSC
 const workFile_jsn = loadJSON('template-io-workfile.json')
-const allTrack_jsn = loadJSON('Tracklist_10.13.2022_V1.2.json'); //`${or whatever the user names their file}`
+const allTrack_jsn = loadJSON('Tracklist_10.13.2022_V1.3.json'); //`${or whatever the user names their file}`
 
 const items = allTrack_jsn.items
 const fileInfo = allTrack_jsn.fileInfo
 
 //go through workFile and get number of faders and articulations
-let artListOsc = []
-let fadListOsc = []
-for (var i in workFile_jsn.content.widgets[0].tabs[1].widgets) {
-	if (workFile_jsn.content.widgets[0].tabs[0].widgets[i].id.includes('Art'))
-		artListOsc.push(workFile_jsn.content.widgets[0].tabs[0].widgets[i].id)
+// let artListOsc = []
+// let fadListOsc = []
+// for (var i in workFile_jsn.content.widgets[0].tabs[1].widgets) {
+// 	if (workFile_jsn.content.widgets[0].tabs[0].widgets[i].id.includes('Art'))
+// 		artListOsc.push(workFile_jsn.content.widgets[0].tabs[0].widgets[i].id)
 
-	if (workFile_jsn.content.widgets[0].tabs[0].widgets[i].id.includes('CC_fad'))
-		fadListOsc.push(workFile_jsn.content.widgets[0].tabs[0].widgets[i].id)
-}
+// 	if (workFile_jsn.content.widgets[0].tabs[0].widgets[i].id.includes('CC_fad'))
+// 		fadListOsc.push(workFile_jsn.content.widgets[0].tabs[0].widgets[i].id)
+// }
 //array of all notes (Middle C == C3 == MIDI Code 60)
 const allNotes_loc = []
 for (let i = -2; i < 9; i++) {
@@ -99,12 +99,6 @@ function clickTrk(arg1, arg2) {
 	}
 }
 //
-function keyRanges(range) {
-	receive('/template-io_keyRangeVar1', range);
-	receive('/template-io_keyRangeScript', 1);
-	receive('/keyRangeVar1', range);
-	receive('/keyRangeScript', 1);
-}
 module.exports = {
 	init: function () {
 		send('midi', 'OSC1', '/control', 3, 17, 1); //'whole notes'
@@ -160,14 +154,41 @@ module.exports = {
 		if (keyP) {
 
 			const trkNumb = arg1 * 128 + arg2;
-			if (!items[trkNumb]) return receive('/selectedTrackName', 'No Track Data!');
-			const trkRang = items[trkNumb].fullRange[0];
+
+			for (let i = 0; i < 8; i++) {
+				const nameOsc = '/CC_disp_' + parseInt(i + 1);
+				const addrOsc = '/CC_fad__' + parseInt(i + 1);
+				const codeOsc = '/CC_incr_' + parseInt(i + 1);
+				receive(nameOsc, ' ');
+				receive(addrOsc, 0);
+				receive(codeOsc, 0);
+			}
+			for (let i = 0; i < 18; i++) {
+				const nameOsc = '/artname_' + parseInt(i + 1);
+				const inptOsc = '/artinpt_' + parseInt(i + 1);
+				const colrOsc = '/artcolr_' + parseInt(i + 1);
+				const modAOsc = '/artmodA_' + parseInt(i + 1);
+				const modBOsc = '/artmodB_' + parseInt(i + 1);
+				receive(nameOsc, ' ');
+				receive(inptOsc, 'true');
+				receive(colrOsc, '#A9A9A9');
+				receive(modAOsc, 0.15);
+				receive(modBOsc, 0.15);
+			}
+
+			if (!items[trkNumb]) {
+				receive('/selectedTrackName', 'No Track Data!')
+				receive('/template-io_keyRangeVar1', []);
+				receive('/template-io_keyRangeVar2', []);
+				receive('/template-io_keyRangeScript', 1);
+				return
+			};
+
 			const trkName = items[trkNumb].name;
+			const trkRang = items[trkNumb].fullRange;
 
 			receive('/selectedTrackName', trkName);
 			receive('/template-io_selectedTrackName', trkName);
-
-			keyRanges(trkRang);
 
 			if (items[trkNumb].fadList.length > 4) {
 				receive('/faderPanel-color-2', '1px solid red');
@@ -175,14 +196,6 @@ module.exports = {
 				receive('/faderPanel-color-2', '');
 			}
 
-			for (let i = 0; i < fadListOsc.length; i++) {
-				const nameOsc = '/CC_disp_' + parseInt(i + 1);
-				const addrOsc = '/CC_fad__' + parseInt(i + 1);
-				const codeOsc = '/CC_incr_' + parseInt(i + 1);
-				receive(nameOsc, '');
-				receive(addrOsc, 0);
-				receive(codeOsc, 0);
-			}
 			const fadListJsn = items[trkNumb].fadList
 			for (let i = 0; i < fadListJsn.length; i++) {
 				const nameOsc = '/CC_disp_' + parseInt(i + 1);
@@ -197,19 +210,6 @@ module.exports = {
 				receive(codeOsc, codeJsn);
 				prmUpdate(4, typeJsn, codeJsn, deftJsn);
 			}
-
-			for (let i = 0; i < artListOsc.length; i++) {
-				const nameOsc = '/artname_' + parseInt(i + 1);
-				const inptOsc = '/artinpt_' + parseInt(i + 1);
-				const colrOsc = '/artcolr_' + parseInt(i + 1);
-				const modAOsc = '/artmodA_' + parseInt(i + 1);
-				const modBOsc = '/artmodB_' + parseInt(i + 1);
-				receive(nameOsc, ' ');
-				receive(inptOsc, 'true');
-				receive(colrOsc, '#A9A9A9');
-				receive(modAOsc, 0.15);
-				receive(modBOsc, 0.15);
-			}
 			const artListJsn = [...items[trkNumb].artList, ...items[trkNumb].artListTog]
 			for (let i = 0; i < artListJsn.length; i++) {
 				const nameOsc = '/artname_' + parseInt(i + 1);
@@ -223,12 +223,14 @@ module.exports = {
 				const modAOsc = '/artmodA_' + parseInt(i + 1);
 				const modBOsc = '/artmodB_' + parseInt(i + 1);
 				const modeOsc = '/artMode_' + parseInt(i + 1);
+				const rangOsc = '/artrang_' + parseInt(i + 1);
 				const nameJsn = artListJsn[i].name;
 				const typeJsn = artListJsn[i].codeType
 				const deftJsn = artListJsn[i].default;
 				const codeJsn = parseInt(artListJsn[i].code);
 				const on__Jsn = parseInt(artListJsn[i].on);
 				const off_Jsn = parseInt(artListJsn[i].off);
+				const rangJsn = artListJsn[i].ranges;
 
 				let codeDsp;
 
@@ -251,22 +253,32 @@ module.exports = {
 				receive(deftOsc, off_Jsn);
 				receive(on__Osc, on__Jsn);
 				receive(off_Osc, off_Jsn);
+				receive(rangOsc, rangJsn);
 				receive(inptOsc, 'false');
 				receive(colrOsc, '#6dfdbb');
 
 				if (!artListJsn[i].toggle) {
 					receive(modeOsc, 'toggle')
 					receive(colrOsc, '#a86739')
+					receive(modBOsc, 0.75);
 					prmUpdate(4, typeJsn, codeJsn, off_Jsn)
-					continue
+					if (deftJsn !== 'On') continue
+
+					receive(deftOsc, on__Jsn);
+					receive('/template-io_keyRangeVar1', trkRang);
+					receive('/template-io_keyRangeVar2', rangJsn);
+					receive('/template-io_keyRangeScript', 1);
 				}
+				else {
+					receive(modeOsc, 'tap')
+					if (deftJsn !== true) continue
 
-				receive(modeOsc, 'tap')
-
-				if (deftJsn === 'On' || deftJsn === true) {
 					receive(modAOsc, 0.75)
 					receive(deftOsc, on__Jsn);
 					prmUpdate(4, typeJsn, codeJsn, on__Jsn)
+					receive('/template-io_keyRangeVar1', trkRang);
+					receive('/template-io_keyRangeVar2', rangJsn);
+					receive('/template-io_keyRangeScript', 1);
 				}
 			}
 		}
