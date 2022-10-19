@@ -25,3 +25,31 @@
     font-weight: normal;
     font-style: normal;
 }
+
+@font-face {
+    font-family: 'caviar_dreamsbold';
+    src: url('./fonts/Caviar_Dreams_Bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'caviar_dreamsbold_italic';
+    src: url('./fonts/CaviarDreams_BoldItalic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'caviar_dreamsitalic';
+    src: url('./fonts/CaviarDreams_Italic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'caviar_dreamsregular';
+    src: url('./fonts/CaviarDreams-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
