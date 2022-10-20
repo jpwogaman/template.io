@@ -231,7 +231,12 @@ module.exports = {
                 const off_Jsn = parseInt(artListJsn[i].off)
                 const rangJsn = artListJsn[i].ranges
 
-                if (!artListJsn[i].name) continue
+                if (!artListJsn[i].name) {
+                    receive('/template-io_keyRangeVar1', trkRang)
+                    receive('/template-io_keyRangeVar2', rangJsn)
+                    receive('/template-io_keyRangeScript', 1)
+                    continue
+                }
 
                 let codeDsp
 
