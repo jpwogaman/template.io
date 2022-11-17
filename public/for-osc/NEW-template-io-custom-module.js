@@ -177,6 +177,7 @@ module.exports = {
             receive('/template-io_keyRangeVar2', [])
             receive('/template-io_keyRangeScript', 1)
             receive('/selectedTrackKeyRanges', ' ')
+            receive('/selectedTrackDelays', ' ')
 
             if (!items[trkNumb]) {
                 receive('/selectedTrackName', 'No Track Data!')
@@ -185,9 +186,20 @@ module.exports = {
 
             const trkName = items[trkNumb].name
             const trkRang = items[trkNumb].fullRange
+            const trkDely1 = items[trkNumb].baseDelay
+            const trkDely2 = items[trkNumb].avgDelay
+            let sign1 = ''
+            let sign2 = ''
+            if (Math.sign(trkDely1) === 1) {
+                sign1 = '+'
+            }
+            if (Math.sign(trkDely2) === 1) {
+                sign2 = '+'
+            }
 
             receive('/selectedTrackName', trkName)
             receive('/template-io_selectedTrackName', trkName)
+            receive('/selectedTrackDelays', `Base Delay: ${sign1}${trkDely1}ms\nAvg Delay: ${sign2}${trkDely2}ms`)
 
             if (items[trkNumb].fadList.length > 4) {
                 receive('/faderPanel-color-2', '1px solid red')

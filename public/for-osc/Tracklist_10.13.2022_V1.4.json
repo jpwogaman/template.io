@@ -296,7 +296,7 @@
             "locked": false,
             "name": "Ens Str Leg [CSS]",
             "channel": 1,
-            "baseDelay": 0,
+            "baseDelay": "0",
             "avgDelay": "0.00",
             "color": "#F0D340",
             "fullRange": [
@@ -318,7 +318,7 @@
                     "on": 76,
                     "off": 81,
                     "default": "On",
-                    "delay": 0,
+                    "delay": "0",
                     "changeType": "Value 2",
                     "ranges": [
                         "T_0_FR_0"
@@ -333,7 +333,7 @@
                     "on": 86,
                     "off": 91,
                     "default": "Off",
-                    "delay": 0,
+                    "delay": "0",
                     "changeType": "Value 2",
                     "ranges": [
                         "T_0_FR_0"
@@ -350,7 +350,7 @@
                     "on": 6,
                     "off": 0,
                     "default": true,
-                    "delay": 0,
+                    "delay": "0",
                     "changeType": "Value 2",
                     "ranges": [
                         "T_0_FR_0"
@@ -365,7 +365,7 @@
                     "on": 46,
                     "off": 0,
                     "default": false,
-                    "delay": 0,
+                    "delay": "0",
                     "changeType": "Value 2",
                     "ranges": [
                         "T_0_FR_0"
@@ -3188,7 +3188,7 @@
             "locked": false,
             "name": "Solo Piano Player+Close [EW]",
             "channel": 1,
-            "baseDelay": "+25",
+            "baseDelay": "25",
             "avgDelay": "25.00",
             "color": "#58FA3D",
             "fullRange": [
@@ -3210,7 +3210,7 @@
                     "on": 127,
                     "off": 0,
                     "default": "Off",
-                    "delay": "+25",
+                    "delay": "25",
                     "changeType": "Value 2",
                     "ranges": [
                         "T_18_FR_0"
@@ -3225,7 +3225,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "On",
-                    "delay": "+25",
+                    "delay": "25",
                     "changeType": "Value 2",
                     "ranges": [
                         "T_18_FR_0"
@@ -3242,7 +3242,7 @@
                     "on": 0,
                     "off": 0,
                     "default": true,
-                    "delay": "+25",
+                    "delay": "25",
                     "changeType": "Value 2",
                     "ranges": [
                         "T_18_FR_0"
@@ -5409,14 +5409,14 @@
                     "name": "",
                     "low": "C1",
                     "high": "E2",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_35_FR_1",
                     "name": "",
                     "low": "C3",
                     "high": "E4",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 }
             ],
             "artListTog": [
@@ -5479,14 +5479,14 @@
                     "name": "",
                     "low": "C1",
                     "high": "E2",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_36_FR_1",
                     "name": "",
                     "low": "C3",
                     "high": "E4",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 }
             ],
             "artListTog": [
@@ -5550,7 +5550,7 @@
                     "name": "",
                     "low": "C3",
                     "high": "G4",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 }
             ],
             "artListTog": [
@@ -5612,7 +5612,7 @@
                     "name": "",
                     "low": "C1",
                     "high": "G1",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 }
             ],
             "artListTog": [
@@ -5674,7 +5674,7 @@
                     "name": "",
                     "low": "C1",
                     "high": "G1",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 }
             ],
             "artListTog": [
@@ -5736,7 +5736,7 @@
                     "name": "",
                     "low": "C1",
                     "high": "B3",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 }
             ],
             "artListTog": [
@@ -7692,35 +7692,35 @@
                     "name": "Misc",
                     "low": "C0",
                     "high": "C2",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_60_FR_1",
                     "name": "Gliss 1",
                     "low": "C3",
                     "high": "A3",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_60_FR_2",
                     "name": "Gliss 2",
                     "low": "C4",
                     "high": "A4",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_60_FR_3",
                     "name": "Bowed 1",
                     "low": "C5",
                     "high": "A5",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_60_FR_4",
                     "name": "Bowed 2",
                     "low": "C6",
                     "high": "B6",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 }
             ],
             "artListTog": [
@@ -7798,21 +7798,21 @@
                     "name": "Bowed",
                     "low": "C0",
                     "high": "A1",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_61_FR_1",
                     "name": "Hits 1",
                     "low": "C2",
                     "high": "C6",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_61_FR_2",
                     "name": "Hits 2",
                     "low": "E6",
                     "high": "E6",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 }
             ],
             "artListTog": [
@@ -7886,7 +7886,7 @@
                     "name": "",
                     "low": "D#0",
                     "high": "C5",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 }
             ],
             "artListTog": [
@@ -7956,7 +7956,7 @@
                     "name": "",
                     "low": "C0",
                     "high": "C5",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 }
             ],
             "artListTog": [
@@ -10173,14 +10173,14 @@
                     "name": "Hits",
                     "low": "C1",
                     "high": "A1",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_87_FR_1",
                     "name": "Rolls",
                     "low": "B1",
                     "high": "F2",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 }
             ],
             "artListTog": [
@@ -10244,21 +10244,21 @@
                     "name": "",
                     "low": "C1",
                     "high": "G1",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_88_FR_1",
                     "name": "",
                     "low": "C2",
                     "high": "G2",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_88_FR_2",
                     "name": "",
                     "low": "C3",
                     "high": "G3",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 }
             ],
             "artListTog": [
@@ -10324,42 +10324,42 @@
                     "name": "",
                     "low": "C1",
                     "high": "G1",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_89_FR_1",
                     "name": "",
                     "low": "C2",
                     "high": "G2",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_89_FR_2",
                     "name": "",
                     "low": "C3",
                     "high": "G3",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_89_FR_3",
                     "name": "",
                     "low": "C4",
                     "high": "G4",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_89_FR_4",
                     "name": "",
                     "low": "C5",
                     "high": "G5",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_89_FR_5",
                     "name": "",
                     "low": "C6",
                     "high": "G6",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 }
             ],
             "artListTog": [
@@ -10431,49 +10431,49 @@
                     "name": "",
                     "low": "C0",
                     "high": "E0",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_90_FR_1",
                     "name": "",
                     "low": "C1",
                     "high": "E1",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_90_FR_2",
                     "name": "",
                     "low": "C2",
                     "high": "E2",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_90_FR_3",
                     "name": "",
                     "low": "C3",
                     "high": "E3",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_90_FR_4",
                     "name": "",
                     "low": "C4",
                     "high": "E4",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_90_FR_5",
                     "name": "",
                     "low": "C5",
                     "high": "E5",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_90_FR_6",
                     "name": "",
                     "low": "C6",
                     "high": "E6",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 }
             ],
             "artListTog": [
@@ -10545,7 +10545,7 @@
                     "name": "",
                     "low": "A-1",
                     "high": "C7",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 }
             ],
             "artListTog": [
@@ -10607,28 +10607,28 @@
                     "name": "",
                     "low": "C1",
                     "high": "A1",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_92_FR_1",
                     "name": "",
                     "low": "C2",
                     "high": "A2",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_92_FR_2",
                     "name": "",
                     "low": "C3",
                     "high": "A3",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_92_FR_3",
                     "name": "",
                     "low": "C4",
                     "high": "A4",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 }
             ],
             "artListTog": [
@@ -10693,7 +10693,7 @@
                     "name": "",
                     "low": "C1",
                     "high": "F3",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 }
             ],
             "artListTog": [
@@ -10755,14 +10755,14 @@
                     "name": "",
                     "low": "C1",
                     "high": "G1",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 },
                 {
                     "id": "T_94_FR_1",
                     "name": "",
                     "low": "C2",
                     "high": "F2",
-                    "whiteKeysOnly": false
+                    "whiteKeysOnly": true
                 }
             ],
             "artListTog": [
@@ -16033,7 +16033,7 @@
         {
             "id": "T_143",
             "locked": false,
-            "name": "Post Apocalyptic Guitart [8Dio]",
+            "name": "Post Apocalyptic Guitar [8Dio]",
             "channel": 1,
             "baseDelay": 0,
             "avgDelay": "0.00",
