@@ -1,4 +1,8 @@
+# "Scratch paper" for scripts found in template-io-workfile.json 
+
+```js
 /////////////// This script is in every articulation button
+
 var ranges = get('artrang_1') // _2, _3, etc
 var bypassInput = get('artinpt_1') // _2, _3, etc
 if (bypassInput) {
@@ -10,7 +14,9 @@ set('template-io_articulationVarID', 1) // 2, 3, etc
 set('template-io_articulationScript', 1)
 set('template-io_keyRangeVar2', ranges)
 set('template-io_keyRangeScript', 1)
+
 /////////////// 'template-io_articulationScript'
+
 var id = get('template-io_articulationVarID')
 
 var modes = []
@@ -39,3 +45,4 @@ if (thisMode === 'tap') {
         set(`artmodB_${i}`, 0.15)
     }
 }
+```

@@ -1,3 +1,6 @@
+# "Scratch paper" for scripts found in template-io-workfile.json 
+
+```js
 const allArtRanges = JSON.parse(get('template-io_keyRangeVar1'))
 const indArtRanges = JSON.parse(get('template-io_keyRangeVar2'))
 var id = get('template-io_articulationVarID')
@@ -54,3 +57,4 @@ for (var range in selectedRanges) {
         }
     }
 }
+```
