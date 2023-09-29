@@ -12,6 +12,10 @@ for (var i = 1; i < 19; i++) {
     var mode = get(`artMode_${i}`)
     modes.push(mode)
 }
+for (let j = 0; j < 6; j++){
+  set('keyRangeName_' + j, '')
+}
+
 var thisMode = modes[parseInt(id - 1)]
 if (thisMode === 'toggle') return
 
@@ -19,27 +23,38 @@ for (let i = 0; i < allNotes.length; i++) {
     set('myKey-' + i, 0)
     set('template-io_myKey-' + i, 0)
 }
+
 let selectedRanges = []
-let selectedNames = []
-for (var i in indArtRanges) {
-    selectedRanges.push(allArtRanges.filter((range) => range.id === indArtRanges[i])[0])
-    selectedNames.push(!allArtRanges.filter((range) => range.id === indArtRanges[i])[0].name ? `range ${i} ` : allArtRanges.filter((range) => range.id === indArtRanges[i])[0].name)
-}
-set('selectedTrackKeyRanges', selectedNames)
+ 
+indArtRanges.forEach((indRange, i)=> {
+
+  const indSelectedRange = allArtRanges.filter((range) => range.id === indArtRanges[i])[0]
+  selectedRanges.push(indSelectedRange)
+  const selectedName = !indSelectedRange.name ? '' : indSelectedRange.name
+  set('keyRangeName_' + Number(i+1), selectedName)
+
+})
 
 const blackKeys = []
 for (let i = -2; i < 9; i++) {
     blackKeys.push('C#' + i, 'D#' + i, 'F#' + i, 'G#' + i, 'A#' + i)
 }
 
-for (var range in selectedRanges) {
+Object.keys(selectedRanges).forEach((range, index)=> {
     var high = selectedRanges[range].high
     var low = selectedRanges[range].low
     var whiteKeysOnly = selectedRanges[range].whiteKeysOnly
 
     var indexA = allNotes.indexOf(low)
     var indexB = allNotes.indexOf(high)
-
+    
+    const rangeLeft = getProp('myKey-' + indexA, 'left')
+    const rangeRight = getProp('myKey-' + indexB, 'left') + 24
+    const rangeWidth = rangeRight - rangeLeft
+    
+    set('keyRangeLeft_' + Number(index + 1), rangeLeft)
+    set('keyRangeWidth_' + Number(index + 1), rangeWidth)
+    
     for (let i = 0; i < allNotes.length; i++) {
         if (i >= indexA && i <= indexB) {
             set('myKey-' + i, 1)
@@ -56,5 +71,5 @@ for (var range in selectedRanges) {
             set('template-io_myKey-' + index, 0)
         }
     }
-}
+})
 ```

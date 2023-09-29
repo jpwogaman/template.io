@@ -3814,7 +3814,7 @@
             "fullRange": [
                 {
                     "id": "T_24_FR_0",
-                    "name": "Full ",
+                    "name": "Full",
                     "low": "F1",
                     "high": "E2",
                     "whiteKeysOnly": false
@@ -3914,7 +3914,8 @@
                         "T_24_FR_1",
                         "T_24_FR_2",
                         "T_24_FR_3",
-                        "T_24_FR_4"
+                        "T_24_FR_4",
+                        "T_24_FR_5"
                     ]
                 },
                 {
@@ -3929,7 +3930,12 @@
                     "delay": 0,
                     "changeType": "Value 2",
                     "ranges": [
-                        ""
+                        "T_24_FR_0",
+                        "T_24_FR_1",
+                        "T_24_FR_2",
+                        "T_24_FR_3",
+                        "T_24_FR_4",
+                        "T_24_FR_5"
                     ]
                 },
                 {
