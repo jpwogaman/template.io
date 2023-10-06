@@ -13,12 +13,13 @@
     "url": "https://github.com/jpwogaman/template.io/issues"
   },
   "scripts": {
-    "build": "next build && next export -o dist",
+    "build": "next build && next export -o build",
     "build:web": "next build",
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",
+    "deps": "ncu --interactive --format group",
     "tauri": "tauri"
   },
   "dependencies": {
@@ -36,6 +37,7 @@
     "localforage": "^1.10.0",
     "next": "13.0.2",
     "next-auth": "4.20.1",
+    "next-themes": "^0.2.1",
     "react": "18.2.0",
     "react-color": "^2.19.3",
     "react-colorful": "^5.6.1",
