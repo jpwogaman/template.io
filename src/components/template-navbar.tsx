@@ -1,40 +1,43 @@
-import { FC } from "react";
-import { IconBtnToggle } from "./icon-btn-toggle";
-import { useTrackListCount } from '../data/track-list/track-context';
-interface TemplateNavbarProps {
-
-}
+import { type FC, useEffect, useState } from 'react'
+import { IconBtnToggle } from './icon-btn-toggle'
+import { useTrackListCount } from '@/data/track-list/track-context'
+import { useTheme } from 'next-themes'
+interface TemplateNavbarProps {}
 
 export const TemplateNavbar: FC<TemplateNavbarProps> = () => {
+  const { setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
 
-    const trackCount = useTrackListCount()
+  const trackCount = useTrackListCount()
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
-    const changeTheme = () => {
-        document.body.classList.toggle('dark', undefined)
-    }
+  if (!mounted) {
+    return null
+  }
 
-    return (
-
-        <div className="bg-zinc-900 sticky top-0 z-50 container min-w-full min-h-[40px] h-[40px] max-h-[40px] items-center">
-            <ul className="flex justify-between">
-                {/* <li className="block py-2 w-60 text-zinc-200">0 VEP Instances</li>
-                <li className="block py-2 w-60 text-zinc-200">0 Samplers</li> */}
-                <li className="block p-2 pl-5 w-60 text-zinc-200 text-left">{trackCount} {trackCount > 1 ? 'Tracks' : 'Track'}</li>
-                <li className="block p-2 w-60 text-zinc-200 cursor-pointer text-right">
-                    <IconBtnToggle
-                        classes="w-10"
-                        titleA="Change to Dark Mode."
-                        titleB="Change to Light Mode."
-                        id="themeChange"
-                        a="fa-solid fa-circle-half-stroke fa-rotate-180"
-                        b="fa-solid fa-circle-half-stroke"
-                        defaultIcon="a"
-                        onToggleA={changeTheme}
-                        onToggleB={changeTheme}>
-                    </IconBtnToggle>
-                </li>
-            </ul>
-        </div>
-
-    );
-};
+  return (
+    <div className='container sticky top-0 z-50 h-[40px] max-h-[40px] min-h-[40px] min-w-full items-center bg-zinc-900'>
+      <ul className='flex justify-between'>
+        {/*<li className="block w-60 py-2 text-zinc-200">0 VEP Instances</li>
+        <li className="block w-60 py-2 text-zinc-200">0 Samplers</li>*/}
+        <li className='block w-60 p-2 pl-5 text-left text-zinc-200'>
+          {trackCount} {trackCount > 1 ? 'Tracks' : 'Track'}
+        </li>
+        <li className='block w-60 cursor-pointer p-2 text-right text-zinc-200'>
+          <IconBtnToggle
+            classes='w-10'
+            titleA='Change to Dark Mode.'
+            titleB='Change to Light Mode.'
+            id='themeChange'
+            a='fa-solid fa-circle-half-stroke fa-rotate-180'
+            b='fa-solid fa-circle-half-stroke'
+            defaultIcon='a'
+            onToggleA={() => setTheme('dark')}
+            onToggleB={() => setTheme('light')}></IconBtnToggle>
+        </li>
+      </ul>
+    </div>
+  )
+}

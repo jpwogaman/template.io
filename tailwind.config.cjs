@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  content: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: 'class',
   theme: {
     extend: {
@@ -12,8 +12,8 @@ module.exports = {
         sans: ['camingocoderegular'],
         serif: ['camingocoderegular'],
         mono: ['camingocoderegular']
-      },
-    },
-  }, 
-  plugins: [  ]
+      }
+    }
+  },
+  plugins: []
 }

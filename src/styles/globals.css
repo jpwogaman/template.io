@@ -3,126 +3,122 @@
 @import 'fonts';
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
-
 *,
 *::after,
 *::before {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    scroll-behavior: smooth;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
 }
 
 body {
-    height: 100vh;
-    max-height: 100vh;
-    width: 100vw;
-    max-width: 100vw;
-    overflow: hidden;
+  height: 100vh;
+  max-height: 100vh;
+  width: 100vw;
+  max-width: 100vw;
+  overflow: hidden;
+  font-family: 'caviar_dreamsregular';
 }
 
 html {
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: 'caviar_dreamsregular';
+  scroll-behavior: smooth;
 }
 
 .bg-main {
-    @apply bg-zinc-100 
+  @apply bg-zinc-100 
 	dark:bg-zinc-800;
 }
 
 .text-main {
-    @apply text-zinc-900 
+  @apply text-zinc-900 
 	dark:text-zinc-200;
 }
 
 .bg-main-invert {
-    @apply dark:bg-zinc-100 
-	bg-zinc-800;
+  @apply bg-zinc-800 
+	dark:bg-zinc-100;
 }
 
 .text-main-invert {
-    @apply dark:text-zinc-900 
-	text-zinc-200;
+  @apply text-zinc-200 
+	dark:text-zinc-900;
 }
 
 .customColorPickerContainer .react-colorful__saturation-pointer,
 .customColorPickerContainer .react-colorful__hue-pointer,
 .customColorPickerContainer .react-colorful__alpha-pointer {
-    @apply w-[16px]
-	h-[16px]
+  @apply h-[16px]
+	w-[16px]
 	rounded-full;
 }
 
 .customColorPickerContainer .react-colorful__hue,
 .customColorPickerContainer .react-colorful__alpha {
-    @apply h-[14px]
+  @apply h-[14px]
 	rounded-md;
 }
 
 .customColorPickerContainer .react-colorful__saturation {
-    @apply rounded-lg
-	shadow-none
-	mb-2;
+  @apply mb-2
+	rounded-lg
+	shadow-none;
 }
 
 .customColorPickerContainer .react-colorful {
-    @apply h-[100px]
+  @apply h-[100px]
 	cursor-pointer;
 }
 
 details[open] summary ~ * {
-    animation: sweep 1s ease-in-out;
+  animation: sweep 1s ease-in-out;
 }
 
 @keyframes sweep {
-    0% {
-        opacity: 0;
-        margin-top: -250px;
-    }
-    100% {
-        opacity: 1;
-        margin-top: 0px;
-    }
+  0% {
+    opacity: 0;
+    margin-top: -250px;
+  }
+  100% {
+    opacity: 1;
+    margin-top: 0px;
+  }
 }
 
 .MSshow {
-    width: 50%;
-    opacity: 1;
+  width: 50%;
+  opacity: 1;
 }
 
 .MShide {
-    width: 0%;
-    opacity: 0;
+  width: 0%;
+  opacity: 0;
 }
 
 .MSshowTemplateTracks {
-    width: 50%;
-    min-width: 50%;
+  width: 50%;
+  min-width: 50%;
 }
 
 .MShideTemplateTracks {
-    width: 100%;
-    min-width: 100%;
+  width: 100%;
+  min-width: 100%;
 }
 
 h1 {
-    @apply text-5xl;
+  @apply text-5xl;
 }
 
 h2 {
-    @apply text-4xl;
+  @apply text-4xl;
 }
 
 h3 {
-    @apply text-3xl;
+  @apply text-3xl;
 }
 
 h4 {
-    @apply text-2xl;
+  @apply text-2xl;
 }
 
 @tailwind utilities;
