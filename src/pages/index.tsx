@@ -9,15 +9,15 @@ import { type NextPage } from "next";
 const Index: NextPage = () => {
 
     return (
-       <Test5/>
-        //<TrackListProvider>
-        //    <TemplateNavbar />
-        //    <div id="TemplateData" className='h-[calc(100vh-40px)] w-100'>
-        //        <TrackListTable />
-        //        <TrackSettings />
-        //    </div>
-        //</TrackListProvider>
-    )
+      <Test5 />
+      //  <TrackListProvider>
+      //    <TemplateNavbar />
+      //    <div id="TemplateData" className="w-100 h-[calc(100vh-40px)]">
+      //      <TrackListTable />
+      //      <TrackSettings />
+      //    </div>
+      //  </TrackListProvider>
+    );
 }
 
 export default Index

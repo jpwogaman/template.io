@@ -22,6 +22,7 @@
     "tauri": "tauri"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.4.2",
     "@next-auth/prisma-adapter": "1.0.5",
     "@prisma/client": "^4.5.0",
     "@react-spring/web": "^9.7.3",
