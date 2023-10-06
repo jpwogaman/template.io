@@ -648,8 +648,8 @@ export const Test5: FC = () => {
   })
 
   const artRngsArray: string[] = []
-  for (const element of items[selectedItemIndex]?.fullRange) {
-    artRngsArray.push(element]?.id)
+  for (const element of items[selectedItemIndex]?.fullRange as ItemTypes['fullRange']) {
+    artRngsArray.push(element?.id)
   }
 
   const fileInfoChange = (
@@ -748,7 +748,7 @@ export const Test5: FC = () => {
         ...descriptors
       })
       Object.defineProperty(newObject, 'default', {
-        value: values?['default'] === true ? false : 'Off',
+        value: values['default'] === true ? false : 'Off',
         ...descriptors
       })
       Object.defineProperty(newObject, 'delay', {
