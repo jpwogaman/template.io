@@ -16,8 +16,8 @@ export const TdSelect: FC<TdSelectProps> = ({ onSelect, codeDisabled, id, option
     let optionElements: string | JSX.Element | undefined
 
     for (const array in selectArrays) {
-        if (options === selectArrays[array].name) {
-            optionElements = selectArrays[array].array
+        if (options === selectArrays[array]?.name) {
+            optionElements = selectArrays[array]?.array
         }
     }
 
@@ -42,7 +42,7 @@ export const TdSelect: FC<TdSelectProps> = ({ onSelect, codeDisabled, id, option
             disabled={codeDisabled}
             id={id}
             onChange={valChange}>
-            {!codeDisabled ? optionElements : selectArrays.valNoneList.array}
+            {!codeDisabled ? optionElements : selectArrays.valNoneList?.array}
         </select>
     );
 };

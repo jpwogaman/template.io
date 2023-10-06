@@ -1,6 +1,6 @@
 import { FC, Fragment, useState } from 'react'
 import { IconBtnToggle } from '../components/icon-btn-toggle'
-import { Link } from 'react-router-dom'
+import Link  from 'next/link'
 import { useThemeUpdate } from '../context/theme-context'
 
 export const NavBar: FC = () => {
@@ -50,7 +50,7 @@ export const NavBar: FC = () => {
                     ${open ? 'top-[60px] ' : 'top-[-490px]'}`}>
                         {Links.map((link) => (
                             <li key={link.name} className='md:ml-8 text-xl md:my-0 my-7'>
-                                <Link to={link.link} className='hover:text-zinc-400 duration-500 '>
+                                <Link href={link.link} className='hover:text-zinc-400 duration-500 '>
                                     {link.name}
                                 </Link>
                             </li>

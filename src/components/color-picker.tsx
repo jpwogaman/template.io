@@ -6,11 +6,11 @@ export default class ColorPicker extends Component {
     state = {
         displayColorPicker: false,
         color: {
-            r: '241',
-            g: '112',
-            b: '19',
-            a: '1',
-        },
+            a: 1,
+            b: 19,
+            g: 112,
+            r: 241,
+        }
     };
 
     handleClick = () => {

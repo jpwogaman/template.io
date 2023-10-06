@@ -2,8 +2,8 @@ import { ChangeEvent, FC, Fragment, useEffect, useRef, useState, useCallback } f
 import { HexColorPicker, HexColorInput } from 'react-colorful'
 import { useSpring, animated } from '@react-spring/web'
 import { useDrag } from '@use-gesture/react'
-import { selectArrays, SelectList } from '../components/select-arrays'
-import { IconBtnToggle } from '../components/icon-btn-toggle'
+import { selectArrays, SelectList } from './select-arrays'
+import { IconBtnToggle } from './icon-btn-toggle'
 import localforage from 'localforage'
 
 localforage.config({

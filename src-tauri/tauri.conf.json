@@ -1,8 +1,8 @@
 {
-  "$schema": "..\\node_modules/@tauri-apps/cli\\schema.json",
+  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "build": {
     "beforeBuildCommand": "npm run build",
-    "beforeDevCommand": "npm run start",
+    "beforeDevCommand": "npm run dev",
     "devPath": "http://localhost:3000",
     "distDir": "../build"
   },
@@ -17,7 +17,7 @@
     "bundle": {
       "active": true,
       "category": "Productivity",
-      "copyright": "Copyright (c) 2022 JP Wogaman II",
+      "copyright": "Copyright ©2022 JP Wogaman II",
       "deb": {
         "depends": []
       },
@@ -58,7 +58,7 @@
         "title": "Template.io",
         "fullscreen": false,
         "resizable": true,
-        "alwaysOnTop": true,
+        "alwaysOnTop": false,
         "center": true,
         "height": 800,
         "width": 1200

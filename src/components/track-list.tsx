@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useState } from 'react';
-import { TdInput } from '../components/td-input';
+import { TdInput } from './td-input';
 import { TrackRows } from '../data/track-list/track-rows';
 import { useTrackList, useTrackListAdd, } from '../data/track-list/track-context'
 
