@@ -6,25 +6,34 @@
 use tauri::{
   CustomMenuItem, 
   Menu, 
+  MenuItem,
   Submenu, 
   SystemTrayMenu, 
-  SystemTrayMenuItem, 
+  //SystemTrayMenuItem, 
   SystemTray, 
   SystemTrayEvent
 };  
-use tauri::Manager;
+//use tauri::Manager;
 
 fn main() {
   let context = tauri::generate_context!();  
 
   let quit = CustomMenuItem::new("quit".to_string(), "Quit");
   let close = CustomMenuItem::new("close".to_string(), "Close");
-  let hide = CustomMenuItem::new("hide".to_string(), "Hide");
-  let about = CustomMenuItem::new("about".to_string(), "About");  
+  let about = CustomMenuItem::new("about".to_string(), "About (v0.1.0)");  
+  let new = CustomMenuItem::new("new".to_string(), "New");  
+  let open = CustomMenuItem::new("open".to_string(), "Open");    
+  let save = CustomMenuItem::new("save".to_string(), "Save");  
+  let save_as = CustomMenuItem::new("save_as".to_string(), "Save As");  
 
   let file_submenu = Submenu::new(
     "File", 
-    Menu::new()
+    Menu::new()    
+    .add_item(new)
+    .add_item(open)
+    .add_item(save)
+    .add_item(save_as)
+    .add_native_item(MenuItem::Separator)
     .add_item(quit.clone())
     .add_item(close)
   );
@@ -55,18 +64,20 @@ fn main() {
         "close" => {
           event.window().close().unwrap();
         }
+        "open" => {
+          println!("open");
+        }
+        "save" => {
+          println!("save");
+        }
+        "save_as" => {
+          println!("save_as");
+        }
         _ => {}
       }})
     .system_tray(system_tray)
-    .on_system_tray_event(|app, event| {
+    .on_system_tray_event(|_app, event| {
       match event {
-        //SystemTrayEvent::LeftClick {
-        //  position: _,
-        //  size: _,
-        //  ..
-        //} => {
-        //  system_tray.display_menu().unwrap();
-        //}
         SystemTrayEvent::MenuItemClick { id, .. } => {
           match id.as_str() {
             "quit" => {
@@ -82,12 +93,3 @@ fn main() {
     .run(context)
     .expect("error while running tauri application");
 }
-
-//#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-
-//fn main() {
-//tauri::Builder::default()
-//   .menu(tauri::Menu::os_default(&context.package_info().name))
-//   .run(tauri::generate_context!())
-//   .expect("error while running tauri application");
-//}
