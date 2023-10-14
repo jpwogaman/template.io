@@ -739,7 +739,7 @@ export const Test5: FC = () => {
         if (subKeys[i] === 'default') continue
         if (subKeys[i] === 'delay') continue
         Object.defineProperty(newObject, subKeys[i], {
-          value: values?[subKeys[i] as 'id'],
+          value: values[subKeys[i] as 'id'],
           ...descriptors
         })
       }
