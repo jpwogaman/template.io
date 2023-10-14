@@ -63,6 +63,10 @@
         "height": 800,
         "width": 1200
       }
-    ]
+    ],
+    "systemTray": {
+      "iconPath": "icons/32x32.png",
+      "iconAsTemplate": true
+    }
   }
 }
