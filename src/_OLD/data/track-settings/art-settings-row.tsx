@@ -6,14 +6,14 @@ import {
   type Dispatch,
   type SetStateAction
 } from 'react'
-import { TdSwitch } from '@/components/td-switch'
-import { TdInput } from '@/components/td-input'
-import { TdSelect } from '@/components/td-select'
+import { TdSwitch } from '@/_OLD/td-switch'
+import { TdInput } from '@/_OLD/td-input'
+import { TdSelect } from '@/_OLD/td-select'
 import { RangeRows } from './range-rows'
 import {
   useSelectedArtList,
   useSelectedArtListRemove
-} from '@/data/track-list/track-context'
+} from '@/_OLD/data/track-list/track-context'
 
 interface ArtSettingsRowProps {
   id: string

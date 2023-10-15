@@ -1,8 +1,8 @@
 import { type FC, useState, type ChangeEvent, Fragment } from 'react'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
-import { TdSwitch } from '@/components/td-switch'
-import { TdInput } from '@/components/td-input'
-import { TdSelect } from '@/components/td-select'
+import { TdSwitch } from '@/_OLD/td-switch'
+import { TdInput } from '@/_OLD/td-input'
+import { TdSelect } from '@/_OLD/td-select'
 
 interface FadSettingsRowProps {
   id: string

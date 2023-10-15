@@ -56,7 +56,7 @@ export type FileItems = {
   artListTog: ItemsArtListTog[]
   artListSwitch: ItemsArtListSwitch[]
   fadList: ItemsFadList[]
-}[]
+}
 
 export type ItemsFullRanges = {
   id: string

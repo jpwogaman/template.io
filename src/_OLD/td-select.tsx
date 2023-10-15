@@ -4,7 +4,7 @@ import React, {
   type ChangeEvent,
   type ReactNode
 } from 'react'
-import { selectArrays } from './select-arrays'
+import { selectArrays } from '../components/select-arrays'
 
 interface TdSelectProps {
   id: string | undefined

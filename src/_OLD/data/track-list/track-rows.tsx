@@ -1,6 +1,6 @@
 import { type FC, type ReactNode } from 'react'
-import { TdSelect } from '@/components/td-select'
-import { TdInput } from '@/components/td-input'
+import { TdSelect } from '@/_OLD/td-select'
+import { TdInput } from '@/_OLD/td-input'
 import { useSelectedTrackUpdate, useTrackListRemove } from './track-context'
 interface TrackRowProps {
   id: string

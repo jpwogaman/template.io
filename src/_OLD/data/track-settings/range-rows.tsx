@@ -1,11 +1,11 @@
 import { type FC, useState, Fragment, type ReactNode } from 'react'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
-import { TdInput } from '@/components/td-input'
-import { TdSelect } from '@/components/td-select'
+import { TdInput } from '@/_OLD/td-input'
+import { TdSelect } from '@/_OLD/td-select'
 import {
   TrackListProps,
   useSelectedTrack
-} from '@/data/track-list/track-context'
+} from '@/_OLD/data/track-list/track-context'
 interface RangeRowProps {
   id: string
   children?: ReactNode
@@ -19,7 +19,10 @@ export const RangeRows: FC<RangeRowProps> = ({ id }) => {
 
   const [RangeList, setRanges] = useState<
     TrackListProps['artList'][0]['range']
-  >(selectedTrack?.artList[artIndex]?.range as TrackListProps['artList'][0]['range'])
+  >(
+    selectedTrack?.artList[artIndex]
+      ?.range as TrackListProps['artList'][0]['range']
+  )
 
   const addRange = (artId: string, rangeId: string | null | undefined) => {
     let newRangeIdNumb: number = parseInt(rangeId as string) + 1

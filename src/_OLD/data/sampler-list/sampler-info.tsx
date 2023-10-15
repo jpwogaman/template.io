@@ -1,7 +1,7 @@
 import { type FC, Fragment } from 'react'
-import { TdSelect } from '@/components/td-select'
+import { TdSelect } from '@/_OLD/td-select'
 import ColorPicker from '@/components/color-picker'
-import { TdInput } from '@/components/td-input'
+import { TdInput } from '@/_OLD/td-input'
 
 interface SamplerInfoProps {}
 export const SamplerInfo: FC<SamplerInfoProps> = () => {

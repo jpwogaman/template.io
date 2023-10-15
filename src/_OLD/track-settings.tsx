@@ -1,15 +1,18 @@
-import { TdSelect } from './td-select';
-import { IconBtnToggle } from './icon-btn-toggle'
-import { TdInput } from './td-input';
+import { TdSelect } from './td-select'
+import { IconBtnToggle } from '../components/icon-btn-toggle'
+import { TdInput } from './td-input'
 import { type ChangeEvent, type FC, useState } from 'react'
-import { FaderData } from '@/data/track-settings/fad-data'
-import { ArtToggleData, ArtSwitchData } from '@/data/track-settings/art-data'
+import { FaderData } from '@/_OLD/data/track-settings/fad-data'
+import {
+  ArtToggleData,
+  ArtSwitchData
+} from '@/_OLD/data/track-settings/art-data'
 import {
   type TrackListProps,
   useSelectedTrack,
   useSelectedArtListAdd,
   useSelectedArtList
-} from '@/data/track-list/track-context'
+} from '@/_OLD/data/track-list/track-context'
 interface TrackSettingsProps {}
 
 export const TrackSettings: FC<TrackSettingsProps> = () => {

@@ -12,117 +12,28 @@ import { useSpring, animated } from '@react-spring/web'
 import { useDrag } from '@use-gesture/react'
 import { selectArrays, SelectList } from './select-arrays'
 import { IconBtnToggle } from './icon-btn-toggle'
-import localforage from 'localforage'
+//import localforage from 'localforage'
+import tw from '@/utils/tw'
 
-localforage.config({
-  driver: localforage.INDEXEDDB,
-  name: 'catalog.io',
-  version: 1.0,
-  storeName: 'file',
-  description: ''
-})
-interface FileTypes {
-  fileInfo: FileInfoTypes
-  items: ItemTypes[]
-}
-interface FileInfoTypes {
-  fileName: string
-  createdOn: string
-  modifiedOn: string
-  defaultColors: string[]
-  layouts: { layout: string }[]
-  vepTemplate: string
-  dawTemplate: string
-}
-type select = string | number | null | undefined
-type delay = number | string | undefined | null
-type checkBox = boolean | number
-interface ItemTypes {
-  id: string
-  locked: checkBox
-  name: string
-  channel: select
-  baseDelay: delay
-  avgDelay: delay
-  color: string
-  fullRange: {
-    id: string
-    name: string
-    low: select
-    high: select
-    whiteKeysOnly: checkBox
-  }[]
-  artListTog: {
-    id: string
-    name: string | undefined
-    toggle: checkBox
-    codeType: select
-    code: select
-    on: select
-    off: select
-    default: select
-    delay: delay
-    changeType: select
-    ranges: string[]
-  }[]
-  artListSwitch: {
-    id: string
-    name: string | undefined
-    toggle: checkBox
-    codeType: select
-    code: select
-    on: select
-    off: select
-    default: checkBox | select
-    delay: delay
-    changeType: select
-    ranges: string[]
-  }[]
-  fadList: {
-    id: string
-    name: string | undefined
-    codeType: select
-    code: select
-    default: select 
-    changeType: select
-  }[]
-}
-interface SortDataLevelOneProps {
-  tableData: ItemTypes[]
-  sortKey: keyof ItemTypes
-  reverse: boolean
-}
-interface SortDataLevelTwoProps {
-  tableData:
-    | ItemTypes['fullRange']
-    | ItemTypes['artListTog']
-    | ItemTypes['fadList']
-  sortKey:
-    | keyof ItemTypes['fullRange'][number]
-    | keyof ItemTypes['artListTog'][number]
-    | keyof ItemTypes['fadList'][number]
-  reverse: boolean
-}
-interface KeyTypes {
-  className: string
-  show: boolean
-  key: SortDataLevelOneProps['sortKey'] | SortDataLevelTwoProps['sortKey']
-  label: string | null
-  selectArray: string | null
-  input: undefined | 'text' | 'checkbox' | 'select' | 'select | checkbox'
-}
-interface LevelOnekeyTypes {
-  label: string
-  keys: KeyTypes[]
-}
-interface LevelTwoKeyTypes {
-  title: string
-  layout: string
-  label: string
-  keys: KeyTypes[]
-}
+import {
+  type FileData,
+  type FileMetaData,
+  type FileItems,
+  type ItemsFullRanges,
+  type ItemsArtListTog,
+  type ItemsArtListSwitch,
+  type ItemsFadList
+} from '@/utils/template-io-track-data-schema'
 
-const levelOneKeys: LevelOnekeyTypes = {
+//localforage.config({
+//  driver: localforage.INDEXEDDB,
+//  name: 'catalog.io',
+//  version: 1.0,
+//  storeName: 'file',
+//  description: ''
+//})
+
+const levelOneKeys = {
   label: 'Tracks',
   keys: [
     {
@@ -183,7 +94,7 @@ const levelOneKeys: LevelOnekeyTypes = {
     }
   ]
 }
-const levelTwoKeys: LevelTwoKeyTypes[] = [
+const levelTwoKeys = [
   {
     title: 'Instrument Ranges',
     label: 'fullRange',
@@ -477,7 +388,7 @@ const levelTwoKeys: LevelTwoKeyTypes[] = [
     ]
   }
 ]
-const initializeItem = (newId: number, obj?: ItemTypes) => {
+const initializeItem = (newId: number, obj?: FileItems) => {
   let artCount = -1
   let rngCount = -1
   let fadCount = -1
@@ -595,7 +506,7 @@ const initializeItem = (newId: number, obj?: ItemTypes) => {
             changeType: 'Value 2'
           }
         ]
-  } as ItemTypes
+  } as FileItems
 }
 
 const initializeFileInfo = () => {
@@ -614,7 +525,7 @@ const initializeFileInfo = () => {
     layouts: levelTwoKeys,
     vepTemplate: '',
     dawTemplate: ''
-  } as FileInfoTypes
+  } as FileMetaData
 }
 
 let lastid = 0
@@ -624,13 +535,15 @@ export const Test5: FC = () => {
   const firstLoad = useRef(true)
   const useEffectCount = useRef(0)
 
-  const [file, setFile] = useState<FileTypes>({
-    fileInfo: initializeFileInfo(),
+  const [file, setFile] = useState<FileData>({
+    fileMetaData: initializeFileInfo(),
     items: [initializeItem(0)]
   })
-  const [fileInfo, setFileInfo] = useState<FileInfoTypes>(initializeFileInfo())
-  const [items, setItems] = useState<ItemTypes[]>([initializeItem(0)])
-  const [NewSubItems, setNewSubItems] = useState<ItemTypes[]>([
+  const [fileMetaData, setFileMetaData] = useState<FileMetaData>(
+    initializeFileInfo()
+  )
+  const [items, setItems] = useState<FileItems[]>([initializeItem(0)])
+  const [NewSubItems, setNewSubItems] = useState<FileItems[]>([
     initializeItem(0)
   ])
 
@@ -639,7 +552,7 @@ export const Test5: FC = () => {
 
   const [showColorSelector, setShowColorSelector] = useState(false)
   const [showColorPresetDelete, setShowColorPresetDelete] = useState(false)
-  const [color, setColor] = useState(fileInfo.defaultColors[0])
+  const [color, setColor] = useState(fileMetaData.defaultColors[0])
   const [SelectedColor, setSelectedColor] = useState('')
 
   const [anchorPoint, setAnchorPoint] = useState<{ x: number; y: number }>({
@@ -648,7 +561,8 @@ export const Test5: FC = () => {
   })
 
   const artRngsArray: string[] = []
-  for (const element of items[selectedItemIndex]?.fullRange as ItemTypes['fullRange']) {
+  for (const element of items[selectedItemIndex]
+    ?.fullRange as FileItems['fullRange']) {
     artRngsArray.push(element?.id)
   }
 
@@ -656,8 +570,8 @@ export const Test5: FC = () => {
     event: ChangeEvent<HTMLInputElement>,
     key: string
   ) => {
-    const newInfo = { ...fileInfo, [key]: event.target.value }
-    setFileInfo(newInfo)
+    const newInfo = { ...fileMetaData, [key]: event.target.value }
+    setFileMetaData(newInfo)
   }
 
   const lockItemHelper = (thisIndex: number) => {
@@ -668,20 +582,23 @@ export const Test5: FC = () => {
     setItems(newValue)
   }
 
-  const changeLayoutsHelper = (layout: string, index: number) => {
-    const newValue = fileInfo.layouts.map((originalLayout) => {
-      if (fileInfo.layouts.indexOf(originalLayout) !== index)
+  const changeLayoutsHelper = (
+    layout: 'table' | 'cards' | undefined,
+    index: number
+  ) => {
+    const newValue = fileMetaData.layouts.map((originalLayout) => {
+      if (fileMetaData.layouts.indexOf(originalLayout) !== index)
         return originalLayout
       return { ...originalLayout, layout: layout }
     })
-    setFileInfo({
-      fileName: fileInfo.fileName,
-      createdOn: fileInfo.createdOn,
-      modifiedOn: fileInfo.modifiedOn,
-      defaultColors: fileInfo.defaultColors,
+    setFileMetaData({
+      fileName: fileMetaData.fileName,
+      createdOn: fileMetaData.createdOn,
+      modifiedOn: fileMetaData.modifiedOn,
+      defaultColors: fileMetaData.defaultColors,
       layouts: newValue,
-      vepTemplate: fileInfo.vepTemplate,
-      dawTemplate: fileInfo.dawTemplate
+      vepTemplate: fileMetaData.vepTemplate,
+      dawTemplate: fileMetaData.dawTemplate
     })
   }
 
@@ -706,7 +623,7 @@ export const Test5: FC = () => {
     setItems(array)
   }
 
-  const findAverage = (obj: ItemTypes, value: number) => {
+  const findAverage = (obj: FileItems, value: number) => {
     let allDelays = Number(obj.baseDelay)
     for (const element of obj.artListTog) {
       allDelays += Number(element.delay)
@@ -728,8 +645,10 @@ export const Test5: FC = () => {
       // type subItems = typeof obj["artList"] | typeof obj["fadList"] | typeof obj["fullRange"]
       // let count = obj[key as unknown as subItems].length // why doesn't this work?
       const count = obj[key as 'artListSwitch'].length
-      const subKeys = Object.keys(obj[key as 'artListSwitch'][0])
-      const newObject: ItemTypes[keyof ItemTypes] | {} = {}
+      const subKeys = Object.keys(
+        obj[key as 'artListSwitch'][0] as ItemsArtListSwitch | ItemsArtListTog
+      )
+      const newObject: FileItems[keyof FileItems] | {} = {}
       const values = initializeItem(0)[key as 'artListSwitch'][0]
       const descriptors = Object.getOwnPropertyDescriptors(
         obj[key as 'artListSwitch'][0]
@@ -738,8 +657,8 @@ export const Test5: FC = () => {
         if (subKeys[i] === 'id') continue
         if (subKeys[i] === 'default') continue
         if (subKeys[i] === 'delay') continue
-        Object.defineProperty(newObject, subKeys[i], {
-          value: values[subKeys[i] as 'id'],
+        Object.defineProperty(newObject, subKeys[i] as PropertyKey, {
+          value: values![subKeys[i] as 'id'],
           ...descriptors
         })
       }
@@ -748,7 +667,7 @@ export const Test5: FC = () => {
         ...descriptors
       })
       Object.defineProperty(newObject, 'default', {
-        value: values['default'] === true ? false : 'Off',
+        value: values!['default'] === true ? false : 'Off',
         ...descriptors
       })
       Object.defineProperty(newObject, 'delay', {
@@ -759,7 +678,7 @@ export const Test5: FC = () => {
         ...obj,
         avgDelay: findAverage(obj, 0),
         [key as 'artListTog']: [...obj[key as 'artListTog'], newObject]
-      } as ItemTypes
+      } as FileItems
     })
     setNewSubItems(newValue)
   }
@@ -767,8 +686,8 @@ export const Test5: FC = () => {
   const removeItem = (index: number, key?: string) => {
     let timer: NodeJS.Timeout
     if (!key) {
-      if (items[index]?.locked) return alert(`Locked items cannot be deleted.`)
-      if (items.length === 1) return alert(`There must be at least one item.`)
+      if (items[index]?.locked) return alert('Locked items cannot be deleted.')
+      if (items.length === 1) return alert('There must be at least one item.')
       if (items.length - 1 !== index) {
         return setItems(items.filter((item) => items.indexOf(item) !== index))
       }
@@ -778,9 +697,9 @@ export const Test5: FC = () => {
       }, 100)
     }
     if (items[selectedItemIndex]?.locked)
-      return alert(`Subitems of locked items cannot be deleted.`)
-    if (items[selectedItemIndex][key as 'artListTog'].length === 1)
-      return alert(`There must be at least one subitem per subsection.`)
+      return alert('Subitems of locked items cannot be deleted.')
+    if (items[selectedItemIndex]![key as 'artListTog'].length === 1)
+      return alert('There must be at least one subitem per subsection.')
     const newValue = items.map((obj) => {
       if (items.indexOf(obj) !== selectedItemIndex) {
         return obj
@@ -788,21 +707,23 @@ export const Test5: FC = () => {
       return {
         ...obj,
         avgDelay: findAverage(obj, 0),
-        [key as 'fullRange']: items[selectedItemIndex][
+        [key as 'fullRange']: items[selectedItemIndex]![
           key as 'fullRange'
         ].filter(
           (subItem) =>
-            items[selectedItemIndex][key as 'fullRange'].indexOf(subItem) !==
+            items[selectedItemIndex]![key as 'fullRange'].indexOf(subItem) !==
             index
         )
-      } as ItemTypes
+      } as FileItems
     })
     setItems(newValue)
   }
 
   const duplicateItem = (index: number) => {
     lastid++
-    const obj = items.filter((item) => items.indexOf(item) === index)[0]
+    const obj = items.filter(
+      (item) => items.indexOf(item) === index
+    )[0] as FileItems
     const newValue = initializeItem(lastid, obj)
     const beforeObj = items.slice(0, index)
     const afterObj = items.slice(index + 1, items.length)
@@ -938,30 +859,30 @@ export const Test5: FC = () => {
   }
 
   const deletePresetColor = () => {
-    if (!fileInfo.defaultColors.includes(SelectedColor)) return
-    setFileInfo({
-      fileName: fileInfo.fileName,
-      createdOn: fileInfo.createdOn,
-      modifiedOn: fileInfo.modifiedOn,
-      defaultColors: fileInfo.defaultColors.filter(
+    if (!fileMetaData.defaultColors.includes(SelectedColor)) return
+    setFileMetaData({
+      fileName: fileMetaData.fileName,
+      createdOn: fileMetaData.createdOn,
+      modifiedOn: fileMetaData.modifiedOn,
+      defaultColors: fileMetaData.defaultColors.filter(
         (color) => color !== SelectedColor
       ),
-      layouts: fileInfo.layouts,
-      vepTemplate: fileInfo.vepTemplate,
-      dawTemplate: fileInfo.dawTemplate
+      layouts: fileMetaData.layouts,
+      vepTemplate: fileMetaData.vepTemplate,
+      dawTemplate: fileMetaData.dawTemplate
     })
   }
 
   const addColor = () => {
-    if (fileInfo.defaultColors.includes(color as string)) return
-    setFileInfo({
-      fileName: fileInfo.fileName,
-      createdOn: fileInfo.createdOn,
-      modifiedOn: fileInfo.modifiedOn,
-      defaultColors: [...fileInfo.defaultColors, color as string],
-      layouts: fileInfo.layouts,
-      vepTemplate: fileInfo.vepTemplate,
-      dawTemplate: fileInfo.dawTemplate
+    if (fileMetaData.defaultColors.includes(color as string)) return
+    setFileMetaData({
+      fileName: fileMetaData.fileName,
+      createdOn: fileMetaData.createdOn,
+      modifiedOn: fileMetaData.modifiedOn,
+      defaultColors: [...fileMetaData.defaultColors, color as string],
+      layouts: fileMetaData.layouts,
+      vepTemplate: fileMetaData.vepTemplate,
+      dawTemplate: fileMetaData.dawTemplate
     })
   }
 
@@ -970,16 +891,16 @@ export const Test5: FC = () => {
   }
   //clear console, refresh page, wipe IndexDB
   const clearResults = () => {
-    console.clear()
-    window.location.reload()
-    localforage
-      .clear()
-      .then(() => {
-        console.log('localForage cleared')
-      })
-      .catch((e) => {
-        console.log(e)
-      })
+    //console.clear()
+    //window.location.reload()
+    //localforage
+    //  .clear()
+    //  .then(() => {
+    //    console.log('localForage cleared')
+    //  })
+    //  .catch((e) => {
+    //    console.log(e)
+    //  })
   }
   //stringify file and create download link
   const exportData = () => {
@@ -988,124 +909,130 @@ export const Test5: FC = () => {
     )}`
     const link = document.createElement('a')
     link.href = jsonString
-    link.download = `${file.fileInfo.fileName}.json`
+    link.download = `${file.fileMetaData.fileName}.json`
     link.click()
   }
   //parse JSON and setFile to result
   const importData = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return
     const fileReader = new FileReader()
-    fileReader.readAsText(event.target.files[0], 'utf-8')
+    fileReader.readAsText(event.target.files[0] as unknown as Blob, 'utf-8')
     fileReader.onload = (event) => {
-      const importedData: FileTypes = JSON.parse(
-        event.target.result as unknown as string
+      const importedData: FileData = JSON.parse(
+        event.target!.result as unknown as string
       )
       setFile(importedData)
     }
   }
-  //close custom "contextMenu" for color picker
-  useEffect(() => {
-    if (showColorPresetDelete) {
-      document.addEventListener('click', handleClick)
-    }
-    return () => {
-      document.removeEventListener('click', handleClick)
-    }
-  })
-  //get data from IndexDB and setFile as data
-  useEffect(() => {
-    if (!firstLoad.current) {
-      localforage
-        .getItem('file')
-        .then((data) => {
-          if (data) {
-            setFile(data as FileTypes)
-          }
-        })
-        .catch((e) => {
-          console.log(e)
-        })
-    }
-    return () => {
-      firstLoad.current = false
-      useEffectCount.current = useEffectCount.current + 1
-    }
-  }, [])
-  //Keep track of useGesture "useDrag"
-  useEffect(() => {
-    const handler = (event: { preventDefault: () => any }) =>
-      event.preventDefault()
-    document.addEventListener('gesturestart', handler)
-    document.addEventListener('gesturechange', handler)
-    document.addEventListener('gestureend', handler)
-    return () => {
-      document.removeEventListener('gesturestart', handler)
-      document.removeEventListener('gesturechange', handler)
-      document.removeEventListener('gestureend', handler)
-    }
-  }, [])
-  //this is for "addSubItem"
-  useEffect(() => {
-    if (useEffectCount.current > 1) {
-      const newValue = NewSubItems.map((obj) => {
-        const newId = parseInt(obj.id.split('_')[1] as string)
-        return initializeItem(newId, obj)
-      })
-      setItems(newValue)
-      lastid = newValue.length - 1
-    }
-  }, [NewSubItems])
-  //setItems and fileInfo from data
-  useEffect(() => {
-    if (!firstLoad.current) {
-      setItems(file.items)
-      setFileInfo(file.fileInfo)
-    }
-  }, [file])
-  //newFileInfo to IndexDB and setFile
-  useEffect(() => {
-    let timer: NodeJS.Timeout
-    if (useEffectCount.current > 1) {
-      timer = setTimeout(() => {
-        const newFileInfo = {
-          fileInfo: fileInfo,
-          items: items
-        }
-        setFile(newFileInfo) //this doesn't appear to be causing an infinite loop but I'm not sure why not ?? then I started having a bug where refreshing would wipe out the page and now commenting this out seems to be helping ??
-        localforage
-          .setItem('file', newFileInfo)
-          .then()
-          .catch((e) => {
-            console.log(e)
-          })
-      }, 100)
-    }
-    if (useEffectCount.current === 1) {
-      useEffectCount.current = useEffectCount.current + 1
-    }
-    return () => {
-      clearTimeout(timer)
-    }
-  }, [fileInfo, items])
-  //set item color
-  useEffect(() => {
-    let timer: NodeJS.Timeout
-    if (useEffectCount.current > 1) {
-      timer = setTimeout(() => {
-        const newValue = items.map((obj) => {
-          if (items.indexOf(obj) !== selectedItemIndex) {
-            return obj
-          }
-          return { ...obj, color: color }
-        })
-        setItems(newValue as ItemTypes[])
-      }, 10)
-    }
 
-    return () => {
-      clearTimeout(timer)
-    }
-  }, [color])
+  //close custom "contextMenu" for color picker
+  //useEffect(() => {
+  //  if (showColorPresetDelete) {
+  //    document.addEventListener('click', handleClick)
+  //  }
+  //  return () => {
+  //    document.removeEventListener('click', handleClick)
+  //  }
+  //})
+
+  //get data from IndexDB and setFile as data
+  //useEffect(() => {
+  //  if (!firstLoad.current) {
+  //    localforage
+  //      .getItem('file')
+  //      .then((data) => {
+  //        if (data) {
+  //          setFile(data as FileData)
+  //        }
+  //      })
+  //      .catch((e) => {
+  //        console.log(e)
+  //      })
+  //  }
+  //  return () => {
+  //    firstLoad.current = false
+  //    useEffectCount.current = useEffectCount.current + 1
+  //  }
+  //}, [])
+
+  //Keep track of useGesture "useDrag"
+  //useEffect(() => {
+  //  const handler = (event: { preventDefault: () => any }) =>
+  //    event.preventDefault()
+  //  document.addEventListener('gesturestart', handler)
+  //  document.addEventListener('gesturechange', handler)
+  //  document.addEventListener('gestureend', handler)
+  //  return () => {
+  //    document.removeEventListener('gesturestart', handler)
+  //    document.removeEventListener('gesturechange', handler)
+  //    document.removeEventListener('gestureend', handler)
+  //  }
+  //}, [])
+  //this is for "addSubItem"
+  //useEffect(() => {
+  //  if (useEffectCount.current > 1) {
+  //    const newValue = NewSubItems.map((obj) => {
+  //      const newId = parseInt(obj.id.split('_')[1] as string)
+  //      return initializeItem(newId, obj)
+  //    })
+  //    setItems(newValue)
+  //    lastid = newValue.length - 1
+  //  }
+  //}, [NewSubItems])
+  //setItems and fileInfo from data
+  //useEffect(() => {
+  //  if (!firstLoad.current) {
+  //    setItems(file.items)
+  //    setFileMetaData(file.fileMetaData)
+  //  }
+  //}, [file])
+
+  //newFileInfo to IndexDB and setFile
+  //useEffect(() => {
+  //  let timer: NodeJS.Timeout
+  //  if (useEffectCount.current > 1) {
+  //    timer = setTimeout(() => {
+  //      const newFileInfo = {
+  //        fileMetaData: fileMetaData,
+  //        items: items
+  //      }
+  //      setFile(newFileInfo) //this doesn't appear to be causing an infinite loop but I'm not sure why not ?? then I started having a bug where refreshing would wipe out the page and now commenting this out seems to be helping ??
+  //      localforage
+  //        .setItem('file', newFileInfo)
+  //        .then()
+  //        .catch((e) => {
+  //          console.log(e)
+  //        })
+  //    }, 100)
+  //  }
+  //  if (useEffectCount.current === 1) {
+  //    useEffectCount.current = useEffectCount.current + 1
+  //  }
+  //  return () => {
+  //    clearTimeout(timer)
+  //  }
+  //}, [fileMetaData, items])
+
+  //set item color
+  //useEffect(() => {
+  //  let timer: NodeJS.Timeout
+  //  if (useEffectCount.current > 1) {
+  //    timer = setTimeout(() => {
+  //      const newValue = items.map((obj) => {
+  //        if (items.indexOf(obj) !== selectedItemIndex) {
+  //          return obj
+  //        }
+  //        return { ...obj, color: color }
+  //      })
+  //      setItems(newValue)
+  //    }, 10)
+  //  }
+
+  //  return () => {
+  //    clearTimeout(timer)
+  //  }
+  //}, [color])
+
   //for color picker / useDrag
   const handleClick = useCallback(
     () => (showColorPresetDelete ? setShowColorPresetDelete(false) : null),
@@ -1143,15 +1070,15 @@ export const Test5: FC = () => {
         dark:bg-zinc-600 
         hover:bg-zinc-500 
         dark:hover:bg-zinc-400       
-	    hover:text-zinc-50 
+	      hover:text-zinc-50 
         dark:hover:text-zinc-50        
        `
 
   const trackTd = ``
 
   return (
-    <Fragment>
-      {showColorPresetDelete ? (
+    <>
+      {showColorPresetDelete && (
         <button
           style={{ top: anchorPoint.y - 15, left: anchorPoint.x + 25 }}
           onClick={deletePresetColor}
@@ -1159,7 +1086,7 @@ export const Test5: FC = () => {
           <i className='fa-solid fa-xmark' />
           <p>Remove Color</p>
         </button>
-      ) : null}
+      )}
       <div className='mx-auto h-[calc(100vh-60px)] max-w-[90vw] overflow-hidden px-1 py-6'>
         <div className='w-1/2'>
           <h1 className='font-caviarBold text-2xl '>
@@ -1167,9 +1094,9 @@ export const Test5: FC = () => {
               type='text'
               className='w-full bg-white p-1 dark:bg-zinc-100'
               onChange={(event) => fileInfoChange(event, 'fileName')}
-              value={fileInfo.fileName}
+              value={fileMetaData.fileName}
               placeholder={
-                fileInfo.fileName ? fileInfo.fileName : 'Project Name'
+                fileMetaData.fileName ? fileMetaData.fileName : 'Project Name'
               }
             />
           </h1>
@@ -1178,18 +1105,22 @@ export const Test5: FC = () => {
               type='text'
               className='bg-white p-1 dark:bg-zinc-100'
               onChange={(event) => fileInfoChange(event, 'vepTemplate')}
-              value={fileInfo.vepTemplate}
+              value={fileMetaData.vepTemplate}
               placeholder={
-                fileInfo.vepTemplate ? fileInfo.vepTemplate : 'VEP Template'
+                fileMetaData.vepTemplate
+                  ? fileMetaData.vepTemplate
+                  : 'VEP Template'
               }
             />
             <input
               type='text'
               className='bg-white p-1 dark:bg-zinc-100'
               onChange={(event) => fileInfoChange(event, 'dawTemplate')}
-              value={fileInfo.dawTemplate}
+              value={fileMetaData.dawTemplate}
               placeholder={
-                fileInfo.dawTemplate ? fileInfo.dawTemplate : 'DAW Template'
+                fileMetaData.dawTemplate
+                  ? fileMetaData.dawTemplate
+                  : 'DAW Template'
               }
             />
           </div>
@@ -1219,12 +1150,12 @@ export const Test5: FC = () => {
         </div>
 
         <div className='flex h-full w-full gap-2'>
-          {showColorSelector && !items[selectedItemIndex]?.locked ? (
+          {showColorSelector && !items[selectedItemIndex]?.locked && (
             <animated.div
               className='text-main-invert absolute z-[1000] w-min cursor-grab touch-none select-none rounded-lg p-2 will-change-transform'
               style={{
                 ...style,
-                backgroundColor: `${items[selectedItemIndex]?.color}`
+                backgroundColor: items[selectedItemIndex]?.color
               }}>
               <div className='flex justify-between'>
                 <p>{items[selectedItemIndex]?.id}</p>
@@ -1246,7 +1177,7 @@ export const Test5: FC = () => {
                   onClick={addColor}>
                   <i className='fa-solid fa-plus' />
                 </button>
-                {fileInfo.defaultColors.map((presetColor: any) => (
+                {fileMetaData.defaultColors.map((presetColor: any) => (
                   <button
                     key={presetColor}
                     className='h-[24px] w-[24px] cursor-pointer rounded border-none p-0 outline outline-1 outline-zinc-200'
@@ -1263,7 +1194,7 @@ export const Test5: FC = () => {
                 className='text-main w-full p-1'
               />
             </animated.div>
-          ) : null}
+          )}
           <div className='max-h-[85%] w-6/12'>
             <div className='mt-4 h-full overflow-y-scroll'>
               <div className='bg-main sticky top-[0px] z-50 flex gap-2'>
@@ -1273,19 +1204,31 @@ export const Test5: FC = () => {
                 <thead>
                   <tr>
                     <td
-                      className={`w-[20px] ${trackTh} sticky top-[24px] z-50`}
+                      className={tw(
+                        'w-[20px]',
+                        trackTh,
+                        'sticky top-[24px] z-50'
+                      )}
                     />
                     <td
-                      className={`w-[5%] ${trackTh} sticky top-[24px] z-50`}
+                      className={tw(
+                        'w-[5%]',
+                        trackTh,
+                        'sticky top-[24px] z-50'
+                      )}
                     />
                     {levelOneKeys.keys.map((key) => {
                       if (!key.show) return
                       return (
                         <td
                           key={key.key}
-                          className={`${trackTh} sticky top-[24px] z-50 ${key.className}`}
+                          className={tw(
+                            trackTh,
+                            'sticky top-[24px] z-50',
+                            key.className
+                          )}
                           title={key.key}>
-                          {key.key === 'id' ? (
+                          {key.key === 'id' && (
                             <div className='flex gap-1'>
                               <p>{key.label}</p>
                               <button
@@ -1294,17 +1237,20 @@ export const Test5: FC = () => {
                                 <i className='fa-solid fa-arrow-down-1-9' />
                               </button>
                             </div>
-                          ) : (
-                            key.label
-                          )}
+                          )}{' '}
+                          {key.key !== 'id' && key.label}
                         </td>
                       )
                     })}
-                    <td className={`${trackTh} sticky top-[24px] z-50 w-[5%]`}>
+                    <td
+                      className={tw(trackTh, 'sticky top-[24px] z-50 w-[5%]')}>
                       Arts.
                     </td>
                     <td
-                      className={`${trackTh} sticky top-[24px] z-50 w-[10%] p-0.5`}>
+                      className={tw(
+                        trackTh,
+                        'sticky top-[24px] z-50 w-[10%] p-0.5'
+                      )}>
                       <button
                         onClick={addItem}
                         className='min-h-[20px] w-1/2'>
@@ -1315,7 +1261,8 @@ export const Test5: FC = () => {
                         className='min-h-[20px] w-1/2 bg-white px-1 text-zinc-900 dark:bg-zinc-100'
                         onChange={setMultipleItemsNumberHelper}></input>
                     </td>
-                    <td className={`${trackTh} sticky top-[24px] z-50 w-[5%]`}>
+                    <td
+                      className={tw(trackTh, 'sticky top-[24px] z-50 w-[5%]')}>
                       {/* <i className="fa-solid fa-copy" /> */}
                     </td>
                   </tr>
@@ -1327,18 +1274,20 @@ export const Test5: FC = () => {
                       <tr
                         key={thisIndex}
                         onClick={() => setSelectedItemIndex(thisIndex)}
-                        className={`${trackTr} cursor-pointer ${
+                        className={tw(
+                          trackTr,
                           selectedItemIndex === thisIndex
                             ? 'bg-red-300 text-zinc-50 hover:bg-zinc-600 dark:bg-red-400 dark:hover:bg-zinc-300 dark:hover:text-zinc-800'
-                            : ''
-                        } relative`}>
-                        <td className={`${trackTd} p-0.5`}>
+                            : '',
+                          'relative cursor-pointer'
+                        )}>
+                        <td className={tw(trackTd, 'p-0.5')}>
                           <button
                             onClick={() => showColorSelectorHelper(thisIndex)}
-                            style={{ backgroundColor: `${item.color}` }}
+                            style={{ backgroundColor: item.color }}
                             className='h-[25px] w-full rounded-sm'></button>
                         </td>
-                        <td className={`${trackTd} p-0.5 text-center`}>
+                        <td className={tw(trackTd, 'p-0.5 text-center')}>
                           <IconBtnToggle
                             classes={''}
                             titleA='Lock Item'
@@ -1348,19 +1297,19 @@ export const Test5: FC = () => {
                             b='fa-solid fa-lock'
                             defaultIcon={item.locked ? 'b' : 'a'} //this isn't saving the correct icon on refresh
                             onToggleA={() => lockItemHelper(thisIndex)}
-                            onToggleB={() =>
-                              lockItemHelper(thisIndex)
-                            }/>
+                            onToggleB={() => lockItemHelper(thisIndex)}
+                          />
                         </td>
                         {levelOneKeys.keys.map((key) => {
-                          const disabled =
-                            key.input === 'checkbox'
-                              ? false
-                              : item.locked
-                              ? true
-                              : key.key === 'id'
-                              ? true
-                              : false
+                          const checkBox = key.input === 'checkbox'
+                          const locked = item.locked
+                          const keyIsId = key.key === 'id'
+                          const disabled = checkBox
+                            ? false
+                            : locked
+                            ? true
+                            : keyIsId
+
                           for (const array in selectArrays) {
                             if (key.selectArray === selectArrays[array]?.name) {
                               optionElements = selectArrays[array]?.array
@@ -1370,23 +1319,25 @@ export const Test5: FC = () => {
                           return (
                             <td
                               key={key.key}
-                              className={`${trackTd} p-0.5`}
+                              className={tw(trackTd, 'p-0.5')}
                               title={''}>
                               <div
-                                className={`${
+                                className={tw(
                                   key.input === 'checkbox'
                                     ? 'mx-auto w-[20px]'
                                     : 'w-full'
-                                }`}>
-                                {!key.input ? (
+                                )}>
+                                {!key.input && (
                                   <p className='p-1'>{item[key.key as 'id']}</p>
-                                ) : key.input === 'select' ? (
+                                )}
+                                {key.input === 'select' && (
                                   <select
-                                    className={`w-full cursor-pointer overflow-scroll p-[5px] text-zinc-900 ${
+                                    className={tw(
+                                      'w-full cursor-pointer overflow-scroll p-[5px] text-zinc-900',
                                       disabled
-                                        ? `cursor-not-allowed bg-zinc-300`
-                                        : `bg-white dark:bg-zinc-100`
-                                    } `}
+                                        ? 'cursor-not-allowed bg-zinc-300'
+                                        : 'bg-white dark:bg-zinc-100'
+                                    )}
                                     value={
                                       !disabled
                                         ? (item[
@@ -1401,45 +1352,41 @@ export const Test5: FC = () => {
                                     {/* {!disabled ? optionElements : selectArrays.valNoneList.array} */}
                                     {optionElements}
                                   </select>
-                                ) : (
-                                  <input
-                                    checked={item.locked as boolean}
-                                    disabled={disabled}
-                                    type={key.input}
-                                    className={` w-full p-1 text-zinc-900
-                                                                        ${
-                                                                          key.input ===
-                                                                          'checkbox'
-                                                                            ? 'cursor-pointer'
-                                                                            : ``
-                                                                        }
-                                                                        ${
-                                                                          disabled
-                                                                            ? 'cursor-not-allowed bg-zinc-300'
-                                                                            : 'bg-white dark:bg-zinc-100'
-                                                                        }`}
-                                    onChange={(event) =>
-                                      valueChange(event, key.key)
-                                    }
-                                    value={item[key.key as 'id']}
-                                  />
                                 )}
+                                {key.input === 'text' ||
+                                  (key.input === 'checkbox' && (
+                                    <input
+                                      checked={item.locked as boolean}
+                                      disabled={disabled}
+                                      type={key.input}
+                                      className={tw(
+                                        'w-full p-1 text-zinc-900',
+                                        key.input === 'checkbox'
+                                          ? 'cursor-pointer'
+                                          : '',
+                                        disabled
+                                          ? 'cursor-not-allowed bg-zinc-300'
+                                          : 'bg-white dark:bg-zinc-100'
+                                      )}
+                                      onChange={(event) =>
+                                        valueChange(event, key.key)
+                                      }
+                                      value={item[key.key as 'id']}
+                                    />
+                                  ))}
                               </div>
                             </td>
                           )
                         })}
-                        <td className={`${trackTd} p-0.5`}>
-                          {/* {`${item.artListTog.length} / ${item.artListSwitch.length}`} */}
-                          {`${
-                            item.artListTog.length + item.artListSwitch.length
-                          }`}
+                        <td className={tw(trackTd, 'p-0.5')}>
+                          {item.artListTog.length + item.artListSwitch.length}
                         </td>
-                        <td className={`${trackTd} p-0.5 text-center`}>
+                        <td className={tw(trackTd, 'p-0.5 text-center')}>
                           <button onClick={() => removeItem(thisIndex)}>
                             <i className='fa-solid fa-minus' />
                           </button>
                         </td>
-                        <td className={`${trackTd} p-0.5 text-center`}>
+                        <td className={tw(trackTd, 'p-0.5 text-center')}>
                           <button onClick={() => duplicateItem(thisIndex)}>
                             <i className='fa-solid fa-copy' />
                           </button>
@@ -1456,10 +1403,11 @@ export const Test5: FC = () => {
               const levelIndex = levelTwoKeys.indexOf(level)
               // const section = items[selectedItemIndex][level.label as keyof itemTypes] stupid error "length not a property of..."
               const section =
-                items[selectedItemIndex][
+                items[selectedItemIndex]![
                   level.label as unknown as 'artListSwitch'
                 ]
-              const table = fileInfo?.layouts[levelIndex]?.layout === 'table'
+              const table =
+                fileMetaData?.layouts[levelIndex]?.layout === 'table'
               return (
                 <Fragment key={level.label}>
                   <div className='mt-4 flex justify-between'>
@@ -1473,11 +1421,10 @@ export const Test5: FC = () => {
                       b='fa-solid fa-table-columns'
                       defaultIcon={table ? 'a' : 'b'} //this isn't saving the correct icon on refresh
                       onToggleA={() => changeLayoutsHelper('cards', levelIndex)}
-                      onToggleB={() =>
-                        changeLayoutsHelper('table', levelIndex)
-                      }/>
+                      onToggleB={() => changeLayoutsHelper('table', levelIndex)}
+                    />
                   </div>
-                  {table ? (
+                  {table && (
                     <div className=''>
                       <table className='w-full table-fixed border-separate border-spacing-0 text-left text-xs '>
                         <thead>
@@ -1488,13 +1435,20 @@ export const Test5: FC = () => {
                                 <td
                                   key={key.key}
                                   title={key.key}
-                                  className={`${trackTh} ${key.className} sticky top-0 z-50`}>
+                                  className={tw(
+                                    trackTh,
+                                    key.className,
+                                    'sticky top-0 z-50'
+                                  )}>
                                   {key.label}
                                 </td>
                               )
                             })}
                             <td
-                              className={`${trackTh} sticky top-0 z-50 w-[5%] text-center`}>
+                              className={tw(
+                                trackTh,
+                                'sticky top-0 z-50 w-[5%] text-center'
+                              )}>
                               <button onClick={() => addSubItem(level.label)}>
                                 <i className='fa-solid fa-plus' />
                               </button>
@@ -1511,18 +1465,17 @@ export const Test5: FC = () => {
                                 {level.keys.map((key) => {
                                   let multiple: boolean = false
                                   const selected: boolean = false
-                                  const disabled = items[selectedItemIndex]
-                                    ?.locked
-                                    ? true
-                                    : key.key === 'id'
-                                    ? true
-                                    : false
+                                  const locked =
+                                    items[selectedItemIndex]?.locked
+                                  const keyIsId = key.key === 'id'
+                                  const disabled = locked ? true : keyIsId
+
                                   for (const array in selectArrays) {
                                     if (key.selectArray === 'artRngsArray') {
                                       // optionElements = <SelectList numbers={artRngsArray} />
                                       multiple = true
                                       optionElements = (
-                                        <Fragment>
+                                        <>
                                           {artRngsArray.map(
                                             (number: string | number) => (
                                               <option
@@ -1533,14 +1486,15 @@ export const Test5: FC = () => {
                                               </option>
                                             )
                                           )}
-                                        </Fragment>
+                                        </>
                                       )
                                     }
                                     if (
                                       key.selectArray ===
                                       selectArrays[array]?.name
                                     ) {
-                                      optionElements = selectArrays[array]?.array
+                                      optionElements =
+                                        selectArrays[array]?.array
                                     }
                                   }
                                   if (!key.show) return
@@ -1550,20 +1504,20 @@ export const Test5: FC = () => {
                                       title={subSection[
                                         key.key as 'id'
                                       ].toString()}
-                                      className={`${trackTd} p-0.5`}>
-                                      {!key.input ? (
+                                      className={tw(trackTd, 'p-0.5')}>
+                                      {!key.input && (
                                         <p className='p-1'>
                                           {subSection[key.key as 'id']}
                                         </p>
-                                      ) : key.input === 'select' &&
-                                        !multiple ? (
+                                      )}{' '}
+                                      {key.input === 'select' && !multiple && (
                                         <select
-                                          className={`w-full cursor-pointer overflow-scroll p-[4.5px] text-zinc-900
-                                                                                    ${
-                                                                                      disabled
-                                                                                        ? `cursor-not-allowed bg-zinc-300`
-                                                                                        : `bg-white dark:bg-zinc-100`
-                                                                                    } `}
+                                          className={tw(
+                                            'w-full cursor-pointer overflow-scroll p-[4.5px] text-zinc-900',
+                                            disabled
+                                              ? 'cursor-not-allowed bg-zinc-300'
+                                              : 'bg-white dark:bg-zinc-100'
+                                          )}
                                           value={
                                             !disabled
                                               ? (subSection[
@@ -1583,15 +1537,16 @@ export const Test5: FC = () => {
                                           {/* {!disabled ? optionElements : selectArrays.valNoneList.array} */}
                                           {optionElements}
                                         </select>
-                                      ) : key.input === 'select' && multiple ? (
+                                      )}{' '}
+                                      {key.input === 'select' && multiple && (
                                         // <details>
                                         <select
-                                          className={`w-full cursor-pointer overflow-scroll p-[4.5px] text-zinc-900
-                                                                                        ${
-                                                                                          disabled
-                                                                                            ? `cursor-not-allowed bg-zinc-300`
-                                                                                            : `bg-white dark:bg-zinc-100`
-                                                                                        } `}
+                                          className={tw(
+                                            'w-full cursor-pointer overflow-scroll p-[4.5px] text-zinc-900',
+                                            disabled
+                                              ? 'cursor-not-allowed bg-zinc-300'
+                                              : 'bg-white dark:bg-zinc-100'
+                                          )}
                                           value={undefined}
                                           multiple
                                           disabled={disabled}
@@ -1605,43 +1560,42 @@ export const Test5: FC = () => {
                                           }>
                                           {optionElements}
                                         </select>
-                                      ) : (
-                                        // </details>
-                                        <input
-                                          checked={
-                                            subSection[
-                                              key.key as 'changeType'
-                                            ] as unknown as boolean
-                                          }
-                                          disabled={disabled}
-                                          type={key.input}
-                                          className={`w-full p-1 text-zinc-900
-                                                                                    ${
-                                                                                      key.input ===
-                                                                                      'checkbox'
-                                                                                        ? 'cursor-pointer'
-                                                                                        : ``
-                                                                                    }
-                                                                                    ${
-                                                                                      disabled
-                                                                                        ? 'cursor-not-allowed bg-zinc-300'
-                                                                                        : 'bg-white dark:bg-zinc-100'
-                                                                                    }`}
-                                          onChange={(event) =>
-                                            valueChange(
-                                              event,
-                                              level.label,
-                                              key.key,
-                                              thisIndex
-                                            )
-                                          }
-                                          value={subSection[key.key as 'id']}
-                                        />
                                       )}
+                                      {/*</details>*/}
+                                      {key.input === 'text' ||
+                                        (key.input === 'checkbox' && (
+                                          <input
+                                            checked={
+                                              subSection[
+                                                key.key as 'changeType'
+                                              ] as unknown as boolean
+                                            }
+                                            disabled={disabled}
+                                            type={key.input}
+                                            className={tw(
+                                              'w-full p-1 text-zinc-900',
+                                              key.input === 'checkbox'
+                                                ? 'cursor-pointer'
+                                                : '',
+                                              disabled
+                                                ? 'cursor-not-allowed bg-zinc-300'
+                                                : 'bg-white dark:bg-zinc-100'
+                                            )}
+                                            onChange={(event) =>
+                                              valueChange(
+                                                event,
+                                                level.label,
+                                                key.key,
+                                                thisIndex
+                                              )
+                                            }
+                                            value={subSection[key.key as 'id']}
+                                          />
+                                        ))}
                                     </td>
                                   )
                                 })}
-                                <td className={`${trackTd} text-center`}>
+                                <td className={tw(trackTd, 'text-center')}>
                                   <button
                                     onClick={() =>
                                       removeItem(thisIndex, level.label)
@@ -1655,7 +1609,8 @@ export const Test5: FC = () => {
                         </tbody>
                       </table>
                     </div>
-                  ) : (
+                  )}
+                  {!table && (
                     <div className='flex gap-1 overflow-x-scroll'>
                       {section.map((subSection) => {
                         const thisIndex = section.indexOf(subSection)
@@ -1665,11 +1620,14 @@ export const Test5: FC = () => {
                             className='w-max table-auto border-separate border-spacing-0 text-left text-xs'>
                             <thead>
                               <tr>
-                                <td className={`${trackTh} w-1/2`}>
+                                <td className={tw(trackTh, 'w-1/2')}>
                                   {subSection.id}
                                 </td>
                                 <td
-                                  className={`${trackTh} flex justify-between`}>
+                                  className={tw(
+                                    trackTh,
+                                    'flex justify-between'
+                                  )}>
                                   <button
                                     onClick={() =>
                                       removeItem(thisIndex, level.label)
@@ -1686,11 +1644,10 @@ export const Test5: FC = () => {
                             <tbody>
                               {level.keys.map((key) => {
                                 let multiple: boolean = false
-                                const disabled = items[selectedItemIndex]?.locked
-                                  ? true
-                                  : key.key === 'id'
-                                  ? true
-                                  : false
+                                const locked = items[selectedItemIndex]?.locked
+                                const keyIsId = key.key === 'id'
+                                const disabled = locked ? true : keyIsId
+
                                 for (const array in selectArrays) {
                                   if (key.selectArray === 'artRngsArray') {
                                     optionElements = (
@@ -1699,7 +1656,8 @@ export const Test5: FC = () => {
                                     multiple = true
                                   }
                                   if (
-                                    key.selectArray === selectArrays[array]?.name
+                                    key.selectArray ===
+                                    selectArrays[array]?.name
                                   ) {
                                     optionElements = selectArrays[array]?.array
                                   }
@@ -1708,24 +1666,24 @@ export const Test5: FC = () => {
                                 return (
                                   <tr
                                     key={key.key}
-                                    className={`${trackTr}`}>
-                                    <td className={`${trackTd} p-0.5`}>
+                                    className={trackTr}>
+                                    <td className={tw(trackTd, 'p-0.5')}>
                                       {key.label}
                                     </td>
-                                    <td className={`${trackTd} p-0.5`}>
-                                      {!key.input ? (
+                                    <td className={tw(trackTd, 'p-0.5')}>
+                                      {!key.input && (
                                         <p className='p-1'>
                                           {subSection[key.key as 'id']}
                                         </p>
-                                      ) : key.input === 'select' &&
-                                        !multiple ? (
+                                      )}{' '}
+                                      {key.input === 'select' && !multiple && (
                                         <select
-                                          className={`w-full cursor-pointer overflow-scroll p-[4.5px] 
-                                                                                    ${
-                                                                                      disabled
-                                                                                        ? `cursor-not-allowed bg-zinc-300`
-                                                                                        : `bg-white dark:bg-zinc-100`
-                                                                                    } `}
+                                          className={tw(
+                                            'w-full cursor-pointer overflow-scroll p-[4.5px]',
+                                            disabled
+                                              ? 'cursor-not-allowed bg-zinc-300'
+                                              : 'bg-white dark:bg-zinc-100'
+                                          )}
                                           value={
                                             !disabled
                                               ? (subSection[
@@ -1745,15 +1703,16 @@ export const Test5: FC = () => {
                                           {/* {!disabled ? optionElements : selectArrays.valNoneList.array} */}
                                           {optionElements}
                                         </select>
-                                      ) : key.input === 'select' && multiple ? (
+                                      )}{' '}
+                                      {key.input === 'select' && multiple && (
                                         <details>
                                           <select
-                                            className={`w-full cursor-pointer overflow-scroll p-[4.5px] 
-                                                                                        ${
-                                                                                          disabled
-                                                                                            ? `cursor-not-allowed bg-zinc-300`
-                                                                                            : `bg-white dark:bg-zinc-100`
-                                                                                        } `}
+                                            className={tw(
+                                              'w-full cursor-pointer overflow-scroll p-[4.5px]',
+                                              disabled
+                                                ? 'cursor-not-allowed bg-zinc-300'
+                                                : 'bg-white dark:bg-zinc-100'
+                                            )}
                                             value={undefined}
                                             multiple
                                             disabled={disabled}
@@ -1768,38 +1727,37 @@ export const Test5: FC = () => {
                                             {optionElements}
                                           </select>
                                         </details>
-                                      ) : (
-                                        <input
-                                          checked={
-                                            subSection[
-                                              key.key as 'changeType'
-                                            ] as unknown as boolean
-                                          }
-                                          disabled={disabled}
-                                          type={key.input}
-                                          className={`p-1 
-                                                                                    ${
-                                                                                      key.input ===
-                                                                                      'checkbox'
-                                                                                        ? 'cursor-pointer'
-                                                                                        : `w-full`
-                                                                                    }
-                                                                                    ${
-                                                                                      disabled
-                                                                                        ? 'cursor-not-allowed bg-zinc-300'
-                                                                                        : 'bg-white dark:bg-zinc-100'
-                                                                                    }`}
-                                          onChange={(event) =>
-                                            valueChange(
-                                              event,
-                                              level.label,
-                                              key.key,
-                                              thisIndex
-                                            )
-                                          }
-                                          value={subSection[key.key as 'id']}
-                                        />
-                                      )}
+                                      )}{' '}
+                                      {key.input === 'text' ||
+                                        (key.input === 'checkbox' && (
+                                          <input
+                                            checked={
+                                              subSection[
+                                                key.key as 'changeType'
+                                              ] as unknown as boolean
+                                            }
+                                            disabled={disabled}
+                                            type={key.input}
+                                            className={tw(
+                                              'p-1',
+                                              key.input === 'checkbox'
+                                                ? 'cursor-pointer'
+                                                : 'w-full',
+                                              disabled
+                                                ? 'cursor-not-allowed bg-zinc-300'
+                                                : 'bg-white dark:bg-zinc-100'
+                                            )}
+                                            onChange={(event) =>
+                                              valueChange(
+                                                event,
+                                                level.label,
+                                                key.key,
+                                                thisIndex
+                                              )
+                                            }
+                                            value={subSection[key.key as 'id']}
+                                          />
+                                        ))}
                                     </td>
                                   </tr>
                                 )
@@ -1816,6 +1774,6 @@ export const Test5: FC = () => {
           </div>
         </div>
       </div>
-    </Fragment>
+    </>
   )
 }

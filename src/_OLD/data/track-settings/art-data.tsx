@@ -1,6 +1,6 @@
 import { Dispatch, FC, Fragment, SetStateAction } from 'react'
 import { ArtSettingsRow } from './art-settings-row'
-import { useSelectedArtList } from '@/data/track-list/track-context'
+import { useSelectedArtList } from '@/_OLD/data/track-list/track-context'
 
 interface ArtDataProps {
   setAvgDelAvail: Dispatch<SetStateAction<boolean>>
