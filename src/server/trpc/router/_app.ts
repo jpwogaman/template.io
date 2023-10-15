@@ -1,10 +1,10 @@
 import { router } from '@/server/trpc/trpc'
 import { authRouter } from '@/server/trpc/router/auth'
-import { exampleRouter } from '@/server/trpc/router/example'
+import { ItemsRouter } from '@/server/trpc/router/items'
 
 export const appRouter = router({
-  example: exampleRouter,
-  auth: authRouter
+  auth: authRouter,
+  items: ItemsRouter
 })
 
 // export type definition of API

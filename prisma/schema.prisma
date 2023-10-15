@@ -15,100 +15,109 @@ datasource db {
 }
 
 model FileMetaData {
-  fileName      String   @id
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  defaultColors String
-  layouts       Layouts  @relation(fields: [fileName], references: [label], onDelete: Cascade)
-  vepTemplate   String
-  dawTemplate   String
+  fileName      String         @id
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  defaultColors defaultColor[]
+  layouts       Layouts[]
+  vepTemplate   String         @default("")
+  dawTemplate   String         @default("")
+}
+
+model defaultColor {
+  color        String        @id @default("#71717A")
+  FileMetaData FileMetaData? @relation(fields: [color], references: [fileName])
 }
 
 model Layouts {
-  label        String         @id
-  title        String?
-  layout       String?
-  keys         LayoutKeys     @relation(fields: [label], references: [label], onDelete: Cascade)
-  FileMetaData FileMetaData[]
+  label        String        @id
+  title        String?       @default("")
+  layout       String?       @default("table")
+  keys         LayoutKeys    @relation(fields: [label], references: [label], onDelete: Cascade)
+  FileMetaData FileMetaData? @relation(fields: [label], references: [fileName])
 }
 
 model LayoutKeys {
   label       String    @id
-  key         String
-  show        Boolean
-  className   String
-  input       String?
-  selectArray String
+  key         String    @default("")
+  show        Boolean   @default(true)
+  className   String    @default("")
+  input       String?   @default("text")
+  selectArray String    @default("")
   layouts     Layouts[]
 }
 
 model FileItems {
   itemId        String               @id @default(cuid())
-  locked        Boolean
-  name          String
-  channel       String?
-  baseDelay     String?
-  avgDelay      String?
-  color         String
+  locked        Boolean              @default(false)
+  name          String               @default("")
+  channel       Float?               @default(1)
+  baseDelay     Float?               @default(0)
+  avgDelay      Float?               @default(0)
+  color         String               @default("#71717A")
   fullRange     ItemsFullRanges[]
-  artListToggle ItemsArtListTog[]
+  artListTog    ItemsArtListTog[]
   artListSwitch ItemsArtListSwitch[]
   fadList       ItemsFadList[]
 }
 
 model ItemsFullRanges {
-  rangeId                 String              @id @default(cuid())
-  name                    String
-  low                     String?
-  high                    String?
-  whiteKeysOnly           Boolean
+  rangeId       String  @id @default(cuid())
+  name          String  @default("")
+  low           Float?  @default(0)
+  high          Float?  @default(127)
+  whiteKeysOnly Boolean @default(false)
+
+  FileItems               FileItems?          @relation(fields: [fileItemsItemId], references: [itemId])
+  fileItemsItemId         String?
   ItemsArtListTog         ItemsArtListTog?    @relation(fields: [itemsArtListTogArtId], references: [artId])
   itemsArtListTogArtId    String?
   ItemsArtListSwitch      ItemsArtListSwitch? @relation(fields: [itemsArtListSwitchArtId], references: [artId])
   itemsArtListSwitchArtId String?
-  FileItems               FileItems?          @relation(fields: [fileItemsItemId], references: [itemId])
-  fileItemsItemId         String?
 }
 
 model ItemsArtListTog {
-  artId           String            @id @default(cuid())
-  name            String?
-  toggle          Boolean
-  codeType        String?
-  code            String?
-  on              String?
-  off             String?
-  default         String?
-  delay           String?
-  changeType      String?
-  ranges          ItemsFullRanges[]
-  FileItems       FileItems?        @relation(fields: [fileItemsItemId], references: [itemId])
+  artId      String            @id @default(cuid())
+  name       String?           @default("")
+  toggle     Boolean           @default(true)
+  codeType   String?           @default("/control")
+  code       Float?            @default(0)
+  on         Float?            @default(127)
+  off        Float?            @default(0)
+  default    Float?            @default(0)
+  delay      Float?            @default(0)
+  changeType Float?            @default(0)
+  ranges     ItemsFullRanges[]
+
+  FileItems       FileItems? @relation(fields: [fileItemsItemId], references: [itemId])
   fileItemsItemId String?
 }
 
 model ItemsArtListSwitch {
-  artId           String            @id @default(cuid())
-  name            String?
-  toggle          Boolean
-  codeType        String?
-  code            String?
-  on              String?
-  off             String?
-  default         Boolean?
-  delay           String?
-  changeType      String?
-  ranges          ItemsFullRanges[]
-  FileItems       FileItems?        @relation(fields: [fileItemsItemId], references: [itemId])
+  artId      String            @id @default(cuid())
+  name       String?           @default("")
+  toggle     Boolean           @default(false)
+  codeType   String?           @default("/control")
+  code       Float?            @default(0)
+  on         Float?            @default(127)
+  off        Float?            @default(0)
+  default    Boolean?          @default(true)
+  delay      Float?            @default(0)
+  changeType Float?            @default(0)
+  ranges     ItemsFullRanges[]
+
+  FileItems       FileItems? @relation(fields: [fileItemsItemId], references: [itemId])
   fileItemsItemId String?
 }
 
 model ItemsFadList {
-  fadId           String     @id @default(cuid())
-  name            String?
-  codeType        String?
-  code            String?
-  default         String?
-  changeType      String?
+  fadId      String  @id @default(cuid())
+  name       String? @default("")
+  codeType   String? @default("/control")
+  code       Float?  @default(0)
+  default    Float?  @default(0)
+  changeType Float?  @default(0)
+
   FileItems       FileItems? @relation(fields: [fileItemsItemId], references: [itemId])
   fileItemsItemId String?
 }

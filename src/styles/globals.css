@@ -13,11 +13,11 @@
 }
 
 body {
-  height: 100vh;
+  /*height: 100vh;
   max-height: 100vh;
   width: 100vw;
   max-width: 100vw;
-  overflow: hidden;
+  overflow: hidden;*/
   font-family: 'caviar_dreamsregular';
 }
 

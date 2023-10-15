@@ -8,40 +8,44 @@ export type FileMetaData = {
   createdOn: string | Date
   modifiedOn: string | Date
   defaultColors: string[]
-  layouts: {
-    label:
-      | 'Tracks'
-      | 'Instrument Ranges'
-      | 'Articulations (Switch)'
-      | 'Articulations (Toggle)'
-      | 'Faders'
-    title?: 'fullRange' | 'artList' | 'artListSwitch' | 'fadList'
-    layout?: 'table' | 'cards'
-    keys: {
-      label: string
-      key: string
-      show: boolean
-      className: string
-      input?: 'text' | 'select'
-      selectArray?:
-        | 'setOutsList'
-        | 'setNoteList'
-        | 'chnMidiList'
-        | 'smpTypeList'
-        | 'smpOutsList'
-        | 'vepOutsList'
-        | 'valAddrList'
-        | 'valMidiList'
-        | 'valChngList'
-        | 'valNoteList'
-        | 'valPtchList'
-        | 'valDeftList'
-        | 'valNoneList'
-        | 'allNoteList'
-    }[]
-  }[]
+  layouts: Layouts[]
   vepTemplate: string
   dawTemplate: string
+}
+
+export type Layouts = {
+  label:
+    | 'Tracks'
+    | 'Instrument Ranges'
+    | 'Articulations (Switch)'
+    | 'Articulations (Toggle)'
+    | 'Faders'
+  title?: 'fullRange' | 'artList' | 'artListSwitch' | 'fadList'
+  layout?: 'table' | 'cards'
+  keys: LayoutKeys[]
+}
+
+export type LayoutKeys = {
+  label: string
+  key: string
+  show: boolean
+  className: string
+  input?: 'text' | 'select'
+  selectArray?:
+    | 'setOutsList'
+    | 'setNoteList'
+    | 'chnMidiList'
+    | 'smpTypeList'
+    | 'smpOutsList'
+    | 'vepOutsList'
+    | 'valAddrList'
+    | 'valMidiList'
+    | 'valChngList'
+    | 'valNoteList'
+    | 'valPtchList'
+    | 'valDeftList'
+    | 'valNoneList'
+    | 'allNoteList'
 }
 
 export type FileItems = {
