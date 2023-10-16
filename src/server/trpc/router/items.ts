@@ -39,6 +39,42 @@ export const ItemsRouter = router({
       }
     })
   }),
+  updateSingleItem: publicProcedure
+    .input(
+      z.object({
+        itemId: z.string().optional(),
+        locked: z.boolean().optional(),
+        name: z.string().optional(),
+        channel: z.string().optional(),
+        baseDelay: z.string().optional(),
+        avgDelay: z.string().optional(),
+        color: z.string().optional()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { itemId, locked, name, channel, baseDelay, avgDelay, color } =
+        input
+
+      const currentItem = await ctx.prisma.fileItems.findUnique({
+        where: {
+          itemId: itemId
+        }
+      })
+
+      return await ctx.prisma.fileItems.update({
+        where: {
+          itemId: itemId
+        },
+        data: {
+          locked: locked ?? currentItem?.locked,
+          name: name ?? currentItem?.name,
+          channel: parseInt(channel as string) ?? currentItem?.channel,
+          baseDelay: parseInt(baseDelay as string) ?? currentItem?.baseDelay,
+          avgDelay: parseInt(avgDelay as string) ?? currentItem?.avgDelay,
+          color: color ?? currentItem?.color
+        }
+      })
+    }),
   deleteSingleItem: publicProcedure
     .input(
       z.object({

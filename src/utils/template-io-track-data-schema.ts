@@ -26,11 +26,22 @@ export type Layouts = {
 }
 
 export type LayoutKeys = {
-  label: string
-  key: string
+  label?: string
+  key:
+    | 'itemId'
+    | 'locked'
+    | 'name'
+    | 'channel'
+    | 'baseDelay'
+    | 'avgDelay'
+    | 'color'
+  //| 'fullRange'
+  //| 'artListTog'
+  //| 'artListSwitch'
+  //| 'fadList'
   show: boolean
   className: string
-  input?: 'text' | 'select'
+  input?: 'text' | 'select' | 'checkbox'
   selectArray?:
     | 'setOutsList'
     | 'setNoteList'
@@ -49,7 +60,7 @@ export type LayoutKeys = {
 }
 
 export type FileItems = {
-  id: string
+  itemId: string
   locked: boolean | number
   name: string
   channel?: string | number
@@ -63,7 +74,7 @@ export type FileItems = {
 }
 
 export type ItemsFullRanges = {
-  id: string
+  rangeId: string
   name: string
   low?: string | number
   high?: string | number
@@ -71,7 +82,7 @@ export type ItemsFullRanges = {
 }
 
 export type ItemsArtListTog = {
-  id: string
+  artId: string
   name?: string
   toggle: boolean | number
   codeType?: string | number
@@ -81,11 +92,11 @@ export type ItemsArtListTog = {
   default?: string | number
   delay?: string | number
   changeType?: string | number
-  ranges: ItemsFullRanges['id'][]
+  ranges: ItemsFullRanges['rangeId'][]
 }
 
 export type ItemsArtListSwitch = {
-  id: string
+  artId: string
   name?: string
   toggle: boolean | number
   codeType?: string | number
@@ -95,11 +106,11 @@ export type ItemsArtListSwitch = {
   default?: boolean | string | number
   delay?: string | number
   changeType?: string | number
-  ranges: ItemsFullRanges['id'][]
+  ranges: ItemsFullRanges['rangeId'][]
 }
 
 export type ItemsFadList = {
-  id: string
+  fadId: string
   name?: string
   codeType?: string | number
   code?: string | number
