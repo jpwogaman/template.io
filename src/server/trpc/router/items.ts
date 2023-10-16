@@ -1,14 +1,18 @@
 import { z } from 'zod'
 
 import { router, publicProcedure } from '@/server/trpc/trpc'
-import { FileData } from '@/utils/template-io-track-data-schema'
-import { d } from '@tauri-apps/api/updater-f9814f36'
+import {
+  FileData,
+  FileItems,
+  FileMetaData
+} from '@/utils/template-io-track-data-schema'
 
 export const ItemsRouter = router({
   createAllItemsFromJSON: publicProcedure
-    .input(z.object({}))
+    .input(z.string())
     .mutation(async ({ ctx, input }) => {
-      const { fileMetaData, items } = input as FileData
+      const fileData = JSON.parse(input) as FileData
+      const { fileMetaData, items } = fileData
 
       const deleteAllItemsAndMetaData = async () => {
         await ctx.prisma.fileMetaData.deleteMany({})
@@ -21,11 +25,85 @@ export const ItemsRouter = router({
 
       deleteAllItemsAndMetaData()
 
-      const newFileMetaData = await ctx.prisma.fileMetaData.create({
-        data: {
-          ...fileMetaData
-        }
-      })
+      //const newFileMetaData = await ctx.prisma.fileMetaData.create({
+      //  data: {
+      //    ...fileMetaData
+      //  }
+      //})
+
+      //const newFileMetaData = await ctx.prisma.fileMetaData.create({
+      //  data: {
+      //    fileName: fileMetaData.fileName,
+      //    createdAt: fileMetaData.createdAt,
+      //    updatedAt: fileMetaData.updatedAt,
+      //    //defaultColors: fileMetaData.defaultColors,
+      //    layouts: {
+      //      create: fileMetaData.layouts.map((layout) => {
+      //        return {
+      //          label: layout.label,
+      //          title: layout.title,
+      //          layout: layout.layout,
+      //          keys: {
+      //            create: layout.keys.map((key) => {
+      //              return {
+      //                label: key.label,
+      //                key: key.key,
+      //                show: key.show,
+      //                className: key.className,
+      //                input: key.input,
+      //                selectArray: key.selectArray
+      //              }
+      //            })
+      //          }
+      //        }
+      //      })
+      //    },
+      //    vepTemplate: fileMetaData.vepTemplate,
+      //    dawTemplate: fileMetaData.dawTemplate
+      //  }
+      //})
+
+      for (const item of items) {
+        const newItem = await ctx.prisma.fileItems.create({
+          data: {
+            itemId: item.itemId,
+            locked: item.locked as boolean,
+            name: item.name,
+            channel: parseInt(item.channel as string),
+            baseDelay: parseInt(item.baseDelay as string),
+            avgDelay: parseInt(item.avgDelay as string),
+            color: item.color,
+            fullRange: {
+              create: item.fullRange.map((range) => {
+                return {
+                  rangeId: range.rangeId
+                }
+              })
+            },
+            artListTog: {
+              create: item.artListTog.map((art) => {
+                return {
+                  artId: art.artId
+                }
+              })
+            },
+            artListSwitch: {
+              create: item.artListSwitch.map((art) => {
+                return {
+                  artId: art.artId
+                }
+              })
+            },
+            fadList: {
+              create: item.fadList.map((fad) => {
+                return {
+                  fadId: fad.fadId
+                }
+              })
+            }
+          }
+        })
+      }
     }),
 
   createSingleItem: publicProcedure.mutation(async ({ ctx }) => {

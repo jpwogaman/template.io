@@ -6,7 +6,6 @@ import { listen } from '@tauri-apps/api/event'
 import { downloadDataAsJSON } from '@/utils/exportJSON'
 import { trpc } from '@/utils/trpc'
 import '@/styles/globals.css'
-import { FileData } from '@/utils/template-io-track-data-schema'
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -44,50 +43,36 @@ const MyApp: AppType<{ session: Session | null }> = ({
       }
     })
 
-  const openMutation = trpc.tauriMenuEvents.open.useMutation({
-    onSuccess: (data) => {
-      const fileInput = document.createElement('input')
-      fileInput.type = 'file'
-      fileInput.accept = '.json'
-
-      fileInput.onchange = (e) => {
-        if (!e.target) return
-        const targetFile = (e.target as HTMLInputElement).files![0]
-        const fileReader = new FileReader()
-        fileReader.readAsText(targetFile as unknown as Blob, 'utf-8')
-        fileReader.onload = (loadedEvent) => {
-          const importedData = JSON.parse(
-            loadedEvent.target!.result as unknown as string
-          ) as FileData
-          createAllItemsFromJSONMutation.mutate(importedData)
-        }
-      }
-      fileInput.click()
-      openMutation.reset()
-    },
-    onError: () => {
-      alert('There was an error submitting your request. Please try again.')
-    }
-  })
-
   listen('tauri://menu', (event) => {
-    if (event.payload === 'save') {
-      saveMutation.mutate({
-        event: 'tauri://menu',
-        payload: 'save'
-      })
-    }
+    //if (event.payload === 'save') {
+    //  saveMutation.mutate({
+    //    event: 'tauri://menu',
+    //    payload: 'save'
+    //  })
+    //}
     if (event.payload === 'save_as') {
       saveAsMutation.mutate({
         event: 'tauri://menu',
         payload: 'save_as'
       })
     }
+
     if (event.payload === 'open') {
-      openMutation.mutate({
-        event: 'tauri://menu',
-        payload: 'open'
-      })
+      const fileInput = document.createElement('input')
+      fileInput.type = 'file'
+      fileInput.accept = '.json'
+
+      fileInput.onchange = (e) => {
+        const targetFile = (e.target as HTMLInputElement).files![0]
+        const fileReader = new FileReader()
+        fileReader.readAsText(targetFile as unknown as Blob, 'UTF-8')
+        fileReader.onload = (loadedEvent) => {
+          createAllItemsFromJSONMutation.mutate(
+            loadedEvent.target!.result as unknown as string
+          )
+        }
+      }
+      fileInput.click()
     }
   })
 

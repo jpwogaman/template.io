@@ -5,7 +5,7 @@ export type FileData = {
 
 export type FileMetaData = {
   fileName: string
-  createdAn: Date
+  createdAt: Date
   updatedAt: Date
   defaultColors: string[]
   layouts: Layouts[]
