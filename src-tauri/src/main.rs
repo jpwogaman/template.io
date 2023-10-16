@@ -3,6 +3,11 @@
   windows_subsystem = "windows"
 )]
 
+//#[derive(Clone, serde::Serialize)]
+//struct Payload {
+//  message: String,
+//}
+
 use tauri::{
   CustomMenuItem, 
   Menu, 
@@ -13,7 +18,7 @@ use tauri::{
   SystemTray, 
   SystemTrayEvent
 };  
-//use tauri::Manager;
+use tauri::Manager;
 
 fn main() {
   let context = tauri::generate_context!();  
@@ -54,7 +59,7 @@ fn main() {
   let system_tray = SystemTray::new()
   .with_menu(tray_menu);
   
-  tauri::Builder::default()  
+  tauri::Builder::default()
     .menu(menu)
     .on_menu_event(|event| {
       match event.menu_item_id() {
@@ -65,13 +70,13 @@ fn main() {
           event.window().close().unwrap();
         }
         "open" => {
-          println!("open");
+          event.window().emit("open", Some("open")).unwrap();
         }
         "save" => {
-          println!("save");
+          event.window().emit("save", Some("save")).unwrap();
         }
         "save_as" => {
-          println!("save_as");
+          event.window().emit("save_as", Some("save_as")).unwrap();
         }
         _ => {}
       }})

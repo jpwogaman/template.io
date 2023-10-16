@@ -1,8 +1,33 @@
 import { z } from 'zod'
 
 import { router, publicProcedure } from '@/server/trpc/trpc'
+import { FileData } from '@/utils/template-io-track-data-schema'
+import { d } from '@tauri-apps/api/updater-f9814f36'
 
 export const ItemsRouter = router({
+  createAllItemsFromJSON: publicProcedure
+    .input(z.object({}))
+    .mutation(async ({ ctx, input }) => {
+      const { fileMetaData, items } = input as FileData
+
+      const deleteAllItemsAndMetaData = async () => {
+        await ctx.prisma.fileMetaData.deleteMany({})
+        await ctx.prisma.fileItems.deleteMany({})
+        await ctx.prisma.itemsFullRanges.deleteMany({})
+        await ctx.prisma.itemsArtListTog.deleteMany({})
+        await ctx.prisma.itemsArtListSwitch.deleteMany({})
+        await ctx.prisma.itemsFadList.deleteMany({})
+      }
+
+      deleteAllItemsAndMetaData()
+
+      const newFileMetaData = await ctx.prisma.fileMetaData.create({
+        data: {
+          ...fileMetaData
+        }
+      })
+    }),
+
   createSingleItem: publicProcedure.mutation(async ({ ctx }) => {
     const newItemId = await ctx.prisma.fileItems
       .create({

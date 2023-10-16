@@ -5,8 +5,8 @@ export type FileData = {
 
 export type FileMetaData = {
   fileName: string
-  createdOn: string | Date
-  modifiedOn: string | Date
+  createdAn: Date
+  updatedAt: Date
   defaultColors: string[]
   layouts: Layouts[]
   vepTemplate: string
