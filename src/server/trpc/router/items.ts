@@ -3,41 +3,281 @@ import { z } from 'zod'
 import { router, publicProcedure } from '@/server/trpc/trpc'
 
 export const ItemsRouter = router({
-  createItem: publicProcedure.mutation(async ({ ctx }) => {
-    const newItem = await ctx.prisma.fileItems.create({
-      data: {}
-    })
-
-    const updatedItem = await ctx.prisma.fileItems.update({
+  createSingleItem: publicProcedure.mutation(async ({ ctx }) => {
+    const newItemId = await ctx.prisma.fileItems
+      .create({
+        data: {}
+      })
+      .then((item) => {
+        return item.itemId
+      })
+    return await ctx.prisma.fileItems.update({
       where: {
-        itemId: newItem.itemId
+        itemId: newItemId
       },
       data: {
         fullRange: {
           create: {
-            rangeId: newItem.itemId + '_range-0'
+            rangeId: newItemId + '_range_0'
           }
         },
         artListTog: {
           create: {
-            artId: newItem.itemId + '_art-0'
+            artId: newItemId + '_art_0'
           }
         },
         artListSwitch: {
           create: {
-            artId: newItem.itemId + '_art-1'
+            artId: newItemId + '_art_1'
           }
         },
         fadList: {
           create: {
-            fadId: newItem.itemId + '_fad-0'
+            fadId: newItemId + '_fad_0'
           }
         }
       }
     })
-    return updatedItem
   }),
-  clearAllItems: publicProcedure.mutation(async ({ ctx }) => {
+  deleteSingleItem: publicProcedure
+    .input(
+      z.object({
+        itemId: z.string()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { itemId } = input
+      await ctx.prisma.fileItems.delete({
+        where: {
+          itemId: itemId
+        }
+      })
+      await ctx.prisma.itemsFullRanges.deleteMany({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
+      await ctx.prisma.itemsArtListTog.deleteMany({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
+      await ctx.prisma.itemsArtListSwitch.deleteMany({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
+      await ctx.prisma.itemsFadList.deleteMany({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
+      return true
+    }),
+
+  addSingleFullRange: publicProcedure
+    .input(
+      z.object({
+        itemId: z.string()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { itemId } = input
+
+      const lastRangeNumber = await ctx.prisma.itemsFullRanges.count({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
+
+      const newRange = await ctx.prisma.itemsFullRanges.create({
+        data: {
+          FileItems: {
+            connect: {
+              itemId: itemId
+            }
+          },
+          rangeId: itemId + '_range_' + lastRangeNumber
+        }
+      })
+      return newRange
+    }),
+
+  deleteSingleFullRange: publicProcedure
+    .input(
+      z.object({
+        rangeId: z.string(),
+        fileItemsItemId: z.string()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { rangeId, fileItemsItemId } = input
+
+      const mustHaveOneRange = await ctx.prisma.itemsFullRanges.count({
+        where: {
+          fileItemsItemId: fileItemsItemId
+        }
+      })
+
+      if (mustHaveOneRange <= 1) {
+        throw new Error('Must have at least one range')
+      }
+
+      await ctx.prisma.itemsFullRanges.delete({
+        where: {
+          rangeId: rangeId
+        }
+      })
+      const allFullRanges = await ctx.prisma.itemsFullRanges.findMany({
+        where: {
+          fileItemsItemId: fileItemsItemId
+        }
+      })
+      return allFullRanges.map((range, index) => {
+        return ctx.prisma.itemsFullRanges.update({
+          where: {
+            rangeId: range.rangeId
+          },
+          data: {
+            rangeId: range.rangeId.split('_')[0] + '_range_' + index
+          }
+        })
+      })
+    }),
+
+  addSingleArtListTog: publicProcedure
+    .input(
+      z.object({
+        itemId: z.string()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { itemId } = input
+
+      const lastArtNumber = await ctx.prisma.itemsArtListTog.count({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
+
+      const newArt = await ctx.prisma.itemsArtListTog.create({
+        data: {
+          FileItems: {
+            connect: {
+              itemId: itemId
+            }
+          },
+          artId: itemId + '_art_' + lastArtNumber
+        }
+      })
+      return newArt
+    }),
+
+  deleteSingleArtListTog: publicProcedure
+    .input(
+      z.object({
+        artId: z.string()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { artId } = input
+      await ctx.prisma.itemsArtListTog.delete({
+        where: {
+          artId: artId
+        }
+      })
+      return true
+    }),
+
+  addSingleArtListSwitch: publicProcedure
+    .input(
+      z.object({
+        itemId: z.string()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { itemId } = input
+
+      const lastArtNumber = await ctx.prisma.itemsArtListSwitch.count({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
+
+      const newArt = await ctx.prisma.itemsArtListSwitch.create({
+        data: {
+          FileItems: {
+            connect: {
+              itemId: itemId
+            }
+          },
+          artId: itemId + '_art_' + lastArtNumber
+        }
+      })
+      return newArt
+    }),
+
+  deleteSingleArtListSwitch: publicProcedure
+    .input(
+      z.object({
+        artId: z.string()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { artId } = input
+      await ctx.prisma.itemsArtListSwitch.delete({
+        where: {
+          artId: artId
+        }
+      })
+      return true
+    }),
+
+  addSingleFadList: publicProcedure
+    .input(
+      z.object({
+        itemId: z.string()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { itemId } = input
+
+      const lastFadNumber = await ctx.prisma.itemsFadList.count({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
+
+      const newFad = await ctx.prisma.itemsFadList.create({
+        data: {
+          FileItems: {
+            connect: {
+              itemId: itemId
+            }
+          },
+          fadId: itemId + '_fad_' + lastFadNumber
+        }
+      })
+      return newFad
+    }),
+
+  deleteSingleFadList: publicProcedure
+    .input(
+      z.object({
+        fadId: z.string()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { fadId } = input
+      await ctx.prisma.itemsFadList.delete({
+        where: {
+          fadId: fadId
+        }
+      })
+      return true
+    }),
+
+  deleteAllItems: publicProcedure.mutation(async ({ ctx }) => {
     await ctx.prisma.fileItems.deleteMany({})
     await ctx.prisma.itemsFullRanges.deleteMany({})
     await ctx.prisma.itemsArtListTog.deleteMany({})

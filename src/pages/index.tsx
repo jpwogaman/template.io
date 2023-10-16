@@ -4,7 +4,7 @@ import { type NextPage } from 'next'
 
 const Index: NextPage = () => {
   const { data, refetch } = trpc.items.getAllItems.useQuery()
-  const createMutation = trpc.items.createItem.useMutation({
+  const createMutation = trpc.items.createSingleItem.useMutation({
     onSuccess: () => {
       createMutation.reset()
       refetch()
@@ -13,7 +13,32 @@ const Index: NextPage = () => {
       alert('There was an error submitting your request. Please try again.')
     }
   })
-  const clearMutation = trpc.items.clearAllItems.useMutation({
+
+  const createNewRangeMutation = trpc.items.addSingleFullRange.useMutation({
+    onSuccess: () => {
+      createNewRangeMutation.reset()
+      refetch()
+    },
+    onError: () => {
+      alert('There was an error submitting your request. Please try again.')
+    }
+  })
+
+  const deleteSingleFullRangeMutation =
+    trpc.items.deleteSingleFullRange.useMutation({
+      onSuccess: () => {
+        deleteSingleFullRangeMutation.reset()
+        refetch()
+      },
+      onError: (error) => {
+        alert(
+          error ??
+            'There was an error submitting your request. Please try again.'
+        )
+      }
+    })
+
+  const clearMutation = trpc.items.deleteAllItems.useMutation({
     onSuccess: () => {
       clearMutation.reset()
       refetch()
@@ -31,6 +56,25 @@ const Index: NextPage = () => {
           className='border border-black'
           onClick={() => clearMutation.mutate()}>
           clear
+        </button>
+        <button
+          className='border border-black'
+          onClick={() =>
+            createNewRangeMutation.mutate({
+              itemId: data![0]?.itemId ?? ''
+            })
+          }>
+          new range
+        </button>
+        <button
+          className='border border-black'
+          onClick={() =>
+            deleteSingleFullRangeMutation.mutate({
+              rangeId: data![0]?.fullRange[0]?.rangeId ?? '',
+              fileItemsItemId: data![0]?.itemId ?? ''
+            })
+          }>
+          delete 1st range
         </button>
         <button
           className='border border-black'
