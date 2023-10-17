@@ -186,7 +186,7 @@ const TrackList: FC = () => {
                       id='lockItem'
                       a='fa-solid fa-lock-open'
                       b='fa-solid fa-lock'
-                      defaultIcon={locked ? 'b' : 'a'} //this isn't saving the correct icon on refresh
+                      defaultIcon={locked ? 'b' : 'a'}
                       onToggleA={() =>
                         updateSingleItemMutation.mutate({
                           itemId: itemId,
@@ -215,8 +215,7 @@ const TrackList: FC = () => {
                     }
                     if (!show) return
 
-                    const keyIsTextOrCheckbox =
-                      input === 'text' || input === 'checkbox'
+                    const keyIsTextOrCheckbox = input === 'text' || checkBox
 
                     return (
                       <td
@@ -224,7 +223,7 @@ const TrackList: FC = () => {
                         className={tw(trackTd, 'p-0.5')}>
                         <div
                           className={tw(
-                            input === 'checkbox' ? 'mx-auto w-[20px]' : 'w-full'
+                            checkBox ? 'mx-auto w-[20px]' : 'w-full'
                           )}>
                           {!input && <p className='p-1'>{item[key]}</p>}
                           {input === 'select' && (
@@ -258,7 +257,7 @@ const TrackList: FC = () => {
                               type={input}
                               className={tw(
                                 'w-full p-1 text-zinc-900',
-                                input === 'checkbox' ? 'cursor-pointer' : '',
+                                checkBox ? 'cursor-pointer' : '',
                                 disabled
                                   ? 'cursor-not-allowed bg-zinc-300'
                                   : 'bg-white dark:bg-zinc-100'

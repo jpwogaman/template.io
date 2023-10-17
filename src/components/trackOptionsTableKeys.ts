@@ -1,5 +1,3 @@
-import { LayoutKeys } from '@/utils/template-io-track-data-schema'
-
 const TrackOptionsTableKeys = [
   {
     title: 'Instrument Ranges',
@@ -293,6 +291,6 @@ const TrackOptionsTableKeys = [
       }
     ]
   }
-]
+] as const
 
 export default TrackOptionsTableKeys

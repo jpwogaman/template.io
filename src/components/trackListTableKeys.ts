@@ -1,5 +1,3 @@
-import { LayoutKeys } from '@/utils/template-io-track-data-schema'
-
 const TrackListTableKeys = {
   label: 'Tracks',
   keys: [
@@ -55,11 +53,11 @@ const TrackListTableKeys = {
       className: 'w-[00%]',
       show: false,
       key: 'color',
-      input: undefined,
+      input: 'checkbox',
       selectArray: undefined,
       label: undefined
     }
-  ] as LayoutKeys[]
-}
+  ]
+} as const
 
 export default TrackListTableKeys

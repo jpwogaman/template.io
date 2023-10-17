@@ -8,56 +8,56 @@ export type FileMetaData = {
   createdAt: Date
   updatedAt: Date
   defaultColors: string[]
-  layouts: Layouts[]
+  //layouts: Layouts[]
   vepTemplate: string
   dawTemplate: string
 }
 
-export type Layouts = {
-  label:
-    | 'Tracks'
-    | 'Instrument Ranges'
-    | 'Articulations (Switch)'
-    | 'Articulations (Toggle)'
-    | 'Faders'
-  title?: 'fullRange' | 'artList' | 'artListSwitch' | 'fadList'
-  layout?: 'table' | 'cards'
-  keys: LayoutKeys[]
-}
+//export type Layouts = {
+//  label:
+//    | 'Tracks'
+//    | 'Instrument Ranges'
+//    | 'Articulations (Switch)'
+//    | 'Articulations (Toggle)'
+//    | 'Faders'
+//  title?: 'fullRange' | 'artList' | 'artListSwitch' | 'fadList'
+//  layout?: 'table' | 'cards'
+//  keys: LayoutKeys[]
+//}
 
-export type LayoutKeys = {
-  label?: string
-  key:
-    | 'itemId'
-    | 'locked'
-    | 'name'
-    | 'channel'
-    | 'baseDelay'
-    | 'avgDelay'
-    | 'color'
-  //| 'fullRange'
-  //| 'artListTog'
-  //| 'artListSwitch'
-  //| 'fadList'
-  show: boolean
-  className: string
-  input?: 'text' | 'select' | 'checkbox'
-  selectArray?:
-    | 'setOutsList'
-    | 'setNoteList'
-    | 'chnMidiList'
-    | 'smpTypeList'
-    | 'smpOutsList'
-    | 'vepOutsList'
-    | 'valAddrList'
-    | 'valMidiList'
-    | 'valChngList'
-    | 'valNoteList'
-    | 'valPtchList'
-    | 'valDeftList'
-    | 'valNoneList'
-    | 'allNoteList'
-}
+//export type LayoutKeys = {
+//  label?: string
+//  key:
+//    | 'itemId'
+//    | 'locked'
+//    | 'name'
+//    | 'channel'
+//    | 'baseDelay'
+//    | 'avgDelay'
+//    | 'color'
+//  //| 'fullRange'
+//  //| 'artListTog'
+//  //| 'artListSwitch'
+//  //| 'fadList'
+//  show: boolean
+//  className: string
+//  input?: 'text' | 'select' | 'checkbox'
+//  selectArray?:
+//    | 'setOutsList'
+//    | 'setNoteList'
+//    | 'chnMidiList'
+//    | 'smpTypeList'
+//    | 'smpOutsList'
+//    | 'vepOutsList'
+//    | 'valAddrList'
+//    | 'valMidiList'
+//    | 'valChngList'
+//    | 'valNoteList'
+//    | 'valPtchList'
+//    | 'valDeftList'
+//    | 'valNoneList'
+//    | 'allNoteList'
+//}
 
 export type FileItems = {
   itemId: string
