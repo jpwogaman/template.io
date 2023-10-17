@@ -192,8 +192,16 @@ export const ItemsRouter = router({
         },
         include: {
           fullRange: true,
-          artListTog: true,
-          artListSwitch: true,
+          artListTog: {
+            include: {
+              ranges: true
+            }
+          },
+          artListSwitch: {
+            include: {
+              ranges: true
+            }
+          },
           fadList: true
         }
       })
