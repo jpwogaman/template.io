@@ -178,6 +178,26 @@ export const ItemsRouter = router({
         }
       })
     }),
+  getSingleItem: publicProcedure
+    .input(
+      z.object({
+        itemId: z.string()
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { itemId } = input
+      return await ctx.prisma.fileItems.findUnique({
+        where: {
+          itemId: itemId
+        },
+        include: {
+          fullRange: true,
+          artListTog: true,
+          artListSwitch: true,
+          fadList: true
+        }
+      })
+    }),
   deleteSingleItem: publicProcedure
     .input(
       z.object({
