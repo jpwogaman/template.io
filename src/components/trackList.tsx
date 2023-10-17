@@ -3,69 +3,8 @@ import { selectArrays } from '@/components/select-arrays'
 import { trpc } from '@/utils/trpc'
 import tw from '@/utils/tw'
 import { type ChangeEvent, useState, FC } from 'react'
-import { type LayoutKeys } from '@/utils/template-io-track-data-schema'
+import TrackListTableKeys from './trackListTableKeys'
 
-const levelOneKeys = {
-  label: 'Tracks',
-  keys: [
-    {
-      className: 'w-[10%]',
-      show: true,
-      key: 'itemId',
-      input: undefined,
-      selectArray: undefined,
-      label: 'ID'
-    },
-    {
-      className: 'w-[00%]',
-      show: false,
-      key: 'locked',
-      input: undefined,
-      selectArray: undefined,
-      label: undefined
-    },
-    {
-      className: 'w-[33%]',
-      show: true,
-      key: 'name',
-      input: 'text',
-      selectArray: undefined,
-      label: 'Name'
-    },
-    {
-      className: 'w-[12%]',
-      show: true,
-      key: 'channel',
-      input: 'select',
-      selectArray: 'chnMidiList',
-      label: 'Channel'
-    },
-    {
-      className: 'w-[10%]',
-      show: true,
-      key: 'baseDelay',
-      input: 'text',
-      selectArray: undefined,
-      label: 'Base Delay'
-    },
-    {
-      className: 'w-[10%]',
-      show: true,
-      key: 'avgDelay',
-      input: undefined,
-      selectArray: undefined,
-      label: 'Avg. Delay'
-    },
-    {
-      className: 'w-[00%]',
-      show: false,
-      key: 'color',
-      input: undefined,
-      selectArray: undefined,
-      label: undefined
-    }
-  ] as LayoutKeys[]
-}
 let optionElements: string | React.JSX.Element | undefined
 
 const TrackList: FC = () => {
@@ -170,14 +109,14 @@ const TrackList: FC = () => {
     <div className='max-h-[85%] w-6/12'>
       <div className='mt-4 h-full overflow-y-scroll'>
         <div className='bg-main sticky top-[0px] z-50 flex gap-2'>
-          <h2 className='font-caviarBold text-base'>{`${levelOneKeys.label} (${data?.length})`}</h2>
+          <h2 className='font-caviarBold text-base'>{`${TrackListTableKeys.label} (${data?.length})`}</h2>
         </div>
         <table className='w-full table-fixed border-separate border-spacing-0 text-left text-xs'>
           <thead>
             <tr>
               <td className={tw(trackTh, 'sticky top-[24px] z-50 w-[20px]')} />
               <td className={tw(trackTh, 'sticky top-[24px] z-50 w-[5%]')} />
-              {levelOneKeys.keys.map((keyActual) => {
+              {TrackListTableKeys.keys.map((keyActual) => {
                 const { key, show, className, label } = keyActual
 
                 if (!show) return
@@ -191,7 +130,7 @@ const TrackList: FC = () => {
                         <p>{label}</p>
                         <button
                           //onClick={renumberItems}
-                          title={`Renumber ${levelOneKeys.label}`}>
+                          title={`Renumber ${TrackListTableKeys.label}`}>
                           <i className='fa-solid fa-arrow-down-1-9' />
                         </button>
                       </div>
@@ -262,7 +201,7 @@ const TrackList: FC = () => {
                       }
                     />
                   </td>
-                  {levelOneKeys.keys.map((keyActual) => {
+                  {TrackListTableKeys.keys.map((keyActual) => {
                     const { key, input, selectArray, show } = keyActual
 
                     const checkBox = input === 'checkbox'
