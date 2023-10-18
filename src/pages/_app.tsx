@@ -1,16 +1,11 @@
 import { type AppType } from 'next/app'
-import { type Session } from 'next-auth'
-import { SessionProvider } from 'next-auth/react'
 import { ThemeProvider } from 'next-themes'
 import { listen } from '@tauri-apps/api/event'
 import { downloadDataAsJSON } from '@/utils/exportJSON'
 import { trpc } from '@/utils/trpc'
 import '@/styles/globals.css'
 
-const MyApp: AppType<{ session: Session | null }> = ({
-  Component,
-  pageProps: { session, ...pageProps }
-}) => {
+const MyApp: AppType = ({ Component, pageProps }) => {
   const saveMutation = trpc.tauriMenuEvents.save.useMutation({
     onSuccess: (data) => {
       const fileName = data?.fileMetaData?.fileName
@@ -77,14 +72,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
   })
 
   return (
-    <SessionProvider session={session}>
-      <ThemeProvider
-        key='theme'
-        attribute='class'
-        defaultTheme='dark'>
-        <Component {...pageProps} />
-      </ThemeProvider>
-    </SessionProvider>
+    <ThemeProvider
+      key='theme'
+      attribute='class'
+      defaultTheme='dark'>
+      <Component {...pageProps} />
+    </ThemeProvider>
   )
 }
 
