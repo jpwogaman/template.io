@@ -99,10 +99,10 @@ You can now use Template.io to add information about your tracks and when you sa
     cd template.io
     ```
 4)  ```
-    npm install
+    pnpm install
     ```
 5)  ```
-    npm run tauri dev
+    pnpm tauri dev
     ```
 
 You can now go back to [**Step 3**](#3-setup-open-stage-control) above and continue with setup.
