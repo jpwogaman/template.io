@@ -64,7 +64,7 @@ export const ItemsRouter = createTRPCRouter({
       //})
 
       for (const item of items) {
-        const newItem = await ctx.prisma.fileItems.create({
+        await ctx.prisma.fileItems.create({
           data: {
             itemId: item.itemId,
             locked: item.locked as boolean,
@@ -455,11 +455,13 @@ export const ItemsRouter = createTRPCRouter({
   getAllItems: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.fileItems.findMany({
       include: {
-        fullRange: true,
-        artListTog: true,
-        artListSwitch: true,
-        fadList: true
+        _count: {
+          select: {
+            artListTog: true,
+            artListSwitch: true
+          }
+        }
       }
-    })
+    })    
   })
 })

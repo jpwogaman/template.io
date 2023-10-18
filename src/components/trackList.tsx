@@ -160,7 +160,7 @@ const TrackList: FC = () => {
           </thead>
           <tbody>
             {data?.map((item, thisIndex) => {
-              const { itemId, color, locked, artListTog, artListSwitch } = item
+              const { itemId, color, locked, _count } = item
               return (
                 <tr
                   key={itemId}
@@ -276,7 +276,7 @@ const TrackList: FC = () => {
                     )
                   })}
                   <td className={tw(trackTd, 'p-0.5')}>
-                    {artListTog.length + artListSwitch.length}
+                    {_count?.artListTog + _count?.artListSwitch}
                   </td>
                   <td className={tw(trackTd, 'p-0.5 text-center')}>
                     <button
