@@ -18,7 +18,7 @@ use tauri::{
   SystemTray, 
   SystemTrayEvent
 };  
-use tauri::Manager;
+//use tauri::Manager;
 
 fn main() {
   let context = tauri::generate_context!();  
