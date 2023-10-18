@@ -3,9 +3,12 @@ import { ThemeProvider } from 'next-themes'
 import { listen } from '@tauri-apps/api/event'
 import { downloadDataAsJSON } from '@/utils/exportJSON'
 import { trpc } from '@/utils/trpc'
+import { useState, useEffect } from 'react'
 import '@/styles/globals.css'
 
 const MyApp: AppType = ({ Component, pageProps }) => {
+  const [mounted, setMounted] = useState(false)
+
   const saveMutation = trpc.tauriMenuEvents.save.useMutation({
     onSuccess: (data) => {
       const fileName = data?.fileMetaData?.fileName
@@ -38,38 +41,47 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       }
     })
 
-  listen('tauri://menu', (event) => {
-    //if (event.payload === 'save') {
-    //  saveMutation.mutate({
-    //    event: 'tauri://menu',
-    //    payload: 'save'
-    //  })
-    //}
-    if (event.payload === 'save_as') {
-      saveAsMutation.mutate({
-        event: 'tauri://menu',
-        payload: 'save_as'
-      })
-    }
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
-    if (event.payload === 'open') {
-      const fileInput = document.createElement('input')
-      fileInput.type = 'file'
-      fileInput.accept = '.json'
+  if (!mounted) {
+    return null
+  }
 
-      fileInput.onchange = (e) => {
-        const targetFile = (e.target as HTMLInputElement).files![0]
-        const fileReader = new FileReader()
-        fileReader.readAsText(targetFile as unknown as Blob, 'UTF-8')
-        fileReader.onload = (loadedEvent) => {
-          createAllItemsFromJSONMutation.mutate(
-            loadedEvent.target!.result as unknown as string
-          )
-        }
+  mounted &&
+    listen('tauri://menu', (event) => {
+      //if (event.payload === 'save') {
+      //  saveMutation.mutate({
+      //    event: 'tauri://menu',
+      //    payload: 'save'
+      //  })
+      //}
+      if (event.payload === 'save_as') {
+        saveAsMutation.mutate({
+          event: 'tauri://menu',
+          payload: 'save_as'
+        })
       }
-      fileInput.click()
-    }
-  })
+
+      if (event.payload === 'open') {
+        const fileInput = document.createElement('input')
+        fileInput.type = 'file'
+        fileInput.accept = '.json'
+
+        fileInput.onchange = (e) => {
+          const targetFile = (e.target as HTMLInputElement).files![0]
+          const fileReader = new FileReader()
+          fileReader.readAsText(targetFile as unknown as Blob, 'UTF-8')
+          fileReader.onload = (loadedEvent) => {
+            createAllItemsFromJSONMutation.mutate(
+              loadedEvent.target!.result as unknown as string
+            )
+          }
+        }
+        fileInput.click()
+      }
+    })
 
   return (
     <ThemeProvider
