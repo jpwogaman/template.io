@@ -1,8 +1,8 @@
 import { z } from 'zod'
-import { router, publicProcedure } from '@/server/trpc/trpc'
+import { createTRPCRouter, publicProcedure } from '@/server/trpc/trpc'
 import { type EventName } from '@tauri-apps/api/event'
 
-export const FileMetadata = router({
+export const FileMetadata = createTRPCRouter({
   getMetaData: publicProcedure
     .input(
       z.object({

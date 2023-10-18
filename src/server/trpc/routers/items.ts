@@ -1,13 +1,13 @@
 import { z } from 'zod'
 
-import { router, publicProcedure } from '@/server/trpc/trpc'
+import { createTRPCRouter, publicProcedure } from '@/server/trpc/trpc'
 import {
   FileData,
   FileItems,
   FileMetaData
 } from '@/utils/template-io-track-data-schema'
 
-export const ItemsRouter = router({
+export const ItemsRouter = createTRPCRouter({
   createAllItemsFromJSON: publicProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {

@@ -1,8 +1,8 @@
 import { z } from 'zod'
-import { router, publicProcedure } from '@/server/trpc/trpc'
+import { createTRPCRouter, publicProcedure } from '@/server/trpc/trpc'
 import { type EventName } from '@tauri-apps/api/event'
 
-export const TauriMenuEvents = router({
+export const TauriMenuEvents = createTRPCRouter({
   save: publicProcedure
     .input(
       z.object({
