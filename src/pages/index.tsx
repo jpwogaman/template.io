@@ -1,9 +1,12 @@
-import { trpc } from '@/utils/trpc'
 import { type NextPage } from 'next'
+import { useState } from 'react'
+import { trpc } from '@/utils/trpc'
 import TrackList from '@/components/trackList'
 import TrackOptions from '@/components/trackOptions'
 
 const Index: NextPage = () => {
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null)
+
   const { refetch } = trpc.items.getAllItems.useQuery()
 
   const deleteAllItemsMutation = trpc.items.deleteAllItems.useMutation({
@@ -26,8 +29,11 @@ const Index: NextPage = () => {
         </button>
       </div>
       <div className='flex'>
-        <TrackList />
-        <TrackOptions />
+        <TrackList
+          selectedItemId={selectedItemId}
+          setSelectedItemId={setSelectedItemId}
+        />
+        <TrackOptions selectedItemId={selectedItemId} />
       </div>
     </main>
   )

@@ -1,14 +1,20 @@
-import { IconBtnToggle } from '@/components/icon-btn-toggle'
-import { selectArrays } from '@/components/select-arrays'
+import { type ChangeEvent, useState, FC, Dispatch, SetStateAction } from 'react'
 import { trpc } from '@/utils/trpc'
+import { selectArrays } from '@/components/select-arrays'
+import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
-import { type ChangeEvent, useState, FC } from 'react'
 import TrackListTableKeys from './trackListTableKeys'
 
 let optionElements: string | React.JSX.Element | undefined
+type TrackListProps = {
+  selectedItemId: string | null
+  setSelectedItemId: Dispatch<SetStateAction<string | null>>
+}
 
-const TrackList: FC = () => {
-  const [selectedItemIndex, setSelectedItemIndex] = useState(0)
+const TrackList: FC<TrackListProps> = ({
+  selectedItemId,
+  setSelectedItemId
+}) => {
   const [addMultipleItemsNumber, setMultipleItemsNumber] = useState(1)
 
   const { data, refetch } = trpc.items.getAllItems.useQuery()
@@ -164,10 +170,10 @@ const TrackList: FC = () => {
               return (
                 <tr
                   key={itemId}
-                  onClick={() => setSelectedItemIndex(thisIndex)}
+                  onClick={() => setSelectedItemId(itemId)}
                   className={tw(
                     trackTr,
-                    selectedItemIndex === thisIndex
+                    selectedItemId === itemId
                       ? 'bg-red-300 text-zinc-50 hover:bg-zinc-600 dark:bg-red-400 dark:hover:bg-zinc-300 dark:hover:text-zinc-800'
                       : '',
                     'relative cursor-pointer'

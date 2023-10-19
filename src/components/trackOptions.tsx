@@ -1,15 +1,20 @@
-import { IconBtnToggle } from '@/components/icon-btn-toggle'
-import { SelectList, selectArrays } from '@/components/select-arrays'
+import { type ChangeEvent, FC, Fragment } from 'react'
 import { trpc } from '@/utils/trpc'
+import { SelectList, selectArrays } from '@/components/select-arrays'
+import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
-import { type ChangeEvent, useState, FC, Fragment } from 'react'
 import TrackOptionsTableKeys from './trackOptionsTableKeys'
 
 let optionElements: string | React.JSX.Element | undefined
 
-const TrackOptions: FC = () => {
-  const { data, refetch } = trpc.items.getSingleItem.useQuery({ itemId: 'T_9' })
-  const [selectedItemIndex, setSelectedItemIndex] = useState(0)
+type TrackOptionsProps = {
+  selectedItemId: string | null
+}
+
+const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
+  const { data, refetch } = trpc.items.getSingleItem.useQuery({
+    itemId: selectedItemId ?? ''
+  })
 
   const updateSingleItemMutation = trpc.items.updateSingleItem.useMutation({
     onSuccess: () => {
