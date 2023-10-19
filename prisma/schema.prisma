@@ -33,18 +33,19 @@ model Layouts {
   label        String        @id
   title        String?       @default("")
   layout       String?       @default("table")
-  keys         LayoutKeys    @relation(fields: [label], references: [label], onDelete: Cascade)
+  keys         LayoutKeys[]
   FileMetaData FileMetaData? @relation(fields: [label], references: [fileName])
 }
 
 model LayoutKeys {
-  label       String    @id
-  key         String    @default("")
-  show        Boolean   @default(true)
-  className   String    @default("")
-  input       String?   @default("text")
-  selectArray String    @default("")
-  layouts     Layouts[]
+  label        String   @id
+  key          String   @default("")
+  show         Boolean  @default(true)
+  className    String   @default("")
+  input        String?  @default("text")
+  selectArray  String   @default("")
+  layouts      Layouts? @relation(fields: [layoutsLabel], references: [label])
+  layoutsLabel String?
 }
 
 model FileItems {

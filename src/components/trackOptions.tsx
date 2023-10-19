@@ -1,4 +1,4 @@
-import { type ChangeEvent, FC, Fragment } from 'react'
+import { type FC, Fragment } from 'react'
 import { trpc } from '@/utils/trpc'
 import { SelectList, selectArrays } from '@/components/select-arrays'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
@@ -84,7 +84,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
           <Fragment key={level.label}>
             <div className='mt-4 flex justify-between'>
               {/*<h2 className='font-caviarBold text-base'>{`${level.title} (${section.length})`}</h2>*/}
-              {/*<IconBtnToggle
+              <IconBtnToggle
                 classes=''
                 titleA=''
                 titleB=''
@@ -94,7 +94,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                 defaultIcon={table ? 'a' : 'b'} //this isn't saving the correct icon on refresh
                 onToggleA={() => changeLayoutsHelper('cards', levelIndex)}
                 onToggleB={() => changeLayoutsHelper('table', levelIndex)}
-              />*/}
+              />
             </div>
             {table && (
               <div className=''>
