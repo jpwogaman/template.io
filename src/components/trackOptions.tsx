@@ -1,9 +1,10 @@
-import { type FC, Fragment } from 'react'
+import { type FC, Fragment, useMemo, useRef, useState } from 'react'
 import { trpc } from '@/utils/trpc'
 import { SelectList, selectArrays } from '@/components/select-arrays'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
 import TrackOptionsTableKeys from './trackOptionsTableKeys'
+import { s } from '@tauri-apps/api/event-41a9edf5'
 
 let optionElements: string | React.JSX.Element | undefined
 
@@ -12,7 +13,7 @@ type TrackOptionsProps = {
 }
 
 const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
-  const { data, refetch } = trpc.items.getSingleItem.useQuery({
+  const { data: selectedItem, refetch } = trpc.items.getSingleItem.useQuery({
     itemId: selectedItemId ?? ''
   })
 
@@ -52,7 +53,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
     })
 
   const artRngsArray: string[] = []
-  for (const element of data?.fullRange ?? []) {
+  for (const element of selectedItem?.fullRange ?? []) {
     artRngsArray.push(element?.rangeId)
   }
 
@@ -72,28 +73,58 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
 
   const trackTd = ``
 
+  const [trackOptionsLayouts, setTrackOptionsLayouts] = useState({
+    fullRange: 'table',
+    artListSwitch: 'table',
+    artListTog: 'table',
+    fadList: 'table'
+  })
+
+  const changeLayoutsHelper = (layoutKey: string, layout: string) => {
+    setTrackOptionsLayouts((prevState) => ({
+      ...prevState,
+      [layoutKey]: layout
+    }))
+  }
+
   return (
     <div className='max-h-[85%] w-6/12 overflow-y-scroll'>
-      {TrackOptionsTableKeys.map((level, levelIndex) => {
-        const section = data?.artListSwitch
-        //const section =
-        //  data![selectedItemIndex]![level.label as unknown as 'artListSwitch']
-        //const table = fileMetaData?.layouts[levelIndex]?.layout === 'table'
-        const table = true
+      {TrackOptionsTableKeys.map((layoutConfig, layoutIndex) => {
+        let layoutDataArray: any[] | undefined = []
+
+        if (layoutConfig.label === 'fullRange') {
+          layoutDataArray = selectedItem?.fullRange
+        }
+        if (layoutConfig.label === 'artListSwitch') {
+          layoutDataArray = selectedItem?.artListSwitch
+        }
+        if (layoutConfig.label === 'artListTog') {
+          layoutDataArray = selectedItem?.artListTog
+        }
+        if (layoutConfig.label === 'fadList') {
+          layoutDataArray = selectedItem?.fadList
+        }
+
+        const table = trackOptionsLayouts[layoutConfig.label] === 'table'
+
         return (
-          <Fragment key={level.label}>
+          <Fragment key={layoutConfig.label}>
             <div className='mt-4 flex justify-between'>
-              {/*<h2 className='font-caviarBold text-base'>{`${level.title} (${section.length})`}</h2>*/}
+              <h2 className='font-caviarBold text-base'>{`${layoutConfig.title} (${layoutDataArray?.length})`}</h2>
               <IconBtnToggle
                 classes=''
-                titleA=''
-                titleB=''
+                titleA='Change to card layout'
+                titleB='Change to table layout'
                 id='changeLayout'
                 a='fa-solid fa-table-cells-large'
                 b='fa-solid fa-table-columns'
-                defaultIcon={table ? 'a' : 'b'} //this isn't saving the correct icon on refresh
-                onToggleA={() => changeLayoutsHelper('cards', levelIndex)}
-                onToggleB={() => changeLayoutsHelper('table', levelIndex)}
+                defaultIcon={table ? 'a' : 'b'}
+                onToggleA={() =>
+                  changeLayoutsHelper(layoutConfig.label, 'cards')
+                }
+                onToggleB={() =>
+                  changeLayoutsHelper(layoutConfig.label, 'table')
+                }
               />
             </div>
             {table && (
@@ -101,7 +132,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                 <table className='w-full table-fixed border-separate border-spacing-0 text-left text-xs '>
                   <thead>
                     <tr>
-                      {level.keys.map((key) => {
+                      {layoutConfig.keys.map((key) => {
                         if (!key.show) return
                         return (
                           <td
@@ -128,124 +159,148 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {section?.map((subSection, subSectionIndex) => {
-                      return (
-                        <tr
-                          key={subSection.artId}
-                          className={`${trackTr}`}>
-                          {level.keys.map((key) => {
-                            let multiple: boolean = false
-                            const selected: boolean = false
-                            const locked = data?.locked
-                            const keyIsId = key.key === 'id'
-                            const disabled = locked ? true : keyIsId
+                    {layoutDataArray?.map(
+                      (layoutDataSingle, layoutDataSingleIndex) => {
+                        let layoutDataSingleId: string | undefined
 
-                            for (const array in selectArrays) {
-                              if (key.selectArray === 'artRngsArray') {
-                                optionElements = (
-                                  <SelectList numbers={artRngsArray} />
-                                )
-                                multiple = true
-                                optionElements = (
-                                  <>
-                                    {artRngsArray.map(
-                                      (number: string | number) => (
-                                        <option
-                                          key={number}
-                                          //  selected={
-                                          //    subSection.ranges.includes(
-                                          //      number as string
-                                          //    )
-                                          //  }
-                                          value={number}>
-                                          {number}
-                                        </option>
-                                      )
-                                    )}
-                                  </>
-                                )
+                        if (layoutConfig.label === 'fullRange') {
+                          layoutDataSingleId =
+                            selectedItem?.fullRange[layoutDataSingleIndex]
+                              ?.rangeId
+                        }
+                        if (layoutConfig.label === 'artListSwitch') {
+                          layoutDataSingleId =
+                            selectedItem?.artListSwitch[layoutDataSingleIndex]
+                              ?.artId
+                        }
+                        if (layoutConfig.label === 'artListTog') {
+                          layoutDataSingleId =
+                            selectedItem?.artListTog[layoutDataSingleIndex]
+                              ?.artId
+                        }
+                        if (layoutConfig.label === 'fadList') {
+                          layoutDataSingleId =
+                            selectedItem?.fadList[layoutDataSingleIndex]?.fadId
+                        }
+
+                        return (
+                          <tr
+                            key={layoutDataSingleId}
+                            className={`${trackTr}`}>
+                            {layoutConfig.keys.map((key) => {
+                              const checkBox = key.input === 'checkbox'
+                              const keyIsTextOrCheckbox =
+                                key.input === 'text' || checkBox
+
+                              let multiple: boolean = false
+                              const selected: boolean = false
+                              const locked = selectedItem?.locked
+                              const keyIsId = key.key === 'id'
+                              const disabled = locked ? true : keyIsId
+
+                              for (const array in selectArrays) {
+                                if (key.selectArray === 'artRngsArray') {
+                                  optionElements = (
+                                    <SelectList numbers={artRngsArray} />
+                                  )
+                                  multiple = true
+                                  optionElements = (
+                                    <>
+                                      {artRngsArray.map(
+                                        (number: string | number) => (
+                                          <option
+                                            key={number}
+                                            //  selected={
+                                            //    subSection.ranges.includes(
+                                            //      number as string
+                                            //    )
+                                            //  }
+                                            value={number}>
+                                            {number}
+                                          </option>
+                                        )
+                                      )}
+                                    </>
+                                  )
+                                }
+                                if (
+                                  key.selectArray === selectArrays[array]?.name
+                                ) {
+                                  optionElements = selectArrays[array]?.array
+                                }
                               }
-                              if (
-                                key.selectArray === selectArrays[array]?.name
-                              ) {
-                                optionElements = selectArrays[array]?.array
-                              }
-                            }
-                            if (!key.show) return
-                            return (
-                              <td
-                                key={key.key}
-                                title={subSection[key.key as 'artId']}
-                                className={tw(trackTd, 'p-0.5')}>
-                                {!key.input && (
-                                  <p className='p-1'>
-                                    {subSection[key.key as 'artId']}
-                                  </p>
-                                )}{' '}
-                                {key.input === 'select' && !multiple && (
-                                  <select
-                                    className={tw(
-                                      'w-full cursor-pointer overflow-scroll p-[4.5px] text-zinc-900',
-                                      disabled
-                                        ? 'cursor-not-allowed bg-zinc-300'
-                                        : 'bg-white dark:bg-zinc-100'
-                                    )}
-                                    value={
-                                      !disabled
-                                        ? (subSection[
-                                            key.key as unknown as 'name'
-                                          ] as unknown as string)
-                                        : undefined
-                                    }
-                                    disabled={disabled}
-                                    //onChange={(event) =>
-                                    //  valueChange(
-                                    //    event,
-                                    //    level.label,
-                                    //    key.key,
-                                    //    subSectionIndex
-                                    //  )
-                                    //}
-                                  >
-                                    {!disabled
-                                      ? optionElements
-                                      : selectArrays?.valNoneList?.array}
-                                    {optionElements}
-                                  </select>
-                                )}{' '}
-                                {key.input === 'select' && multiple && (
-                                  // <details>
-                                  <select
-                                    className={tw(
-                                      'w-full cursor-pointer overflow-scroll p-[4.5px] text-zinc-900',
-                                      disabled
-                                        ? 'cursor-not-allowed bg-zinc-300'
-                                        : 'bg-white dark:bg-zinc-100'
-                                    )}
-                                    value={undefined}
-                                    multiple
-                                    disabled={disabled}
-                                    //onChange={(event) =>
-                                    //  valueChange(
-                                    //    event,
-                                    //    level.label,
-                                    //    key.key,
-                                    //    subSectionIndex
-                                    //  )
-                                    //}
-                                  >
-                                    {optionElements}
-                                  </select>
-                                )}
-                                {/*</details>*/}
-                                {key.input === 'text' ||
-                                  (key.input === 'checkbox' && (
-                                    <input
-                                      checked={
-                                        subSection[
-                                          key.key as 'changeType'
-                                        ] as unknown as boolean
+                              if (!key.show) return
+                              return (
+                                <td
+                                  key={key.key}
+                                  title={layoutDataSingleId}
+                                  className={tw(trackTd, 'p-0.5')}>
+                                  {!key.input && (
+                                    <p className='p-1'>{layoutDataSingleId}</p>
+                                  )}{' '}
+                                  {key.input === 'select' && !multiple && (
+                                    <select
+                                      className={tw(
+                                        'w-full cursor-pointer overflow-scroll p-[4.5px] text-zinc-900',
+                                        disabled
+                                          ? 'cursor-not-allowed bg-zinc-300'
+                                          : 'bg-white dark:bg-zinc-100'
+                                      )}
+                                      value={
+                                        !disabled
+                                          ? (layoutDataSingle[
+                                              key.key as unknown as 'name'
+                                            ] as unknown as string)
+                                          : undefined
                                       }
+                                      disabled={disabled}
+                                      //onChange={(event) =>
+                                      //  valueChange(
+                                      //    event,
+                                      //    level.label,
+                                      //    key.key,
+                                      //    subSectionIndex
+                                      //  )
+                                      //}
+                                    >
+                                      {!disabled
+                                        ? optionElements
+                                        : selectArrays?.valNoneList?.array}
+                                      {optionElements}
+                                    </select>
+                                  )}{' '}
+                                  {key.input === 'select' && multiple && (
+                                    // <details>
+                                    <select
+                                      className={tw(
+                                        'w-full cursor-pointer overflow-scroll p-[4.5px] text-zinc-900',
+                                        disabled
+                                          ? 'cursor-not-allowed bg-zinc-300'
+                                          : 'bg-white dark:bg-zinc-100'
+                                      )}
+                                      value={undefined}
+                                      multiple
+                                      disabled={disabled}
+                                      //onChange={(event) =>
+                                      //  valueChange(
+                                      //    event,
+                                      //    level.label,
+                                      //    key.key,
+                                      //    subSectionIndex
+                                      //  )
+                                      //}
+                                    >
+                                      {optionElements}
+                                    </select>
+                                  )}
+                                  {/*</details>*/}
+                                  {keyIsTextOrCheckbox && (
+                                    <input
+                                      //checked={
+                                      //  layoutDataSingle[
+                                      //    key.key as 'default'
+                                      //  ] as unknown as boolean
+                                      //}
                                       disabled={disabled}
                                       type={key.input}
                                       className={tw(
@@ -265,130 +320,124 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                                       //      subSectionIndex
                                       //    )
                                       //  }
-                                      value={subSection[key.key as 'artId']}
+                                      value={layoutDataSingleId}
                                     />
-                                  ))}
-                              </td>
-                            )
-                          })}
-                          <td className={tw(trackTd, 'text-center')}>
-                            <button
-                            //  onClick={() =>
-                            //    deleteSingleFullRangeMutation.mutate({
-                            //      fileItemsItemId: 'T_9',
-                            //      rangeId: subSection.artId
-                            //    })
-                            //  }
-                            >
-                              <i className='fa-solid fa-minus' />
-                            </button>
-                          </td>
-                        </tr>
-                      )
-                    })}
+                                  )}
+                                </td>
+                              )
+                            })}
+                            <td className={tw(trackTd, 'text-center')}>
+                              <button
+                              //  onClick={() =>
+                              //    deleteSingleFullRangeMutation.mutate({
+                              //      fileItemsItemId: 'T_9',
+                              //      rangeId: subSection.artId
+                              //    })
+                              //  }
+                              >
+                                <i className='fa-solid fa-minus' />
+                              </button>
+                            </td>
+                          </tr>
+                        )
+                      }
+                    )}
                   </tbody>
                 </table>
               </div>
             )}
             {!table && (
               <div className='flex gap-1 overflow-x-scroll'>
-                {section?.map((subSection, subSectionIndex) => {
-                  return (
-                    <table
-                      key={'subSection.id'}
-                      className='w-max table-auto border-separate border-spacing-0 text-left text-xs'>
-                      <thead>
-                        <tr>
-                          <td className={tw(trackTh, 'w-1/2')}>
-                            {subSection.artId}
-                          </td>
-                          <td className={tw(trackTh, 'flex justify-between')}>
-                            <button
-                            //  onClick={() =>
-                            //    deleteSingleFullRangeMutation.mutate({
-                            //      fileItemsItemId: 'T_9',
-                            //      rangeId: subSection.artId
-                            //    })
-                            //  }
-                            >
-                              <i className='fa-solid fa-minus' />
-                            </button>
-                            <button
-                            //  onClick={() =>
-                            //    createSingleFullRangeMutation.mutate({
-                            //      itemId: 'T_9',
-                            //    })}
-                            >
-                              <i className='fa-solid fa-plus' />
-                            </button>
-                          </td>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {level.keys.map((key) => {
-                          let multiple: boolean = false
-                          const locked = data?.locked
-                          const keyIsId = key.key === 'id'
-                          const disabled = locked ? true : keyIsId
+                {layoutDataArray?.map(
+                  (layoutDataSingle, layoutDataSingleIndex) => {
+                    let layoutDataSingleId: string | undefined
 
-                          for (const array in selectArrays) {
-                            if (key.selectArray === 'artRngsArray') {
-                              optionElements = (
-                                <SelectList numbers={artRngsArray} />
-                              )
-                              multiple = true
+                    if (layoutConfig.label === 'fullRange') {
+                      layoutDataSingleId =
+                        selectedItem?.fullRange[layoutDataSingleIndex]?.rangeId
+                    }
+                    if (layoutConfig.label === 'artListSwitch') {
+                      layoutDataSingleId =
+                        selectedItem?.artListSwitch[layoutDataSingleIndex]
+                          ?.artId
+                    }
+                    if (layoutConfig.label === 'artListTog') {
+                      layoutDataSingleId =
+                        selectedItem?.artListTog[layoutDataSingleIndex]?.artId
+                    }
+                    if (layoutConfig.label === 'fadList') {
+                      layoutDataSingleId =
+                        selectedItem?.fadList[layoutDataSingleIndex]?.fadId
+                    }
+
+                    return (
+                      <table
+                        key={layoutDataSingleId}
+                        className='w-max table-auto border-separate border-spacing-0 text-left text-xs'>
+                        <thead>
+                          <tr>
+                            <td className={tw(trackTh, 'w-1/2')}>
+                              {layoutDataSingleId}
+                            </td>
+                            <td className={tw(trackTh, 'flex justify-between')}>
+                              <button
+                              //  onClick={() =>
+                              //    deleteSingleFullRangeMutation.mutate({
+                              //      fileItemsItemId: 'T_9',
+                              //      rangeId: subSection.artId
+                              //    })
+                              //  }
+                              >
+                                <i className='fa-solid fa-minus' />
+                              </button>
+                              <button
+                              //  onClick={() =>
+                              //    createSingleFullRangeMutation.mutate({
+                              //      itemId: 'T_9',
+                              //    })}
+                              >
+                                <i className='fa-solid fa-plus' />
+                              </button>
+                            </td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {layoutConfig.keys.map((key) => {
+                            const checkBox = key.input === 'checkbox'
+                            const keyIsTextOrCheckbox =
+                              key.input === 'text' || checkBox
+
+                            let multiple: boolean = false
+                            const locked = selectedItem?.locked
+                            const keyIsId = key.key === 'id'
+                            const disabled = locked ? true : keyIsId
+
+                            for (const array in selectArrays) {
+                              if (key.selectArray === 'artRngsArray') {
+                                optionElements = (
+                                  <SelectList numbers={artRngsArray} />
+                                )
+                                multiple = true
+                              }
+                              if (
+                                key.selectArray === selectArrays[array]?.name
+                              ) {
+                                optionElements = selectArrays[array]?.array
+                              }
                             }
-                            if (key.selectArray === selectArrays[array]?.name) {
-                              optionElements = selectArrays[array]?.array
-                            }
-                          }
-                          if (!key.show) return
-                          return (
-                            <tr
-                              key={key.key}
-                              className={trackTr}>
-                              <td className={tw(trackTd, 'p-0.5')}>
-                                {key.label}
-                              </td>
-                              <td className={tw(trackTd, 'p-0.5')}>
-                                {!key.input && (
-                                  <p className='p-1'>
-                                    {subSection[key.key as 'artId']}
-                                  </p>
-                                )}{' '}
-                                {key.input === 'select' && !multiple && (
-                                  <select
-                                    className={tw(
-                                      'w-full cursor-pointer overflow-scroll p-[4.5px]',
-                                      disabled
-                                        ? 'cursor-not-allowed bg-zinc-300'
-                                        : 'bg-white dark:bg-zinc-100'
-                                    )}
-                                    value={
-                                      !disabled
-                                        ? (subSection[
-                                            key.key as unknown as 'name'
-                                          ] as unknown as string)
-                                        : undefined
-                                    }
-                                    disabled={disabled}
-                                    //onChange={(event) =>
-                                    //  valueChange(
-                                    //    event,
-                                    //    level.label,
-                                    //    key.key,
-                                    //    subSectionIndex
-                                    //  )
-                                    //}
-                                  >
-                                    {!disabled
-                                      ? optionElements
-                                      : selectArrays?.valNoneList?.array}
-                                    {optionElements}
-                                  </select>
-                                )}{' '}
-                                {key.input === 'select' && multiple && (
-                                  <details>
+                            if (!key.show) return
+                            return (
+                              <tr
+                                key={key.key}
+                                className={trackTr}>
+                                <td className={tw(trackTd, 'p-0.5')}>
+                                  {key.label}
+                                </td>
+                                <td className={tw(trackTd, 'p-0.5')}>
+                                  {!key.input && (
+                                    <p className='p-1'>{layoutDataSingleId}</p>
+                                  )}{' '}
+                                  {key.input === 'select' && !multiple && (
                                     <select
                                       className={tw(
                                         'w-full cursor-pointer overflow-scroll p-[4.5px]',
@@ -396,30 +445,61 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                                           ? 'cursor-not-allowed bg-zinc-300'
                                           : 'bg-white dark:bg-zinc-100'
                                       )}
-                                      value={undefined}
-                                      multiple
+                                      value={
+                                        !disabled
+                                          ? (layoutDataSingle[
+                                              key.key as unknown as 'name'
+                                            ] as unknown as string)
+                                          : undefined
+                                      }
                                       disabled={disabled}
-                                      //  onChange={(event) =>
-                                      //    valueChange(
-                                      //      event,
-                                      //      level.label,
-                                      //      key.key,
-                                      //      subSectionIndex
-                                      //    )
-                                      //  }
+                                      //onChange={(event) =>
+                                      //  valueChange(
+                                      //    event,
+                                      //    level.label,
+                                      //    key.key,
+                                      //    subSectionIndex
+                                      //  )
+                                      //}
                                     >
+                                      {!disabled
+                                        ? optionElements
+                                        : selectArrays?.valNoneList?.array}
                                       {optionElements}
                                     </select>
-                                  </details>
-                                )}{' '}
-                                {key.input === 'text' ||
-                                  (key.input === 'checkbox' && (
+                                  )}{' '}
+                                  {key.input === 'select' && multiple && (
+                                    <details>
+                                      <select
+                                        className={tw(
+                                          'w-full cursor-pointer overflow-scroll p-[4.5px]',
+                                          disabled
+                                            ? 'cursor-not-allowed bg-zinc-300'
+                                            : 'bg-white dark:bg-zinc-100'
+                                        )}
+                                        value={undefined}
+                                        multiple
+                                        disabled={disabled}
+                                        //  onChange={(event) =>
+                                        //    valueChange(
+                                        //      event,
+                                        //      level.label,
+                                        //      key.key,
+                                        //      subSectionIndex
+                                        //    )
+                                        //  }
+                                      >
+                                        {optionElements}
+                                      </select>
+                                    </details>
+                                  )}{' '}
+                                  {keyIsTextOrCheckbox && (
                                     <input
-                                      checked={
-                                        subSection[
-                                          key.key as 'changeType'
-                                        ] as unknown as boolean
-                                      }
+                                      //checked={
+                                      //  layoutDataSingle[
+                                      //    key.key as 'changeType'
+                                      //  ] as unknown as boolean
+                                      //}
                                       disabled={disabled}
                                       type={key.input}
                                       className={tw(
@@ -439,17 +519,18 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                                       //      subSectionIndex
                                       //    )
                                       //  }
-                                      value={subSection[key.key as 'artId']}
+                                      value={layoutDataSingleId}
                                     />
-                                  ))}
-                              </td>
-                            </tr>
-                          )
-                        })}
-                      </tbody>
-                    </table>
-                  )
-                })}
+                                  )}
+                                </td>
+                              </tr>
+                            )
+                          })}
+                        </tbody>
+                      </table>
+                    )
+                  }
+                )}
               </div>
             )}
           </Fragment>

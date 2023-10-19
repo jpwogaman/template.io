@@ -11,11 +11,6 @@ export const TauriMenuEvents = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx }) => {
-      const fileMetaData = await ctx.prisma.fileMetaData.findFirst({
-        include: {
-          layouts: true
-        }
-      })
       const allItems = await ctx.prisma.fileItems.findMany({
         include: {
           fullRange: true,
@@ -25,7 +20,6 @@ export const TauriMenuEvents = createTRPCRouter({
         }
       })
       return {
-        fileMetaData,
         allItems
       }
     }),
@@ -37,11 +31,6 @@ export const TauriMenuEvents = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx }) => {
-      const fileMetaData = await ctx.prisma.fileMetaData.findFirst({
-        include: {
-          layouts: true
-        }
-      })
       const allItems = await ctx.prisma.fileItems.findMany({
         include: {
           fullRange: true,
@@ -51,7 +40,6 @@ export const TauriMenuEvents = createTRPCRouter({
         }
       })
       return {
-        fileMetaData,
         allItems
       }
     })

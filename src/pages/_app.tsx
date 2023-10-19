@@ -11,8 +11,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
 
   const saveMutation = trpc.tauriMenuEvents.save.useMutation({
     onSuccess: (data) => {
-      const fileName = data?.fileMetaData?.fileName
-      downloadDataAsJSON(data, fileName ?? 'template-io-track-data.json')
+      downloadDataAsJSON(data)
       saveMutation.reset()
     },
     onError: () => {
@@ -22,8 +21,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
 
   const saveAsMutation = trpc.tauriMenuEvents.saveAs.useMutation({
     onSuccess: (data) => {
-      const fileName = data?.fileMetaData?.fileName
-      downloadDataAsJSON(data, fileName ?? 'template-io-track-data.json')
+      downloadDataAsJSON(data)
       saveAsMutation.reset()
     },
     onError: () => {

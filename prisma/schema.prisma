@@ -14,40 +14,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model FileMetaData {
-  fileName      String         @id
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  defaultColors defaultColor[]
-  layouts       Layouts[]
-  vepTemplate   String         @default("")
-  dawTemplate   String         @default("")
-}
-
-model defaultColor {
-  color        String        @id @default("#71717A")
-  FileMetaData FileMetaData? @relation(fields: [color], references: [fileName])
-}
-
-model Layouts {
-  label        String        @id
-  title        String?       @default("")
-  layout       String?       @default("table")
-  keys         LayoutKeys[]
-  FileMetaData FileMetaData? @relation(fields: [label], references: [fileName])
-}
-
-model LayoutKeys {
-  label        String   @id
-  key          String   @default("")
-  show         Boolean  @default(true)
-  className    String   @default("")
-  input        String?  @default("text")
-  selectArray  String   @default("")
-  layouts      Layouts? @relation(fields: [layoutsLabel], references: [label])
-  layoutsLabel String?
-}
-
 model FileItems {
   itemId        String               @id @default(cuid())
   locked        Boolean              @default(false)

@@ -15,7 +15,6 @@ export const ItemsRouter = createTRPCRouter({
       const { fileMetaData, items } = fileData
 
       const deleteAllItemsAndMetaData = async () => {
-        await ctx.prisma.fileMetaData.deleteMany({})
         await ctx.prisma.fileItems.deleteMany({})
         await ctx.prisma.itemsFullRanges.deleteMany({})
         await ctx.prisma.itemsArtListTog.deleteMany({})
