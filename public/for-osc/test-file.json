@@ -15,276 +15,10 @@
         ],
         "layouts": [
             {
-                "label": "Instrument Ranges",
-                "title": "fullRange",
-                "layout": "table",
-                "keys": [
-                    {
-                        "className": "w-[7.5%]",
-                        "show": true,
-                        "key": "id",
-                        "selectArray": null,
-                        "label": "ID"
-                    },
-                    {
-                        "className": "w-[16.5%]",
-                        "show": true,
-                        "key": "name",
-                        "input": "text",
-                        "selectArray": null,
-                        "label": "Name"
-                    },
-                    {
-                        "className": "w-[30.75%]",
-                        "show": true,
-                        "key": "low",
-                        "input": "select",
-                        "selectArray": "allNoteList",
-                        "label": "Low"
-                    },
-                    {
-                        "className": "w-[30.75%]",
-                        "show": true,
-                        "key": "high",
-                        "input": "select",
-                        "selectArray": "allNoteList",
-                        "label": "High"
-                    },
-                    {
-                        "className": "w-[9.5%]",
-                        "show": true,
-                        "key": "whiteKeysOnly",
-                        "input": "checkbox",
-                        "selectArray": null,
-                        "label": "WKO"
-                    }
-                ]
-            },
-            {
-                "label": "Articulations (Switch)",
-                "title": "artList",
-                "layout": "table",
-                "keys": [
-                    {
-                        "className": "w-[7.5%]",
-                        "show": true,
-                        "key": "id",
-                        "selectArray": null,
-                        "label": "ID"
-                    },
-                    {
-                        "className": "w-[16.5%]",
-                        "show": true,
-                        "key": "name",
-                        "input": "text",
-                        "selectArray": null,
-                        "label": "Name"
-                    },
-                    {
-                        "className": "w-[00%]",
-                        "show": false,
-                        "key": "toggle",
-                        "input": "checkbox",
-                        "selectArray": null,
-                        "label": "Toggle"
-                    },
-                    {
-                        "className": "w-[14%]",
-                        "show": true,
-                        "key": "codeType",
-                        "input": "select",
-                        "selectArray": "valAddrList",
-                        "label": "Code Type"
-                    },
-                    {
-                        "className": "w-[9.5%]",
-                        "show": true,
-                        "key": "code",
-                        "input": "select",
-                        "selectArray": "valMidiList",
-                        "label": "Code"
-                    },
-                    {
-                        "className": "w-[9.5%]",
-                        "show": true,
-                        "key": "on",
-                        "input": "select",
-                        "selectArray": "valMidiList",
-                        "label": "On"
-                    },
-                    {
-                        "className": "w-[9.5%]",
-                        "show": true,
-                        "key": "off",
-                        "input": "select",
-                        "selectArray": "valMidiList",
-                        "label": "Off"
-                    },
-                    {
-                        "className": "w-[9.5%]",
-                        "show": true,
-                        "key": "default",
-                        "input": "select",
-                        "selectArray": "valDeftList",
-                        "label": "Default"
-                    },
-                    {
-                        "className": "w-[9.5%]",
-                        "show": true,
-                        "key": "delay",
-                        "input": "text",
-                        "selectArray": null,
-                        "label": "Delay"
-                    },
-                    {
-                        "className": "w-[9.5%]",
-                        "show": true,
-                        "key": "changeType",
-                        "input": "select",
-                        "selectArray": "valChngList",
-                        "label": "Change"
-                    }
-                ]
-            },
-            {
-                "label": "Articulations (Toggle)",
-                "title": "artListSwitch",
-                "layout": "table",
-                "keys": [
-                    {
-                        "className": "w-[7.5%]",
-                        "show": true,
-                        "key": "id",
-                        "selectArray": null,
-                        "label": "ID"
-                    },
-                    {
-                        "className": "w-[16.5%]",
-                        "show": true,
-                        "key": "name",
-                        "input": "text",
-                        "selectArray": null,
-                        "label": "Name"
-                    },
-                    {
-                        "className": "w-[00%]",
-                        "show": false,
-                        "key": "toggle",
-                        "input": "checkbox",
-                        "selectArray": null,
-                        "label": "Toggle"
-                    },
-                    {
-                        "className": "w-[14%]",
-                        "show": true,
-                        "key": "codeType",
-                        "input": "select",
-                        "selectArray": "valAddrList",
-                        "label": "Code Type"
-                    },
-                    {
-                        "className": "w-[9.5%]",
-                        "show": true,
-                        "key": "code",
-                        "input": "select",
-                        "selectArray": "valMidiList",
-                        "label": "Code"
-                    },
-                    {
-                        "className": "w-[9.5%]",
-                        "show": true,
-                        "key": "on",
-                        "input": "select",
-                        "selectArray": "valMidiList",
-                        "label": "On"
-                    },
-                    {
-                        "className": "w-[00%]",
-                        "show": false,
-                        "key": "off",
-                        "input": "select",
-                        "selectArray": "valMidiList",
-                        "label": "Off"
-                    },
-                    {
-                        "className": "w-[19%]",
-                        "show": true,
-                        "key": "default",
-                        "input": "checkbox",
-                        "selectArray": "valDeftList",
-                        "label": "Default"
-                    },
-                    {
-                        "className": "w-[9.5%]",
-                        "show": true,
-                        "key": "delay",
-                        "input": "text",
-                        "selectArray": null,
-                        "label": "Delay"
-                    },
-                    {
-                        "className": "w-[9.5%]",
-                        "show": true,
-                        "key": "changeType",
-                        "input": "select",
-                        "selectArray": "valChngList",
-                        "label": "Change"
-                    }
-                ]
-            },
-            {
-                "label": "Faders",
-                "title": "fadList",
-                "layout": "table",
-                "keys": [
-                    {
-                        "className": "w-[7.5%]",
-                        "show": true,
-                        "key": "id",
-                        "selectArray": null,
-                        "label": "ID"
-                    },
-                    {
-                        "className": "w-[16.5%]",
-                        "show": true,
-                        "key": "name",
-                        "input": "text",
-                        "selectArray": null,
-                        "label": "Name"
-                    },
-                    {
-                        "className": "w-[14%]",
-                        "show": true,
-                        "key": "codeType",
-                        "input": "select",
-                        "selectArray": "valAddrList",
-                        "label": "Code Type"
-                    },
-                    {
-                        "className": "w-[19.5%]",
-                        "show": true,
-                        "key": "code",
-                        "input": "select",
-                        "selectArray": "valMidiList",
-                        "label": "Code"
-                    },
-                    {
-                        "className": "w-[29%]",
-                        "show": true,
-                        "key": "default",
-                        "input": "select",
-                        "selectArray": "valMidiList",
-                        "label": "Default"
-                    },
-                    {
-                        "className": "w-[9.5%]",
-                        "show": true,
-                        "key": "changeType",
-                        "input": "select",
-                        "selectArray": "valChngList",
-                        "label": "Change"
-                    }
-                ]
+                "fullRange": "table",
+                "artListSwitch": "table",
+                "artListTog": "table",
+                "fadList": "table"
             }
         ],
         "vepTemplate": "Template_08.22.2022",
@@ -296,8 +30,8 @@
             "locked": false,
             "name": "Ens Str Leg [CSS]",
             "channel": 1,
-            "baseDelay": "0",
-            "avgDelay": "0.00",
+            "baseDelay": 0,
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -318,7 +52,7 @@
                     "on": 76,
                     "off": 81,
                     "default": "On",
-                    "delay": "0",
+                    "delay": 0,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_0_FR_0"
@@ -333,7 +67,7 @@
                     "on": 86,
                     "off": 91,
                     "default": "Off",
-                    "delay": "0",
+                    "delay": 0,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_0_FR_0"
@@ -350,7 +84,7 @@
                     "on": 6,
                     "off": 0,
                     "default": true,
-                    "delay": "0",
+                    "delay": 0,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_0_FR_0"
@@ -365,7 +99,7 @@
                     "on": 46,
                     "off": 0,
                     "default": false,
-                    "delay": "0",
+                    "delay": 0,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_0_FR_0"
@@ -412,8 +146,8 @@
             "locked": false,
             "name": "Ens Str Long [CSS]",
             "channel": 2,
-            "baseDelay": "-100",
-            "avgDelay": "-100.00",
+            "baseDelay": -100,
+            "avgDelay": -100,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -441,7 +175,7 @@
                     "on": 76,
                     "off": 81,
                     "default": "Off",
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_1_FR_0"
@@ -456,7 +190,7 @@
                     "on": 86,
                     "off": 91,
                     "default": "Off",
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_1_FR_0"
@@ -473,7 +207,7 @@
                     "on": 6,
                     "off": 0,
                     "default": true,
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_1_FR_0"
@@ -488,7 +222,7 @@
                     "on": 46,
                     "off": 0,
                     "default": false,
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_1_FR_0"
@@ -503,7 +237,7 @@
                     "on": 56,
                     "off": 0,
                     "default": false,
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_1_FR_0"
@@ -518,7 +252,7 @@
                     "on": 51,
                     "off": 0,
                     "default": false,
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_1_FR_1"
@@ -565,8 +299,8 @@
             "locked": false,
             "name": "Ens Str Short [CSS]",
             "channel": 3,
-            "baseDelay": "-60",
-            "avgDelay": "-60.00",
+            "baseDelay": -60,
+            "avgDelay": -60,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -601,7 +335,7 @@
                     "on": 86,
                     "off": 91,
                     "default": "Off",
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_2_FR_0"
@@ -618,7 +352,7 @@
                     "on": 46,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_2_FR_0"
@@ -633,7 +367,7 @@
                     "on": 61,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_2_FR_0"
@@ -648,7 +382,7 @@
                     "on": 71,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_2_FR_0"
@@ -663,7 +397,7 @@
                     "on": 11,
                     "off": 0,
                     "default": true,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_2_FR_0"
@@ -678,7 +412,7 @@
                     "on": 16,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_2_FR_0"
@@ -693,7 +427,7 @@
                     "on": 21,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_2_FR_0"
@@ -708,7 +442,7 @@
                     "on": 26,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_2_FR_0"
@@ -723,7 +457,7 @@
                     "on": 31,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_2_FR_0"
@@ -738,7 +472,7 @@
                     "on": 36,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_2_FR_2"
@@ -753,7 +487,7 @@
                     "on": 41,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_2_FR_1"
@@ -785,7 +519,7 @@
             "name": "Vln 1 Leg [CSS]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -900,8 +634,8 @@
             "locked": false,
             "name": "Vln 1 Long [CSS]",
             "channel": 2,
-            "baseDelay": "-100",
-            "avgDelay": "-100.00",
+            "baseDelay": -100,
+            "avgDelay": -100,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -929,7 +663,7 @@
                     "on": 76,
                     "off": 81,
                     "default": "Off",
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_4_FR_0"
@@ -944,7 +678,7 @@
                     "on": 86,
                     "off": 91,
                     "default": "Off",
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_4_FR_0"
@@ -961,7 +695,7 @@
                     "on": 6,
                     "off": 0,
                     "default": true,
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_4_FR_0"
@@ -976,7 +710,7 @@
                     "on": 46,
                     "off": 0,
                     "default": false,
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_4_FR_0"
@@ -991,7 +725,7 @@
                     "on": 56,
                     "off": 0,
                     "default": false,
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_4_FR_0"
@@ -1006,7 +740,7 @@
                     "on": 51,
                     "off": 0,
                     "default": false,
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_4_FR_1"
@@ -1053,8 +787,8 @@
             "locked": false,
             "name": "Vln 1 Short [CSS]",
             "channel": 3,
-            "baseDelay": "-60",
-            "avgDelay": "-60.00",
+            "baseDelay": -60,
+            "avgDelay": -60,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -1089,7 +823,7 @@
                     "on": 86,
                     "off": 91,
                     "default": "Off",
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_5_FR_0"
@@ -1106,7 +840,7 @@
                     "on": 46,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_5_FR_0"
@@ -1121,7 +855,7 @@
                     "on": 61,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_5_FR_0"
@@ -1136,7 +870,7 @@
                     "on": 71,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_5_FR_0"
@@ -1151,7 +885,7 @@
                     "on": 11,
                     "off": 0,
                     "default": true,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_5_FR_0"
@@ -1166,7 +900,7 @@
                     "on": 16,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_5_FR_0"
@@ -1181,7 +915,7 @@
                     "on": 21,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_5_FR_0"
@@ -1196,7 +930,7 @@
                     "on": 26,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_5_FR_0"
@@ -1211,7 +945,7 @@
                     "on": 31,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_5_FR_0"
@@ -1226,7 +960,7 @@
                     "on": 36,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_5_FR_2"
@@ -1241,7 +975,7 @@
                     "on": 41,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_5_FR_1"
@@ -1273,7 +1007,7 @@
             "name": "Vln 2 Leg [CSS]",
             "channel": 4,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -1388,8 +1122,8 @@
             "locked": false,
             "name": "Vln 2 Long [CSS]",
             "channel": 5,
-            "baseDelay": "-100",
-            "avgDelay": "-100.00",
+            "baseDelay": -100,
+            "avgDelay": -100,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -1417,7 +1151,7 @@
                     "on": 76,
                     "off": 81,
                     "default": "Off",
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_7_FR_0"
@@ -1432,7 +1166,7 @@
                     "on": 86,
                     "off": 91,
                     "default": "Off",
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_7_FR_0"
@@ -1449,7 +1183,7 @@
                     "on": 6,
                     "off": 0,
                     "default": true,
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_7_FR_0"
@@ -1464,7 +1198,7 @@
                     "on": 46,
                     "off": 0,
                     "default": false,
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_7_FR_0"
@@ -1479,7 +1213,7 @@
                     "on": 56,
                     "off": 0,
                     "default": false,
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_7_FR_0"
@@ -1494,7 +1228,7 @@
                     "on": 51,
                     "off": 0,
                     "default": false,
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_7_FR_1"
@@ -1541,8 +1275,8 @@
             "locked": false,
             "name": "Vln 2 Short [CSS]",
             "channel": 6,
-            "baseDelay": "-60",
-            "avgDelay": "-60.00",
+            "baseDelay": -60,
+            "avgDelay": -60,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -1577,7 +1311,7 @@
                     "on": 86,
                     "off": 91,
                     "default": "Off",
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_8_FR_0"
@@ -1594,7 +1328,7 @@
                     "on": 46,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_8_FR_0"
@@ -1609,7 +1343,7 @@
                     "on": 61,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_8_FR_0"
@@ -1624,7 +1358,7 @@
                     "on": 71,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_8_FR_0"
@@ -1639,7 +1373,7 @@
                     "on": 11,
                     "off": 0,
                     "default": true,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_8_FR_0"
@@ -1654,7 +1388,7 @@
                     "on": 16,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_8_FR_0"
@@ -1669,7 +1403,7 @@
                     "on": 21,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_8_FR_0"
@@ -1684,7 +1418,7 @@
                     "on": 26,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_8_FR_0"
@@ -1699,7 +1433,7 @@
                     "on": 31,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_8_FR_0"
@@ -1714,7 +1448,7 @@
                     "on": 36,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_8_FR_2"
@@ -1729,7 +1463,7 @@
                     "on": 41,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_8_FR_1"
@@ -1761,7 +1495,7 @@
             "name": "Vla Leg [CSS]",
             "channel": 7,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -1876,8 +1610,8 @@
             "locked": false,
             "name": "Vla Long [CSS]",
             "channel": 8,
-            "baseDelay": "-100",
-            "avgDelay": "-100.00",
+            "baseDelay": -100,
+            "avgDelay": -100,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -1905,7 +1639,7 @@
                     "on": 76,
                     "off": 81,
                     "default": "Off",
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_10_FR_0"
@@ -1920,7 +1654,7 @@
                     "on": 86,
                     "off": 91,
                     "default": "Off",
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_10_FR_0"
@@ -1937,7 +1671,7 @@
                     "on": 6,
                     "off": 0,
                     "default": true,
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_10_FR_0"
@@ -1952,7 +1686,7 @@
                     "on": 46,
                     "off": 0,
                     "default": false,
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_10_FR_0"
@@ -1967,7 +1701,7 @@
                     "on": 56,
                     "off": 0,
                     "default": false,
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_10_FR_0"
@@ -1982,7 +1716,7 @@
                     "on": 51,
                     "off": 0,
                     "default": false,
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_10_FR_1"
@@ -2029,8 +1763,8 @@
             "locked": false,
             "name": "Vla Short [CSS]",
             "channel": 9,
-            "baseDelay": "-60",
-            "avgDelay": "-60.00",
+            "baseDelay": -60,
+            "avgDelay": -60,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -2065,7 +1799,7 @@
                     "on": 86,
                     "off": 91,
                     "default": "Off",
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_11_FR_0"
@@ -2082,7 +1816,7 @@
                     "on": 46,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_11_FR_0"
@@ -2097,7 +1831,7 @@
                     "on": 61,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_11_FR_0"
@@ -2112,7 +1846,7 @@
                     "on": 71,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_11_FR_0"
@@ -2127,7 +1861,7 @@
                     "on": 11,
                     "off": 0,
                     "default": true,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_11_FR_0"
@@ -2142,7 +1876,7 @@
                     "on": 16,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_11_FR_0"
@@ -2157,7 +1891,7 @@
                     "on": 21,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_11_FR_0"
@@ -2172,7 +1906,7 @@
                     "on": 26,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_11_FR_0"
@@ -2187,7 +1921,7 @@
                     "on": 31,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_11_FR_0"
@@ -2202,7 +1936,7 @@
                     "on": 36,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_11_FR_2"
@@ -2217,7 +1951,7 @@
                     "on": 41,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_11_FR_1"
@@ -2249,7 +1983,7 @@
             "name": "Vc Leg [CSS]",
             "channel": 10,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -2364,8 +2098,8 @@
             "locked": false,
             "name": "Vc Long [CSS]",
             "channel": 11,
-            "baseDelay": "-100",
-            "avgDelay": "-100.00",
+            "baseDelay": -100,
+            "avgDelay": -100,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -2393,7 +2127,7 @@
                     "on": 76,
                     "off": 81,
                     "default": "Off",
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_13_FR_0"
@@ -2408,7 +2142,7 @@
                     "on": 86,
                     "off": 91,
                     "default": "Off",
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_13_FR_0"
@@ -2425,7 +2159,7 @@
                     "on": 6,
                     "off": 0,
                     "default": true,
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_13_FR_0"
@@ -2440,7 +2174,7 @@
                     "on": 46,
                     "off": 0,
                     "default": false,
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_13_FR_0"
@@ -2455,7 +2189,7 @@
                     "on": 56,
                     "off": 0,
                     "default": false,
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_13_FR_0"
@@ -2470,7 +2204,7 @@
                     "on": 51,
                     "off": 0,
                     "default": false,
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_13_FR_1"
@@ -2517,8 +2251,8 @@
             "locked": false,
             "name": "Vc Short [CSS]",
             "channel": 12,
-            "baseDelay": "-60",
-            "avgDelay": "-60.00",
+            "baseDelay": -60,
+            "avgDelay": -60,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -2553,7 +2287,7 @@
                     "on": 86,
                     "off": 91,
                     "default": "Off",
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_14_FR_0"
@@ -2570,7 +2304,7 @@
                     "on": 46,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_14_FR_0"
@@ -2585,7 +2319,7 @@
                     "on": 61,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_14_FR_0"
@@ -2600,7 +2334,7 @@
                     "on": 71,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_14_FR_0"
@@ -2615,7 +2349,7 @@
                     "on": 11,
                     "off": 0,
                     "default": true,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_14_FR_0"
@@ -2630,7 +2364,7 @@
                     "on": 16,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_14_FR_0"
@@ -2645,7 +2379,7 @@
                     "on": 21,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_14_FR_0"
@@ -2660,7 +2394,7 @@
                     "on": 26,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_14_FR_0"
@@ -2675,7 +2409,7 @@
                     "on": 31,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_14_FR_0"
@@ -2690,7 +2424,7 @@
                     "on": 36,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_14_FR_2"
@@ -2705,7 +2439,7 @@
                     "on": 41,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_14_FR_1"
@@ -2737,7 +2471,7 @@
             "name": "Db Leg [CSS]",
             "channel": 13,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -2853,7 +2587,7 @@
             "name": "Db Long [CSS]",
             "channel": 14,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -2983,8 +2717,8 @@
             "locked": false,
             "name": "Db Short [CSS]",
             "channel": 15,
-            "baseDelay": "-60",
-            "avgDelay": "-60.00",
+            "baseDelay": -60,
+            "avgDelay": -60,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -3005,7 +2739,7 @@
                     "on": 86,
                     "off": 91,
                     "default": "Off",
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_17_FR_0"
@@ -3022,7 +2756,7 @@
                     "on": 46,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_17_FR_0"
@@ -3037,7 +2771,7 @@
                     "on": 61,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_17_FR_0"
@@ -3052,7 +2786,7 @@
                     "on": 71,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_17_FR_0"
@@ -3067,7 +2801,7 @@
                     "on": 11,
                     "off": 0,
                     "default": true,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_17_FR_0"
@@ -3082,7 +2816,7 @@
                     "on": 16,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_17_FR_0"
@@ -3097,7 +2831,7 @@
                     "on": 21,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_17_FR_0"
@@ -3112,7 +2846,7 @@
                     "on": 26,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_17_FR_0"
@@ -3127,7 +2861,7 @@
                     "on": 31,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_17_FR_0"
@@ -3142,7 +2876,7 @@
                     "on": 36,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_17_FR_0"
@@ -3157,7 +2891,7 @@
                     "on": 41,
                     "off": 0,
                     "default": false,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_17_FR_0"
@@ -3188,8 +2922,8 @@
             "locked": false,
             "name": "Solo Piano Player+Close [EW]",
             "channel": 1,
-            "baseDelay": "25",
-            "avgDelay": "25.00",
+            "baseDelay": 25,
+            "avgDelay": 25.00,
             "color": "#58FA3D",
             "fullRange": [
                 {
@@ -3210,7 +2944,7 @@
                     "on": 127,
                     "off": 0,
                     "default": "Off",
-                    "delay": "25",
+                    "delay": 25,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_18_FR_0"
@@ -3225,7 +2959,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "On",
-                    "delay": "25",
+                    "delay": 25,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_18_FR_0"
@@ -3242,7 +2976,7 @@
                     "on": 0,
                     "off": 0,
                     "default": true,
-                    "delay": "25",
+                    "delay": 25,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_18_FR_0"
@@ -3274,7 +3008,7 @@
             "name": "4 Tpts Leg [CB Sonore]",
             "channel": 3,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -3392,7 +3126,7 @@
             "name": "4 Hns Leg [CB Sonore]",
             "channel": 4,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -3502,7 +3236,7 @@
             "name": "Ens LB Long [A1]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -3580,7 +3314,7 @@
             "name": "Ens LB Short [A1]",
             "channel": 2,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -3650,7 +3384,7 @@
             "name": "Harp Main [SF]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#9a2151",
             "fullRange": [
                 {
@@ -3809,7 +3543,7 @@
             "name": "Harp Gliss [SF]",
             "channel": 2,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#9a2151",
             "fullRange": [
                 {
@@ -4040,7 +3774,7 @@
             "name": "4 Tpts Short [CB Sonore]",
             "channel": 5,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -4147,7 +3881,7 @@
             "name": "4 Hns Short [CB Sonore]",
             "channel": 6,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -4224,7 +3958,7 @@
             "name": "6 Hns Leg [HWB]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -4324,7 +4058,7 @@
             "name": "6 Hns Long [HWB]",
             "channel": 2,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -4574,7 +4308,7 @@
             "name": "6 Hns Short [HWB]",
             "channel": 3,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -4719,7 +4453,7 @@
             "name": "3 Tpts Leg [HWB]",
             "channel": 4,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -4819,7 +4553,7 @@
             "name": "3 Tpts Long [HWB]",
             "channel": 5,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -5054,7 +4788,7 @@
             "name": "3 Tpts Short [HWB]",
             "channel": 6,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -5198,8 +4932,8 @@
             "locked": false,
             "name": "Timpani Hits [HWP]",
             "channel": 1,
-            "baseDelay": "-50",
-            "avgDelay": "-50.00",
+            "baseDelay": -50,
+            "avgDelay": -50,
             "color": "#224596",
             "fullRange": [
                 {
@@ -5227,7 +4961,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_33_FR_0",
@@ -5245,7 +4979,7 @@
                     "on": 52,
                     "off": 0,
                     "default": true,
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_33_FR_0",
@@ -5261,7 +4995,7 @@
                     "on": 42,
                     "off": 0,
                     "default": false,
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_33_FR_0",
@@ -5277,7 +5011,7 @@
                     "on": 75,
                     "off": 0,
                     "default": false,
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_33_FR_0",
@@ -5301,8 +5035,8 @@
             "locked": false,
             "name": "Timpani Rolls [HWP]",
             "channel": 2,
-            "baseDelay": "-50",
-            "avgDelay": "-50.00",
+            "baseDelay": -50,
+            "avgDelay": -50,
             "color": "#224596",
             "fullRange": [
                 {
@@ -5337,7 +5071,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_34_FR_0",
@@ -5356,7 +5090,7 @@
                     "on": 11,
                     "off": 0,
                     "default": true,
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_34_FR_0",
@@ -5373,7 +5107,7 @@
                     "on": 102,
                     "off": 0,
                     "default": false,
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_34_FR_0",
@@ -5407,7 +5141,7 @@
             "name": "Bass Drum 40in [HWP]",
             "channel": 3,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#224596",
             "fullRange": [
                 {
@@ -5476,8 +5210,8 @@
             "locked": false,
             "name": "Bass Drum 32in [HWP]",
             "channel": 4,
-            "baseDelay": "-25",
-            "avgDelay": "-25.00",
+            "baseDelay": -25,
+            "avgDelay": -25.00,
             "color": "#224596",
             "fullRange": [
                 {
@@ -5505,7 +5239,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-25",
+                    "delay": -25,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_36_FR_0",
@@ -5523,7 +5257,7 @@
                     "on": 0,
                     "off": 0,
                     "default": true,
-                    "delay": "-25",
+                    "delay": -25,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_36_FR_0",
@@ -5547,8 +5281,8 @@
             "locked": false,
             "name": "Bass Drum [EWQL]",
             "channel": 5,
-            "baseDelay": "+10",
-            "avgDelay": "10.00",
+            "baseDelay": 10,
+            "avgDelay": 10,
             "color": "#224596",
             "fullRange": [
                 {
@@ -5569,7 +5303,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "+10",
+                    "delay": 10,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_37_FR_0"
@@ -5586,7 +5320,7 @@
                     "on": 0,
                     "off": 0,
                     "default": true,
-                    "delay": "+10",
+                    "delay": 10,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_37_FR_0"
@@ -5610,7 +5344,7 @@
             "name": "Gong 28in [HWP]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#224596",
             "fullRange": [
                 {
@@ -5672,7 +5406,7 @@
             "name": "Gong 32in [HWP]",
             "channel": 2,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#224596",
             "fullRange": [
                 {
@@ -5734,7 +5468,7 @@
             "name": "Gong 38in [HWP]",
             "channel": 3,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#224596",
             "fullRange": [
                 {
@@ -5795,8 +5529,8 @@
             "locked": false,
             "name": "Vln 1 FX Slow Trill [EWQL]",
             "channel": 1,
-            "baseDelay": "-60",
-            "avgDelay": "-60.00",
+            "baseDelay": -60,
+            "avgDelay": -60,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -5817,7 +5551,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_41_FR_0"
@@ -5834,7 +5568,7 @@
                     "on": 0,
                     "off": 0,
                     "default": true,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_41_FR_0"
@@ -5858,7 +5592,7 @@
             "name": "Vln 1 FX Scratch [EWQL]",
             "channel": 2,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -5919,8 +5653,8 @@
             "locked": false,
             "name": "Vln 1 FX Clusters [EWQL]",
             "channel": 3,
-            "baseDelay": "-60",
-            "avgDelay": "-60.00",
+            "baseDelay": -60,
+            "avgDelay": -60,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -5948,7 +5682,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_43_FR_0",
@@ -5966,7 +5700,7 @@
                     "on": 0,
                     "off": 0,
                     "default": true,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_43_FR_0",
@@ -5990,8 +5724,8 @@
             "locked": false,
             "name": "Vln 1 FX Sul Pont [EWQL]",
             "channel": 4,
-            "baseDelay": "-60",
-            "avgDelay": "-60.00",
+            "baseDelay": -60,
+            "avgDelay": -60,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -6012,7 +5746,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_44_FR_0"
@@ -6029,7 +5763,7 @@
                     "on": 0,
                     "off": 0,
                     "default": true,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_44_FR_0"
@@ -6052,8 +5786,8 @@
             "locked": false,
             "name": "Vln 1 FX Rips [EWQL]",
             "channel": 5,
-            "baseDelay": "-60",
-            "avgDelay": "-60.00",
+            "baseDelay": -60,
+            "avgDelay": -60,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -6074,7 +5808,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_45_FR_0"
@@ -6091,7 +5825,7 @@
                     "on": 0,
                     "off": 0,
                     "default": true,
-                    "delay": "-60",
+                    "delay": -60,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_45_FR_0"
@@ -6115,7 +5849,7 @@
             "name": "Vla FX Sul Pont [EWQL]",
             "channel": 6,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -6177,7 +5911,7 @@
             "name": "Vc FX Risers [EWQL]",
             "channel": 7,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -6239,7 +5973,7 @@
             "name": "Vc FX Sul Pont [EWQL]",
             "channel": 8,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -6301,7 +6035,7 @@
             "name": "Vc FX Chatter [LABS]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -6387,7 +6121,7 @@
             "name": "Vc FX Evil [LABS]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -6473,7 +6207,7 @@
             "name": "Vc FX Slide Up [LABS]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -6559,7 +6293,7 @@
             "name": "3 Tbns Leg [HWB]",
             "channel": 7,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -6644,7 +6378,7 @@
             "name": "3 Tbns Long [HWB]",
             "channel": 8,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -6834,7 +6568,7 @@
             "name": "3 Tbns Short [HWB]",
             "channel": 9,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -6934,7 +6668,7 @@
             "name": "Tuba Leg [HWB]",
             "channel": 10,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -7108,8 +6842,8 @@
             "locked": false,
             "name": "Tuba Short [HWB]",
             "channel": 11,
-            "baseDelay": "-80",
-            "avgDelay": "-80.00",
+            "baseDelay": -80,
+            "avgDelay": -80,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -7130,7 +6864,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-80",
+                    "delay": -80,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_56_FR_0"
@@ -7147,7 +6881,7 @@
                     "on": 42,
                     "off": 0,
                     "default": true,
-                    "delay": "-80",
+                    "delay": -80,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_56_FR_0"
@@ -7162,7 +6896,7 @@
                     "on": 52,
                     "off": 0,
                     "default": false,
-                    "delay": "-80",
+                    "delay": -80,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_56_FR_0"
@@ -7177,7 +6911,7 @@
                     "on": 47,
                     "off": 0,
                     "default": false,
-                    "delay": "-80",
+                    "delay": -80,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_56_FR_0"
@@ -7209,7 +6943,7 @@
             "name": "",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#71717A",
             "fullRange": [
                 {
@@ -7271,7 +7005,7 @@
             "name": "Solo Vc Perf [SF]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -7357,7 +7091,7 @@
             "name": "Solo Vc Arts [SF]",
             "channel": 2,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -7690,7 +7424,7 @@
             "name": "Hg2O Traditional [SF]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#224596",
             "fullRange": [
                 {
@@ -7796,7 +7530,7 @@
             "name": "Hg2O Gamelan [SF]",
             "channel": 2,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#224596",
             "fullRange": [
                 {
@@ -7884,7 +7618,7 @@
             "name": "Hg2O Tine Bows [SF]",
             "channel": 3,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#224596",
             "fullRange": [
                 {
@@ -7954,7 +7688,7 @@
             "name": "Hg2O Tine Plucks [SF]",
             "channel": 4,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#224596",
             "fullRange": [
                 {
@@ -8023,8 +7757,8 @@
             "locked": false,
             "name": "Fl 1 Leg [HWW]",
             "channel": 1,
-            "baseDelay": "-75",
-            "avgDelay": "-75.00",
+            "baseDelay": -75,
+            "avgDelay": -75.00,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -8045,7 +7779,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-75",
+                    "delay": -75,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_64_FR_0"
@@ -8062,7 +7796,7 @@
                     "on": 20,
                     "off": 0,
                     "default": true,
-                    "delay": "-75",
+                    "delay": -75,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_64_FR_0"
@@ -8077,7 +7811,7 @@
                     "on": 11,
                     "off": 0,
                     "default": false,
-                    "delay": "-75",
+                    "delay": -75,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_64_FR_0"
@@ -8092,7 +7826,7 @@
                     "on": 71,
                     "off": 0,
                     "default": false,
-                    "delay": "-75",
+                    "delay": -75,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_64_FR_0"
@@ -8107,7 +7841,7 @@
                     "on": 70,
                     "off": 0,
                     "default": false,
-                    "delay": "-75",
+                    "delay": -75,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_64_FR_0"
@@ -8138,8 +7872,8 @@
             "locked": false,
             "name": "Fl 2 Leg [HWW]",
             "channel": 2,
-            "baseDelay": "-40",
-            "avgDelay": "-40.00",
+            "baseDelay": -40,
+            "avgDelay": -40,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -8160,7 +7894,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-40",
+                    "delay": -40,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_65_FR_0"
@@ -8177,7 +7911,7 @@
                     "on": 20,
                     "off": 0,
                     "default": true,
-                    "delay": "-40",
+                    "delay": -40,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_65_FR_0"
@@ -8192,7 +7926,7 @@
                     "on": 11,
                     "off": 0,
                     "default": false,
-                    "delay": "-40",
+                    "delay": -40,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_65_FR_0"
@@ -8207,7 +7941,7 @@
                     "on": 71,
                     "off": 0,
                     "default": false,
-                    "delay": "-40",
+                    "delay": -40,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_65_FR_0"
@@ -8222,7 +7956,7 @@
                     "on": 70,
                     "off": 0,
                     "default": false,
-                    "delay": "-40",
+                    "delay": -40,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_65_FR_0"
@@ -8253,8 +7987,8 @@
             "locked": false,
             "name": "Solo Hn Leg [CB Core]",
             "channel": 1,
-            "baseDelay": "-125",
-            "avgDelay": "-125.00",
+            "baseDelay": -125,
+            "avgDelay": -125.00,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -8275,7 +8009,7 @@
                     "on": 127,
                     "off": 0,
                     "default": "On",
-                    "delay": "-125",
+                    "delay": -125,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_66_FR_0"
@@ -8290,7 +8024,7 @@
                     "on": 127,
                     "off": 0,
                     "default": "On",
-                    "delay": "-125",
+                    "delay": -125,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_66_FR_0"
@@ -8307,7 +8041,7 @@
                     "on": 0,
                     "off": 0,
                     "default": true,
-                    "delay": "-125",
+                    "delay": -125,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_66_FR_0"
@@ -8354,8 +8088,8 @@
             "locked": false,
             "name": "2 Hns Leg [CB Core]",
             "channel": 2,
-            "baseDelay": "-125",
-            "avgDelay": "-125.00",
+            "baseDelay": -125,
+            "avgDelay": -125.00,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -8376,7 +8110,7 @@
                     "on": 127,
                     "off": 0,
                     "default": "On",
-                    "delay": "-125",
+                    "delay": -125,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_67_FR_0"
@@ -8391,7 +8125,7 @@
                     "on": 127,
                     "off": 0,
                     "default": "On",
-                    "delay": "-125",
+                    "delay": -125,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_67_FR_0"
@@ -8408,7 +8142,7 @@
                     "on": 1,
                     "off": 0,
                     "default": true,
-                    "delay": "-125",
+                    "delay": -125,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_67_FR_0"
@@ -8455,8 +8189,8 @@
             "locked": false,
             "name": "6 Hns Leg [CB Core]",
             "channel": 3,
-            "baseDelay": "-125",
-            "avgDelay": "-125.00",
+            "baseDelay": -125,
+            "avgDelay": -125.00,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -8477,7 +8211,7 @@
                     "on": 127,
                     "off": 0,
                     "default": "On",
-                    "delay": "-125",
+                    "delay": -125,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_68_FR_0"
@@ -8492,7 +8226,7 @@
                     "on": 127,
                     "off": 0,
                     "default": "On",
-                    "delay": "-125",
+                    "delay": -125,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_68_FR_0"
@@ -8509,7 +8243,7 @@
                     "on": 1,
                     "off": 0,
                     "default": true,
-                    "delay": "-125",
+                    "delay": -125,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_68_FR_0"
@@ -8556,8 +8290,8 @@
             "locked": false,
             "name": "Solo Tpt Leg [CB Core]",
             "channel": 4,
-            "baseDelay": "-125",
-            "avgDelay": "-125.00",
+            "baseDelay": -125,
+            "avgDelay": -125.00,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -8578,7 +8312,7 @@
                     "on": 127,
                     "off": 0,
                     "default": "On",
-                    "delay": "-125",
+                    "delay": -125,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_69_FR_0"
@@ -8593,7 +8327,7 @@
                     "on": 127,
                     "off": 0,
                     "default": "On",
-                    "delay": "-125",
+                    "delay": -125,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_69_FR_0"
@@ -8610,7 +8344,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-125",
+                    "delay": -125,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_69_FR_0"
@@ -8657,8 +8391,8 @@
             "locked": false,
             "name": "Ens Tpts Leg [CB Core]",
             "channel": 5,
-            "baseDelay": "-50",
-            "avgDelay": "-50.00",
+            "baseDelay": -50,
+            "avgDelay": -50,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -8679,7 +8413,7 @@
                     "on": 127,
                     "off": 0,
                     "default": "On",
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_70_FR_0"
@@ -8694,7 +8428,7 @@
                     "on": 127,
                     "off": 0,
                     "default": "On",
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_70_FR_0"
@@ -8711,7 +8445,7 @@
                     "on": 1,
                     "off": 0,
                     "default": true,
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_70_FR_0"
@@ -8758,8 +8492,8 @@
             "locked": false,
             "name": "Ens Tbns Leg [CB Core]",
             "channel": 6,
-            "baseDelay": "-100",
-            "avgDelay": "-100.00",
+            "baseDelay": -100,
+            "avgDelay": -100,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -8780,7 +8514,7 @@
                     "on": 127,
                     "off": 0,
                     "default": "On",
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_71_FR_0"
@@ -8795,7 +8529,7 @@
                     "on": 127,
                     "off": 0,
                     "default": "On",
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_71_FR_0"
@@ -8812,7 +8546,7 @@
                     "on": 1,
                     "off": 0,
                     "default": true,
-                    "delay": "-100",
+                    "delay": -100,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_71_FR_0"
@@ -8859,8 +8593,8 @@
             "locked": false,
             "name": "Tuba/B.Tbn Long [CB Core]",
             "channel": 7,
-            "baseDelay": "-50",
-            "avgDelay": "-50.00",
+            "baseDelay": -50,
+            "avgDelay": -50,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -8881,7 +8615,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_72_FR_0"
@@ -8898,7 +8632,7 @@
                     "on": 1,
                     "off": 0,
                     "default": true,
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_72_FR_0"
@@ -8929,8 +8663,8 @@
             "locked": false,
             "name": "Cimb/B.Tbn Long [CB Core]",
             "channel": 8,
-            "baseDelay": "-75",
-            "avgDelay": "-75.00",
+            "baseDelay": -75,
+            "avgDelay": -75.00,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -8951,7 +8685,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-75",
+                    "delay": -75,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_73_FR_0"
@@ -8968,7 +8702,7 @@
                     "on": 1,
                     "off": 0,
                     "default": true,
-                    "delay": "-75",
+                    "delay": -75,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_73_FR_0"
@@ -9000,7 +8734,7 @@
             "name": "Ens Brass Long [CB Core]",
             "channel": 9,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -9070,7 +8804,7 @@
             "name": "Ens Brass Short [CB Core]",
             "channel": 10,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -9169,8 +8903,8 @@
             "locked": false,
             "name": "3 Fls Long [HWW]",
             "channel": 3,
-            "baseDelay": "-150",
-            "avgDelay": "-150.00",
+            "baseDelay": -150,
+            "avgDelay": -150,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -9191,7 +8925,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-150",
+                    "delay": -150,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_76_FR_0"
@@ -9208,7 +8942,7 @@
                     "on": 1,
                     "off": 0,
                     "default": false,
-                    "delay": "-150",
+                    "delay": -150,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_76_FR_0"
@@ -9223,7 +8957,7 @@
                     "on": 20,
                     "off": 0,
                     "default": true,
-                    "delay": "-150",
+                    "delay": -150,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_76_FR_0"
@@ -9254,8 +8988,8 @@
             "locked": false,
             "name": "Alto Fl Leg [HWW]",
             "channel": 4,
-            "baseDelay": "-75",
-            "avgDelay": "-75.00",
+            "baseDelay": -75,
+            "avgDelay": -75.00,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -9276,7 +9010,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-75",
+                    "delay": -75,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_77_FR_0"
@@ -9293,7 +9027,7 @@
                     "on": 20,
                     "off": 0,
                     "default": true,
-                    "delay": "-75",
+                    "delay": -75,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_77_FR_0"
@@ -9316,8 +9050,8 @@
             "locked": false,
             "name": "Picc Leg [HWW]",
             "channel": 5,
-            "baseDelay": "-50",
-            "avgDelay": "-50.00",
+            "baseDelay": -50,
+            "avgDelay": -50,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -9338,7 +9072,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_78_FR_0"
@@ -9355,7 +9089,7 @@
                     "on": 20,
                     "off": 0,
                     "default": true,
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_78_FR_0"
@@ -9370,7 +9104,7 @@
                     "on": 70,
                     "off": 0,
                     "default": false,
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_78_FR_0"
@@ -9385,7 +9119,7 @@
                     "on": 71,
                     "off": 0,
                     "default": false,
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_78_FR_0"
@@ -9400,7 +9134,7 @@
                     "on": 11,
                     "off": 0,
                     "default": false,
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_78_FR_0"
@@ -9431,8 +9165,8 @@
             "locked": false,
             "name": "Ob 1 Leg [HWW]",
             "channel": 6,
-            "baseDelay": "-40",
-            "avgDelay": "-40.00",
+            "baseDelay": -40,
+            "avgDelay": -40,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -9453,7 +9187,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-40",
+                    "delay": -40,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_79_FR_0"
@@ -9470,7 +9204,7 @@
                     "on": 1,
                     "off": 0,
                     "default": false,
-                    "delay": "-40",
+                    "delay": -40,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_79_FR_0"
@@ -9485,7 +9219,7 @@
                     "on": 20,
                     "off": 0,
                     "default": true,
-                    "delay": "-40",
+                    "delay": -40,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_79_FR_0"
@@ -9500,7 +9234,7 @@
                     "on": 70,
                     "off": 0,
                     "default": false,
-                    "delay": "-40",
+                    "delay": -40,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_79_FR_0"
@@ -9515,7 +9249,7 @@
                     "on": 71,
                     "off": 0,
                     "default": false,
-                    "delay": "-40",
+                    "delay": -40,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_79_FR_0"
@@ -9546,8 +9280,8 @@
             "locked": false,
             "name": "Eng Hn Leg [HWW]",
             "channel": 7,
-            "baseDelay": "-50",
-            "avgDelay": "-50.00",
+            "baseDelay": -50,
+            "avgDelay": -50,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -9568,7 +9302,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_80_FR_0"
@@ -9585,7 +9319,7 @@
                     "on": 20,
                     "off": 0,
                     "default": true,
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_80_FR_0"
@@ -9600,7 +9334,7 @@
                     "on": 70,
                     "off": 0,
                     "default": false,
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_80_FR_0"
@@ -9615,7 +9349,7 @@
                     "on": 71,
                     "off": 0,
                     "default": false,
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_80_FR_0"
@@ -9646,8 +9380,8 @@
             "locked": false,
             "name": "Cl 1 Leg [HWW]",
             "channel": 8,
-            "baseDelay": "-50",
-            "avgDelay": "-50.00",
+            "baseDelay": -50,
+            "avgDelay": -50,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -9668,7 +9402,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_81_FR_0"
@@ -9685,7 +9419,7 @@
                     "on": 20,
                     "off": 0,
                     "default": true,
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_81_FR_0"
@@ -9700,7 +9434,7 @@
                     "on": 70,
                     "off": 0,
                     "default": false,
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_81_FR_0"
@@ -9715,7 +9449,7 @@
                     "on": 71,
                     "off": 0,
                     "default": false,
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_81_FR_0"
@@ -9746,8 +9480,8 @@
             "locked": false,
             "name": "3 Cls Leg [HWW]",
             "channel": 9,
-            "baseDelay": "-30",
-            "avgDelay": "-30.00",
+            "baseDelay": -30,
+            "avgDelay": -30,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -9768,7 +9502,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-30",
+                    "delay": -30,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_82_FR_0"
@@ -9785,7 +9519,7 @@
                     "on": 1,
                     "off": 0,
                     "default": false,
-                    "delay": "-30",
+                    "delay": -30,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_82_FR_0"
@@ -9800,7 +9534,7 @@
                     "on": 20,
                     "off": 0,
                     "default": true,
-                    "delay": "-30",
+                    "delay": -30,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_82_FR_0"
@@ -9823,8 +9557,8 @@
             "locked": false,
             "name": "B Cl Leg [HWW]",
             "channel": 10,
-            "baseDelay": "-20",
-            "avgDelay": "-20.00",
+            "baseDelay": -20,
+            "avgDelay": -20,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -9845,7 +9579,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-20",
+                    "delay": -20,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_83_FR_0"
@@ -9862,7 +9596,7 @@
                     "on": 20,
                     "off": 0,
                     "default": true,
-                    "delay": "-20",
+                    "delay": -20,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_83_FR_0"
@@ -9877,7 +9611,7 @@
                     "on": 70,
                     "off": 0,
                     "default": false,
-                    "delay": "-20",
+                    "delay": -20,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_83_FR_0"
@@ -9892,7 +9626,7 @@
                     "on": 71,
                     "off": 0,
                     "default": false,
-                    "delay": "-20",
+                    "delay": -20,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_83_FR_0"
@@ -9915,8 +9649,8 @@
             "locked": false,
             "name": "Bsn 1 Leg [HWW]",
             "channel": 11,
-            "baseDelay": "-55",
-            "avgDelay": "-55.00",
+            "baseDelay": -55,
+            "avgDelay": -55.00,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -9937,7 +9671,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-55",
+                    "delay": -55,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_84_FR_0"
@@ -9954,7 +9688,7 @@
                     "on": 20,
                     "off": 0,
                     "default": true,
-                    "delay": "-55",
+                    "delay": -55,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_84_FR_0"
@@ -9969,7 +9703,7 @@
                     "on": 70,
                     "off": 0,
                     "default": false,
-                    "delay": "-55",
+                    "delay": -55,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_84_FR_0"
@@ -9984,7 +9718,7 @@
                     "on": 71,
                     "off": 0,
                     "default": false,
-                    "delay": "-55",
+                    "delay": -55,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_84_FR_0"
@@ -10015,8 +9749,8 @@
             "locked": false,
             "name": "3 Bsns Leg [HWW]",
             "channel": 12,
-            "baseDelay": "-40",
-            "avgDelay": "-40.00",
+            "baseDelay": -40,
+            "avgDelay": -40,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -10037,7 +9771,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-40",
+                    "delay": -40,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_85_FR_0"
@@ -10054,7 +9788,7 @@
                     "on": 1,
                     "off": 0,
                     "default": false,
-                    "delay": "-40",
+                    "delay": -40,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_85_FR_0"
@@ -10069,7 +9803,7 @@
                     "on": 20,
                     "off": 0,
                     "default": true,
-                    "delay": "-40",
+                    "delay": -40,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_85_FR_0"
@@ -10100,8 +9834,8 @@
             "locked": false,
             "name": "C Bsn Leg [HWW]",
             "channel": 13,
-            "baseDelay": "-25",
-            "avgDelay": "-25.00",
+            "baseDelay": -25,
+            "avgDelay": -25.00,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -10122,7 +9856,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-25",
+                    "delay": -25,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_86_FR_0"
@@ -10139,7 +9873,7 @@
                     "on": 20,
                     "off": 0,
                     "default": true,
-                    "delay": "-25",
+                    "delay": -25,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_86_FR_0"
@@ -10170,8 +9904,8 @@
             "locked": false,
             "name": "Snare Drum [HWP]",
             "channel": 1,
-            "baseDelay": "-10",
-            "avgDelay": "-10.00",
+            "baseDelay": -10,
+            "avgDelay": -10,
             "color": "#224596",
             "fullRange": [
                 {
@@ -10199,7 +9933,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-10",
+                    "delay": -10,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_87_FR_0",
@@ -10217,7 +9951,7 @@
                     "on": 0,
                     "off": 0,
                     "default": true,
-                    "delay": "-10",
+                    "delay": -10,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_87_FR_0",
@@ -10242,7 +9976,7 @@
             "name": "Wood Blocks Piccolo [HWP]",
             "channel": 2,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#224596",
             "fullRange": [
                 {
@@ -10322,7 +10056,7 @@
             "name": "Wood Blocks [HWP]",
             "channel": 3,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#224596",
             "fullRange": [
                 {
@@ -10428,8 +10162,8 @@
             "locked": false,
             "name": "Shakers [HWP]",
             "channel": 4,
-            "baseDelay": "-25",
-            "avgDelay": "-25.00",
+            "baseDelay": -25,
+            "avgDelay": -25.00,
             "color": "#224596",
             "fullRange": [
                 {
@@ -10492,7 +10226,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-25",
+                    "delay": -25,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_90_FR_0",
@@ -10514,7 +10248,7 @@
                     "on": 0,
                     "off": 0,
                     "default": true,
-                    "delay": "-25",
+                    "delay": -25,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_90_FR_0",
@@ -10543,7 +10277,7 @@
             "name": "Brake Drum & Anvils [HWP]",
             "channel": 5,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#224596",
             "fullRange": [
                 {
@@ -10605,7 +10339,7 @@
             "name": "Concert Toms [HWP]",
             "channel": 6,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#224596",
             "fullRange": [
                 {
@@ -10691,7 +10425,7 @@
             "name": "Mark Tree 2 [HWP]",
             "channel": 7,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#224596",
             "fullRange": [
                 {
@@ -10753,7 +10487,7 @@
             "name": "Ratchet [HWP]",
             "channel": 8,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#224596",
             "fullRange": [
                 {
@@ -10823,8 +10557,8 @@
             "locked": false,
             "name": "Celeste [HWP]",
             "channel": 9,
-            "baseDelay": "-40",
-            "avgDelay": "-40.00",
+            "baseDelay": -40,
+            "avgDelay": -40,
             "color": "#58FA3D",
             "fullRange": [
                 {
@@ -10845,7 +10579,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-40",
+                    "delay": -40,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_95_FR_0"
@@ -10862,7 +10596,7 @@
                     "on": 0,
                     "off": 0,
                     "default": true,
-                    "delay": "-40",
+                    "delay": -40,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_95_FR_0"
@@ -10886,7 +10620,7 @@
             "name": "Fl 1 Art [HWW]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -11015,8 +10749,8 @@
             "locked": false,
             "name": "Fl 2 Art [HWW]",
             "channel": 2,
-            "baseDelay": "-20",
-            "avgDelay": "-20.00",
+            "baseDelay": -20,
+            "avgDelay": -20,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -11037,7 +10771,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-20",
+                    "delay": -20,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_97_FR_0"
@@ -11054,7 +10788,7 @@
                     "on": 44,
                     "off": 0,
                     "default": true,
-                    "delay": "-20",
+                    "delay": -20,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_97_FR_0"
@@ -11069,7 +10803,7 @@
                     "on": 42,
                     "off": 0,
                     "default": false,
-                    "delay": "-20",
+                    "delay": -20,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_97_FR_0"
@@ -11084,7 +10818,7 @@
                     "on": 52,
                     "off": 0,
                     "default": false,
-                    "delay": "-20",
+                    "delay": -20,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_97_FR_0"
@@ -11099,7 +10833,7 @@
                     "on": 70,
                     "off": 0,
                     "default": false,
-                    "delay": "-20",
+                    "delay": -20,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_97_FR_0"
@@ -11114,7 +10848,7 @@
                     "on": 71,
                     "off": 0,
                     "default": false,
-                    "delay": "-20",
+                    "delay": -20,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_97_FR_0"
@@ -11146,7 +10880,7 @@
             "name": "3 Fls Art [HWW]",
             "channel": 3,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -11246,7 +10980,7 @@
             "name": "Alto Fl Art [HWW]",
             "channel": 4,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -11308,7 +11042,7 @@
             "name": "Picc Art [HWW]",
             "channel": 5,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -11423,7 +11157,7 @@
             "name": "Ob 1 Art [HWW]",
             "channel": 6,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -11553,7 +11287,7 @@
             "name": "Eng Hn Art [HWW]",
             "channel": 7,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -11683,7 +11417,7 @@
             "name": "Cl 1 Art [HWW]",
             "channel": 8,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -11804,8 +11538,8 @@
             "locked": false,
             "name": "3 Cls Art [HWW]",
             "channel": 9,
-            "baseDelay": "-20",
-            "avgDelay": "-20.00",
+            "baseDelay": -20,
+            "avgDelay": -20,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -11826,7 +11560,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-20",
+                    "delay": -20,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_104_FR_0"
@@ -11843,7 +11577,7 @@
                     "on": 44,
                     "off": 0,
                     "default": true,
-                    "delay": "-20",
+                    "delay": -20,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_104_FR_0"
@@ -11858,7 +11592,7 @@
                     "on": 42,
                     "off": 0,
                     "default": false,
-                    "delay": "-20",
+                    "delay": -20,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_104_FR_0"
@@ -11873,7 +11607,7 @@
                     "on": 52,
                     "off": 0,
                     "default": false,
-                    "delay": "-20",
+                    "delay": -20,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_104_FR_0"
@@ -11896,8 +11630,8 @@
             "locked": false,
             "name": "B Cl Art [HWW]",
             "channel": 10,
-            "baseDelay": "-20",
-            "avgDelay": "-20.00",
+            "baseDelay": -20,
+            "avgDelay": -20,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -11918,7 +11652,7 @@
                     "on": 0,
                     "off": 0,
                     "default": "Off",
-                    "delay": "-20",
+                    "delay": -20,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_105_FR_0"
@@ -11935,7 +11669,7 @@
                     "on": 44,
                     "off": 0,
                     "default": true,
-                    "delay": "-20",
+                    "delay": -20,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_105_FR_0"
@@ -11950,7 +11684,7 @@
                     "on": 42,
                     "off": 0,
                     "default": false,
-                    "delay": "-20",
+                    "delay": -20,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_105_FR_0"
@@ -11965,7 +11699,7 @@
                     "on": 52,
                     "off": 0,
                     "default": false,
-                    "delay": "-20",
+                    "delay": -20,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_105_FR_0"
@@ -11980,7 +11714,7 @@
                     "on": 70,
                     "off": 0,
                     "default": false,
-                    "delay": "-20",
+                    "delay": -20,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_105_FR_0"
@@ -11995,7 +11729,7 @@
                     "on": 71,
                     "off": 0,
                     "default": false,
-                    "delay": "-20",
+                    "delay": -20,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_105_FR_0"
@@ -12019,7 +11753,7 @@
             "name": "Bsn 1 Art [HWW]",
             "channel": 11,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -12149,7 +11883,7 @@
             "name": "3 Bsns Art [HWW]",
             "channel": 12,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -12249,7 +11983,7 @@
             "name": "C Bsn Art [HWW]",
             "channel": 13,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -12348,8 +12082,8 @@
             "locked": false,
             "name": "2 Hns Art [CB Core]",
             "channel": 2,
-            "baseDelay": "-25",
-            "avgDelay": "-25.00",
+            "baseDelay": -25,
+            "avgDelay": -25.00,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -12370,7 +12104,7 @@
                     "on": 127,
                     "off": 0,
                     "default": "On",
-                    "delay": "-25",
+                    "delay": -25,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_109_FR_0"
@@ -12387,7 +12121,7 @@
                     "on": 33,
                     "off": 0,
                     "default": true,
-                    "delay": "-25",
+                    "delay": -25,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_109_FR_0"
@@ -12418,8 +12152,8 @@
             "locked": false,
             "name": "6 Hns Art [CB Core]",
             "channel": 3,
-            "baseDelay": "-50",
-            "avgDelay": "-50.00",
+            "baseDelay": -50,
+            "avgDelay": -50,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -12440,7 +12174,7 @@
                     "on": 127,
                     "off": 0,
                     "default": "On",
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_110_FR_0"
@@ -12457,7 +12191,7 @@
                     "on": 33,
                     "off": 0,
                     "default": true,
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_110_FR_0"
@@ -12472,7 +12206,7 @@
                     "on": 64,
                     "off": 0,
                     "default": false,
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_110_FR_0"
@@ -12487,7 +12221,7 @@
                     "on": 96,
                     "off": 0,
                     "default": false,
-                    "delay": "-50",
+                    "delay": -50,
                     "changeType": "Value 2",
                     "ranges": [
                         "T_110_FR_0"
@@ -12519,7 +12253,7 @@
             "name": "Ens Tpts Art [CB Core]",
             "channel": 5,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -12619,7 +12353,7 @@
             "name": "Ens Tbns Art [CB Core]",
             "channel": 6,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -12719,7 +12453,7 @@
             "name": "Tuba/B.Tbn Art [CB Core]",
             "channel": 7,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -12819,7 +12553,7 @@
             "name": "Cimb./B.Tbn Art [CB Core]",
             "channel": 8,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#cd9323",
             "fullRange": [
                 {
@@ -12889,7 +12623,7 @@
             "name": "Ens WW High Leg [SFA1]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -12959,7 +12693,7 @@
             "name": "Ens WW High Long [SFA1]",
             "channel": 2,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -13053,7 +12787,7 @@
             "name": "Ens WW High Long Arr [SFA1]",
             "channel": 3,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -13147,7 +12881,7 @@
             "name": "Ens WW Low Leg [SFA1]",
             "channel": 4,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -13217,7 +12951,7 @@
             "name": "Ens WW Low Long [SFA1]",
             "channel": 5,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -13311,7 +13045,7 @@
             "name": "Ens WW High Short [SFA1]",
             "channel": 6,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -13405,7 +13139,7 @@
             "name": "Ens WW High Arr Short [SFA1]",
             "channel": 7,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -13499,7 +13233,7 @@
             "name": "Ens WW Low Short]",
             "channel": 8,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#37bdb4",
             "fullRange": [
                 {
@@ -13593,7 +13327,7 @@
             "name": "Ens Str Leg High 8ves [SFA1]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -13663,7 +13397,7 @@
             "name": "Ens Str Leg Mid [SFA1]",
             "channel": 2,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -13733,7 +13467,7 @@
             "name": "Ens Str Leg Low 8ves [SFA1]",
             "channel": 3,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -13803,7 +13537,7 @@
             "name": "Ens Str Long [SFA1]",
             "channel": 4,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -13897,7 +13631,7 @@
             "name": "Ens Str CS Leg High 8ves [SFA1]",
             "channel": 5,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -13967,7 +13701,7 @@
             "name": "Ens Str CS Leg Mid [SFA1]",
             "channel": 6,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -14037,7 +13771,7 @@
             "name": "Ens Str CS Leg Low [SFA1]",
             "channel": 7,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -14107,7 +13841,7 @@
             "name": "Ens Str CS Long [SFA1]",
             "channel": 8,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -14201,7 +13935,7 @@
             "name": "Ens Str Tremolo [SFA1]",
             "channel": 9,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -14295,7 +14029,7 @@
             "name": "Ens Str Staccato [SFA1]",
             "channel": 10,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -14389,7 +14123,7 @@
             "name": "Ens Str Spiccato [SFA1]",
             "channel": 11,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -14483,7 +14217,7 @@
             "name": "Ens Str Pizz [SFA1]",
             "channel": 12,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -14577,7 +14311,7 @@
             "name": "Ens Str Col Legno [SFA1]",
             "channel": 13,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -14671,7 +14405,7 @@
             "name": "Ens Str Runs High [SFA1]",
             "channel": 14,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -14906,7 +14640,7 @@
             "name": "Ens Str Runs Low [SFA1]",
             "channel": 15,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -15141,7 +14875,7 @@
             "name": "Solo Vla Leg [SF]",
             "channel": 3,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -15219,7 +14953,7 @@
             "name": "Solo Vla Art [SF]",
             "channel": 4,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -15552,7 +15286,7 @@
             "name": "Solo Db Long [SF]",
             "channel": 5,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -15773,7 +15507,7 @@
             "name": "Solo Db Art [SF]",
             "channel": 6,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#F0D340",
             "fullRange": [
                 {
@@ -15964,7 +15698,7 @@
             "name": "Guitar Harmonics [LABS]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#9a2151",
             "fullRange": [
                 {
@@ -16042,7 +15776,7 @@
             "name": "Post Apocalyptic Guitar [8Dio]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#9a2151",
             "fullRange": [
                 {
@@ -16121,7 +15855,7 @@
             "name": "Marimba [SFRM]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#224596",
             "fullRange": [
                 {
@@ -16310,7 +16044,7 @@
             "name": "Xylophone [SFRM]",
             "channel": 2,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#224596",
             "fullRange": [
                 {
@@ -16550,7 +16284,7 @@
             "name": "Glockenspiel [SFRM]",
             "channel": 3,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#224596",
             "fullRange": [
                 {
@@ -16785,7 +16519,7 @@
             "name": "Crotales [SFRM]",
             "channel": 4,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#224596",
             "fullRange": [
                 {
@@ -16975,7 +16709,7 @@
             "name": "Glass Marimba [8Dio]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#224596",
             "fullRange": [
                 {
@@ -17037,7 +16771,7 @@
             "name": "Copperphone [8Dio]",
             "channel": 2,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#224596",
             "fullRange": [
                 {
@@ -17099,7 +16833,7 @@
             "name": "BioTek \"Triangular Waves\" [TRK]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#c034b5",
             "fullRange": [
                 {
@@ -17161,7 +16895,7 @@
             "name": "Music Boxes [SC]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#c034b5",
             "fullRange": [
                 {
@@ -17223,7 +16957,7 @@
             "name": "CDT - Combi [SF]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#c034b5",
             "fullRange": [
                 {
@@ -17293,7 +17027,7 @@
             "name": "CDT - Windtunnel [SF]",
             "channel": 2,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#c034b5",
             "fullRange": [
                 {
@@ -17363,7 +17097,7 @@
             "name": "CDT - One Man Band [SF]",
             "channel": 3,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#c034b5",
             "fullRange": [
                 {
@@ -17433,7 +17167,7 @@
             "name": "CDT - Sawtooth Pad [SF]",
             "channel": 4,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#c034b5",
             "fullRange": [
                 {
@@ -17503,7 +17237,7 @@
             "name": "Hg2O Mercury Synth [SF]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#c034b5",
             "fullRange": [
                 {
@@ -17573,7 +17307,7 @@
             "name": "Harp Psycho Drone [EWQL]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#c034b5",
             "fullRange": [
                 {
@@ -17635,7 +17369,7 @@
             "name": "Density [MA]",
             "channel": 1,
             "baseDelay": 0,
-            "avgDelay": "0.00",
+            "avgDelay": 0,
             "color": "#c034b5",
             "fullRange": [
                 {

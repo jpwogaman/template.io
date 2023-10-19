@@ -1,10 +1,16 @@
-import { type FC, Fragment, useMemo, useRef, useState } from 'react'
+import { type FC, Fragment, useState } from 'react'
 import { trpc } from '@/utils/trpc'
 import { SelectList, selectArrays } from '@/components/select-arrays'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
 import TrackOptionsTableKeys from './trackOptionsTableKeys'
-import { s } from '@tauri-apps/api/event-41a9edf5'
+
+import {
+  type ItemsArtListSwitch,
+  type ItemsArtListTog,
+  type ItemsFadList,
+  type ItemsFullRanges
+} from '@prisma/client'
 
 let optionElements: string | React.JSX.Element | undefined
 
@@ -54,7 +60,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
 
   const artRngsArray: string[] = []
   for (const element of selectedItem?.fullRange ?? []) {
-    artRngsArray.push(element?.rangeId)
+    artRngsArray.push(element?.id)
   }
 
   const trackTh = `
@@ -90,7 +96,12 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
   return (
     <div className='max-h-[85%] w-6/12 overflow-y-scroll'>
       {TrackOptionsTableKeys.map((layoutConfig, layoutIndex) => {
-        let layoutDataArray: any[] | undefined = []
+        let layoutDataArray:
+          | ItemsArtListSwitch[]
+          | ItemsArtListTog[]
+          | ItemsFadList[]
+          | ItemsFullRanges[]
+          | undefined = []
 
         if (layoutConfig.label === 'fullRange') {
           layoutDataArray = selectedItem?.fullRange
@@ -110,7 +121,9 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
         return (
           <Fragment key={layoutConfig.label}>
             <div className='mt-4 flex justify-between'>
-              <h2 className='font-caviarBold text-base'>{`${layoutConfig.title} (${layoutDataArray?.length})`}</h2>
+              <h2 className='font-caviarBold text-base'>{`${
+                layoutConfig.title
+              } (${layoutDataArray?.length ?? 0})`}</h2>
               <IconBtnToggle
                 classes=''
                 titleA='Change to card layout'
@@ -152,36 +165,18 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                           trackTh,
                           'sticky top-0 z-50 w-[5%] text-center'
                         )}>
-                        {/*<button onClick={() => addSubItem(level.label)}>
+                        <button
+                        //onClick={() => addSubItem(level.label)}
+                        >
                           <i className='fa-solid fa-plus' />
-                        </button>*/}
+                        </button>
                       </td>
                     </tr>
                   </thead>
                   <tbody>
                     {layoutDataArray?.map(
                       (layoutDataSingle, layoutDataSingleIndex) => {
-                        let layoutDataSingleId: string | undefined
-
-                        if (layoutConfig.label === 'fullRange') {
-                          layoutDataSingleId =
-                            selectedItem?.fullRange[layoutDataSingleIndex]
-                              ?.rangeId
-                        }
-                        if (layoutConfig.label === 'artListSwitch') {
-                          layoutDataSingleId =
-                            selectedItem?.artListSwitch[layoutDataSingleIndex]
-                              ?.artId
-                        }
-                        if (layoutConfig.label === 'artListTog') {
-                          layoutDataSingleId =
-                            selectedItem?.artListTog[layoutDataSingleIndex]
-                              ?.artId
-                        }
-                        if (layoutConfig.label === 'fadList') {
-                          layoutDataSingleId =
-                            selectedItem?.fadList[layoutDataSingleIndex]?.fadId
-                        }
+                        const layoutDataSingleId = layoutDataSingle.id
 
                         return (
                           <tr
@@ -191,6 +186,8 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                               const checkBox = key.input === 'checkbox'
                               const keyIsTextOrCheckbox =
                                 key.input === 'text' || checkBox
+
+                              type keyType = typeof key.key
 
                               let multiple: boolean = false
                               const selected: boolean = false
@@ -266,7 +263,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                                       {!disabled
                                         ? optionElements
                                         : selectArrays?.valNoneList?.array}
-                                      {optionElements}
+                                      {/*{optionElements}*/}
                                     </select>
                                   )}{' '}
                                   {key.input === 'select' && multiple && (
@@ -320,7 +317,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                                       //      subSectionIndex
                                       //    )
                                       //  }
-                                      value={layoutDataSingleId}
+                                      value={layoutDataSingle[key.key as 'id']}
                                     />
                                   )}
                                 </td>
@@ -350,25 +347,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
               <div className='flex gap-1 overflow-x-scroll'>
                 {layoutDataArray?.map(
                   (layoutDataSingle, layoutDataSingleIndex) => {
-                    let layoutDataSingleId: string | undefined
-
-                    if (layoutConfig.label === 'fullRange') {
-                      layoutDataSingleId =
-                        selectedItem?.fullRange[layoutDataSingleIndex]?.rangeId
-                    }
-                    if (layoutConfig.label === 'artListSwitch') {
-                      layoutDataSingleId =
-                        selectedItem?.artListSwitch[layoutDataSingleIndex]
-                          ?.artId
-                    }
-                    if (layoutConfig.label === 'artListTog') {
-                      layoutDataSingleId =
-                        selectedItem?.artListTog[layoutDataSingleIndex]?.artId
-                    }
-                    if (layoutConfig.label === 'fadList') {
-                      layoutDataSingleId =
-                        selectedItem?.fadList[layoutDataSingleIndex]?.fadId
-                    }
+                    const layoutDataSingleId = layoutDataSingle.id
 
                     return (
                       <table

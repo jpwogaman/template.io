@@ -15,7 +15,7 @@ datasource db {
 }
 
 model FileItems {
-  itemId        String               @id @default(cuid())
+  id            String               @id @default(cuid()) @map("itemId")
   locked        Boolean              @default(false)
   name          String               @default("")
   channel       Float?               @default(1)
@@ -29,39 +29,39 @@ model FileItems {
 }
 
 model ItemsFullRanges {
-  rangeId       String  @id @default(cuid())
+  id            String  @id @default(cuid()) @map("rangeId")
   name          String  @default("")
-  low           Float?  @default(0)
-  high          Float?  @default(127)
+  low           String? @default("C-2")
+  high          String? @default("B8")
   whiteKeysOnly Boolean @default(false)
 
-  FileItems               FileItems?          @relation(fields: [fileItemsItemId], references: [itemId])
+  FileItems               FileItems?          @relation(fields: [fileItemsItemId], references: [id])
   fileItemsItemId         String?
-  ItemsArtListTog         ItemsArtListTog?    @relation(fields: [itemsArtListTogArtId], references: [artId])
+  ItemsArtListTog         ItemsArtListTog?    @relation(fields: [itemsArtListTogArtId], references: [id])
   itemsArtListTogArtId    String?
-  ItemsArtListSwitch      ItemsArtListSwitch? @relation(fields: [itemsArtListSwitchArtId], references: [artId])
+  ItemsArtListSwitch      ItemsArtListSwitch? @relation(fields: [itemsArtListSwitchArtId], references: [id])
   itemsArtListSwitchArtId String?
 }
 
 model ItemsArtListTog {
-  artId      String            @id @default(cuid())
+  id         String            @id @default(cuid()) @map("artId")
   name       String?           @default("")
   toggle     Boolean           @default(true)
   codeType   String?           @default("/control")
   code       Float?            @default(0)
   on         Float?            @default(127)
   off        Float?            @default(0)
-  default    Float?            @default(0)
+  default    String?           @default("On")
   delay      Float?            @default(0)
-  changeType Float?            @default(0)
+  changeType String?           @default("Value 2")
   ranges     ItemsFullRanges[]
 
-  FileItems       FileItems? @relation(fields: [fileItemsItemId], references: [itemId])
+  FileItems       FileItems? @relation(fields: [fileItemsItemId], references: [id])
   fileItemsItemId String?
 }
 
 model ItemsArtListSwitch {
-  artId      String            @id @default(cuid())
+  id         String            @id @default(cuid()) @map("artId")
   name       String?           @default("")
   toggle     Boolean           @default(false)
   codeType   String?           @default("/control")
@@ -70,21 +70,21 @@ model ItemsArtListSwitch {
   off        Float?            @default(0)
   default    Boolean?          @default(true)
   delay      Float?            @default(0)
-  changeType Float?            @default(0)
+  changeType String?           @default("Value 2")
   ranges     ItemsFullRanges[]
 
-  FileItems       FileItems? @relation(fields: [fileItemsItemId], references: [itemId])
+  FileItems       FileItems? @relation(fields: [fileItemsItemId], references: [id])
   fileItemsItemId String?
 }
 
 model ItemsFadList {
-  fadId      String  @id @default(cuid())
+  id         String  @id @default(cuid()) @map("fadId")
   name       String? @default("")
   codeType   String? @default("/control")
   code       Float?  @default(0)
   default    Float?  @default(0)
-  changeType Float?  @default(0)
+  changeType String? @default("Value 2")
 
-  FileItems       FileItems? @relation(fields: [fileItemsItemId], references: [itemId])
+  FileItems       FileItems? @relation(fields: [fileItemsItemId], references: [id])
   fileItemsItemId String?
 }

@@ -1,17 +1,19 @@
 import { z } from 'zod'
 
 import { createTRPCRouter, publicProcedure } from '@/server/trpc/trpc'
+
 import {
-  FileData,
-  FileItems,
-  FileMetaData
-} from '@/utils/template-io-track-data-schema'
+  type ItemsArtListSwitch,
+  type ItemsArtListTog,
+  type ItemsFadList,
+  type ItemsFullRanges
+} from '@prisma/client'
 
 export const ItemsRouter = createTRPCRouter({
   createAllItemsFromJSON: publicProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
-      const fileData = JSON.parse(input) as FileData
+      const fileData = JSON.parse(input)
       const { fileMetaData, items } = fileData
 
       const deleteAllItemsAndMetaData = async () => {
@@ -24,48 +26,10 @@ export const ItemsRouter = createTRPCRouter({
 
       deleteAllItemsAndMetaData()
 
-      //const newFileMetaData = await ctx.prisma.fileMetaData.create({
-      //  data: {
-      //    ...fileMetaData
-      //  }
-      //})
-
-      //const newFileMetaData = await ctx.prisma.fileMetaData.create({
-      //  data: {
-      //    fileName: fileMetaData.fileName,
-      //    createdAt: fileMetaData.createdAt,
-      //    updatedAt: fileMetaData.updatedAt,
-      //    //defaultColors: fileMetaData.defaultColors,
-      //    layouts: {
-      //      create: fileMetaData.layouts.map((layout) => {
-      //        return {
-      //          label: layout.label,
-      //          title: layout.title,
-      //          layout: layout.layout,
-      //          keys: {
-      //            create: layout.keys.map((key) => {
-      //              return {
-      //                label: key.label,
-      //                key: key.key,
-      //                show: key.show,
-      //                className: key.className,
-      //                input: key.input,
-      //                selectArray: key.selectArray
-      //              }
-      //            })
-      //          }
-      //        }
-      //      })
-      //    },
-      //    vepTemplate: fileMetaData.vepTemplate,
-      //    dawTemplate: fileMetaData.dawTemplate
-      //  }
-      //})
-
       for (const item of items) {
         await ctx.prisma.fileItems.create({
           data: {
-            itemId: item.itemId,
+            id: item.id,
             locked: item.locked as boolean,
             name: item.name,
             channel: parseInt(item.channel as string),
@@ -73,31 +37,23 @@ export const ItemsRouter = createTRPCRouter({
             avgDelay: parseInt(item.avgDelay as string),
             color: item.color,
             fullRange: {
-              create: item.fullRange.map((range) => {
-                return {
-                  rangeId: range.rangeId
-                }
+              create: item.fullRange.map((range: ItemsFullRanges) => {
+                return range
               })
             },
             artListTog: {
-              create: item.artListTog.map((art) => {
-                return {
-                  artId: art.artId
-                }
+              create: item.artListTog.map((art: ItemsArtListTog) => {
+                return art
               })
             },
             artListSwitch: {
-              create: item.artListSwitch.map((art) => {
-                return {
-                  artId: art.artId
-                }
+              create: item.artListSwitch.map((art: ItemsArtListSwitch) => {
+                return art
               })
             },
             fadList: {
-              create: item.fadList.map((fad) => {
-                return {
-                  fadId: fad.fadId
-                }
+              create: item.fadList.map((fad: ItemsFadList) => {
+                return fad
               })
             }
           }
@@ -111,31 +67,31 @@ export const ItemsRouter = createTRPCRouter({
         data: {}
       })
       .then((item) => {
-        return item.itemId
+        return item.id
       })
     return await ctx.prisma.fileItems.update({
       where: {
-        itemId: newItemId
+        id: newItemId
       },
       data: {
         fullRange: {
           create: {
-            rangeId: newItemId + '_range_0'
+            id: newItemId + '_FR_0'
           }
         },
         artListTog: {
           create: {
-            artId: newItemId + '_art_0'
+            id: newItemId + '_AL_0'
           }
         },
         artListSwitch: {
           create: {
-            artId: newItemId + '_art_1'
+            id: newItemId + '_AL_1'
           }
         },
         fadList: {
           create: {
-            fadId: newItemId + '_fad_0'
+            id: newItemId + '_FL_0'
           }
         }
       }
@@ -159,13 +115,13 @@ export const ItemsRouter = createTRPCRouter({
 
       const currentItem = await ctx.prisma.fileItems.findUnique({
         where: {
-          itemId: itemId
+          id: itemId
         }
       })
 
       return await ctx.prisma.fileItems.update({
         where: {
-          itemId: itemId
+          id: itemId
         },
         data: {
           locked: locked ?? currentItem?.locked,
@@ -187,13 +143,17 @@ export const ItemsRouter = createTRPCRouter({
       const { itemId } = input
       return await ctx.prisma.fileItems.findUnique({
         where: {
-          itemId: itemId
+          id: itemId
         },
         include: {
           fullRange: true,
           artListTog: {
             include: {
-              ranges: true
+              ranges: {
+                select: {
+                  id: true
+                }
+              }
             }
           },
           artListSwitch: {
@@ -215,7 +175,7 @@ export const ItemsRouter = createTRPCRouter({
       const { itemId } = input
       await ctx.prisma.fileItems.delete({
         where: {
-          itemId: itemId
+          id: itemId
         }
       })
       await ctx.prisma.itemsFullRanges.deleteMany({
@@ -260,10 +220,10 @@ export const ItemsRouter = createTRPCRouter({
         data: {
           FileItems: {
             connect: {
-              itemId: itemId
+              id: itemId
             }
           },
-          rangeId: itemId + '_range_' + lastRangeNumber
+          id: itemId + '_range_' + lastRangeNumber
         }
       })
       return newRange
@@ -291,7 +251,7 @@ export const ItemsRouter = createTRPCRouter({
 
       await ctx.prisma.itemsFullRanges.delete({
         where: {
-          rangeId: rangeId
+          id: rangeId
         }
       })
       const allFullRanges = await ctx.prisma.itemsFullRanges.findMany({
@@ -302,10 +262,10 @@ export const ItemsRouter = createTRPCRouter({
       return allFullRanges.map((range, index) => {
         return ctx.prisma.itemsFullRanges.update({
           where: {
-            rangeId: range.rangeId
+            id: range.id
           },
           data: {
-            rangeId: range.rangeId.split('_')[0] + '_range_' + index
+            id: range.id.split('_')[0] + '_range_' + index
           }
         })
       })
@@ -330,10 +290,10 @@ export const ItemsRouter = createTRPCRouter({
         data: {
           FileItems: {
             connect: {
-              itemId: itemId
+              id: itemId
             }
           },
-          artId: itemId + '_art_' + lastArtNumber
+          id: itemId + '_art_' + lastArtNumber
         }
       })
       return newArt
@@ -349,7 +309,7 @@ export const ItemsRouter = createTRPCRouter({
       const { artId } = input
       await ctx.prisma.itemsArtListTog.delete({
         where: {
-          artId: artId
+          id: artId
         }
       })
       return true
@@ -374,10 +334,10 @@ export const ItemsRouter = createTRPCRouter({
         data: {
           FileItems: {
             connect: {
-              itemId: itemId
+              id: itemId
             }
           },
-          artId: itemId + '_art_' + lastArtNumber
+          id: itemId + '_art_' + lastArtNumber
         }
       })
       return newArt
@@ -393,7 +353,7 @@ export const ItemsRouter = createTRPCRouter({
       const { artId } = input
       await ctx.prisma.itemsArtListSwitch.delete({
         where: {
-          artId: artId
+          id: artId
         }
       })
       return true
@@ -418,10 +378,10 @@ export const ItemsRouter = createTRPCRouter({
         data: {
           FileItems: {
             connect: {
-              itemId: itemId
+              id: itemId
             }
           },
-          fadId: itemId + '_fad_' + lastFadNumber
+          id: itemId + '_fad_' + lastFadNumber
         }
       })
       return newFad
@@ -437,7 +397,7 @@ export const ItemsRouter = createTRPCRouter({
       const { fadId } = input
       await ctx.prisma.itemsFadList.delete({
         where: {
-          fadId: fadId
+          id: fadId
         }
       })
       return true
@@ -461,6 +421,6 @@ export const ItemsRouter = createTRPCRouter({
           }
         }
       }
-    })    
+    })
   })
 })

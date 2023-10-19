@@ -4,7 +4,7 @@ const TrackListTableKeys = {
     {
       className: 'w-[10%]',
       show: true,
-      key: 'itemId',
+      key: 'id',
       input: undefined,
       selectArray: undefined,
       label: 'ID'

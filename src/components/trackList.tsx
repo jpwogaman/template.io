@@ -131,7 +131,7 @@ const TrackList: FC<TrackListProps> = ({
                     key={key}
                     className={tw(trackTh, 'sticky top-[24px] z-50', className)}
                     title={key}>
-                    {key === 'itemId' && (
+                    {key === 'id' && (
                       <div className='flex gap-1'>
                         <p>{label}</p>
                         <button
@@ -141,7 +141,7 @@ const TrackList: FC<TrackListProps> = ({
                         </button>
                       </div>
                     )}{' '}
-                    {key !== 'itemId' && label}
+                    {key !== 'id' && label}
                   </td>
                 )
               })}
@@ -166,14 +166,14 @@ const TrackList: FC<TrackListProps> = ({
           </thead>
           <tbody>
             {data?.map((item, thisIndex) => {
-              const { itemId, color, locked, _count } = item
+              const { id, color, locked, _count } = item
               return (
                 <tr
-                  key={itemId}
-                  onClick={() => setSelectedItemId(itemId)}
+                  key={id}
+                  onClick={() => setSelectedItemId(id)}
                   className={tw(
                     trackTr,
-                    selectedItemId === itemId
+                    selectedItemId === id
                       ? 'bg-red-300 text-zinc-50 hover:bg-zinc-600 dark:bg-red-400 dark:hover:bg-zinc-300 dark:hover:text-zinc-800'
                       : '',
                     'relative cursor-pointer'
@@ -195,13 +195,13 @@ const TrackList: FC<TrackListProps> = ({
                       defaultIcon={locked ? 'b' : 'a'}
                       onToggleA={() =>
                         updateSingleItemMutation.mutate({
-                          itemId: itemId,
+                          itemId: id,
                           locked: true
                         })
                       }
                       onToggleB={() =>
                         updateSingleItemMutation.mutate({
-                          itemId: itemId,
+                          itemId: id,
                           locked: false
                         })
                       }
@@ -211,7 +211,7 @@ const TrackList: FC<TrackListProps> = ({
                     const { key, input, selectArray, show } = keyActual
 
                     const checkBox = input === 'checkbox'
-                    const keyIsId = key === 'itemId'
+                    const keyIsId = key === 'id'
                     const disabled = checkBox ? false : locked ? true : keyIsId
 
                     for (const array in selectArrays) {
@@ -248,7 +248,7 @@ const TrackList: FC<TrackListProps> = ({
                               disabled={disabled}
                               onChange={(event) =>
                                 updateSingleItemMutation.mutate({
-                                  itemId: itemId,
+                                  itemId: id,
                                   [key]: event.target.value
                                 })
                               }>
@@ -270,7 +270,7 @@ const TrackList: FC<TrackListProps> = ({
                               )}
                               onChange={(event) =>
                                 updateSingleItemMutation.mutate({
-                                  itemId: itemId,
+                                  itemId: id,
                                   [key]: event.target.value
                                 })
                               }
@@ -288,7 +288,7 @@ const TrackList: FC<TrackListProps> = ({
                     <button
                       onClick={() =>
                         deleteSingleItemMutation.mutate({
-                          itemId: itemId
+                          itemId: id
                         })
                       }>
                       <i className='fa-solid fa-minus' />
