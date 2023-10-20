@@ -11,7 +11,11 @@ const config = {
   swcMinify: true,
   // Note: This experimental feature is required to use NextJS Image in SSG mode.
   // See https://nextjs.org/docs/messages/export-image-api for different workarounds.
-  output: 'export',
+
+  //⨯ API Routes cannot be used with "output: export".
+  // export for building binaries, standalone for dev server
+  //output: 'export',
+  output: 'standalone',
   distDir: 'dist',
   images: {
     unoptimized: true

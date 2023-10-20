@@ -85,6 +85,8 @@ I know this seems like a hassle, so I took the liberty of setting up these trans
 
 You can now use Template.io to add information about your tracks and when you save, it will automatically update the **template-io-tracks.json**, which the custom-module is reading. This will update your instance of Open Stage Control and put all of the parameters that each track can use right at the tip of your fingers. 
 
+![template.io main view](./public/Images/template-io-main-view.png)
+
 ![custom module in action](./public/Images/custom-module-in-action.gif)
 
 
@@ -92,7 +94,7 @@ You can now use Template.io to add information about your tracks and when you sa
 
 1) [**Tauri Prerequisites**](https://tauri.app/v1/guides/getting-started/prerequisites) - this includes downloading Rust, as well as configuring your PATH. 
 
-2) ```
+2)  ```
     git clone https://github.com/jpwogaman/template.io
     ```
 3)  ```
@@ -102,6 +104,12 @@ You can now use Template.io to add information about your tracks and when you sa
     pnpm install
     ```
 5)  ```
+    npx prisma generate
+    ```
+6)  ```
+    npx prisma db push
+    ```
+7)  ```
     pnpm tauri dev
     ```
 
