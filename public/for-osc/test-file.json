@@ -2989,7 +2989,7 @@
                     "name": "Staccatos",
                     "codeType": "/control",
                     "code": 1,
-                    "default": false,
+                    "default": null,
                     "changeType": "Value 2"
                 },
                 {
@@ -3083,7 +3083,7 @@
                     "name": "Overlay Volume",
                     "codeType": "/control",
                     "code": 16,
-                    "default": false,
+                    "default": null,
                     "changeType": "Value 2"
                 },
                 {
@@ -3193,7 +3193,7 @@
                     "name": "Overlay Volume",
                     "codeType": "/control",
                     "code": 16,
-                    "default": false,
+                    "default": null,
                     "changeType": "Value 2"
                 },
                 {
@@ -6258,7 +6258,7 @@
                     "name": "Dynamics",
                     "codeType": "/control",
                     "code": 1,
-                    "default": false,
+                    "default": null,
                     "changeType": "Value 2"
                 },
                 {
@@ -6994,7 +6994,7 @@
                     "name": "",
                     "codeType": "/control",
                     "code": 0,
-                    "default": "Off",
+                    "default": null,
                     "changeType": "Value 2"
                 }
             ]
@@ -7080,7 +7080,7 @@
                     "name": "Mute",
                     "codeType": "/control",
                     "code": 16,
-                    "default": false,
+                    "default": null,
                     "changeType": "Value 2"
                 }
             ]
@@ -7511,7 +7511,7 @@
                     "name": "Water",
                     "codeType": "/control",
                     "code": 1,
-                    "default": false,
+                    "default": null,
                     "changeType": "Value 2"
                 },
                 {
@@ -7599,7 +7599,7 @@
                     "name": "Water",
                     "codeType": "/control",
                     "code": 1,
-                    "default": false,
+                    "default": null,
                     "changeType": "Value 2"
                 },
                 {
@@ -7669,7 +7669,7 @@
                     "name": "Water",
                     "codeType": "/control",
                     "code": 1,
-                    "default": false,
+                    "default": null,
                     "changeType": "Value 2"
                 },
                 {
@@ -7739,7 +7739,7 @@
                     "name": "Water",
                     "codeType": "/control",
                     "code": 1,
-                    "default": false,
+                    "default": null,
                     "changeType": "Value 2"
                 },
                 {
@@ -8343,7 +8343,7 @@
                     "code": 0,
                     "on": 0,
                     "off": 0,
-                    "default": "Off",
+                    "default": false,
                     "delay": -125,
                     "changeType": "Value 2",
                     "ranges": [
@@ -8771,7 +8771,7 @@
                     "code": 0,
                     "on": 0,
                     "off": 0,
-                    "default": "Off",
+                    "default": false,
                     "delay": 0,
                     "changeType": "Value 2",
                     "ranges": [
@@ -12768,7 +12768,7 @@
                     "name": "Release",
                     "codeType": "/control",
                     "code": 17,
-                    "default": false,
+                    "default": null,
                     "changeType": "Value 2"
                 },
                 {
@@ -12862,7 +12862,7 @@
                     "name": "Release",
                     "codeType": "/control",
                     "code": 17,
-                    "default": false,
+                    "default": null,
                     "changeType": "Value 2"
                 },
                 {
@@ -13026,7 +13026,7 @@
                     "name": "Release",
                     "codeType": "/control",
                     "code": 17,
-                    "default": false,
+                    "default": null,
                     "changeType": "Value 2"
                 },
                 {
@@ -13612,7 +13612,7 @@
                     "name": "Release",
                     "codeType": "/control",
                     "code": 17,
-                    "default": false,
+                    "default": null,
                     "changeType": "Value 2"
                 },
                 {
@@ -13916,7 +13916,7 @@
                     "name": "Release",
                     "codeType": "/control",
                     "code": 17,
-                    "default": false,
+                    "default": null,
                     "changeType": "Value 2"
                 },
                 {
@@ -16884,7 +16884,7 @@
                     "name": "Modulation",
                     "codeType": "/control",
                     "code": 1,
-                    "default": false,
+                    "default": null,
                     "changeType": "Value 2"
                 }
             ]
@@ -16946,7 +16946,7 @@
                     "name": "",
                     "codeType": "/control",
                     "code": 0,
-                    "default": false,
+                    "default": null,
                     "changeType": "Value 2"
                 }
             ]
@@ -17296,7 +17296,7 @@
                     "name": "HP Filter",
                     "codeType": "/control",
                     "code": 27,
-                    "default": false,
+                    "default": null,
                     "changeType": "Value 2"
                 }
             ]
@@ -17420,7 +17420,7 @@
                     "name": "",
                     "codeType": "/control",
                     "code": 0,
-                    "default": false,
+                    "default": null,
                     "changeType": "Value 2"
                 }
             ]

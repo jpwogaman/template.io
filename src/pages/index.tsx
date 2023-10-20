@@ -7,12 +7,16 @@ import TrackOptions from '@/components/trackOptions'
 const Index: NextPage = () => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null)
 
-  const { refetch } = trpc.items.getAllItems.useQuery()
+  const { refetch: allRefetch } = trpc.items.getAllItems.useQuery()
+  const { refetch: selectedRefetch } = trpc.items.getSingleItem.useQuery({
+    itemId: selectedItemId ?? ''
+  })
 
   const deleteAllItemsMutation = trpc.items.deleteAllItems.useMutation({
     onSuccess: () => {
       deleteAllItemsMutation.reset()
-      refetch()
+      allRefetch()
+      selectedRefetch()
     },
     onError: () => {
       alert('There was an error submitting your request. Please try again.')

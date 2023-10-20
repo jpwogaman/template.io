@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { createTRPCRouter, publicProcedure } from '@/server/trpc/trpc'
 
 import {
+  type FileItems,
   type ItemsArtListSwitch,
   type ItemsArtListTog,
   type ItemsFadList,
@@ -14,7 +15,25 @@ export const ItemsRouter = createTRPCRouter({
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
       const fileData = JSON.parse(input)
-      const { fileMetaData, items } = fileData
+
+      type FileItemsExtended = {
+        id: string
+        locked: boolean
+        name: string
+        channel: number | null
+        baseDelay: number | null
+        avgDelay: number | null
+        color: string
+        fullRange: ItemsFullRanges[]
+        artListTog: ItemsArtListTog[]
+        artListSwitch: ItemsArtListSwitch[]
+        fadList: ItemsFadList[]
+      }
+
+      const {
+        fileMetaData,
+        items
+      }: { fileMetaData: any; items: FileItemsExtended[] } = fileData
 
       const deleteAllItemsAndMetaData = async () => {
         await ctx.prisma.fileItems.deleteMany({})
@@ -30,29 +49,29 @@ export const ItemsRouter = createTRPCRouter({
         await ctx.prisma.fileItems.create({
           data: {
             id: item.id,
-            locked: item.locked as boolean,
+            locked: item.locked,
             name: item.name,
-            channel: parseInt(item.channel as string),
-            baseDelay: parseInt(item.baseDelay as string),
-            avgDelay: parseInt(item.avgDelay as string),
+            channel: item.channel,
+            baseDelay: item.baseDelay,
+            avgDelay: item.avgDelay,
             color: item.color,
             fullRange: {
-              create: item.fullRange.map((range: ItemsFullRanges) => {
+              create: item.fullRange.map((range) => {
                 return range
               })
             },
             artListTog: {
-              create: item.artListTog.map((art: ItemsArtListTog) => {
-                return art
+              create: item.artListTog.map((art) => {
+                return { ...art, ranges: JSON.stringify(art.ranges) }
               })
             },
             artListSwitch: {
-              create: item.artListSwitch.map((art: ItemsArtListSwitch) => {
-                return art
+              create: item.artListSwitch.map((art) => {
+                return { ...art, ranges: JSON.stringify(art.ranges) }
               })
             },
             fadList: {
-              create: item.fadList.map((fad: ItemsFadList) => {
+              create: item.fadList.map((fad) => {
                 return fad
               })
             }
@@ -147,20 +166,8 @@ export const ItemsRouter = createTRPCRouter({
         },
         include: {
           fullRange: true,
-          artListTog: {
-            include: {
-              ranges: {
-                select: {
-                  id: true
-                }
-              }
-            }
-          },
-          artListSwitch: {
-            include: {
-              ranges: true
-            }
-          },
+          artListTog: true,
+          artListSwitch: true,
           fadList: true
         }
       })
@@ -223,7 +230,7 @@ export const ItemsRouter = createTRPCRouter({
               id: itemId
             }
           },
-          id: itemId + '_range_' + lastRangeNumber
+          id: itemId + '_FR_' + lastRangeNumber
         }
       })
       return newRange
@@ -265,7 +272,7 @@ export const ItemsRouter = createTRPCRouter({
             id: range.id
           },
           data: {
-            id: range.id.split('_')[0] + '_range_' + index
+            id: range.id.split('_')[0] + '_FR_' + index
           }
         })
       })
@@ -293,7 +300,7 @@ export const ItemsRouter = createTRPCRouter({
               id: itemId
             }
           },
-          id: itemId + '_art_' + lastArtNumber
+          id: itemId + '_AL_' + lastArtNumber
         }
       })
       return newArt
@@ -337,7 +344,7 @@ export const ItemsRouter = createTRPCRouter({
               id: itemId
             }
           },
-          id: itemId + '_art_' + lastArtNumber
+          id: itemId + '_AL_' + lastArtNumber
         }
       })
       return newArt
@@ -381,7 +388,7 @@ export const ItemsRouter = createTRPCRouter({
               id: itemId
             }
           },
-          id: itemId + '_fad_' + lastFadNumber
+          id: itemId + '_FL_' + lastFadNumber
         }
       })
       return newFad

@@ -30,17 +30,17 @@ model FileItems {
 
 model ItemsFullRanges {
   id            String  @id @default(cuid()) @map("rangeId")
-  name          String  @default("")
+  name          String?  @default("")
   low           String? @default("C-2")
   high          String? @default("B8")
-  whiteKeysOnly Boolean @default(false)
+  whiteKeysOnly Boolean? @default(false)
 
   FileItems               FileItems?          @relation(fields: [fileItemsItemId], references: [id])
   fileItemsItemId         String?
-  ItemsArtListTog         ItemsArtListTog?    @relation(fields: [itemsArtListTogArtId], references: [id])
-  itemsArtListTogArtId    String?
-  ItemsArtListSwitch      ItemsArtListSwitch? @relation(fields: [itemsArtListSwitchArtId], references: [id])
-  itemsArtListSwitchArtId String?
+  //ItemsArtListTog         ItemsArtListTog?    @relation(fields: [itemsArtListTogArtId], references: [id])
+  //itemsArtListTogArtId    String?
+  //ItemsArtListSwitch      ItemsArtListSwitch? @relation(fields: [itemsArtListSwitchArtId], references: [id])
+  //itemsArtListSwitchArtId String?
 }
 
 model ItemsArtListTog {
@@ -54,7 +54,7 @@ model ItemsArtListTog {
   default    String?           @default("On")
   delay      Float?            @default(0)
   changeType String?           @default("Value 2")
-  ranges     ItemsFullRanges[]
+  ranges     String?           @default("")
 
   FileItems       FileItems? @relation(fields: [fileItemsItemId], references: [id])
   fileItemsItemId String?
@@ -71,7 +71,7 @@ model ItemsArtListSwitch {
   default    Boolean?          @default(true)
   delay      Float?            @default(0)
   changeType String?           @default("Value 2")
-  ranges     ItemsFullRanges[]
+  ranges     String?           @default("")
 
   FileItems       FileItems? @relation(fields: [fileItemsItemId], references: [id])
   fileItemsItemId String?
