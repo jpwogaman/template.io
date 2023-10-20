@@ -41,7 +41,9 @@
         "alwaysOnTop": false,
         "center": true,
         "height": 800,
-        "width": 1200
+        "minHeight": 600,
+        "width": 1200,
+        "minWidth": 1000
       }
     ],
     "systemTray": {
