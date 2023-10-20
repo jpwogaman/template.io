@@ -13,8 +13,7 @@
     "url": "https://github.com/jpwogaman/template.io/issues"
   },
   "scripts": {
-    "build": "next build && next export -o dist",
-    "build:web": "next build",
+    "build": "next build",
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
