@@ -39,6 +39,16 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       }
     })
 
+    
+  const deleteAllItemsMutation = trpc.items.deleteAllItems.useMutation({
+    onSuccess: () => {
+      deleteAllItemsMutation.reset()
+    },
+    onError: () => {
+      alert('There was an error submitting your request. Please try again.')
+    }
+  })
+
   useEffect(() => {
     setMounted(true)
   }, [])
@@ -49,6 +59,12 @@ const MyApp: AppType = ({ Component, pageProps }) => {
 
   mounted &&
     listen('tauri://menu', (event) => {
+      //if (event.payload === 'quit') {
+      //  deleteAllItemsMutation.mutate()
+      //}
+      //if (event.payload === 'close') {
+      //  deleteAllItemsMutation.mutate()
+      //}
       //if (event.payload === 'save') {
       //  saveMutation.mutate({
       //    event: 'tauri://menu',
