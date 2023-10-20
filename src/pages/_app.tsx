@@ -101,7 +101,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     <ThemeProvider
       key='theme'
       attribute='class'
-      defaultTheme='dark'>
+      defaultTheme='light'>
       <Component {...pageProps} />
     </ThemeProvider>
   )

@@ -1,11 +1,11 @@
 [package]
-name = "template_io"
+name = "template-io"
 version = "0.1.0"
-description = "template_io"
+description = "template-io"
 authors = ["JP Wogaman II"]
 license = "MIT"
 repository = "https://github.com/jpwogaman/template.io"
-default-run = "template_io"
+default-run = "template-io"
 edition = "2021"
 rust-version = "1.73.0"
 

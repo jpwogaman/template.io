@@ -3731,7 +3731,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "template_io"
+name = "template-io"
 version = "0.1.0"
 dependencies = [
  "palette",
