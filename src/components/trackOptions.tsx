@@ -4,6 +4,10 @@ import { SelectList, selectArrays } from '@/components/select-arrays'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
 import TrackOptionsTableKeys from './trackOptionsTableKeys'
+import { TdInput } from './input-text'
+import { TdSelect } from './input-select'
+import { TdCheckbox } from './input-checkbox'
+import { TdSwitch } from './input-checkbox-switch'
 
 import {
   type ItemsArtListSwitch,
@@ -11,8 +15,6 @@ import {
   type ItemsFadList,
   type ItemsFullRanges
 } from '@prisma/client'
-
-let optionElements: string | React.JSX.Element | undefined
 
 type TrackOptionsProps = {
   selectedItemId: string | null
@@ -63,20 +65,21 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
     artRngsArray.push(element?.id)
   }
 
-  const trackTh = `
-    bg-zinc-400 dark:bg-zinc-500
-    font-caviarBold dark:font-normal
-    p-1
+  const trackTh = `border-[1.5px]
+  border-b-transparent
+  border-zinc-100
+  dark:border-zinc-400
+  bg-zinc-200
+  dark:bg-zinc-600
+  font-bold
+  z-50
+  dark:font-normal
+  p-1
    `
 
-  const trackTr = `bg-zinc-300  
-    dark:bg-zinc-600 
-    hover:bg-zinc-500 
-    dark:hover:bg-zinc-400       
-      hover:text-zinc-50 
-    dark:hover:text-zinc-50        
-   `
-
+  const trackTr = `bg-zinc-300 
+  dark:bg-zinc-600 
+  `
   const trackTd = ``
 
   const [trackOptionsLayouts, setTrackOptionsLayouts] = useState({
@@ -93,8 +96,66 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
     }))
   }
 
+  const layoutConfigKeysMap = (
+    keySingle: (typeof TrackOptionsTableKeys)[number]['keys'][number]
+  ) => {
+    let optionElements: string | React.JSX.Element | undefined
+
+    const { input, selectArray, show, key } = keySingle
+    const inputCheckBoxSwitch = input === 'checkbox-switch'
+    const inputCheckBox = input === 'checkbox'
+    const inputSelect = input === 'select'
+    const inputText = input === 'text'
+
+    let multiple: boolean = false
+    let inputSelectMultiple: boolean = false
+    let inputSelectSingle: boolean = false
+
+    const locked = selectedItem?.locked
+    const keyIsId = keySingle.key === 'id'
+    const disabled = locked ? true : keyIsId
+
+    for (const array in selectArrays) {
+      if (selectArray === 'artRngsArray') {
+        optionElements = <SelectList numbers={artRngsArray} />
+        multiple = true
+      }
+      if (selectArray === selectArrays[array]?.name) {
+        optionElements = selectArrays[array]?.array
+      }
+      inputSelectMultiple = inputSelect && multiple
+      inputSelectSingle = inputSelect && !multiple
+    }
+
+    return {
+      keyKey: key,
+      input,
+      show,
+      inputCheckBoxSwitch,
+      inputCheckBox,
+      inputText,
+      selectArray,
+      optionElements,
+      inputSelectMultiple,
+      inputSelectSingle,
+      disabled
+    } as {
+      keyKey: typeof key
+      input: typeof input
+      show: boolean
+      inputCheckBoxSwitch: boolean
+      inputCheckBox: boolean
+      inputText: boolean
+      selectArray: typeof selectArray
+      optionElements: string | React.JSX.Element | undefined
+      inputSelectMultiple: boolean
+      inputSelectSingle: boolean
+      disabled: boolean
+    }
+  }
+
   return (
-    <div className='max-h-[85%] w-6/12 overflow-y-scroll'>
+    <div className='h-full w-1/2 overflow-y-scroll'>
       {TrackOptionsTableKeys.map((layoutConfig, layoutIndex) => {
         let layoutDataArray:
           | ItemsArtListSwitch[]
@@ -141,205 +202,183 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
               />
             </div>
             {table && (
-              <div className=''>
-                <table className='w-full table-fixed border-separate border-spacing-0 text-left text-xs '>
-                  <thead>
-                    <tr>
-                      {layoutConfig.keys.map((key) => {
-                        if (!key.show) return
-                        return (
-                          <td
-                            key={key.key}
-                            title={key.key}
-                            className={tw(
-                              trackTh,
-                              key.className,
-                              'sticky top-0 z-50'
-                            )}>
-                            {key.label}
-                          </td>
-                        )
-                      })}
-                      <td
-                        className={tw(
-                          trackTh,
-                          'sticky top-0 z-50 w-[5%] text-center'
-                        )}>
-                        <button
-                        //onClick={() => addSubItem(level.label)}
-                        >
-                          <i className='fa-solid fa-plus' />
-                        </button>
-                      </td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {layoutDataArray?.map(
-                      (layoutDataSingle, layoutDataSingleIndex) => {
-                        const layoutDataSingleId = layoutDataSingle.id
+              <table className='w-full table-fixed border-separate border-spacing-0 text-left text-xs '>
+                <thead>
+                  <tr>
+                    {layoutConfig.keys.map((key) => {
+                      if (!key.show) return
+                      return (
+                        <td
+                          key={key.key}
+                          title={key.key}
+                          className={tw(trackTh, key.className)}>
+                          {key.label}
+                        </td>
+                      )
+                    })}
+                    <td className={tw(trackTh, 'w-[5%] text-center')}>
+                      <button
+                      //onClick={() => addSubItem(level.label)}
+                      >
+                        <i className='fa-solid fa-plus' />
+                      </button>
+                    </td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {layoutDataArray?.map((layoutDataSingle) => {
+                    const layoutDataSingleId = layoutDataSingle.id
 
-                        return (
-                          <tr
-                            key={layoutDataSingleId}
-                            className={`${trackTr}`}>
-                            {layoutConfig.keys.map((key) => {
-                              const checkBox = key.input === 'checkbox'
-                              const keyIsTextOrCheckbox =
-                                key.input === 'text' || checkBox
+                    return (
+                      <tr
+                        key={layoutDataSingleId}
+                        className={`${trackTr}`}>
+                        {layoutConfig.keys.map((key) => {
+                          const {
+                            keyKey,
+                            input,
+                            show,
+                            inputCheckBoxSwitch,
+                            inputCheckBox,
+                            inputText,
+                            selectArray,
+                            optionElements,
+                            inputSelectMultiple,
+                            inputSelectSingle,
+                            disabled
+                          } = layoutConfigKeysMap(key)
 
-                              type keyType = typeof key.key
+                          if (!show) return
 
-                              let multiple: boolean = false
-                              const selected: boolean = false
-                              const locked = selectedItem?.locked
-                              const keyIsId = key.key === 'id'
-                              const disabled = locked ? true : keyIsId
-
-                              for (const array in selectArrays) {
-                                if (key.selectArray === 'artRngsArray') {
-                                  optionElements = (
-                                    <SelectList numbers={artRngsArray} />
-                                  )
-                                  multiple = true
-                                  optionElements = (
-                                    <>
-                                      {artRngsArray.map(
-                                        (number: string | number) => (
-                                          <option
-                                            key={number}
-                                            selected={layoutDataSingle[
-                                              'ranges' as 'id'
-                                            ].includes(number as string)}
-                                            value={number}>
-                                            {number}
-                                          </option>
-                                        )
-                                      )}
-                                    </>
-                                  )
-                                }
-                                if (
-                                  key.selectArray === selectArrays[array]?.name
-                                ) {
-                                  optionElements = selectArrays[array]?.array
-                                }
-                              }
-                              if (!key.show) return
-                              return (
-                                <td
-                                  key={key.key}
+                          return (
+                            <td
+                              key={keyKey}
+                              title={layoutDataSingleId}
+                              className={tw(trackTd, 'p-0.5')}>
+                              {!input && (
+                                <p
                                   title={layoutDataSingleId}
-                                  className={tw(trackTd, 'p-0.5')}>
-                                  {!key.input && (
-                                    <p className='p-1'>{layoutDataSingleId}</p>
-                                  )}{' '}
-                                  {key.input === 'select' && !multiple && (
-                                    <select
-                                      className={tw(
-                                        'w-full cursor-pointer overflow-scroll p-[4.5px] text-zinc-900',
-                                        disabled
-                                          ? 'cursor-not-allowed bg-zinc-300'
-                                          : 'bg-white dark:bg-zinc-100'
-                                      )}
-                                      value={
-                                        !disabled
-                                          ? (layoutDataSingle[
-                                              key.key as unknown as 'name'
-                                            ] as unknown as string)
-                                          : undefined
-                                      }
-                                      disabled={disabled}
-                                      //onChange={(event) =>
-                                      //  valueChange(
-                                      //    event,
-                                      //    level.label,
-                                      //    key.key,
-                                      //    subSectionIndex
-                                      //  )
-                                      //}
-                                    >
-                                      {!disabled
-                                        ? optionElements
-                                        : selectArrays?.valNoneList?.array}
-                                      {/*{optionElements}*/}
-                                    </select>
-                                  )}{' '}
-                                  {key.input === 'select' && multiple && (
-                                    // <details>
-                                    <select
-                                      className={tw(
-                                        'w-full cursor-pointer overflow-scroll p-[4.5px] text-zinc-900',
-                                        disabled
-                                          ? 'cursor-not-allowed bg-zinc-300'
-                                          : 'bg-white dark:bg-zinc-100'
-                                      )}
-                                      value={undefined}
-                                      multiple
-                                      disabled={disabled}
-                                      //onChange={(event) =>
-                                      //  valueChange(
-                                      //    event,
-                                      //    level.label,
-                                      //    key.key,
-                                      //    subSectionIndex
-                                      //  )
-                                      //}
-                                    >
-                                      {optionElements}
-                                    </select>
+                                  className='p-1'>
+                                  {layoutDataSingleId}
+                                </p>
+                              )}{' '}
+                              {inputSelectSingle && (
+                                <TdSelect
+                                  id={keyKey}
+                                  options={selectArray ?? ''}
+                                  codeDisabled={disabled}
+                                  //onSelect={(event) =>
+                                  //  updateSingleItemMutation.mutate({
+                                  //    itemId: id,
+                                  //    [key]: event.target.value
+                                  //  })
+                                  //}
+                                  defaultValue={
+                                    layoutDataSingle[keyKey as 'id']
+                                  }
+                                />
+                              )}{' '}
+                              {inputSelectMultiple && (
+                                // <details>
+                                <select
+                                  className={tw(
+                                    'w-full cursor-pointer overflow-scroll p-[4.5px] text-zinc-900',
+                                    disabled
+                                      ? 'cursor-not-allowed bg-zinc-300'
+                                      : 'bg-white dark:bg-zinc-100'
                                   )}
-                                  {/*</details>*/}
-                                  {keyIsTextOrCheckbox && (
-                                    <input
-                                      //checked={
-                                      //  layoutDataSingle[
-                                      //    key.key as 'default'
-                                      //  ] as unknown as boolean
-                                      //}
-                                      disabled={disabled}
-                                      type={key.input}
-                                      className={tw(
-                                        'w-full p-1 text-zinc-900',
-                                        key.input === 'checkbox'
-                                          ? 'cursor-pointer'
-                                          : '',
-                                        disabled
-                                          ? 'cursor-not-allowed bg-zinc-300'
-                                          : 'bg-white dark:bg-zinc-100'
-                                      )}
-                                      //  onChange={(event) =>
-                                      //    valueChange(
-                                      //      event,
-                                      //      level.label,
-                                      //      key.key,
-                                      //      subSectionIndex
-                                      //    )
-                                      //  }
-                                      value={layoutDataSingle[key.key as 'id']}
-                                    />
+                                  value={undefined}
+                                  multiple
+                                  disabled={disabled}
+                                  //onChange={(event) =>
+                                  //  valueChange(
+                                  //    event,
+                                  //    level.label,
+                                  //    keyKey,
+                                  //    subSectionIndex
+                                  //  )
+                                  //}
+                                >
+                                  {optionElements}
+                                </select>
+                              )}
+                              {/*</details>*/}
+                              {inputText && (
+                                <TdInput
+                                  id={keyKey}
+                                  title=''
+                                  placeholder=''
+                                  td={true}
+                                  codeDisabled={disabled}
+                                  //onInput={(event) =>
+                                  //  updateSingleItemMutation.mutate({
+                                  //    itemId: id,
+                                  //    [key]: event.target.value
+                                  //  })
+                                  //}
+                                  defaultValue={
+                                    layoutDataSingle[keyKey as 'id']
+                                  }
+                                />
+                              )}
+                              {inputCheckBox && (
+                                <input
+                                  checked={false}
+                                  disabled={disabled}
+                                  type='checkbox'
+                                  className={tw(
+                                    'w-full p-1 text-zinc-900',
+                                    inputCheckBox ? 'cursor-pointer' : '',
+                                    disabled
+                                      ? 'cursor-not-allowed bg-zinc-300'
+                                      : 'bg-white dark:bg-zinc-100'
                                   )}
-                                </td>
-                              )
-                            })}
-                            <td className={tw(trackTd, 'text-center')}>
-                              <button
-                              //  onClick={() =>
-                              //    deleteSingleFullRangeMutation.mutate({
-                              //      fileItemsItemId: 'T_9',
-                              //      rangeId: subSection.artId
-                              //    })
-                              //  }
-                              >
-                                <i className='fa-solid fa-minus' />
-                              </button>
+                                  //onChange={(event) =>
+                                  //  updateSingleItemMutation.mutate({
+                                  //    itemId: id,
+                                  //    [key]: event.target.value
+                                  //  })
+                                  //}
+                                  defaultValue={
+                                    layoutDataSingle[keyKey as 'id']
+                                  }
+                                />
+                              )}
+                              {inputCheckBoxSwitch && (
+                                <TdSwitch
+                                  a={''}
+                                  b={''}
+                                  id={''}
+                                  title={''}
+                                  //onSwitch={(event) =>
+                                  //  updateSingleItemMutation.mutate({
+                                  //    itemId: id,
+                                  //    [key]: event.target.value
+                                  //  })
+                                  //}
+                                  defaultVal=''
+                                />
+                              )}
                             </td>
-                          </tr>
-                        )
-                      }
-                    )}
-                  </tbody>
-                </table>
-              </div>
+                          )
+                        })}
+                        <td className={tw(trackTd, 'text-center')}>
+                          <button
+                          //  onClick={() =>
+                          //    deleteSingleFullRangeMutation.mutate({
+                          //      fileItemsItemId: 'T_9',
+                          //      rangeId: subSection.artId
+                          //    })
+                          //  }
+                          >
+                            <i className='fa-solid fa-minus' />
+                          </button>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
             )}
             {!table && (
               <div className='flex gap-1 overflow-x-scroll'>
@@ -380,123 +419,131 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                         </thead>
                         <tbody>
                           {layoutConfig.keys.map((key) => {
-                            const checkBox = key.input === 'checkbox'
-                            const keyIsTextOrCheckbox =
-                              key.input === 'text' || checkBox
+                            const {
+                              keyKey,
+                              input,
+                              show,
+                              inputCheckBoxSwitch,
+                              inputCheckBox,
+                              inputText,
+                              selectArray,
+                              optionElements,
+                              inputSelectMultiple,
+                              inputSelectSingle,
+                              disabled
+                            } = layoutConfigKeysMap(key)
 
-                            let multiple: boolean = false
-                            const locked = selectedItem?.locked
-                            const keyIsId = key.key === 'id'
-                            const disabled = locked ? true : keyIsId
-
-                            for (const array in selectArrays) {
-                              if (key.selectArray === 'artRngsArray') {
-                                optionElements = (
-                                  <SelectList numbers={artRngsArray} />
-                                )
-                                multiple = true
-                              }
-                              if (
-                                key.selectArray === selectArrays[array]?.name
-                              ) {
-                                optionElements = selectArrays[array]?.array
-                              }
-                            }
-                            if (!key.show) return
+                            if (!show) return
                             return (
                               <tr
-                                key={key.key}
+                                key={keyKey}
                                 className={trackTr}>
                                 <td className={tw(trackTd, 'p-0.5')}>
                                   {key.label}
                                 </td>
                                 <td className={tw(trackTd, 'p-0.5')}>
-                                  {!key.input && (
-                                    <p className='p-1'>{layoutDataSingleId}</p>
+                                  {!input && (
+                                    <p
+                                      title={layoutDataSingleId}
+                                      className='p-1'>
+                                      {layoutDataSingleId}
+                                    </p>
                                   )}{' '}
-                                  {key.input === 'select' && !multiple && (
+                                  {inputSelectSingle && (
+                                    <TdSelect
+                                      id={keyKey}
+                                      options={selectArray ?? ''}
+                                      codeDisabled={disabled}
+                                      //onSelect={(event) =>
+                                      //  updateSingleItemMutation.mutate({
+                                      //    itemId: id,
+                                      //    [key]: event.target.value
+                                      //  })
+                                      //}
+                                      defaultValue={
+                                        layoutDataSingle[keyKey as 'id']
+                                      }
+                                    />
+                                  )}{' '}
+                                  {inputSelectMultiple && (
+                                    // <details>
                                     <select
                                       className={tw(
-                                        'w-full cursor-pointer overflow-scroll p-[4.5px]',
+                                        'w-full cursor-pointer overflow-scroll p-[4.5px] text-zinc-900',
                                         disabled
                                           ? 'cursor-not-allowed bg-zinc-300'
                                           : 'bg-white dark:bg-zinc-100'
                                       )}
-                                      value={
-                                        !disabled
-                                          ? (layoutDataSingle[
-                                              key.key as unknown as 'name'
-                                            ] as unknown as string)
-                                          : undefined
-                                      }
+                                      value={undefined}
+                                      multiple
                                       disabled={disabled}
                                       //onChange={(event) =>
                                       //  valueChange(
                                       //    event,
                                       //    level.label,
-                                      //    key.key,
+                                      //    keyKey,
                                       //    subSectionIndex
                                       //  )
                                       //}
                                     >
-                                      {!disabled
-                                        ? optionElements
-                                        : selectArrays?.valNoneList?.array}
                                       {optionElements}
                                     </select>
-                                  )}{' '}
-                                  {key.input === 'select' && multiple && (
-                                    <details>
-                                      <select
-                                        className={tw(
-                                          'w-full cursor-pointer overflow-scroll p-[4.5px]',
-                                          disabled
-                                            ? 'cursor-not-allowed bg-zinc-300'
-                                            : 'bg-white dark:bg-zinc-100'
-                                        )}
-                                        value={undefined}
-                                        multiple
-                                        disabled={disabled}
-                                        //  onChange={(event) =>
-                                        //    valueChange(
-                                        //      event,
-                                        //      level.label,
-                                        //      key.key,
-                                        //      subSectionIndex
-                                        //    )
-                                        //  }
-                                      >
-                                        {optionElements}
-                                      </select>
-                                    </details>
-                                  )}{' '}
-                                  {keyIsTextOrCheckbox && (
-                                    <input
-                                      //checked={
-                                      //  layoutDataSingle[
-                                      //    key.key as 'changeType'
-                                      //  ] as unknown as boolean
+                                  )}
+                                  {/*</details>*/}
+                                  {inputText && (
+                                    <TdInput
+                                      id={keyKey}
+                                      title=''
+                                      placeholder=''
+                                      td={true}
+                                      codeDisabled={disabled}
+                                      //onInput={(event) =>
+                                      //  updateSingleItemMutation.mutate({
+                                      //    itemId: id,
+                                      //    [key]: event.target.value
+                                      //  })
                                       //}
+                                      defaultValue={
+                                        layoutDataSingle[keyKey as 'id']
+                                      }
+                                    />
+                                  )}
+                                  {inputCheckBox && (
+                                    <input
+                                      checked={false}
                                       disabled={disabled}
-                                      type={key.input}
+                                      type='checkbox'
                                       className={tw(
-                                        'p-1',
-                                        key.input === 'checkbox'
-                                          ? 'cursor-pointer'
-                                          : 'w-full',
+                                        'w-full p-1 text-zinc-900',
+                                        inputCheckBox ? 'cursor-pointer' : '',
                                         disabled
                                           ? 'cursor-not-allowed bg-zinc-300'
                                           : 'bg-white dark:bg-zinc-100'
                                       )}
-                                      //  onChange={(event) =>
-                                      //    valueChange(
-                                      //      event,
-                                      //      level.label,
-                                      //      key.key,
-                                      //      subSectionIndex
-                                      //    )
-                                      //  }
-                                      value={layoutDataSingleId}
+                                      //onChange={(event) =>
+                                      //  updateSingleItemMutation.mutate({
+                                      //    itemId: id,
+                                      //    [key]: event.target.value
+                                      //  })
+                                      //}
+                                      defaultValue={
+                                        layoutDataSingle[keyKey as 'id']
+                                      }
+                                    />
+                                  )}
+                                  {inputCheckBoxSwitch && (
+                                    <TdSwitch
+                                      a={''}
+                                      b={''}
+                                      id={''}
+                                      title={''}
+                                      //onSwitch={(event) =>
+                                      //  updateSingleItemMutation.mutate({
+                                      //    itemId: id,
+                                      //    [key]: event.target.value
+                                      //  })
+                                      //}
+                                      defaultVal=''
                                     />
                                   )}
                                 </td>

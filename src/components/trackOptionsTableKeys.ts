@@ -127,7 +127,7 @@ const TrackOptionsTableKeys = [
         className: 'w-[9.5%]',
         show: true,
         key: 'changeType',
-        input: 'select',
+        input: 'checkbox-switch',
         selectArray: 'valChngList',
         label: 'Change'
       },
@@ -222,7 +222,7 @@ const TrackOptionsTableKeys = [
         className: 'w-[9.5%]',
         show: true,
         key: 'changeType',
-        input: 'select',
+        input: 'checkbox-switch',
         selectArray: 'valChngList',
         label: 'Change'
       },
@@ -285,7 +285,7 @@ const TrackOptionsTableKeys = [
         className: 'w-[9.5%]',
         show: true,
         key: 'changeType',
-        input: 'select',
+        input: 'checkbox-switch',
         selectArray: 'valChngList',
         label: 'Change'
       }
