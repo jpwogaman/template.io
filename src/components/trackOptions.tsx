@@ -207,11 +207,9 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                                         (number: string | number) => (
                                           <option
                                             key={number}
-                                            //  selected={
-                                            //    subSection.ranges.includes(
-                                            //      number as string
-                                            //    )
-                                            //  }
+                                            selected={layoutDataSingle[
+                                              'ranges' as 'id'
+                                            ].includes(number as string)}
                                             value={number}>
                                             {number}
                                           </option>
