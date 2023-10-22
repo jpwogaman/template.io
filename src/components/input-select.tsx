@@ -1,39 +1,42 @@
-import React, {
-  type FC,
-  useState,
-  type ChangeEvent,
-  type ReactNode
-} from 'react'
-import { selectArrays } from '@/components/select-arrays'
+import { type FC, type ChangeEvent, type ReactNode, useState } from 'react'
+import { selectArrays } from '@/components/input-arrays'
 
-interface TdSelectProps {
+interface InputSelectProps {
   id: string | undefined
   options: string | number
   codeDisabled?: boolean
-  onSelect?: (event: ChangeEvent<HTMLSelectElement>) => void | undefined
+  onChangeInputSwitch?: (
+    event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
+  ) => void | undefined
   children?: ReactNode
   defaultValue?: string
 }
 
-export const TdSelect: FC<TdSelectProps> = ({
-  onSelect,
+export const InputSelect: FC<InputSelectProps> = ({
+  onChangeInputSwitch: onSelect,
   codeDisabled,
   id,
   options,
   defaultValue
 }) => {
-  const [val, setVal] = useState<string>(defaultValue ?? '')
+  const [val, setVal] = useState<string | number>(defaultValue ?? '')
 
-  let optionElements: string | React.JSX.Element | undefined
+  let optionElements: React.JSX.Element | string[] | number[] | undefined =
+    selectArrays.valNoneList?.array
 
-  for (const array in selectArrays) {
-    if (options === selectArrays[array]?.name) {
-      optionElements = selectArrays[array]?.array
+  if (!codeDisabled) {
+    for (const array in selectArrays) {
+      if (options === selectArrays[array]?.name) {
+        optionElements = selectArrays[array]?.array
+      }
     }
   }
 
-  const valChange = (event: ChangeEvent<HTMLSelectElement>) => {
+  const valChange = (
+    event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
+  ) => {
     setVal(event.target.value)
+
     if (onSelect) {
       onSelect(event)
     } else return
@@ -54,7 +57,7 @@ export const TdSelect: FC<TdSelectProps> = ({
       disabled={codeDisabled}
       id={id}
       onChange={valChange}>
-      {!codeDisabled ? optionElements : selectArrays.valNoneList?.array}
+      {optionElements}
     </select>
   )
 }

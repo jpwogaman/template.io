@@ -9,6 +9,7 @@ import {
   type ItemsFadList,
   type ItemsFullRanges
 } from '@prisma/client'
+import { r } from '@tauri-apps/api/fs-9d7de754'
 
 export const ItemsRouter = createTRPCRouter({
   createAllItemsFromJSON: publicProcedure
@@ -79,7 +80,27 @@ export const ItemsRouter = createTRPCRouter({
         })
       }
     }),
-
+  getAllItems: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.fileItems.findMany({
+      include: {
+        _count: {
+          select: {
+            artListSwitch: true,
+            artListTog: true
+          }
+        }
+      }
+    })
+  }),
+  deleteAllItems: publicProcedure.mutation(async ({ ctx }) => {
+    await ctx.prisma.fileItems.deleteMany({})
+    await ctx.prisma.itemsFullRanges.deleteMany({})
+    await ctx.prisma.itemsArtListSwitch.deleteMany({})
+    await ctx.prisma.itemsArtListTog.deleteMany({})
+    await ctx.prisma.itemsFadList.deleteMany({})
+    return true
+  }),
+  ////////////////////////////
   createSingleItem: publicProcedure.mutation(async ({ ctx }) => {
     const newItemId = await ctx.prisma.fileItems
       .create({
@@ -98,12 +119,12 @@ export const ItemsRouter = createTRPCRouter({
             id: newItemId + '_FR_0'
           }
         },
-        artListTog: {
+        artListSwitch: {
           create: {
             id: newItemId + '_AL_0'
           }
         },
-        artListSwitch: {
+        artListTog: {
           create: {
             id: newItemId + '_AL_1'
           }
@@ -122,9 +143,9 @@ export const ItemsRouter = createTRPCRouter({
         itemId: z.string().optional(),
         locked: z.boolean().optional(),
         name: z.string().optional(),
-        channel: z.string().optional(),
-        baseDelay: z.string().optional(),
-        avgDelay: z.string().optional(),
+        channel: z.number().optional(),
+        baseDelay: z.number().optional(),
+        avgDelay: z.number().optional(),
         color: z.string().optional()
       })
     )
@@ -145,9 +166,9 @@ export const ItemsRouter = createTRPCRouter({
         data: {
           locked: locked ?? currentItem?.locked,
           name: name ?? currentItem?.name,
-          channel: parseInt(channel as string) ?? currentItem?.channel,
-          baseDelay: parseInt(baseDelay as string) ?? currentItem?.baseDelay,
-          avgDelay: parseInt(avgDelay as string) ?? currentItem?.avgDelay,
+          channel: channel ?? currentItem?.channel,
+          baseDelay: baseDelay ?? currentItem?.baseDelay,
+          avgDelay: avgDelay ?? currentItem?.avgDelay,
           color: color ?? currentItem?.color
         }
       })
@@ -166,8 +187,8 @@ export const ItemsRouter = createTRPCRouter({
         },
         include: {
           fullRange: true,
-          artListTog: true,
           artListSwitch: true,
+          artListTog: true,
           fadList: true
         }
       })
@@ -207,8 +228,8 @@ export const ItemsRouter = createTRPCRouter({
       })
       return true
     }),
-
-  addSingleFullRange: publicProcedure
+  ////////////////////////////
+  createSingleFullRange: publicProcedure
     .input(
       z.object({
         itemId: z.string()
@@ -235,7 +256,37 @@ export const ItemsRouter = createTRPCRouter({
       })
       return newRange
     }),
+  updateSingleFullRange: publicProcedure
+    .input(
+      z.object({
+        rangeId: z.string(),
+        name: z.string().optional(),
+        low: z.string().optional(),
+        high: z.string().optional(),
+        whiteKeysOnly: z.boolean().optional()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { rangeId, name, low, high, whiteKeysOnly } = input
 
+      const currentFullRanges = await ctx.prisma.itemsFullRanges.findUnique({
+        where: {
+          id: rangeId
+        }
+      })
+
+      return await ctx.prisma.itemsFullRanges.update({
+        where: {
+          id: rangeId
+        },
+        data: {
+          name: name ?? currentFullRanges?.name,
+          low: low ?? currentFullRanges?.low,
+          high: high ?? currentFullRanges?.high,
+          whiteKeysOnly: whiteKeysOnly ?? currentFullRanges?.whiteKeysOnly
+        }
+      })
+    }),
   deleteSingleFullRange: publicProcedure
     .input(
       z.object({
@@ -277,52 +328,8 @@ export const ItemsRouter = createTRPCRouter({
         })
       })
     }),
-
-  addSingleArtListTog: publicProcedure
-    .input(
-      z.object({
-        itemId: z.string()
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const { itemId } = input
-
-      const lastArtNumber = await ctx.prisma.itemsArtListTog.count({
-        where: {
-          fileItemsItemId: itemId
-        }
-      })
-
-      const newArt = await ctx.prisma.itemsArtListTog.create({
-        data: {
-          FileItems: {
-            connect: {
-              id: itemId
-            }
-          },
-          id: itemId + '_AL_' + lastArtNumber
-        }
-      })
-      return newArt
-    }),
-
-  deleteSingleArtListTog: publicProcedure
-    .input(
-      z.object({
-        artId: z.string()
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const { artId } = input
-      await ctx.prisma.itemsArtListTog.delete({
-        where: {
-          id: artId
-        }
-      })
-      return true
-    }),
-
-  addSingleArtListSwitch: publicProcedure
+  ////////////////////////////
+  createSingleArtListSwitch: publicProcedure
     .input(
       z.object({
         itemId: z.string()
@@ -349,7 +356,62 @@ export const ItemsRouter = createTRPCRouter({
       })
       return newArt
     }),
+  updateSingleArtListSwitch: publicProcedure
+    .input(
+      z.object({
+        artId: z.string(),
+        name: z.string().optional(),
+        toggle: z.boolean().optional(),
+        codeType: z.string().optional(),
+        code: z.string().optional(),
+        on: z.string().optional(),
+        off: z.string().optional(),
+        default: z.boolean().optional(),
+        delay: z.string().optional(),
+        changeType: z.string().optional(),
+        ranges: z.string().optional()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const {
+        artId,
+        name,
+        toggle,
+        codeType,
+        code,
+        on,
+        off,
+        default: defaultCode,
+        delay,
+        changeType,
+        ranges
+      } = input
 
+      const currentArtListSwitch =
+        await ctx.prisma.itemsArtListSwitch.findUnique({
+          where: {
+            id: artId
+          }
+        })
+
+      return await ctx.prisma.itemsArtListSwitch.update({
+        where: {
+          id: artId
+        },
+        data: {
+          name: name ?? currentArtListSwitch?.name,
+          toggle: toggle ?? currentArtListSwitch?.toggle,
+          codeType: codeType ?? currentArtListSwitch?.codeType,
+          code: code ? parseInt(code) : currentArtListSwitch?.code,
+          on: on ? parseInt(on) : currentArtListSwitch?.on,
+          off: off ? parseInt(off) : currentArtListSwitch?.off,
+          default: defaultCode ?? currentArtListSwitch?.default,
+          delay: delay ? parseInt(delay) : currentArtListSwitch?.delay,
+          changeType: changeType ?? currentArtListSwitch?.changeType,
+          ranges: ranges ?? currentArtListSwitch?.ranges
+        }
+      })
+    }),
   deleteSingleArtListSwitch: publicProcedure
     .input(
       z.object({
@@ -365,8 +427,106 @@ export const ItemsRouter = createTRPCRouter({
       })
       return true
     }),
+  ////////////////////////////
+  createSingleArtListTog: publicProcedure
+    .input(
+      z.object({
+        itemId: z.string()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { itemId } = input
 
-  addSingleFadList: publicProcedure
+      const lastArtNumber = await ctx.prisma.itemsArtListTog.count({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
+
+      const newArt = await ctx.prisma.itemsArtListTog.create({
+        data: {
+          FileItems: {
+            connect: {
+              id: itemId
+            }
+          },
+          id: itemId + '_AL_' + lastArtNumber
+        }
+      })
+      return newArt
+    }),
+  updateSingleArtListTog: publicProcedure
+    .input(
+      z.object({
+        artId: z.string(),
+        name: z.string().optional(),
+        toggle: z.boolean().optional(),
+        codeType: z.string().optional(),
+        code: z.string().optional(),
+        on: z.string().optional(),
+        off: z.string().optional(),
+        default: z.string().optional(),
+        delay: z.string().optional(),
+        changeType: z.string().optional(),
+        ranges: z.string().optional()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const {
+        artId,
+        name,
+        toggle,
+        codeType,
+        code,
+        on,
+        off,
+        default: defaultCode,
+        delay,
+        changeType,
+        ranges
+      } = input
+
+      const currentArtListTog = await ctx.prisma.itemsArtListTog.findUnique({
+        where: {
+          id: artId
+        }
+      })
+
+      return await ctx.prisma.itemsArtListTog.update({
+        where: {
+          id: artId
+        },
+        data: {
+          name: name ?? currentArtListTog?.name,
+          toggle: toggle ?? currentArtListTog?.toggle,
+          codeType: codeType ?? currentArtListTog?.codeType,
+          code: code ? parseInt(code) : currentArtListTog?.code,
+          on: on ? parseInt(on) : currentArtListTog?.on,
+          off: off ? parseInt(off) : currentArtListTog?.off,
+          default: defaultCode ?? currentArtListTog?.default,
+          delay: delay ? parseInt(delay) : currentArtListTog?.delay,
+          changeType: changeType ?? currentArtListTog?.changeType,
+          ranges: ranges ?? currentArtListTog?.ranges
+        }
+      })
+    }),
+  deleteSingleArtListTog: publicProcedure
+    .input(
+      z.object({
+        artId: z.string()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { artId } = input
+      await ctx.prisma.itemsArtListTog.delete({
+        where: {
+          id: artId
+        }
+      })
+      return true
+    }),
+  ////////////////////////////
+  createSingleFadList: publicProcedure
     .input(
       z.object({
         itemId: z.string()
@@ -393,7 +553,48 @@ export const ItemsRouter = createTRPCRouter({
       })
       return newFad
     }),
+  updateSingleFadList: publicProcedure
+    .input(
+      z.object({
+        fadId: z.string(),
+        name: z.string().optional(),
+        codeType: z.string().optional(),
+        code: z.string().optional(),
+        default: z.string().optional(),
+        changeType: z.string().optional()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const {
+        fadId,
+        name,
+        codeType,
+        code,
+        default: defaultCode,
+        changeType
+      } = input
 
+      const currentFadList = await ctx.prisma.itemsFadList.findUnique({
+        where: {
+          id: fadId
+        }
+      })
+
+      return await ctx.prisma.itemsFadList.update({
+        where: {
+          id: fadId
+        },
+        data: {
+          name: name ?? currentFadList?.name,
+          codeType: codeType ?? currentFadList?.codeType,
+          code: code ? parseInt(code) : currentFadList?.code,
+          default: defaultCode
+            ? parseInt(defaultCode)
+            : currentFadList?.default,
+          changeType: changeType ?? currentFadList?.changeType
+        }
+      })
+    }),
   deleteSingleFadList: publicProcedure
     .input(
       z.object({
@@ -408,26 +609,5 @@ export const ItemsRouter = createTRPCRouter({
         }
       })
       return true
-    }),
-
-  deleteAllItems: publicProcedure.mutation(async ({ ctx }) => {
-    await ctx.prisma.fileItems.deleteMany({})
-    await ctx.prisma.itemsFullRanges.deleteMany({})
-    await ctx.prisma.itemsArtListTog.deleteMany({})
-    await ctx.prisma.itemsArtListSwitch.deleteMany({})
-    await ctx.prisma.itemsFadList.deleteMany({})
-    return true
-  }),
-  getAllItems: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.fileItems.findMany({
-      include: {
-        _count: {
-          select: {
-            artListTog: true,
-            artListSwitch: true
-          }
-        }
-      }
     })
-  })
 })

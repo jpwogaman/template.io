@@ -1,23 +1,25 @@
-import { type FC, useState, type ChangeEvent, type ReactNode } from 'react'
+import { type FC, type ChangeEvent, type ReactNode, useState } from 'react'
 
-interface TdInputProps {
+interface InputTextProps {
   id: string | undefined
-  title: string
-  placeholder: string | number
+  title?: string
+  placeholder?: string | number
   codeDisabled?: boolean
   children?: ReactNode
   defaultValue?: string | number
-  onInput?: (event: ChangeEvent<HTMLInputElement>) => void | undefined
+  onChangeInputSwitch?: (
+    event: ChangeEvent<HTMLInputElement>
+  ) => void | undefined
   onReceive?: string | number
-  td: boolean
+  td?: boolean
   valueType?: string
 }
 
-export const TdInput: FC<TdInputProps> = ({
+export const InputText: FC<InputTextProps> = ({
   valueType,
   td,
   onReceive,
-  onInput,
+  onChangeInputSwitch: onInput,
   defaultValue,
   id,
   placeholder,

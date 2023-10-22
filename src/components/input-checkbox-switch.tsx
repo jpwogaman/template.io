@@ -1,38 +1,56 @@
-import { type FC, useState, type ReactNode } from 'react'
+import { type FC, type ChangeEvent, type ReactNode, useState } from 'react'
+import { selectArrays } from './input-arrays'
+import tw from '@/utils/tw'
 
-interface TdSwitchProps {
+interface InputCheckBoxSwitchProps {
   id: string | undefined
-  title: string
-  a: string | number
-  b: string | number
-  defaultVal: string
+  title?: string
+  defaultValue?: string
+  codeDisabled?: boolean
+  options?: string | number
   artFad?: boolean
   toggle?: boolean
   showVals?: boolean
   children?: ReactNode
-  onSwitch?: any
+  onChangeInputSwitch?: (
+    event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
+  ) => void | undefined
 }
 
-export const TdSwitch: FC<TdSwitchProps> = ({
-  onSwitch,
+export const InputCheckBoxSwitch: FC<InputCheckBoxSwitchProps> = ({
+  onChangeInputSwitch: onSwitch,
   artFad,
   toggle,
   showVals,
+  options,
   title,
-  defaultVal,
-  id,
-  a,
-  b
+  defaultValue,
+  codeDisabled,
+  id
 }) => {
-  const [isChecked, setChecked] = useState<boolean>(defaultVal === 'b')
+  const [isChecked, setChecked] = useState<boolean>(defaultValue === 'b')
 
-  const valChange = () => {
-    onSwitch(!isChecked)
+  let optionElements: string[] = ['a', 'b']
 
-    if (isChecked) {
-      setChecked(false)
-    } else {
-      setChecked(true)
+  for (const array in selectArrays) {
+    if (options === selectArrays[array]?.name) {
+      optionElements = selectArrays[array]?.array as string[]
+    }
+  }
+
+  const a = optionElements[0]
+  const b = optionElements[1]
+
+  const valChange = (
+    event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
+  ) => {
+    console.log(codeDisabled)
+    if (!codeDisabled) {
+      if (onSwitch) {
+        onSwitch(event)
+      }
+
+      setChecked(!isChecked)
     }
   }
 
@@ -91,10 +109,11 @@ export const TdSwitch: FC<TdSwitchProps> = ({
           id={id}
           className='peer sr-only'
           checked={isChecked}
-          onChange={valChange}
+          onChange={(event) => valChange(event)}
         />
         <div
-          className="
+          className={tw(
+            `
                     h-4 
                     w-8
                     rounded-full bg-blue-600
@@ -113,7 +132,9 @@ export const TdSwitch: FC<TdSwitchProps> = ({
                     peer-checked:after:translate-x-full 
                     peer-checked:after:border-white
                     peer-focus:outline-none 
-                    dark:bg-blue-800 dark:peer-checked:bg-green-800"></div>
+                    dark:bg-blue-800 dark:peer-checked:bg-green-800`
+          )}
+        />
       </label>
       {showVals ? valSpan2 : null}
     </div>

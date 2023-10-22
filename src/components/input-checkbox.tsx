@@ -1,25 +1,25 @@
-import { type FC, useState, type ReactNode } from 'react'
+import { type FC, type ChangeEvent, type ReactNode, useState } from 'react'
 
-interface TdSwitchProps {
+interface InputCheckBoxProps {
   id: string | undefined
-  title: string
-  a: string | number
-  b: string | number
-  defaultVal: string
+  title?: string
+  a?: string | number
+  b?: string | number
+  defaultValue?: string
   artFad?: boolean
   toggle?: boolean
   showVals?: boolean
   children?: ReactNode
-  onSwitch?: any
+  onChangeInputSwitch?: any
 }
 
-export const TdCheckbox: FC<TdSwitchProps> = ({
-  onSwitch,
+export const InputCheckBox: FC<InputCheckBoxProps> = ({
+  onChangeInputSwitch: onSwitch,
   artFad,
   toggle,
   showVals,
   title,
-  defaultVal,
+  defaultValue: defaultVal,
   id,
   a,
   b
@@ -90,7 +90,7 @@ export const TdCheckbox: FC<TdSwitchProps> = ({
           value={isChecked ? b : a}
           id={id}
           className='peer sr-only'
-          checked={isChecked}
+          defaultChecked={isChecked}
           onChange={valChange}
         />
         <div

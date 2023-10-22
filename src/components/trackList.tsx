@@ -1,13 +1,14 @@
 import { type ChangeEvent, useState, FC, Dispatch, SetStateAction } from 'react'
 import { trpc } from '@/utils/trpc'
-import { selectArrays } from '@/components/select-arrays'
+import { selectArrays } from '@/components/input-arrays'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
 import TrackListTableKeys from './trackListTableKeys'
-import { TdInput } from './input-text'
-import { TdSelect } from './input-select'
+import { InputText } from './input-text'
+import { InputSelect } from './input-select'
 
-let optionElements: string | React.JSX.Element | undefined
+let optionElements: React.JSX.Element | string[] | number[] | undefined
+
 type TrackListProps = {
   selectedItemId: string | null
   setSelectedItemId: Dispatch<SetStateAction<string | null>>
@@ -20,6 +21,10 @@ const TrackList: FC<TrackListProps> = ({
   const [addMultipleItemsNumber, setMultipleItemsNumber] = useState(1)
 
   const { data, refetch } = trpc.items.getAllItems.useQuery()
+
+  const { refetch: refetchSelected } = trpc.items.getSingleItem.useQuery({
+    itemId: selectedItemId ?? ''
+  })
 
   const createItemsHelper = () => {
     if (addMultipleItemsNumber >= 51) {
@@ -45,36 +50,12 @@ const TrackList: FC<TrackListProps> = ({
     onSuccess: () => {
       updateSingleItemMutation.reset()
       refetch()
+      refetchSelected()
     },
     onError: () => {
       alert('There was an error submitting your request. Please try again.')
     }
   })
-
-  const createSingleFullRangeMutation =
-    trpc.items.addSingleFullRange.useMutation({
-      onSuccess: () => {
-        createSingleFullRangeMutation.reset()
-        refetch()
-      },
-      onError: () => {
-        alert('There was an error submitting your request. Please try again.')
-      }
-    })
-
-  const deleteSingleFullRangeMutation =
-    trpc.items.deleteSingleFullRange.useMutation({
-      onSuccess: () => {
-        deleteSingleFullRangeMutation.reset()
-        refetch()
-      },
-      onError: (error) => {
-        alert(
-          error ??
-            'There was an error submitting your request. Please try again.'
-        )
-      }
-    })
 
   const deleteSingleItemMutation = trpc.items.deleteSingleItem.useMutation({
     onSuccess: () => {
@@ -250,11 +231,11 @@ const TrackList: FC<TrackListProps> = ({
                           </p>
                         )}
                         {inputSelect && (
-                          <TdSelect
+                          <InputSelect
                             id={key + id}
                             options={selectArray as string}
                             codeDisabled={disabled}
-                            onSelect={(event) =>
+                            onChangeInputSwitch={(event) =>
                               updateSingleItemMutation.mutate({
                                 itemId: id,
                                 [key]: event.target.value
@@ -265,13 +246,13 @@ const TrackList: FC<TrackListProps> = ({
                         )}
 
                         {inputText && (
-                          <TdInput
+                          <InputText
                             id={key + id}
                             title=''
                             placeholder=''
                             td={true}
                             codeDisabled={disabled}
-                            onInput={(event) =>
+                            onChangeInputSwitch={(event) =>
                               updateSingleItemMutation.mutate({
                                 itemId: id,
                                 [key]: event.target.value

@@ -94,10 +94,9 @@ const setNoteArray: string[] = [
   'Middle C (60) = C3'
 ]
 
-const valChngArray: string[] = ['Value 1', 'Value 2']
 interface SelectListProps {
-  numbers?: any
-  valName?: any
+  numbers?: string[] | number[]
+  valName?: string[]
 }
 
 export const SelectList: FC<SelectListProps> = ({ numbers, valName }) => {
@@ -116,7 +115,7 @@ export const SelectList: FC<SelectListProps> = ({ numbers, valName }) => {
   } else
     return (
       <Fragment>
-        {numbers.map((number: string | number) => (
+        {numbers?.map((number: string | number) => (
           <option
             key={number}
             value={number}>
@@ -127,13 +126,12 @@ export const SelectList: FC<SelectListProps> = ({ numbers, valName }) => {
     )
 }
 
-interface SelectArraysProps {
+export const selectArrays: {
   [index: string]: {
-    [index: string]: string | React.JSX.Element | undefined
+    name: string
+    array?: React.JSX.Element | string[] | number[]
   }
-}
-
-export const selectArrays: SelectArraysProps = {
+} = {
   setOutsList: {
     name: 'setOutsList',
     array: <SelectList numbers={setOutsArray} />
@@ -168,7 +166,7 @@ export const selectArrays: SelectArraysProps = {
   },
   valChngList: {
     name: 'valChngList',
-    array: <SelectList numbers={valChngArray} />
+    array: ['Value 1', 'Value 2']
   },
   valNoteList: {
     name: 'valNoteList',
