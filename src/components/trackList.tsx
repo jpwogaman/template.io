@@ -1,11 +1,9 @@
 import { type ChangeEvent, useState, FC, Dispatch, SetStateAction } from 'react'
 import { trpc } from '@/utils/trpc'
-import { selectArrays } from '@/components/input-arrays'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
 import TrackListTableKeys from './trackListTableKeys'
-import { InputText } from './input-text'
-import { InputSelect } from './input-select-single'
+import { InputText, InputSelectSingle, selectArrays } from './inputs'
 
 let inputSelectOptionElements:
   | React.JSX.Element
@@ -235,7 +233,7 @@ const TrackList: FC<TrackListProps> = ({
                           </p>
                         )}
                         {inputSelect && (
-                          <InputSelect
+                          <InputSelectSingle
                             id={key + id}
                             options={selectArray as string}
                             codeDisabled={disabled}

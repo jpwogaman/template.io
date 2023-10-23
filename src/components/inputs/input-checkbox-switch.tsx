@@ -1,5 +1,5 @@
 import { type FC, type ChangeEvent, type ReactNode, useState } from 'react'
-import { selectArrays } from './input-arrays'
+import { selectArrays } from './index'
 import tw from '@/utils/tw'
 
 interface InputCheckBoxSwitchProps {

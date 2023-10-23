@@ -1,5 +1,5 @@
-import tw from '@/utils/tw'
 import { type FC, type ChangeEvent, type ReactNode, useState } from 'react'
+import tw from '@/utils/tw'
 
 interface InputCheckBoxProps {
   id: string | undefined

@@ -1,5 +1,5 @@
 import { type FC, type ChangeEvent, type ReactNode, useState } from 'react'
-import { SelectList, selectArrays } from '@/components/input-arrays'
+import { SelectList, selectArrays } from './index'
 import tw from '@/utils/tw'
 
 interface InputSelectMultipleProps {

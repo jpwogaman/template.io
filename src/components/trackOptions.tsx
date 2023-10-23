@@ -1,14 +1,15 @@
 import { type FC, Fragment, useState, ChangeEvent } from 'react'
 import { trpc } from '@/utils/trpc'
-import { SelectList, selectArrays } from '@/components/input-arrays'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
 import TrackOptionsTableKeys from './trackOptionsTableKeys'
-import { InputText } from './input-text'
-import { InputSelect } from './input-select-single'
-import { InputSelectMultiple } from './input-select-multiple'
-import { InputCheckBox } from './input-checkbox'
-import { InputCheckBoxSwitch } from './input-checkbox-switch'
+import {
+  InputText,
+  InputSelectSingle,
+  InputSelectMultiple,
+  InputCheckBox,
+  InputCheckBoxSwitch
+} from './inputs'
 
 import {
   type ItemsArtListSwitch,
@@ -344,7 +345,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                                 </p>
                               )}{' '}
                               {inputSelectSingle && (
-                                <InputSelect {...inputPropsHelper} />
+                                <InputSelectSingle {...inputPropsHelper} />
                               )}
                               {inputSelectMultiple && (
                                 <InputSelectMultiple {...inputPropsHelper} />
@@ -448,7 +449,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                                   </p>
                                 )}{' '}
                                 {inputSelectSingle && (
-                                  <InputSelect {...inputPropsHelper} />
+                                  <InputSelectSingle {...inputPropsHelper} />
                                 )}
                                 {inputSelectMultiple && (
                                   <InputSelectMultiple {...inputPropsHelper} />

@@ -1,5 +1,6 @@
 import { type FC, type ChangeEvent, type ReactNode, useState } from 'react'
-import { selectArrays } from '@/components/input-arrays'
+import { selectArrays } from './index'
+import tw from '@/utils/tw'
 
 interface InputSelectProps {
   id: string | undefined
@@ -12,7 +13,7 @@ interface InputSelectProps {
   defaultValue?: string
 }
 
-export const InputSelect: FC<InputSelectProps> = ({
+export const InputSelectSingle: FC<InputSelectProps> = ({
   onChangeInputSwitch: onSelect,
   codeDisabled,
   id,
@@ -42,7 +43,7 @@ export const InputSelect: FC<InputSelectProps> = ({
 
     if (onSelect) {
       onSelect(event)
-    } 
+    }
   }
 
   return (
