@@ -48,20 +48,14 @@ export const InputSelectSingle: FC<InputSelectProps> = ({
 
   return (
     <select
-      title={id + '_currentValue: ' + value}
-      className='        
-              w-full                                 
-              cursor-pointer 
-              overflow-scroll 
-              bg-inherit  
-              outline-offset-4 outline-green-600
-              focus:bg-white
-              focus:text-zinc-900
-              dark:outline-green-800'
-      value={!codeDisabled ? value : undefined}
-      disabled={codeDisabled}
       id={id}
-      onChange={valChange}>
+      disabled={codeDisabled}
+      title={id + '_currentValue: ' + value}
+      value={!codeDisabled ? value : undefined}
+      onChange={valChange}
+      className={tw(
+        'w-full cursor-pointer overflow-scroll bg-inherit outline-offset-4 outline-green-600 focus:bg-white focus:text-zinc-900 dark:outline-green-800'
+      )}>
       {inputSelectOptionElements}
     </select>
   )

@@ -103,36 +103,19 @@ export const InputCheckBoxSwitch: FC<InputCheckBoxSwitchProps> = ({
         title={id + '_currentValue: ' + (isChecked ? b : a)}
         className='relative inline-flex cursor-pointer items-center'>
         <input
-          type='checkbox'
-          value={isChecked ? b : a}
           id={id}
+          type='checkbox'
           disabled={codeDisabled}
-          className='peer sr-only'
           checked={isChecked}
+          value={isChecked ? b : a}
           onChange={(event) => valChange(event)}
+          className='peer sr-only'
         />
         <div
           className={tw(
-            `
-                    h-4 
-                    w-8
-                    rounded-full bg-blue-600
-                    after:absolute                    
-                    after:left-[0px]                                             
-                    after:top-[0px] 
-                    after:h-4 
-                    after:w-4 
-                    after:rounded-full 
-                    after:border 
-                    after:border-white 
-                    after:bg-white 
-                    after:transition-all                 
-                    after:content-[''] 
-                    peer-checked:bg-green-600 
-                    peer-checked:after:translate-x-full 
-                    peer-checked:after:border-white
-                    peer-focus:outline-none 
-                    dark:bg-blue-800 dark:peer-checked:bg-green-800`
+            'h-4 w-8 rounded-full bg-blue-600 dark:bg-blue-800',
+            "after:absolute after:left-[0px] after:top-[0px] after:h-4 after:w-4 after:rounded-full after:border after:border-white after:bg-white after:transition-all after:content-['']",
+            'peer-checked:bg-green-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none dark:peer-checked:bg-green-800'
           )}
         />
       </label>

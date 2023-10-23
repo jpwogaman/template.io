@@ -43,30 +43,20 @@ export const InputText: FC<InputTextProps> = ({
 
   return (
     <input
-      type='text'
-      className={`
-            ${
-              codeDisabled
-                ? 'hover:cursor-text hover:placeholder-zinc-400 dark:hover:placeholder-zinc-500'
-                : 'hover:cursor-pointer hover:placeholder-zinc-200 dark:hover:placeholder-zinc-600'
-            }
-            ${td ? 'w-full' : 'w-10'} 
-            border border-transparent
-            bg-inherit
-            pl-1
-            placeholder-zinc-400
-            outline-offset-4 
-            outline-green-600 
-            focus:cursor-text
-            focus:bg-white focus:text-zinc-900
-            focus:placeholder-zinc-500
-            dark:placeholder-zinc-500 
-            dark:outline-green-800`}
       id={id}
-      title={id + '_currentValue: ' + valueName}
-      placeholder={placeholder as string}
+      type='text'
       disabled={codeDisabled}
       value={onReceive ?? valueName}
-      onChange={nameChange}></input>
+      title={id + '_currentValue: ' + valueName}
+      placeholder={placeholder as string}
+      onChange={nameChange}
+      className={tw(
+        codeDisabled
+          ? 'hover:cursor-text hover:placeholder-zinc-400 dark:hover:placeholder-zinc-500'
+          : 'hover:cursor-pointer hover:placeholder-zinc-200 dark:hover:placeholder-zinc-600',
+        td ? 'w-full' : 'w-10',
+        'border border-transparent bg-inherit pl-1 placeholder-zinc-400 outline-offset-4 outline-green-600 focus:cursor-text focus:bg-white focus:text-zinc-900 focus:placeholder-zinc-500 dark:placeholder-zinc-500 dark:outline-green-800'
+      )}
+    />
   )
 }
