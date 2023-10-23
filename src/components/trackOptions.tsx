@@ -27,6 +27,16 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
     itemId: selectedItemId ?? ''
   })
   //////////////////////////////////////////
+  const renumberArtListMutation = trpc.items.renumberArtList.useMutation({
+    onSuccess: () => {
+      renumberArtListMutation.reset()
+      refetch()
+    },
+    onError: () => {
+      alert('There was an error submitting your request. Please try again.')
+    }
+  })
+  //////////////////////////////////////////
   const updateSingleFullRangeMutation =
     trpc.items.updateSingleFullRange.useMutation({
       onSuccess: () => {
@@ -82,6 +92,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
     trpc.items.createSingleArtListSwitch.useMutation({
       onSuccess: () => {
         createSingleArtListSwitchMutation.reset()
+        renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
         refetch()
       },
       onError: () => {
@@ -92,6 +103,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
     trpc.items.createSingleArtListTog.useMutation({
       onSuccess: () => {
         createSingleArtListTogMutation.reset()
+        renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
         refetch()
       },
       onError: () => {
@@ -324,6 +336,33 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
     }
   }
 
+  const deleteSingleSubItemMutationHelper = (id: string, label: string) => {
+    if (label === 'fullRange') {
+      deleteSingleFullRangeMutation.mutate({
+        fileItemsItemId: selectedItemId ?? '',
+        rangeId: id
+      })
+    }
+    if (label === 'artListSwitch') {
+      deleteSingleArtListSwitchMutation.mutate({
+        fileItemsItemId: selectedItemId ?? '',
+        artId: id
+      })
+    }
+    if (label === 'artListTog') {
+      deleteSingleArtListTogMutation.mutate({
+        fileItemsItemId: selectedItemId ?? '',
+        artId: id
+      })
+    }
+    if (label === 'fadList') {
+      deleteSingleFadListMutation.mutate({
+        fileItemsItemId: selectedItemId ?? '',
+        fadId: id
+      })
+    }
+  }
+
   return (
     <div className='h-full w-1/2 overflow-y-scroll'>
       {TrackOptionsTableKeys.map((layoutConfig) => {
@@ -431,7 +470,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                               {!input && (
                                 <p
                                   title={layoutDataSingleId}
-                                  className='overflow-hidden p-1'>
+                                  className=' p-1'>
                                   {layoutDataSingleId}
                                 </p>
                               )}{' '}
@@ -453,13 +492,12 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                         })}
                         <td className={tw(trackTd, 'text-center')}>
                           <button
-                          //  onClick={() =>
-                          //    deleteSingleFullRangeMutation.mutate({
-                          //      fileItemsItemId: 'T_9',
-                          //      rangeId: subSection.artId
-                          //    })
-                          //  }
-                          >
+                            onClick={() =>
+                              deleteSingleSubItemMutationHelper(
+                                layoutDataSingleId,
+                                layoutConfig.label
+                              )
+                            }>
                             <i className='fa-solid fa-minus' />
                           </button>
                         </td>

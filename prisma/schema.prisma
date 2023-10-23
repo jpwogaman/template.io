@@ -15,7 +15,7 @@ datasource db {
 }
 
 model FileItems {
-  id            String               @id @default(cuid()) @map("itemId")
+  id            String               @id @map("itemId")
   locked        Boolean              @default(false)
   name          String               @default("")
   channel       Float?               @default(1)
@@ -29,14 +29,14 @@ model FileItems {
 }
 
 model ItemsFullRanges {
-  id            String  @id @default(cuid()) @map("rangeId")
+  id            String   @id @map("rangeId")
   name          String?  @default("")
-  low           String? @default("C-2")
-  high          String? @default("B8")
+  low           String?  @default("C-2")
+  high          String?  @default("B8")
   whiteKeysOnly Boolean? @default(false)
 
-  FileItems               FileItems?          @relation(fields: [fileItemsItemId], references: [id])
-  fileItemsItemId         String?
+  FileItems       FileItems? @relation(fields: [fileItemsItemId], references: [id])
+  fileItemsItemId String?
   //ItemsArtListTog         ItemsArtListTog?    @relation(fields: [itemsArtListTogArtId], references: [id])
   //itemsArtListTogArtId    String?
   //ItemsArtListSwitch      ItemsArtListSwitch? @relation(fields: [itemsArtListSwitchArtId], references: [id])
@@ -44,41 +44,41 @@ model ItemsFullRanges {
 }
 
 model ItemsArtListTog {
-  id         String            @id @default(cuid()) @map("artId")
-  name       String?           @default("")
-  toggle     Boolean           @default(true)
-  codeType   String?           @default("/control")
-  code       Float?            @default(0)
-  on         Float?            @default(127)
-  off        Float?            @default(0)
-  default    String?           @default("On")
-  delay      Float?            @default(0)
-  changeType String?           @default("Value 2")
-  ranges     String?           @default("")
+  id         String  @id @map("artId")
+  name       String? @default("")
+  toggle     Boolean @default(true)
+  codeType   String? @default("/control")
+  code       Float?  @default(0)
+  on         Float?  @default(127)
+  off        Float?  @default(0)
+  default    String? @default("On")
+  delay      Float?  @default(0)
+  changeType String? @default("Value 2")
+  ranges     String? @default("")
 
   FileItems       FileItems? @relation(fields: [fileItemsItemId], references: [id])
   fileItemsItemId String?
 }
 
 model ItemsArtListSwitch {
-  id         String            @id @default(cuid()) @map("artId")
-  name       String?           @default("")
-  toggle     Boolean           @default(false)
-  codeType   String?           @default("/control")
-  code       Float?            @default(0)
-  on         Float?            @default(127)
-  off        Float?            @default(0)
-  default    Boolean?          @default(false)
-  delay      Float?            @default(0)
-  changeType String?           @default("Value 2")
-  ranges     String?           @default("")
+  id         String   @id @map("artId")
+  name       String?  @default("")
+  toggle     Boolean  @default(false)
+  codeType   String?  @default("/control")
+  code       Float?   @default(0)
+  on         Float?   @default(127)
+  off        Float?   @default(0)
+  default    Boolean? @default(false)
+  delay      Float?   @default(0)
+  changeType String?  @default("Value 2")
+  ranges     String?  @default("")
 
   FileItems       FileItems? @relation(fields: [fileItemsItemId], references: [id])
   fileItemsItemId String?
 }
 
 model ItemsFadList {
-  id         String  @id @default(cuid()) @map("fadId")
+  id         String  @id @map("fadId")
   name       String? @default("")
   codeType   String? @default("/control")
   code       Float?  @default(0)

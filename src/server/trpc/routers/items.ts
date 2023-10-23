@@ -100,9 +100,27 @@ export const ItemsRouter = createTRPCRouter({
   }),
   ////////////////////////////
   createSingleItem: publicProcedure.mutation(async ({ ctx }) => {
+    const itemsCount = await ctx.prisma.fileItems.count()
+    const allItems = await ctx.prisma.fileItems.findMany({
+      select: {
+        id: true
+      }
+    })
+    const highestNumber = allItems
+      .map((item) => {
+        return item.id.split('_')[1]
+      })
+      .sort((a, b) => {
+        if (!a || !b) return 0
+        return parseInt(b) - parseInt(a)
+      })
+    const newId = 'T_' + (parseInt(highestNumber[0] as string) + 1)
+
     const newItemId = await ctx.prisma.fileItems
       .create({
-        data: {}
+        data: {
+          id: itemsCount === 0 ? 'T_0' : newId
+        }
       })
       .then((item) => {
         return item.id
@@ -201,6 +219,13 @@ export const ItemsRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const { itemId } = input
+
+      const mustHaveOneItem = await ctx.prisma.fileItems.count()
+
+      if (mustHaveOneItem <= 1) {
+        throw new Error('Must have at least one item')
+      }
+
       await ctx.prisma.fileItems.delete({
         where: {
           id: itemId
@@ -315,22 +340,46 @@ export const ItemsRouter = createTRPCRouter({
           id: rangeId
         }
       })
-      const allFullRanges = await ctx.prisma.itemsFullRanges.findMany({
+      return true
+    }),
+  ////////////////////////////
+  renumberArtList: publicProcedure
+    .input(
+      z.object({
+        itemId: z.string()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      console.log('renumberArtList')
+      const { itemId } = input
+
+      const allArtListSwitch = await ctx.prisma.itemsArtListSwitch.findMany({
         where: {
-          fileItemsItemId: fileItemsItemId
+          fileItemsItemId: itemId
         }
       })
-      return allFullRanges.map((range, index) => {
-        return ctx.prisma.itemsFullRanges.update({
+
+      const allArtListTog = await ctx.prisma.itemsArtListTog.findMany({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
+
+      const allArtList = [...allArtListSwitch, ...allArtListTog]
+
+      return allArtList.map((art, index) => {
+        return ctx.prisma.itemsArtListSwitch.update({
           where: {
-            id: range.id
+            id: art.id
           },
           data: {
-            id: range.id.split('_')[0] + '_FR_' + index
+            id: art.id.split('_')[0] + '_AL_' + index,
+            name: 'hi'
           }
         })
       })
     }),
+
   ////////////////////////////
   createSingleArtListSwitch: publicProcedure
     .input(
@@ -427,11 +476,23 @@ export const ItemsRouter = createTRPCRouter({
   deleteSingleArtListSwitch: publicProcedure
     .input(
       z.object({
-        artId: z.string()
+        artId: z.string(),
+        fileItemsItemId: z.string()
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const { artId } = input
+      const { artId, fileItemsItemId } = input
+
+      const mustHaveOneArtListSwitch =
+        await ctx.prisma.itemsArtListSwitch.count({
+          where: {
+            fileItemsItemId: fileItemsItemId
+          }
+        })
+
+      if (mustHaveOneArtListSwitch <= 1) {
+        throw new Error('Must have at least one switch articulation')
+      }
       await ctx.prisma.itemsArtListSwitch.delete({
         where: {
           id: artId
@@ -534,11 +595,22 @@ export const ItemsRouter = createTRPCRouter({
   deleteSingleArtListTog: publicProcedure
     .input(
       z.object({
-        artId: z.string()
+        artId: z.string(),
+        fileItemsItemId: z.string()
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const { artId } = input
+      const { artId, fileItemsItemId } = input
+
+      const mustHaveOneArtListSwitch = await ctx.prisma.itemsArtListTog.count({
+        where: {
+          fileItemsItemId: fileItemsItemId
+        }
+      })
+
+      if (mustHaveOneArtListSwitch <= 1) {
+        throw new Error('Must have at least one toggle articulation')
+      }
       await ctx.prisma.itemsArtListTog.delete({
         where: {
           id: artId
@@ -619,11 +691,22 @@ export const ItemsRouter = createTRPCRouter({
   deleteSingleFadList: publicProcedure
     .input(
       z.object({
-        fadId: z.string()
+        fadId: z.string(),
+        fileItemsItemId: z.string()
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const { fadId } = input
+      const { fadId, fileItemsItemId } = input
+
+      const mustHaveOneFader = await ctx.prisma.itemsFadList.count({
+        where: {
+          fileItemsItemId: fileItemsItemId
+        }
+      })
+
+      if (mustHaveOneFader <= 1) {
+        throw new Error('Must have at least one fader')
+      }
       await ctx.prisma.itemsFadList.delete({
         where: {
           id: fadId

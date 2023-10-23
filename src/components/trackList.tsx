@@ -57,6 +57,7 @@ const TrackList: FC<TrackListProps> = ({
     onSuccess: () => {
       deleteSingleItemMutation.reset()
       refetch()
+      refetchSelected()
     },
     onError: () => {
       alert('There was an error submitting your request. Please try again.')

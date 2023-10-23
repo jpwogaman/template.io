@@ -7,7 +7,7 @@ import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import { useTheme } from 'next-themes'
 
 const Index: NextPage = () => {
-  const [selectedItemId, setSelectedItemId] = useState<string | null>(null)
+  const [selectedItemId, setSelectedItemId] = useState<string | null>('T_0')
   const { setTheme } = useTheme()
 
   const { refetch: allRefetch, data } = trpc.items.getAllItems.useQuery()
@@ -17,11 +17,20 @@ const Index: NextPage = () => {
 
   const dataLength = data?.length ?? 0
 
-  const deleteAllItemsMutation = trpc.items.deleteAllItems.useMutation({
+  const createSingleItemMutation = trpc.items.createSingleItem.useMutation({
     onSuccess: () => {
+      createSingleItemMutation.reset()
       deleteAllItemsMutation.reset()
       allRefetch()
       selectedRefetch()
+    },
+    onError: () => {
+      alert('There was an error submitting your request. Please try again.')
+    }
+  })
+  const deleteAllItemsMutation = trpc.items.deleteAllItems.useMutation({
+    onSuccess: () => {
+      createSingleItemMutation.mutate()
     },
     onError: () => {
       alert('There was an error submitting your request. Please try again.')
