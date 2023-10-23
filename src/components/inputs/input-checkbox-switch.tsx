@@ -21,7 +21,7 @@ export const InputCheckBoxSwitch: FC<InputCheckBoxSwitchProps> = ({
   onChangeInputSwitch: onSwitch,
   artFad,
   toggle,
-  showVals,
+  //showVals,
   options,
   title,
   defaultValue,
@@ -29,7 +29,7 @@ export const InputCheckBoxSwitch: FC<InputCheckBoxSwitchProps> = ({
   id
 }) => {
   const [isChecked, setChecked] = useState<boolean>(defaultValue === 'b')
-
+  const showVals = false
   let inputSelectOptionElements: string[] = ['a', 'b']
 
   for (const array in selectArrays) {
@@ -100,7 +100,7 @@ export const InputCheckBoxSwitch: FC<InputCheckBoxSwitchProps> = ({
       {showVals ? valSpan1 : null}
       <label
         htmlFor={id}
-        title={title}
+        title={id + '_currentValue: ' + (isChecked ? b : a)}
         className='relative inline-flex cursor-pointer items-center'>
         <input
           type='checkbox'

@@ -63,7 +63,7 @@ export const InputText: FC<InputTextProps> = ({
             dark:placeholder-zinc-500 
             dark:outline-green-800`}
       id={id}
-      title={title}
+      title={id + '_currentValue: ' + valueName}
       placeholder={placeholder as string}
       disabled={codeDisabled}
       value={onReceive ?? valueName}

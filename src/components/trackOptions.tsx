@@ -165,7 +165,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
     const rangeOptions = key === 'ranges' && artRangeOptions
 
     const inputPropsHelper = {
-      id: `${key}_${layoutDataSingle.id}`,
+      id: `${layoutDataSingle.id}_${key}`,
       codeDisabled: selectedItem?.locked,
       defaultValue: layoutDataSingle[key as 'id'],
       options: rangeOptions ? stringListOfFullRangeIds : selectArray ?? '',

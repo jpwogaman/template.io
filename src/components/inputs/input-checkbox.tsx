@@ -38,7 +38,7 @@ export const InputCheckBox: FC<InputCheckBoxProps> = ({
   return (
     <label
       htmlFor={id}
-      title={title}
+      title={id + '_currentValue: ' + `${isChecked}`}
       className='relative items-center'>
       <input
         id={id}

@@ -234,7 +234,7 @@ const TrackList: FC<TrackListProps> = ({
                         )}
                         {inputSelect && (
                           <InputSelectSingle
-                            id={key + id}
+                            id={`${id}_${key}`}
                             options={selectArray as string}
                             codeDisabled={disabled}
                             onChangeInputSwitch={(event) =>
@@ -249,7 +249,7 @@ const TrackList: FC<TrackListProps> = ({
 
                         {inputText && (
                           <InputText
-                            id={key + id}
+                            id={`${id}_${key}`}
                             title=''
                             placeholder=''
                             td={true}

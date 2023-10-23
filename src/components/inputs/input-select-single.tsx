@@ -20,7 +20,7 @@ export const InputSelectSingle: FC<InputSelectProps> = ({
   options,
   defaultValue
 }) => {
-  const [val, setVal] = useState<string | number>(defaultValue ?? '')
+  const [value, setVal] = useState<string | number>(defaultValue ?? '')
 
   let inputSelectOptionElements:
     | React.JSX.Element
@@ -48,6 +48,7 @@ export const InputSelectSingle: FC<InputSelectProps> = ({
 
   return (
     <select
+      title={id + '_currentValue: ' + value}
       className='        
               w-full                                 
               cursor-pointer 
@@ -57,7 +58,7 @@ export const InputSelectSingle: FC<InputSelectProps> = ({
               focus:bg-white
               focus:text-zinc-900
               dark:outline-green-800'
-      value={!codeDisabled ? val : undefined}
+      value={!codeDisabled ? value : undefined}
       disabled={codeDisabled}
       id={id}
       onChange={valChange}>
