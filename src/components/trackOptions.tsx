@@ -154,10 +154,21 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
     const inputCheckBox = input === 'checkbox'
     const inputText = input === 'text'
 
+    const stringListOfFullRangeIds = JSON.stringify(
+      selectedItem?.fullRange.map((fullRange: ItemsFullRanges) => fullRange.id)
+    )
+
+    const artRangeOptions =
+      layoutConfigLabel === 'artListSwitch' ||
+      layoutConfigLabel === 'artListTog'
+
+    const rangeOptions = key === 'ranges' && artRangeOptions
+
     const inputPropsHelper = {
       id: `${key}_${layoutDataSingle.id}`,
       codeDisabled: selectedItem?.locked,
-      options: selectArray ?? '',
+      defaultValue: layoutDataSingle[key as 'id'],
+      options: rangeOptions ? stringListOfFullRangeIds : selectArray ?? '',
       onChangeInputSwitch: (
         event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
       ) =>
@@ -166,8 +177,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
           layoutDataSingleId: layoutDataSingle.id,
           key,
           label: layoutConfigLabel
-        }),
-      defaultValue: layoutDataSingle[key as 'id']
+        })
     }
 
     return {

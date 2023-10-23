@@ -1,5 +1,5 @@
 import { type FC, type ChangeEvent, type ReactNode, useState } from 'react'
-import { SelectList, selectArrays } from './index'
+import { selectArrays } from './index'
 import tw from '@/utils/tw'
 
 interface InputSelectMultipleProps {
@@ -8,6 +8,7 @@ interface InputSelectMultipleProps {
   codeDisabled?: boolean
   onChangeInputSwitch?: (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
+    //| React.MouseEvent<HTMLOptionElement, MouseEvent>
   ) => void | undefined
   children?: ReactNode
   defaultValue: string
@@ -20,7 +21,7 @@ export const InputSelectMultiple: FC<InputSelectMultipleProps> = ({
   options,
   defaultValue
 }) => {
-  const [value, setValue] = useState<string[]>([])
+  const [value, setValue] = useState<string[]>(JSON.parse(defaultValue) ?? [])
 
   let inputSelectOptionElements:
     | React.JSX.Element
@@ -28,39 +29,22 @@ export const InputSelectMultiple: FC<InputSelectMultipleProps> = ({
     | number[]
     | undefined = selectArrays.valNoneList?.array
 
-  if (!codeDisabled) {
-    for (const array in selectArrays) {
-      if (options === selectArrays[array]?.name) {
-        inputSelectOptionElements = selectArrays[array]?.array
-      }
-    }
-
-    if (options === 'artRngsArray') {
-      inputSelectOptionElements = (
-        <SelectList rngName={JSON.parse(defaultValue)} />
-      )
-    }
-  }
-
   const valChange = (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
     const newValueIsAlreadySelected = value.includes(event.target.value)
     const newValueFiltered = value.filter((val) => val !== event.target.value)
 
-    console.log('hi')
-
     if (newValueIsAlreadySelected) {
       setValue(newValueFiltered)
+
       if (onSelect) {
         onSelect({
           ...event,
           target: { ...event.target, value: JSON.stringify(newValueFiltered) }
         })
       }
-    }
-
-    if (!newValueIsAlreadySelected) {
+    } else {
       setValue([...value, event.target.value])
       if (onSelect) {
         onSelect({
@@ -74,18 +58,35 @@ export const InputSelectMultiple: FC<InputSelectMultipleProps> = ({
     }
   }
 
+  if (!codeDisabled) {
+    inputSelectOptionElements = (
+      <>
+        {JSON.parse(options as string).map((name: string) => (
+          <li
+            key={name}
+            className={tw(value.includes(name) ? 'font-bold text-red-700' : '')}
+            onClick={(event) =>
+              valChange({
+                ...event,
+                target: { ...event.target, value: name }
+              } as unknown as ChangeEvent<HTMLSelectElement>)
+            }>
+            {name}
+          </li>
+        ))}
+      </>
+    )
+  }
+
   return (
-    <select
+    <ul
       className={tw(
-        'w-full overflow-scroll bg-inherit p-[4.5px] text-zinc-900 outline-offset-4 outline-green-600 focus:bg-white focus:text-zinc-900 dark:outline-green-800',
+        'w-full overflow-x-hidden overflow-y-scroll bg-inherit p-[4.5px] text-zinc-900 outline-offset-4 outline-green-600 focus:bg-white focus:text-zinc-900 dark:outline-green-800',
         codeDisabled ? 'cursor-not-allowed' : 'cursor-pointer'
       )}
-      value={!codeDisabled ? value : undefined}
-      multiple
-      disabled={codeDisabled}
-      id={id}
-      onChange={valChange}>
+      onChange={() => {}}
+      id={id}>
       {inputSelectOptionElements}
-    </select>
+    </ul>
   )
 }

@@ -97,14 +97,9 @@ const setNoteArray: string[] = [
 interface SelectListProps {
   numbers?: string[] | number[]
   valName?: string[]
-  rngName?: string[]
 }
 
-export const SelectList: FC<SelectListProps> = ({
-  numbers,
-  valName,
-  rngName
-}) => {
+export const SelectList: FC<SelectListProps> = ({ numbers, valName }) => {
   if (valName) {
     return (
       <>
@@ -118,19 +113,7 @@ export const SelectList: FC<SelectListProps> = ({
       </>
     )
   }
-  if (rngName) {
-    return (
-      <>
-        {rngName.map((name: string) => (
-          <option
-            key={name}
-            value={name}>
-            {name}
-          </option>
-        ))}
-      </>
-    )
-  }
+
   return (
     <>
       {numbers?.map((number: string | number) => (

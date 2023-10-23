@@ -258,6 +258,9 @@ export const ItemsRouter = createTRPCRouter({
       })
       return newRange
     }),
+  getAllFullRanges: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.itemsFullRanges.findMany({})
+  }),
   updateSingleFullRange: publicProcedure
     .input(
       z.object({
@@ -353,7 +356,8 @@ export const ItemsRouter = createTRPCRouter({
               id: itemId
             }
           },
-          id: itemId + '_AL_' + lastArtNumber
+          id: itemId + '_AL_' + lastArtNumber,
+          ranges: JSON.stringify([itemId + '_FR_0'])
         }
       })
       return newArt
@@ -452,7 +456,8 @@ export const ItemsRouter = createTRPCRouter({
               id: itemId
             }
           },
-          id: itemId + '_AL_' + lastArtNumber
+          id: itemId + '_AL_' + lastArtNumber,
+          ranges: JSON.stringify([itemId + '_FR_0'])
         }
       })
       return newArt
