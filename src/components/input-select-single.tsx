@@ -21,13 +21,16 @@ export const InputSelect: FC<InputSelectProps> = ({
 }) => {
   const [val, setVal] = useState<string | number>(defaultValue ?? '')
 
-  let optionElements: React.JSX.Element | string[] | number[] | undefined =
-    selectArrays.valNoneList?.array
+  let inputSelectOptionElements:
+    | React.JSX.Element
+    | string[]
+    | number[]
+    | undefined = selectArrays.valNoneList?.array
 
   if (!codeDisabled) {
     for (const array in selectArrays) {
       if (options === selectArrays[array]?.name) {
-        optionElements = selectArrays[array]?.array
+        inputSelectOptionElements = selectArrays[array]?.array
       }
     }
   }
@@ -39,7 +42,7 @@ export const InputSelect: FC<InputSelectProps> = ({
 
     if (onSelect) {
       onSelect(event)
-    } else return
+    } 
   }
 
   return (
@@ -57,7 +60,7 @@ export const InputSelect: FC<InputSelectProps> = ({
       disabled={codeDisabled}
       id={id}
       onChange={valChange}>
-      {optionElements}
+      {inputSelectOptionElements}
     </select>
   )
 }

@@ -1,4 +1,4 @@
-import React, { type FC, Fragment } from 'react'
+import React, { type FC } from 'react'
 
 const smpOutSettings = 32
 const vepOutSettings = 32
@@ -97,12 +97,17 @@ const setNoteArray: string[] = [
 interface SelectListProps {
   numbers?: string[] | number[]
   valName?: string[]
+  rngName?: string[]
 }
 
-export const SelectList: FC<SelectListProps> = ({ numbers, valName }) => {
+export const SelectList: FC<SelectListProps> = ({
+  numbers,
+  valName,
+  rngName
+}) => {
   if (valName) {
     return (
-      <Fragment>
+      <>
         {valName.map((name: string) => (
           <option
             key={name.split('---')[0]}
@@ -110,20 +115,33 @@ export const SelectList: FC<SelectListProps> = ({ numbers, valName }) => {
             {name.split('---')[1]}
           </option>
         ))}
-      </Fragment>
+      </>
     )
-  } else
+  }
+  if (rngName) {
     return (
-      <Fragment>
-        {numbers?.map((number: string | number) => (
+      <>
+        {rngName.map((name: string) => (
           <option
-            key={number}
-            value={number}>
-            {number}
+            key={name}
+            value={name}>
+            {name}
           </option>
         ))}
-      </Fragment>
+      </>
     )
+  }
+  return (
+    <>
+      {numbers?.map((number: string | number) => (
+        <option
+          key={number}
+          value={number}>
+          {number}
+        </option>
+      ))}
+    </>
+  )
 }
 
 export const selectArrays: {

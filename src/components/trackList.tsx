@@ -5,9 +5,13 @@ import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
 import TrackListTableKeys from './trackListTableKeys'
 import { InputText } from './input-text'
-import { InputSelect } from './input-select'
+import { InputSelect } from './input-select-single'
 
-let optionElements: React.JSX.Element | string[] | number[] | undefined
+let inputSelectOptionElements:
+  | React.JSX.Element
+  | string[]
+  | number[]
+  | undefined
 
 type TrackListProps = {
   selectedItemId: string | null
@@ -210,7 +214,7 @@ const TrackList: FC<TrackListProps> = ({
 
                   for (const array in selectArrays) {
                     if (selectArray === selectArrays[array]?.name) {
-                      optionElements = selectArrays[array]?.array
+                      inputSelectOptionElements = selectArrays[array]?.array
                     }
                   }
                   if (!show) return

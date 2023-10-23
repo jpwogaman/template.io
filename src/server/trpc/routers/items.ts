@@ -121,12 +121,14 @@ export const ItemsRouter = createTRPCRouter({
         },
         artListSwitch: {
           create: {
-            id: newItemId + '_AL_0'
+            id: newItemId + '_AL_0',
+            ranges: JSON.stringify([newItemId + '_FR_0'])
           }
         },
         artListTog: {
           create: {
-            id: newItemId + '_AL_1'
+            id: newItemId + '_AL_1',
+            ranges: JSON.stringify([newItemId + '_FR_0'])
           }
         },
         fadList: {

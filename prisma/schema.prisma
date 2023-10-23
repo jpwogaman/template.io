@@ -68,7 +68,7 @@ model ItemsArtListSwitch {
   code       Float?            @default(0)
   on         Float?            @default(127)
   off        Float?            @default(0)
-  default    Boolean?          @default(true)
+  default    Boolean?          @default(false)
   delay      Float?            @default(0)
   changeType String?           @default("Value 2")
   ranges     String?           @default("")

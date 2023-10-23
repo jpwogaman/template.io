@@ -135,7 +135,7 @@ const TrackOptionsTableKeys = [
         className: 'w-[9.5%]',
         show: true,
         key: 'ranges',
-        input: 'select',
+        input: 'select-multiple',
         selectArray: 'artRngsArray',
         label: 'Ranges'
       }
@@ -230,7 +230,7 @@ const TrackOptionsTableKeys = [
         className: 'w-[9.5%]',
         show: true,
         key: 'ranges',
-        input: 'select',
+        input: 'select-multiple',
         selectArray: 'artRngsArray',
         label: 'Ranges'
       }
