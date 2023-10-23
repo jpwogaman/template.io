@@ -523,21 +523,20 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                           </td>
                           <td className={tw(trackTh, 'flex justify-between')}>
                             <button
-                            //  onClick={() =>
-                            //    deleteSingleFullRangeMutation.mutate({
-                            //      fileItemsItemId: 'T_9',
-                            //      rangeId: subSection.artId
-                            //    })
-                            //  }
-                            >
+                              onClick={() =>
+                                deleteSingleSubItemMutationHelper(
+                                  layoutDataSingleId,
+                                  layoutConfig.label
+                                )
+                              }>
                               <i className='fa-solid fa-minus' />
                             </button>
                             <button
-                            //  onClick={() =>
-                            //    createSingleFullRangeMutation.mutate({
-                            //      itemId: 'T_9',
-                            //    })}
-                            >
+                              onClick={() =>
+                                createSingleSubItemMutationHelper(
+                                  layoutConfig.label
+                                )
+                              }>
                               <i className='fa-solid fa-plus' />
                             </button>
                           </td>
