@@ -3,13 +3,7 @@ import { trpc } from '@/utils/trpc'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
 import TrackListTableKeys from './trackListTableKeys'
-import { InputText, InputSelectSingle, selectArrays } from './inputs'
-
-let inputSelectOptionElements:
-  | React.JSX.Element
-  | string[]
-  | number[]
-  | undefined
+import { InputText, InputSelectSingle, InputCheckBox } from './inputs'
 
 type TrackListProps = {
   selectedItemId: string | null
@@ -154,7 +148,7 @@ const TrackList: FC<TrackListProps> = ({
           </tr>
         </thead>
         <tbody>
-          {data?.map((item, thisIndex) => {
+          {data?.map((item) => {
             const { id, color, locked, _count } = item
             return (
               <tr
@@ -200,7 +194,7 @@ const TrackList: FC<TrackListProps> = ({
                   const { key, input, selectArray, show } = keyActual
 
                   const inputCheckBox = input === 'checkbox'
-                  const inputSelect = input === 'select'
+                  const inputSelectSingle = input === 'select'
                   const inputText = input === 'text'
 
                   const keyIsId = key === 'id'
@@ -210,12 +204,21 @@ const TrackList: FC<TrackListProps> = ({
                     ? true
                     : keyIsId
 
-                  for (const array in selectArrays) {
-                    if (selectArray === selectArrays[array]?.name) {
-                      inputSelectOptionElements = selectArrays[array]?.array
-                    }
-                  }
                   if (!show) return
+
+                  const inputPropsHelper = {
+                    id: `${id}_${key}`,
+                    options: selectArray ?? '',
+                    codeDisabled: disabled,
+                    onChangeInputSwitch: (
+                      event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
+                    ) =>
+                      updateSingleItemMutation.mutate({
+                        itemId: id,
+                        [key]: event.target.value
+                      }),
+                    defaultValue: item[key] as unknown as string
+                  }
 
                   return (
                     <td
@@ -232,58 +235,13 @@ const TrackList: FC<TrackListProps> = ({
                             {item[key]}
                           </p>
                         )}
-                        {inputSelect && (
-                          <InputSelectSingle
-                            id={`${id}_${key}`}
-                            options={selectArray as string}
-                            codeDisabled={disabled}
-                            onChangeInputSwitch={(event) =>
-                              updateSingleItemMutation.mutate({
-                                itemId: id,
-                                [key]: event.target.value
-                              })
-                            }
-                            defaultValue={item[key] as unknown as string}
-                          />
+                        {inputSelectSingle && (
+                          <InputSelectSingle {...inputPropsHelper} />
                         )}
 
-                        {inputText && (
-                          <InputText
-                            id={`${id}_${key}`}
-                            title=''
-                            placeholder=''
-                            td={true}
-                            codeDisabled={disabled}
-                            onChangeInputSwitch={(event) =>
-                              updateSingleItemMutation.mutate({
-                                itemId: id,
-                                [key]: event.target.value
-                              })
-                            }
-                            defaultValue={item[key] as unknown as string}
-                          />
-                        )}
-
+                        {inputText && <InputText {...inputPropsHelper} />}
                         {inputCheckBox && (
-                          <input
-                            checked={item.locked}
-                            disabled={disabled}
-                            type='checkbox'
-                            className={tw(
-                              'w-full p-1 text-zinc-900',
-                              inputCheckBox ? 'cursor-pointer' : '',
-                              disabled
-                                ? 'cursor-not-allowed bg-zinc-300'
-                                : 'bg-white dark:bg-zinc-100'
-                            )}
-                            onChange={(event) =>
-                              updateSingleItemMutation.mutate({
-                                itemId: id,
-                                [key]: event.target.value
-                              })
-                            }
-                            value={item[key] as string}
-                          />
+                          <InputCheckBox {...inputPropsHelper} />
                         )}
                       </div>
                     </td>
