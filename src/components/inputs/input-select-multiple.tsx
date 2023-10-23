@@ -64,6 +64,9 @@ export const InputSelectMultiple: FC<InputSelectMultipleProps> = ({
         {JSON.parse(options as string).map((name: string) => (
           <li
             key={name}
+            title={
+              id + '_' + name + '_currentlySelected: ' + value.includes(name)
+            }
             className={tw(value.includes(name) ? 'font-bold text-red-700' : '')}
             onClick={(event) =>
               valChange({
@@ -80,7 +83,6 @@ export const InputSelectMultiple: FC<InputSelectMultipleProps> = ({
 
   return (
     <ul
-      title={id + '_currentValue: ' + value}
       className={tw(
         'w-full overflow-x-hidden overflow-y-scroll bg-inherit p-[4.5px] text-zinc-900 outline-offset-4 outline-green-600 focus:bg-white focus:text-zinc-900 dark:outline-green-800',
         codeDisabled ? 'cursor-not-allowed' : 'cursor-pointer'

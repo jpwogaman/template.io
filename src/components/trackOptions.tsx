@@ -26,61 +26,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
   const { data: selectedItem, refetch } = trpc.items.getSingleItem.useQuery({
     itemId: selectedItemId ?? ''
   })
-
-  const updateSingleItemMutation = trpc.items.updateSingleItem.useMutation({
-    onSuccess: () => {
-      updateSingleItemMutation.reset()
-      refetch()
-    },
-    onError: () => {
-      alert('There was an error submitting your request. Please try again.')
-    }
-  })
-
-  const updateSingleArtListSwitchMutation =
-    trpc.items.updateSingleArtListSwitch.useMutation({
-      onSuccess: () => {
-        updateSingleArtListSwitchMutation.reset()
-        refetch()
-      },
-      onError: () => {
-        alert('There was an error submitting your request. Please try again.')
-      }
-    })
-
-  const updateSingleArtListTogMutation =
-    trpc.items.updateSingleArtListTog.useMutation({
-      onSuccess: () => {
-        updateSingleArtListTogMutation.reset()
-        refetch()
-      },
-      onError: () => {
-        alert('There was an error submitting your request. Please try again.')
-      }
-    })
-
-  const updateSingleFadListMutation =
-    trpc.items.updateSingleFadList.useMutation({
-      onSuccess: () => {
-        updateSingleFadListMutation.reset()
-        refetch()
-      },
-      onError: () => {
-        alert('There was an error submitting your request. Please try again.')
-      }
-    })
-
-  const createSingleFullRangeMutation =
-    trpc.items.createSingleFullRange.useMutation({
-      onSuccess: () => {
-        createSingleFullRangeMutation.reset()
-        refetch()
-      },
-      onError: () => {
-        alert('There was an error submitting your request. Please try again.')
-      }
-    })
-
+  //////////////////////////////////////////
   const updateSingleFullRangeMutation =
     trpc.items.updateSingleFullRange.useMutation({
       onSuccess: () => {
@@ -91,7 +37,78 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
         alert('There was an error submitting your request. Please try again.')
       }
     })
-
+  const updateSingleArtListSwitchMutation =
+    trpc.items.updateSingleArtListSwitch.useMutation({
+      onSuccess: () => {
+        updateSingleArtListSwitchMutation.reset()
+        refetch()
+      },
+      onError: () => {
+        alert('There was an error submitting your request. Please try again.')
+      }
+    })
+  const updateSingleArtListTogMutation =
+    trpc.items.updateSingleArtListTog.useMutation({
+      onSuccess: () => {
+        updateSingleArtListTogMutation.reset()
+        refetch()
+      },
+      onError: () => {
+        alert('There was an error submitting your request. Please try again.')
+      }
+    })
+  const updateSingleFadListMutation =
+    trpc.items.updateSingleFadList.useMutation({
+      onSuccess: () => {
+        updateSingleFadListMutation.reset()
+        refetch()
+      },
+      onError: () => {
+        alert('There was an error submitting your request. Please try again.')
+      }
+    })
+  //////////////////////////////////////////
+  const createSingleFullRangeMutation =
+    trpc.items.createSingleFullRange.useMutation({
+      onSuccess: () => {
+        createSingleFullRangeMutation.reset()
+        refetch()
+      },
+      onError: () => {
+        alert('There was an error submitting your request. Please try again.')
+      }
+    })
+  const createSingleArtListSwitchMutation =
+    trpc.items.createSingleArtListSwitch.useMutation({
+      onSuccess: () => {
+        createSingleArtListSwitchMutation.reset()
+        refetch()
+      },
+      onError: () => {
+        alert('There was an error submitting your request. Please try again.')
+      }
+    })
+  const createSingleArtListTogMutation =
+    trpc.items.createSingleArtListTog.useMutation({
+      onSuccess: () => {
+        createSingleArtListTogMutation.reset()
+        refetch()
+      },
+      onError: () => {
+        alert('There was an error submitting your request. Please try again.')
+      }
+    })
+  const createSingleFadListMutation =
+    trpc.items.createSingleFadList.useMutation({
+      onSuccess: () => {
+        createSingleFadListMutation.reset()
+        refetch()
+      },
+      onError: () => {
+        alert('There was an error submitting your request. Please try again.')
+      }
+    })
+  //////////////////////////////////////////
   const deleteSingleFullRangeMutation =
     trpc.items.deleteSingleFullRange.useMutation({
       onSuccess: () => {
@@ -105,6 +122,46 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
         )
       }
     })
+  const deleteSingleArtListSwitchMutation =
+    trpc.items.deleteSingleArtListSwitch.useMutation({
+      onSuccess: () => {
+        deleteSingleArtListSwitchMutation.reset()
+        refetch()
+      },
+      onError: (error) => {
+        alert(
+          error ??
+            'There was an error submitting your request. Please try again.'
+        )
+      }
+    })
+  const deleteSingleArtListTogMutation =
+    trpc.items.deleteSingleArtListTog.useMutation({
+      onSuccess: () => {
+        deleteSingleArtListTogMutation.reset()
+        refetch()
+      },
+      onError: (error) => {
+        alert(
+          error ??
+            'There was an error submitting your request. Please try again.'
+        )
+      }
+    })
+  const deleteSingleFadListMutation =
+    trpc.items.deleteSingleFadList.useMutation({
+      onSuccess: () => {
+        deleteSingleFadListMutation.reset()
+        refetch()
+      },
+      onError: (error) => {
+        alert(
+          error ??
+            'There was an error submitting your request. Please try again.'
+        )
+      }
+    })
+  //////////////////////////////////////////
 
   const trackTh = `border-[1.5px]
   border-b-transparent
@@ -137,6 +194,10 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
     }))
   }
 
+  const stringListOfFullRangeIds = JSON.stringify(
+    selectedItem?.fullRange.map((fullRange: ItemsFullRanges) => fullRange.id)
+  )
+
   const layoutConfigKeysMap = (
     keySingle: (typeof TrackOptionsTableKeys)[number]['keys'][number],
     layoutDataSingle:
@@ -153,10 +214,6 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
     const inputCheckBoxSwitch = input === 'checkbox-switch'
     const inputCheckBox = input === 'checkbox'
     const inputText = input === 'text'
-
-    const stringListOfFullRangeIds = JSON.stringify(
-      selectedItem?.fullRange.map((fullRange: ItemsFullRanges) => fullRange.id)
-    )
 
     const artRangeOptions =
       layoutConfigLabel === 'artListSwitch' ||
@@ -244,6 +301,29 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
     }
   }
 
+  const createSingleSubItemMutationHelper = (label: string) => {
+    if (label === 'fullRange') {
+      createSingleFullRangeMutation.mutate({
+        itemId: selectedItemId ?? ''
+      })
+    }
+    if (label === 'artListSwitch') {
+      createSingleArtListSwitchMutation.mutate({
+        itemId: selectedItemId ?? ''
+      })
+    }
+    if (label === 'artListTog') {
+      createSingleArtListTogMutation.mutate({
+        itemId: selectedItemId ?? ''
+      })
+    }
+    if (label === 'fadList') {
+      createSingleFadListMutation.mutate({
+        itemId: selectedItemId ?? ''
+      })
+    }
+  }
+
   return (
     <div className='h-full w-1/2 overflow-y-scroll'>
       {TrackOptionsTableKeys.map((layoutConfig) => {
@@ -308,8 +388,9 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                     })}
                     <td className={tw(trackTh, 'w-[5%] text-center')}>
                       <button
-                      //onClick={() => addSubItem(level.label)}
-                      >
+                        onClick={() =>
+                          createSingleSubItemMutationHelper(layoutConfig.label)
+                        }>
                         <i className='fa-solid fa-plus' />
                       </button>
                     </td>

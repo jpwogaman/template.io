@@ -1,5 +1,4 @@
 import { z } from 'zod'
-
 import { createTRPCRouter, publicProcedure } from '@/server/trpc/trpc'
 
 import {
@@ -9,7 +8,6 @@ import {
   type ItemsFadList,
   type ItemsFullRanges
 } from '@prisma/client'
-import { r } from '@tauri-apps/api/fs-9d7de754'
 
 export const ItemsRouter = createTRPCRouter({
   createAllItemsFromJSON: publicProcedure
@@ -343,11 +341,19 @@ export const ItemsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { itemId } = input
 
-      const lastArtNumber = await ctx.prisma.itemsArtListSwitch.count({
+      const lastArtTogNumber = await ctx.prisma.itemsArtListTog.count({
         where: {
           fileItemsItemId: itemId
         }
       })
+
+      const lastArtSwitchNumber = await ctx.prisma.itemsArtListSwitch.count({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
+
+      const nextArtNumber = lastArtTogNumber + lastArtSwitchNumber
 
       const newArt = await ctx.prisma.itemsArtListSwitch.create({
         data: {
@@ -356,7 +362,7 @@ export const ItemsRouter = createTRPCRouter({
               id: itemId
             }
           },
-          id: itemId + '_AL_' + lastArtNumber,
+          id: itemId + '_AL_' + nextArtNumber,
           ranges: JSON.stringify([itemId + '_FR_0'])
         }
       })
@@ -443,11 +449,19 @@ export const ItemsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { itemId } = input
 
-      const lastArtNumber = await ctx.prisma.itemsArtListTog.count({
+      const lastArtTogNumber = await ctx.prisma.itemsArtListTog.count({
         where: {
           fileItemsItemId: itemId
         }
       })
+
+      const lastArtSwitchNumber = await ctx.prisma.itemsArtListSwitch.count({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
+
+      const nextArtNumber = lastArtTogNumber + lastArtSwitchNumber
 
       const newArt = await ctx.prisma.itemsArtListTog.create({
         data: {
@@ -456,7 +470,7 @@ export const ItemsRouter = createTRPCRouter({
               id: itemId
             }
           },
-          id: itemId + '_AL_' + lastArtNumber,
+          id: itemId + '_AL_' + nextArtNumber,
           ranges: JSON.stringify([itemId + '_FR_0'])
         }
       })
