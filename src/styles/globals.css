@@ -13,12 +13,12 @@
 }
 
 body {
-  /*height: 100vh;
-  max-height: 100vh;
-  width: 100vw;
-  max-width: 100vw;
-  overflow: hidden;*/
-  font-family: 'caviar_dreamsregular';
+    @apply bg-main 
+  text-main 
+  min-h-[100svh] 
+  transition-colors
+  font-caviar 
+  duration-200;
 }
 
 html {
@@ -103,22 +103,6 @@ details[open] summary ~ * {
 .MShideTemplateTracks {
   width: 100%;
   min-width: 100%;
-}
-
-h1 {
-  @apply text-5xl;
-}
-
-h2 {
-  @apply text-4xl;
-}
-
-h3 {
-  @apply text-3xl;
-}
-
-h4 {
-  @apply text-2xl;
 }
 
 @tailwind utilities;

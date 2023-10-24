@@ -9,8 +9,11 @@ module.exports = {
         'main-gray': '#c1c1c1'
       },
       fontFamily: {
-        sans: ['camingocoderegular'],
-        serif: ['camingocoderegular'],
+        caviar: ['caviar_dreamsregular'],
+        caviarBold: ['caviar_dreamsbold'],
+        caviarItalic: ['caviar_dreamsitalic'],
+        caviarBoldItalic: ['caviar_dreamsbold_italic'],
+
         mono: ['camingocoderegular']
       }
     }

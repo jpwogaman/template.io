@@ -299,6 +299,10 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
   //////////////////////////////////////////
   return (
     <div className='h-full w-1/2 overflow-y-scroll'>
+      <h1
+        title={`Track Id: ${selectedItem?.id} - Track Name: ${selectedItem?.name}`}
+        className='pb-2 pt-4 text-3xl'>{`Track Name: ${selectedItem?.name}`}</h1>
+
       {TrackOptionsTableKeys.map((layoutConfig) => {
         let layoutDataArray:
           | ItemsArtListSwitch[]
@@ -324,7 +328,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
 
         return (
           <Fragment key={layoutConfig.label}>
-            <div className='mt-4 flex justify-between'>
+            <div className='flex justify-between pb-2 pt-4'>
               <h2 className='font-caviarBold text-base'>{`${
                 layoutConfig.title
               } (${layoutDataArray?.length ?? 0})`}</h2>
