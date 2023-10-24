@@ -54,7 +54,8 @@ export const InputSelectSingle: FC<InputSelectProps> = ({
       value={!codeDisabled ? value : undefined}
       onChange={valChange}
       className={tw(
-        'w-full cursor-pointer overflow-scroll bg-inherit outline-offset-4 outline-green-600 focus:bg-white focus:text-zinc-900 dark:outline-green-800'
+        'w-full overflow-scroll bg-inherit outline-offset-4 outline-green-600 focus:bg-white focus:text-zinc-900 dark:outline-green-800',
+        codeDisabled ? 'cursor-not-allowed' : 'cursor-pointer'
       )}>
       {inputSelectOptionElements}
     </select>

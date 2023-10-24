@@ -48,9 +48,7 @@ export const InputCheckBox: FC<InputCheckBoxProps> = ({
         onChange={(event) => valChange(event)}
         className={tw(
           'w-full p-1 text-zinc-900',
-          codeDisabled
-            ? 'cursor-not-allowed bg-zinc-300'
-            : 'cursor-pointer bg-white dark:bg-zinc-100'
+          codeDisabled ? 'cursor-not-allowed bg-zinc-300' : 'cursor-pointer'
         )}
       />
     </label>

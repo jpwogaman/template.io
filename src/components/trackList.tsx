@@ -139,14 +139,16 @@ const TrackList: FC<TrackListProps> = ({
             <td className={tw(trackTh, 'sticky z-50 w-[5%]')}>Arts.</td>
             <td className={tw(trackTh, 'sticky z-50 w-[10%] p-0.5')}>
               <button
+                title={`Add Tracks (${addMultipleItemsNumber})`}
                 onClick={createItemsHelper}
                 className='min-h-[20px] w-1/2'>
                 <i className='fa-solid fa-plus' />
               </button>
               <input
+                title={`Add Tracks (${addMultipleItemsNumber})`}
                 value={addMultipleItemsNumber}
                 onChange={setMultipleItemsNumberHelper}
-                className='min-h-[20px] w-1/2 bg-white px-1 text-zinc-900 dark:bg-zinc-100'
+                className='min-h-[20px] w-1/2 border border-transparent bg-inherit px-1 pl-1 placeholder-zinc-400 outline-offset-4 outline-green-600 focus:cursor-text focus:bg-white focus:text-zinc-900 focus:placeholder-zinc-500 dark:placeholder-zinc-500 dark:outline-green-800'
               />
             </td>
             <td className={tw(trackTh, 'sticky z-50 w-[5%]')} />
@@ -155,21 +157,36 @@ const TrackList: FC<TrackListProps> = ({
         <tbody>
           {data?.map((item) => {
             const { id, color, locked, _count } = item
+
+            const selectedLocked = locked && selectedItemId === id
+            const selectedUnlocked = !locked && selectedItemId === id
+            const unselectedLocked = locked && selectedItemId !== id
+            const unselectedUnlocked = !locked && selectedItemId !== id
+
             return (
               <tr
                 key={id}
                 onClick={() => setSelectedItemId(id)}
                 className={tw(
-                  selectedItemId === id
-                    ? 'bg-red-300 text-zinc-50 hover:bg-red-400 dark:bg-red-700 dark:hover:bg-red-800'
-                    : 'bg-zinc-300 hover:bg-zinc-500 hover:text-zinc-50 dark:bg-zinc-600 dark:hover:bg-zinc-400  dark:hover:text-zinc-50',
-                  'relative cursor-pointer'
+                  selectedUnlocked
+                    ? 'bg-red-300 hover:bg-red-400 hover:text-zinc-50 dark:bg-red-600 dark:hover:bg-red-400 dark:hover:text-zinc-50'
+                    : selectedLocked
+                    ? 'bg-red-500 hover:bg-red-600 hover:text-zinc-50 dark:bg-red-800 dark:hover:bg-red-500 dark:hover:text-zinc-50'
+                    : unselectedLocked
+                    ? 'bg-zinc-200 hover:bg-zinc-500 hover:text-zinc-50 dark:bg-zinc-600 dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
+                    : unselectedUnlocked
+                    ? 'bg-zinc-200 hover:bg-zinc-500 hover:text-zinc-50 dark:bg-zinc-600 dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
+                    : ''
                 )}>
                 <td className='p-0.5'>
                   <button
                     //onClick={() => showColorSelectorHelper(thisIndex)}
                     style={{ backgroundColor: color }}
-                    className='h-[25px] w-full rounded-sm'></button>
+                    className={tw(
+                      locked ? 'cursor-not-allowed' : 'cursor-pointer',
+                      'h-[25px] w-full rounded-sm'
+                    )}
+                  />
                 </td>
                 <td className='p-0.5 text-center'>
                   <IconBtnToggle
