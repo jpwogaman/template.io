@@ -1,4 +1,4 @@
-import { type FC, Fragment, useState, ChangeEvent } from 'react'
+import { type FC, Fragment, useState, type ChangeEvent } from 'react'
 import { trpc } from '@/utils/trpc'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
@@ -206,18 +206,14 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
     }))
   }
 
-  const stringListOfFullRangeIds = JSON.stringify(
-    selectedItem?.fullRange.map((fullRange: ItemsFullRanges) => fullRange.id)
-  )
-
   const layoutConfigKeysMap = (
     keySingle: (typeof TrackOptionsTableKeys)[number]['keys'][number],
+    layoutConfigLabel: string,
     layoutDataSingle:
       | ItemsArtListSwitch
       | ItemsArtListTog
       | ItemsFadList
-      | ItemsFullRanges,
-    layoutConfigLabel: string
+      | ItemsFullRanges
   ) => {
     const { input, selectArray, show, key } = keySingle
 
@@ -227,11 +223,21 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
     const inputCheckBox = input === 'checkbox'
     const inputText = input === 'text'
 
+    const shortenedSubComponentId = (initialId: string) => {
+      return `${initialId.split('_')[2]}_${
+        parseInt(initialId.split('_')[3] as string) + 1
+      }`
+    }
+
     const artRangeOptions =
       layoutConfigLabel === 'artListSwitch' ||
       layoutConfigLabel === 'artListTog'
-
     const rangeOptions = key === 'ranges' && artRangeOptions
+    const stringListOfFullRangeIds = JSON.stringify(
+      selectedItem?.fullRange.map((fullRange: ItemsFullRanges) =>
+        shortenedSubComponentId(fullRange.id)
+      )
+    )
 
     const inputPropsHelper = {
       id: `${layoutDataSingle.id}_${key}`,
@@ -248,17 +254,28 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
           label: layoutConfigLabel
         })
     }
+    const inputComponent = (
+      <>
+        {!input && (
+          <p
+            title={layoutDataSingle.id}
+            className='cursor-default overflow-hidden p-1'>
+            {shortenedSubComponentId(layoutDataSingle[key as 'id'])}
+          </p>
+        )}
+        {inputSelectSingle && <InputSelectSingle {...inputPropsHelper} />}
+        {inputSelectMultiple && <InputSelectMultiple {...inputPropsHelper} />}
+        {inputText && <InputText {...inputPropsHelper} />}
+        {inputCheckBox && <InputCheckBox {...inputPropsHelper} />}
+        {inputCheckBoxSwitch && <InputCheckBoxSwitch {...inputPropsHelper} />}
+      </>
+    )
 
     return {
       keyKey: key,
       input,
       show,
-      inputCheckBoxSwitch,
-      inputCheckBox,
-      inputText,
-      inputSelectMultiple,
-      inputSelectSingle,
-      inputPropsHelper
+      inputComponent
     }
   }
 
@@ -444,21 +461,12 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                         key={layoutDataSingleId}
                         className={`${trackTr}`}>
                         {layoutConfig.keys.map((key) => {
-                          const {
-                            keyKey,
-                            input,
-                            show,
-                            inputSelectMultiple,
-                            inputSelectSingle,
-                            inputCheckBoxSwitch,
-                            inputCheckBox,
-                            inputText,
-                            inputPropsHelper
-                          } = layoutConfigKeysMap(
-                            key,
-                            layoutDataSingle,
-                            layoutConfig.label
-                          )
+                          const { keyKey, show, inputComponent } =
+                            layoutConfigKeysMap(
+                              key,
+                              layoutConfig.label,
+                              layoutDataSingle
+                            )
 
                           if (!show) return
 
@@ -467,26 +475,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                               key={keyKey}
                               title={layoutDataSingleId}
                               className={tw(trackTd, 'p-0.5')}>
-                              {!input && (
-                                <p
-                                  title={layoutDataSingleId}
-                                  className=' p-1'>
-                                  {layoutDataSingleId}
-                                </p>
-                              )}{' '}
-                              {inputSelectSingle && (
-                                <InputSelectSingle {...inputPropsHelper} />
-                              )}
-                              {inputSelectMultiple && (
-                                <InputSelectMultiple {...inputPropsHelper} />
-                              )}
-                              {inputText && <InputText {...inputPropsHelper} />}
-                              {inputCheckBox && (
-                                <InputCheckBox {...inputPropsHelper} />
-                              )}
-                              {inputCheckBoxSwitch && (
-                                <InputCheckBoxSwitch {...inputPropsHelper} />
-                              )}
+                              {inputComponent}
                             </td>
                           )
                         })}
@@ -544,21 +533,12 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                       </thead>
                       <tbody>
                         {layoutConfig.keys.map((key) => {
-                          const {
-                            keyKey,
-                            input,
-                            show,
-                            inputSelectMultiple,
-                            inputSelectSingle,
-                            inputCheckBoxSwitch,
-                            inputCheckBox,
-                            inputText,
-                            inputPropsHelper
-                          } = layoutConfigKeysMap(
-                            key,
-                            layoutDataSingle,
-                            layoutConfig.label
-                          )
+                          const { keyKey, show, inputComponent } =
+                            layoutConfigKeysMap(
+                              key,
+                              layoutConfig.label,
+                              layoutDataSingle
+                            )
 
                           if (!show) return
                           return (
@@ -569,28 +549,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                                 {key.label}
                               </td>
                               <td className={tw(trackTd, 'p-0.5')}>
-                                {!input && (
-                                  <p
-                                    title={layoutDataSingleId}
-                                    className='overflow-hidden p-1'>
-                                    {layoutDataSingleId}
-                                  </p>
-                                )}{' '}
-                                {inputSelectSingle && (
-                                  <InputSelectSingle {...inputPropsHelper} />
-                                )}
-                                {inputSelectMultiple && (
-                                  <InputSelectMultiple {...inputPropsHelper} />
-                                )}
-                                {inputText && (
-                                  <InputText {...inputPropsHelper} />
-                                )}
-                                {inputCheckBox && (
-                                  <InputCheckBox {...inputPropsHelper} />
-                                )}
-                                {inputCheckBoxSwitch && (
-                                  <InputCheckBoxSwitch {...inputPropsHelper} />
-                                )}
+                                {inputComponent}
                               </td>
                             </tr>
                           )
