@@ -139,14 +139,16 @@ const TrackList: FC<TrackListProps> = ({
             <td className={tw(trackTh, 'sticky z-50 w-[5%]')}>Arts.</td>
             <td className={tw(trackTh, 'sticky z-50 w-[10%] p-0.5')}>
               <button
+                title={`Add Tracks (${addMultipleItemsNumber})`}
                 onClick={createItemsHelper}
                 className='min-h-[20px] w-1/2'>
                 <i className='fa-solid fa-plus' />
               </button>
               <input
+                title={`Add Tracks (${addMultipleItemsNumber})`}
                 value={addMultipleItemsNumber}
                 onChange={setMultipleItemsNumberHelper}
-                className='min-h-[20px] w-1/2 bg-white px-1 text-zinc-900 dark:bg-zinc-100'
+                className='min-h-[20px] w-1/2 border border-transparent bg-inherit px-1 pl-1 placeholder-zinc-400 outline-offset-4 outline-green-600 focus:cursor-text focus:bg-white focus:text-zinc-900 focus:placeholder-zinc-500 dark:placeholder-zinc-500 dark:outline-green-800'
               />
             </td>
             <td className={tw(trackTh, 'sticky z-50 w-[5%]')} />
