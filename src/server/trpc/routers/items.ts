@@ -161,9 +161,9 @@ export const ItemsRouter = createTRPCRouter({
         itemId: z.string().optional(),
         locked: z.boolean().optional(),
         name: z.string().optional(),
-        channel: z.number().optional(),
-        baseDelay: z.number().optional(),
-        avgDelay: z.number().optional(),
+        channel: z.string().optional(),
+        baseDelay: z.string().optional(),
+        avgDelay: z.string().optional(),
         color: z.string().optional()
       })
     )
@@ -184,9 +184,9 @@ export const ItemsRouter = createTRPCRouter({
         data: {
           locked: locked ?? currentItem?.locked,
           name: name ?? currentItem?.name,
-          channel: channel ?? currentItem?.channel,
-          baseDelay: baseDelay ?? currentItem?.baseDelay,
-          avgDelay: avgDelay ?? currentItem?.avgDelay,
+          channel: channel ? parseInt(channel) : currentItem?.channel,
+          baseDelay: baseDelay ? parseInt(baseDelay) : currentItem?.baseDelay,
+          avgDelay: avgDelay ? parseInt(avgDelay) : currentItem?.avgDelay,
           color: color ?? currentItem?.color
         }
       })

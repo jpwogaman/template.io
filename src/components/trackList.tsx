@@ -103,8 +103,6 @@ const TrackList: FC<TrackListProps> = ({
   sticky
   top-0
   `
-  const trackTd = ``
-
   return (
     <div className='h-full w-1/2 overflow-y-scroll'>
       {/*<div className='z-50 mt-4 flex gap-2'>
@@ -167,13 +165,13 @@ const TrackList: FC<TrackListProps> = ({
                     : 'bg-zinc-300 hover:bg-zinc-500 hover:text-zinc-50 dark:bg-zinc-600 dark:hover:bg-zinc-400  dark:hover:text-zinc-50',
                   'relative cursor-pointer'
                 )}>
-                <td className={tw('p-0.5')}>
+                <td className='p-0.5'>
                   <button
                     //onClick={() => showColorSelectorHelper(thisIndex)}
                     style={{ backgroundColor: color }}
                     className='h-[25px] w-full rounded-sm'></button>
                 </td>
-                <td className={tw('p-0.5 text-center')}>
+                <td className='p-0.5 text-center'>
                   <IconBtnToggle
                     classes={''}
                     titleA='Lock Item'
@@ -202,7 +200,7 @@ const TrackList: FC<TrackListProps> = ({
                   return (
                     <td
                       key={key}
-                      className={tw('p-0.5')}>
+                      className='p-0.5'>
                       <InputTypeSelector
                         keySingle={keyActual}
                         onChangeHelper={onChangeHelper}
@@ -211,10 +209,10 @@ const TrackList: FC<TrackListProps> = ({
                     </td>
                   )
                 })}
-                <td className={tw('p-0.5')}>
+                <td className='p-0.5'>
                   {_count?.artListTog + _count?.artListSwitch}
                 </td>
-                <td className={tw('p-0.5 text-center')}>
+                <td className='p-0.5 text-center'>
                   <button
                     onClick={() =>
                       deleteSingleItemMutation.mutate({
@@ -224,7 +222,7 @@ const TrackList: FC<TrackListProps> = ({
                     <i className='fa-solid fa-minus' />
                   </button>
                 </td>
-                <td className={tw('p-0.5 text-center')}>
+                <td className='p-0.5 text-center'>
                   <button
                   //onClick={() => duplicateItem(thisIndex)}
                   >

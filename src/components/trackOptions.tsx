@@ -291,11 +291,6 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
   dark:font-normal
   p-1
    `
-
-  const trackTr = `bg-zinc-300 
-  dark:bg-zinc-600 
-  `
-  const trackTd = ``
   //////////////////////////////////////////
   return (
     <div className='h-full w-1/2 overflow-y-scroll'>
@@ -380,14 +375,14 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                     return (
                       <tr
                         key={layoutDataSingleId}
-                        className={`${trackTr}`}>
+                        className='bg-zinc-300 dark:bg-zinc-600 '>
                         {layoutConfig.keys.map((key) => {
                           if (!key.show) return
                           return (
                             <td
                               key={key.key}
                               title={layoutDataSingleId}
-                              className={tw(trackTd, 'p-0.5')}>
+                              className={'p-0.5'}>
                               <InputTypeSelector
                                 keySingle={key}
                                 layoutConfigLabel={layoutConfig.label}
@@ -398,7 +393,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                             </td>
                           )
                         })}
-                        <td className={tw(trackTd, 'text-center')}>
+                        <td className='text-center'>
                           <button
                             onClick={() =>
                               deleteSingleSubItemMutationHelper(
@@ -456,11 +451,10 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                           return (
                             <tr
                               key={key.key}
-                              className={trackTr}>
-                              <td className={tw(trackTd, 'p-0.5')}>
-                                {key.label}
-                              </td>
-                              <td className={tw(trackTd, 'p-0.5')}>
+                              className='bg-zinc-300 
+                              dark:bg-zinc-600'>
+                              <td className={'p-0.5'}>{key.label}</td>
+                              <td className={'p-0.5'}>
                                 <InputTypeSelector
                                   keySingle={key}
                                   layoutConfigLabel={layoutConfig.label}

@@ -78,6 +78,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
       codeDisabled: selectedItem?.locked,
       defaultValue: selectedItem[key as 'id'],
       options: selectArray ?? '',
+      textTypeValidator: typeof selectedItem[key as 'id'],
       onChangeFunction: (
         event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
       ) =>
@@ -134,6 +135,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
       codeDisabled: selectedItem?.locked,
       defaultValue: layoutDataSingle[key as 'id'],
       options: rangeOptions ? stringListOfFullRangeIds : selectArray ?? '',
+      textTypeValidator: typeof layoutDataSingle[key as 'id'],
       onChangeFunction: (
         event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
       ) =>

@@ -1,4 +1,9 @@
-import { type FC, type ChangeEvent, type ReactNode, useState } from 'react'
+import React, {
+  type FC,
+  type ChangeEvent,
+  type ReactNode,
+  useState
+} from 'react'
 import tw from '@/utils/tw'
 
 interface InputTextProps {
@@ -8,14 +13,14 @@ interface InputTextProps {
   codeDisabled?: boolean
   children?: ReactNode
   defaultValue?: string | number
-  onChangeFunction?: (event: ChangeEvent<HTMLInputElement>) => void | undefined
+  onChangeFunction: (event: ChangeEvent<HTMLInputElement>) => void | undefined
   onReceive?: string | number
   td?: boolean
-  valueType?: string
+  textTypeValidator?: string
 }
 
 export const InputText: FC<InputTextProps> = ({
-  valueType,
+  textTypeValidator: valueType,
   td,
   onReceive,
   onChangeFunction,
@@ -25,18 +30,30 @@ export const InputText: FC<InputTextProps> = ({
   title,
   codeDisabled
 }) => {
-  const [valueName, setName] = useState<string | number>(defaultValue ?? '')
+  const [value, setValue] = useState<string | number>(defaultValue ?? '')
 
   const nameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value === '' && valueType === 'number') {
-      event.target.value = placeholder as string
-    }
+    //if (valueType === 'number') {
+    //  const regexPositiveNegativeNumber = /^-?\d*\.?\d*$/
+    //  const validatePositiveNegativeNumber = regexPositiveNegativeNumber.test(
+    //    event.target.value
+    //  )
+    //  if (validatePositiveNegativeNumber) {
+    //    setValue(event.target.value)
+    //    onChangeFunction(event)
+    //    return
+    //  }
 
-    setName(event.target.value)
+    //  return alert('Please enter a valid number.')
+    //}
 
-    if (onChangeFunction) {
-      onChangeFunction(event)
-    }
+    //if (valueType === 'string') {
+    //  setValue(event.target.value)
+    //  onChangeFunction(event)
+    //}
+
+    setValue(event.target.value)
+    onChangeFunction(event)
   }
 
   return (
@@ -44,8 +61,8 @@ export const InputText: FC<InputTextProps> = ({
       id={id}
       type='text'
       disabled={codeDisabled}
-      value={onReceive ?? valueName}
-      title={id + '_currentValue: ' + valueName}
+      value={onReceive ?? value}
+      title={id + '_currentValue: ' + value}
       placeholder={placeholder as string}
       onChange={nameChange}
       className={tw(
