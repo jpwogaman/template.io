@@ -6,7 +6,7 @@ interface InputSelectProps {
   id: string | undefined
   options: string | number
   codeDisabled?: boolean
-  onChangeInputSwitch?: (
+  onChangeFunction?: (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => void | undefined
   children?: ReactNode
@@ -14,7 +14,7 @@ interface InputSelectProps {
 }
 
 export const InputSelectSingle: FC<InputSelectProps> = ({
-  onChangeInputSwitch: onSelect,
+  onChangeFunction,
   codeDisabled,
   id,
   options,
@@ -41,8 +41,8 @@ export const InputSelectSingle: FC<InputSelectProps> = ({
   ) => {
     setVal(event.target.value)
 
-    if (onSelect) {
-      onSelect(event)
+    if (onChangeFunction) {
+      onChangeFunction(event)
     }
   }
 

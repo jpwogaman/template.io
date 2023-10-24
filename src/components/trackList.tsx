@@ -3,7 +3,11 @@ import { trpc } from '@/utils/trpc'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
 import TrackListTableKeys from './trackListTableKeys'
-import { InputText, InputSelectSingle, InputCheckBox } from './inputs'
+import {
+  type OnChangeHelperArgsType,
+  type SelectedItemType,
+  InputTypeSelector
+} from './inputs'
 
 type TrackListProps = {
   selectedItemId: string | null
@@ -73,6 +77,17 @@ const TrackList: FC<TrackListProps> = ({
     } else {
       setMultipleItemsNumber(1)
     }
+  }
+
+  const onChangeHelper = ({
+    event,
+    layoutDataSingleId: id,
+    key
+  }: OnChangeHelperArgsType) => {
+    updateSingleItemMutation.mutate({
+      itemId: id,
+      [key]: event.target.value
+    })
   }
 
   const trackTh = `border-[1.5px]
@@ -192,59 +207,17 @@ const TrackList: FC<TrackListProps> = ({
                   />
                 </td>
                 {TrackListTableKeys.keys.map((keyActual) => {
-                  const { key, input, selectArray, show } = keyActual
-
-                  const inputCheckBox = input === 'checkbox'
-                  const inputSelectSingle = input === 'select'
-                  const inputText = input === 'text'
-
-                  const keyIsId = key === 'id'
-                  const disabled = inputCheckBox
-                    ? false
-                    : locked
-                    ? true
-                    : keyIsId
-
+                  const { key, show } = keyActual
                   if (!show) return
-
-                  const inputPropsHelper = {
-                    id: `${id}_${key}`,
-                    options: selectArray ?? '',
-                    codeDisabled: disabled,
-                    onChangeInputSwitch: (
-                      event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
-                    ) =>
-                      updateSingleItemMutation.mutate({
-                        itemId: id,
-                        [key]: event.target.value
-                      }),
-                    defaultValue: item[key] as unknown as string
-                  }
-
                   return (
                     <td
                       key={key}
                       className={tw(trackTd, 'p-0.5')}>
-                      <div
-                        className={tw(
-                          inputCheckBox ? 'mx-auto w-[20px]' : 'w-full'
-                        )}>
-                        {!input && (
-                          <p
-                            title={item[key] as string}
-                            className='overflow-hidden p-1'>
-                            {item[key]}
-                          </p>
-                        )}
-                        {inputSelectSingle && (
-                          <InputSelectSingle {...inputPropsHelper} />
-                        )}
-
-                        {inputText && <InputText {...inputPropsHelper} />}
-                        {inputCheckBox && (
-                          <InputCheckBox {...inputPropsHelper} />
-                        )}
-                      </div>
+                      <InputTypeSelector
+                        keySingle={keyActual}
+                        onChangeHelper={onChangeHelper}
+                        selectedItem={item as unknown as SelectedItemType}
+                      />
                     </td>
                   )
                 })}

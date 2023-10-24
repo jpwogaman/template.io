@@ -6,7 +6,7 @@ interface InputSelectMultipleProps {
   id: string | undefined
   options: string | number
   codeDisabled?: boolean
-  onChangeInputSwitch?: (
+  onChangeFunction?: (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
     //| React.MouseEvent<HTMLOptionElement, MouseEvent>
   ) => void | undefined
@@ -15,7 +15,7 @@ interface InputSelectMultipleProps {
 }
 
 export const InputSelectMultiple: FC<InputSelectMultipleProps> = ({
-  onChangeInputSwitch: onSelect,
+  onChangeFunction,
   codeDisabled,
   id,
   options,
@@ -38,16 +38,16 @@ export const InputSelectMultiple: FC<InputSelectMultipleProps> = ({
     if (newValueIsAlreadySelected) {
       setValue(newValueFiltered)
 
-      if (onSelect) {
-        onSelect({
+      if (onChangeFunction) {
+        onChangeFunction({
           ...event,
           target: { ...event.target, value: JSON.stringify(newValueFiltered) }
         })
       }
     } else {
       setValue([...value, event.target.value])
-      if (onSelect) {
-        onSelect({
+      if (onChangeFunction) {
+        onChangeFunction({
           ...event,
           target: {
             ...event.target,

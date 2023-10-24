@@ -12,13 +12,13 @@ interface InputCheckBoxSwitchProps {
   toggle?: boolean
   showVals?: boolean
   children?: ReactNode
-  onChangeInputSwitch?: (
+  onChangeFunction?: (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => void | undefined
 }
 
 export const InputCheckBoxSwitch: FC<InputCheckBoxSwitchProps> = ({
-  onChangeInputSwitch: onSwitch,
+  onChangeFunction,
   artFad,
   toggle,
   //showVals,
@@ -45,8 +45,8 @@ export const InputCheckBoxSwitch: FC<InputCheckBoxSwitchProps> = ({
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
     if (!codeDisabled) {
-      if (onSwitch) {
-        onSwitch(event)
+      if (onChangeFunction) {
+        onChangeFunction(event)
       }
 
       setChecked(!isChecked)

@@ -4,11 +4,9 @@ import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
 import TrackOptionsTableKeys from './trackOptionsTableKeys'
 import {
-  InputText,
-  InputSelectSingle,
-  InputSelectMultiple,
-  InputCheckBox,
-  InputCheckBoxSwitch
+  type OnChangeHelperArgsType,
+  type SelectedItemType,
+  InputTypeSelector
 } from './inputs'
 
 import {
@@ -174,24 +172,6 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
       }
     })
   //////////////////////////////////////////
-
-  const trackTh = `border-[1.5px]
-  border-b-transparent
-  border-zinc-100
-  dark:border-zinc-400
-  bg-zinc-200
-  dark:bg-zinc-600
-  font-bold
-  z-50
-  dark:font-normal
-  p-1
-   `
-
-  const trackTr = `bg-zinc-300 
-  dark:bg-zinc-600 
-  `
-  const trackTd = ``
-
   const [trackOptionsLayouts, setTrackOptionsLayouts] = useState({
     fullRange: 'table',
     artListSwitch: 'table',
@@ -199,97 +179,19 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
     fadList: 'table'
   })
 
-  const changeLayoutsHelper = (layoutKey: string, layout: string) => {
+  const cardTableLayoutsHelper = (layoutKey: string, layout: string) => {
     setTrackOptionsLayouts((prevState) => ({
       ...prevState,
       [layoutKey]: layout
     }))
   }
-
-  const layoutConfigKeysMap = (
-    keySingle: (typeof TrackOptionsTableKeys)[number]['keys'][number],
-    layoutConfigLabel: string,
-    layoutDataSingle:
-      | ItemsArtListSwitch
-      | ItemsArtListTog
-      | ItemsFadList
-      | ItemsFullRanges
-  ) => {
-    const { input, selectArray, show, key } = keySingle
-
-    const inputSelectMultiple = input === 'select-multiple'
-    const inputSelectSingle = input === 'select'
-    const inputCheckBoxSwitch = input === 'checkbox-switch'
-    const inputCheckBox = input === 'checkbox'
-    const inputText = input === 'text'
-
-    const shortenedSubComponentId = (initialId: string) => {
-      return `${initialId.split('_')[2]}_${
-        parseInt(initialId.split('_')[3] as string) + 1
-      }`
-    }
-
-    const artRangeOptions =
-      layoutConfigLabel === 'artListSwitch' ||
-      layoutConfigLabel === 'artListTog'
-    const rangeOptions = key === 'ranges' && artRangeOptions
-    const stringListOfFullRangeIds = JSON.stringify(
-      selectedItem?.fullRange.map((fullRange: ItemsFullRanges) =>
-        shortenedSubComponentId(fullRange.id)
-      )
-    )
-
-    const inputPropsHelper = {
-      id: `${layoutDataSingle.id}_${key}`,
-      codeDisabled: selectedItem?.locked,
-      defaultValue: layoutDataSingle[key as 'id'],
-      options: rangeOptions ? stringListOfFullRangeIds : selectArray ?? '',
-      onChangeInputSwitch: (
-        event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
-      ) =>
-        onChangeInputSwitchHelper({
-          event,
-          layoutDataSingleId: layoutDataSingle.id,
-          key,
-          label: layoutConfigLabel
-        })
-    }
-    const inputComponent = (
-      <>
-        {!input && (
-          <p
-            title={layoutDataSingle.id}
-            className='cursor-default overflow-hidden p-1'>
-            {shortenedSubComponentId(layoutDataSingle[key as 'id'])}
-          </p>
-        )}
-        {inputSelectSingle && <InputSelectSingle {...inputPropsHelper} />}
-        {inputSelectMultiple && <InputSelectMultiple {...inputPropsHelper} />}
-        {inputText && <InputText {...inputPropsHelper} />}
-        {inputCheckBox && <InputCheckBox {...inputPropsHelper} />}
-        {inputCheckBoxSwitch && <InputCheckBoxSwitch {...inputPropsHelper} />}
-      </>
-    )
-
-    return {
-      keyKey: key,
-      input,
-      show,
-      inputComponent
-    }
-  }
-
-  const onChangeInputSwitchHelper = ({
+  //////////////////////////////////////////
+  const onChangeHelper = ({
     event,
     layoutDataSingleId,
     key,
     label
-  }: {
-    event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
-    layoutDataSingleId: string
-    key: string
-    label: string
-  }) => {
+  }: OnChangeHelperArgsType) => {
     if (label === 'fullRange') {
       if (key === 'whiteKeysOnly') {
         updateSingleFullRangeMutation.mutate({
@@ -329,7 +231,6 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
       })
     }
   }
-
   const createSingleSubItemMutationHelper = (label: string) => {
     if (label === 'fullRange') {
       createSingleFullRangeMutation.mutate({
@@ -352,7 +253,6 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
       })
     }
   }
-
   const deleteSingleSubItemMutationHelper = (id: string, label: string) => {
     if (label === 'fullRange') {
       deleteSingleFullRangeMutation.mutate({
@@ -379,7 +279,24 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
       })
     }
   }
+  //////////////////////////////////////////
+  const trackTh = `border-[1.5px]
+  border-b-transparent
+  border-zinc-100
+  dark:border-zinc-400
+  bg-zinc-200
+  dark:bg-zinc-600
+  font-bold
+  z-50
+  dark:font-normal
+  p-1
+   `
 
+  const trackTr = `bg-zinc-300 
+  dark:bg-zinc-600 
+  `
+  const trackTd = ``
+  //////////////////////////////////////////
   return (
     <div className='h-full w-1/2 overflow-y-scroll'>
       {TrackOptionsTableKeys.map((layoutConfig) => {
@@ -420,10 +337,10 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                 b='fa-solid fa-table-columns'
                 defaultIcon={table ? 'a' : 'b'}
                 onToggleA={() =>
-                  changeLayoutsHelper(layoutConfig.label, 'cards')
+                  cardTableLayoutsHelper(layoutConfig.label, 'cards')
                 }
                 onToggleB={() =>
-                  changeLayoutsHelper(layoutConfig.label, 'table')
+                  cardTableLayoutsHelper(layoutConfig.label, 'table')
                 }
               />
             </div>
@@ -461,21 +378,19 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                         key={layoutDataSingleId}
                         className={`${trackTr}`}>
                         {layoutConfig.keys.map((key) => {
-                          const { keyKey, show, inputComponent } =
-                            layoutConfigKeysMap(
-                              key,
-                              layoutConfig.label,
-                              layoutDataSingle
-                            )
-
-                          if (!show) return
-
+                          if (!key.show) return
                           return (
                             <td
-                              key={keyKey}
+                              key={key.key}
                               title={layoutDataSingleId}
                               className={tw(trackTd, 'p-0.5')}>
-                              {inputComponent}
+                              <InputTypeSelector
+                                keySingle={key}
+                                layoutConfigLabel={layoutConfig.label}
+                                layoutDataSingle={layoutDataSingle}
+                                onChangeHelper={onChangeHelper}
+                                selectedItem={selectedItem as SelectedItemType}
+                              />
                             </td>
                           )
                         })}
@@ -500,7 +415,6 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
               <div className='flex gap-1 overflow-x-scroll'>
                 {layoutDataArray?.map((layoutDataSingle) => {
                   const layoutDataSingleId = layoutDataSingle.id
-
                   return (
                     <table
                       key={layoutDataSingleId}
@@ -533,23 +447,25 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                       </thead>
                       <tbody>
                         {layoutConfig.keys.map((key) => {
-                          const { keyKey, show, inputComponent } =
-                            layoutConfigKeysMap(
-                              key,
-                              layoutConfig.label,
-                              layoutDataSingle
-                            )
+                          if (!key.show) return
 
-                          if (!show) return
                           return (
                             <tr
-                              key={keyKey}
+                              key={key.key}
                               className={trackTr}>
                               <td className={tw(trackTd, 'p-0.5')}>
                                 {key.label}
                               </td>
                               <td className={tw(trackTd, 'p-0.5')}>
-                                {inputComponent}
+                                <InputTypeSelector
+                                  keySingle={key}
+                                  layoutConfigLabel={layoutConfig.label}
+                                  layoutDataSingle={layoutDataSingle}
+                                  onChangeHelper={onChangeHelper}
+                                  selectedItem={
+                                    selectedItem as SelectedItemType
+                                  }
+                                />
                               </td>
                             </tr>
                           )

@@ -10,13 +10,13 @@ interface InputCheckBoxProps {
   showVals?: boolean
   codeDisabled?: boolean
   children?: ReactNode
-  onChangeInputSwitch?: (
+  onChangeFunction?: (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => void | undefined
 }
 
 export const InputCheckBox: FC<InputCheckBoxProps> = ({
-  onChangeInputSwitch: onSwitch,
+  onChangeFunction,
   title,
   defaultValue,
   id,
@@ -28,8 +28,8 @@ export const InputCheckBox: FC<InputCheckBoxProps> = ({
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
     if (!codeDisabled) {
-      if (onSwitch) {
-        onSwitch(event)
+      if (onChangeFunction) {
+        onChangeFunction(event)
       }
 
       setChecked(!isChecked)
