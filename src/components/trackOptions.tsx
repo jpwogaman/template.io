@@ -187,7 +187,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
   }
   //////////////////////////////////////////
   const onChangeHelper = ({
-    event,
+    newValue,
     layoutDataSingleId,
     key,
     label
@@ -196,12 +196,12 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
       if (key === 'whiteKeysOnly') {
         updateSingleFullRangeMutation.mutate({
           rangeId: layoutDataSingleId ?? '',
-          whiteKeysOnly: event.target.value === 'true'
+          whiteKeysOnly: newValue === 'true'
         })
       } else {
         updateSingleFullRangeMutation.mutate({
           rangeId: layoutDataSingleId ?? '',
-          [key]: event.target.value
+          [key]: newValue
         })
       }
     }
@@ -209,25 +209,25 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
       if (key === 'default') {
         updateSingleArtListSwitchMutation.mutate({
           artId: layoutDataSingleId ?? '',
-          default: event.target.value === 'true'
+          default: newValue === 'true'
         })
       } else {
         updateSingleArtListSwitchMutation.mutate({
           artId: layoutDataSingleId ?? '',
-          [key]: event.target.value
+          [key]: newValue
         })
       }
     }
     if (label === 'artListTog') {
       updateSingleArtListTogMutation.mutate({
         artId: layoutDataSingleId ?? '',
-        [key]: event.target.value
+        [key]: newValue
       })
     }
     if (label === 'fadList') {
       updateSingleFadListMutation.mutate({
         fadId: layoutDataSingleId ?? '',
-        [key]: event.target.value
+        [key]: newValue
       })
     }
   }

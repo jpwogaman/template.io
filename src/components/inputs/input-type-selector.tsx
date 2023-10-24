@@ -19,7 +19,7 @@ import TrackOptionsTableKeys from '../trackOptionsTableKeys'
 import TrackListTableKeys from '../trackListTableKeys'
 
 export type OnChangeHelperArgsType = {
-  event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
+  newValue?: string | number | boolean
   layoutDataSingleId: string
   key: string
   label?: string
@@ -40,7 +40,7 @@ type InputTypeSelectorProps = {
     | ItemsFadList
     | ItemsFullRanges
   onChangeHelper: ({
-    event,
+    newValue,
     layoutDataSingleId,
     key,
     label
@@ -83,7 +83,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
         event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
       ) =>
         onChangeHelper({
-          event,
+          newValue: event.target.value,
           layoutDataSingleId: selectedItem.id,
           key
         })
@@ -140,7 +140,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
         event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
       ) =>
         onChangeHelper({
-          event,
+          newValue: event.target.value,
           layoutDataSingleId: layoutDataSingle.id,
           key,
           label: layoutConfigLabel

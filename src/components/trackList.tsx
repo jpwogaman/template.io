@@ -80,13 +80,13 @@ const TrackList: FC<TrackListProps> = ({
   }
 
   const onChangeHelper = ({
-    event,
+    newValue,
     layoutDataSingleId: id,
     key
   }: OnChangeHelperArgsType) => {
     updateSingleItemMutation.mutate({
       itemId: id,
-      [key]: event.target.value
+      [key]: newValue
     })
   }
 
