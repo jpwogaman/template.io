@@ -2,16 +2,14 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "cargo prisma"
+  output = "..src/db.rs"
+  module_path = "crate::db"
 }
 
 datasource db {
   provider = "sqlite"
-  // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-  // Further reading:
-  // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-  // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
-  url      = env("DATABASE_URL")
+  url      = "file:../db.sqlite"
 }
 
 model FileItems {
@@ -37,10 +35,6 @@ model ItemsFullRanges {
 
   FileItems       FileItems? @relation(fields: [fileItemsItemId], references: [id])
   fileItemsItemId String?
-  //ItemsArtListTog         ItemsArtListTog?    @relation(fields: [itemsArtListTogArtId], references: [id])
-  //itemsArtListTogArtId    String?
-  //ItemsArtListSwitch      ItemsArtListSwitch? @relation(fields: [itemsArtListSwitchArtId], references: [id])
-  //itemsArtListSwitchArtId String?
 }
 
 model ItemsArtListTog {

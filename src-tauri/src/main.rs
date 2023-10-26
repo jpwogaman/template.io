@@ -3,10 +3,40 @@
   windows_subsystem = "windows"
 )]
 
-//#[derive(Clone, serde::Serialize)]
-//struct Payload {
-//  message: String,
-//}
+#[allow(warnings, unused)]
+mod db;
+
+use db::*;
+use serde::Deserialize;
+use specta::{collect_types, Type};
+use std::sync::Arc;
+use tauri::State;
+use tauri_specta::ts;
+
+
+type DbState<'a> = State<'a, Arc<PrismaClient>>;
+
+#[tauri::command]
+#[specta::specta]
+async fn get_posts(db: DbState<'_>) -> Result<Vec<post::Data>, ()> {
+    db.post().find_many(vec![]).exec().await.map_err(|_| ())
+}
+
+#[derive(Deserialize, Type)]
+struct CreatePostData {
+    title: String,
+    content: String,
+}
+
+#[tauri::command]
+#[specta::specta]
+async fn create_post(db: DbState<'_>, data: CreatePostData) -> Result<post::Data, ()> {
+    db.post()
+        .create(data.title, data.content, vec![])
+        .exec()
+        .await
+        .map_err(|_| ())
+}
 
 use tauri::{
   CustomMenuItem, 
@@ -14,13 +44,20 @@ use tauri::{
   MenuItem,
   Submenu, 
   SystemTrayMenu, 
-  //SystemTrayMenuItem, 
   SystemTray, 
   SystemTrayEvent
 };  
-//use tauri::Manager;
 
-fn main() {
+#[tokio::main]
+async fn main() {
+    let db = PrismaClient::_builder().build().await.unwrap();
+
+    #[cfg(debug_assertions)]
+    ts::export(collect_types![get_posts, create_post], "../src/bindings.ts").unwrap();
+
+    #[cfg(debug_assertions)]
+    db._db_push().await.unwrap();
+
   let context = tauri::generate_context!();  
 
   let quit = CustomMenuItem::new("quit".to_string(), "Quit");
@@ -60,6 +97,8 @@ fn main() {
   .with_menu(tray_menu);
   
   tauri::Builder::default()
+  .invoke_handler(tauri::generate_handler![get_posts, create_post])
+  .manage(Arc::new(db))
     .menu(menu)
     .on_menu_event(|event| {
       match event.menu_item_id() {
