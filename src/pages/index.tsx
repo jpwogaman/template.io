@@ -6,6 +6,7 @@ import TrackOptions from '@/components/trackOptions'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import { useTheme } from 'next-themes'
 
+
 const Index: NextPage = () => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>('T_0')
   const { setTheme } = useTheme()
@@ -14,6 +15,19 @@ const Index: NextPage = () => {
   const { refetch: selectedRefetch } = trpc.items.getSingleItem.useQuery({
     itemId: selectedItemId ?? ''
   })
+
+  //const { data: test, refetch: testRefetch } =
+  //  trpc.items.tauriTestSelectAll.useQuery()
+
+  //const tauriTestInsertMutation = trpc.items.tauriTestInsert.useMutation({
+  //  onSuccess: () => {
+  //    tauriTestInsertMutation.reset()
+  //    testRefetch()
+  //  },
+  //  onError: () => {
+  //    alert('There was an error submitting your request. Please try again.')
+  //  }
+  //})
 
   const dataLength = data?.length ?? 0
 
@@ -40,7 +54,7 @@ const Index: NextPage = () => {
   return (
     <div className='h-screen'>
       <nav className='container sticky top-0 z-50 max-h-[40px] min-w-full items-center bg-zinc-900'>
-        <ul className='flex justify-between'>
+        <ul className='flex items-center justify-between'>
           <li className='block w-60 p-2 pl-5 text-left text-zinc-200'>
             {dataLength} {dataLength > 1 ? 'Tracks' : 'Track'}
           </li>
@@ -64,8 +78,16 @@ const Index: NextPage = () => {
               onToggleB={() => setTheme('light')}
             />
           </li>
+          <li>
+            {/*<button
+              className='border px-2'
+              onClick={() => tauriTestInsertMutation.mutate({ name: 'test2' })}>
+              Tauri
+            </button>*/}
+          </li>
         </ul>
       </nav>
+
       <main className='flex h-[calc(100%-40px)]'>
         <TrackList
           selectedItemId={selectedItemId}

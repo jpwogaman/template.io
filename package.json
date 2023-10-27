@@ -41,6 +41,7 @@
     "react-dom": "18.2.0",
     "reactcss": "^1.2.3",
     "superjson": "2.2.0",
+    "tauri-plugin-sql-api": "github:tauri-apps/tauri-plugin-sql#v1",
     "zod": "^3.22.4"
   },
   "devDependencies": {

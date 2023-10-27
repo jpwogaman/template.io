@@ -56,6 +56,7 @@ fn main() {
   .with_menu(tray_menu);
   
   tauri::Builder::default()
+    .plugin(tauri_plugin_sql::Builder::default().build())
     .menu(menu)
     .on_menu_event(|event| {
       match event.menu_item_id() {
