@@ -48,7 +48,7 @@ const TrackList: FC<TrackListProps> = ({
   })
   const updateSingleItemMutation = trpc.items.updateSingleItem.useMutation({
     onSuccess: () => {
-      updateSingleItemMutation.reset()
+      //updateSingleItemMutation.reset()
       refetch()
       refetchSelected()
     },
@@ -179,13 +179,21 @@ const TrackList: FC<TrackListProps> = ({
                     : ''
                 )}>
                 <td className='p-0.5'>
-                  <button
-                    //onClick={() => showColorSelectorHelper(thisIndex)}
+                  <input
+                    type='color'
+                    disabled={locked}
+                    defaultValue={color}
                     style={{ backgroundColor: color }}
                     className={tw(
                       locked ? 'cursor-not-allowed' : 'cursor-pointer',
-                      'h-[25px] w-full rounded-sm'
+                      'w-full rounded-sm'
                     )}
+                    onChange={(event) =>
+                      updateSingleItemMutation.mutate({
+                        itemId: id,
+                        color: event.target.value
+                      })
+                    }
                   />
                 </td>
                 <td className='p-0.5 text-center'>
