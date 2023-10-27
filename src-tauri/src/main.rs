@@ -26,18 +26,14 @@ fn main() {
   let quit = CustomMenuItem::new("quit".to_string(), "Quit");
   let close = CustomMenuItem::new("close".to_string(), "Close");
   let about = CustomMenuItem::new("about".to_string(), "About (v0.1.0)");  
-  let new = CustomMenuItem::new("new".to_string(), "New");  
-  let open = CustomMenuItem::new("open".to_string(), "Open");    
-  let save = CustomMenuItem::new("save".to_string(), "Save");  
-  let save_as = CustomMenuItem::new("save_as".to_string(), "Save As");  
+  let import = CustomMenuItem::new("import".to_string(), "Import");    
+  let export = CustomMenuItem::new("export".to_string(), "Export");  
 
   let file_submenu = Submenu::new(
     "File", 
     Menu::new()    
-    .add_item(new)
-    .add_item(open)
-    .add_item(save)
-    .add_item(save_as)
+    .add_item(import)
+    .add_item(export)
     .add_native_item(MenuItem::Separator)
     .add_item(quit.clone())
     .add_item(close)
@@ -69,15 +65,15 @@ fn main() {
         "close" => {
           event.window().close().unwrap();
         }
-        "open" => {
+        "import" => {
           event.window().emit("open", Some("open")).unwrap();
         }
-        "save" => {
-          event.window().emit("save", Some("save")).unwrap();
+        "export" => {
+          event.window().emit("export", Some("export")).unwrap();
         }
-        "save_as" => {
-          event.window().emit("save_as", Some("save_as")).unwrap();
-        }
+        "about" => {
+          event.window().emit("about", Some("about")).unwrap();
+        }      
         _ => {}
       }})
     .system_tray(system_tray)

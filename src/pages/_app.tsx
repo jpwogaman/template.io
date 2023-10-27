@@ -4,25 +4,24 @@ import { listen } from '@tauri-apps/api/event'
 import { downloadDataAsJSON } from '@/utils/exportJSON'
 import { trpc } from '@/utils/trpc'
 import { useState, useEffect } from 'react'
+import { AnimatePresence } from 'framer-motion'
+import dynamic from 'next/dynamic'
+const Modal = dynamic(() => import('@/components/modal'))
+import useModal from '@/hooks/useModal'
+
 import '@/styles/globals.css'
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   const [mounted, setMounted] = useState(false)
-
-  const saveMutation = trpc.tauriMenuEvents.save.useMutation({
-    onSuccess: (data) => {
-      downloadDataAsJSON(data)
-      saveMutation.reset()
-    },
-    onError: () => {
-      alert('There was an error submitting your request. Please try again.')
-    }
+  const { modalOpen, close, open } = useModal({
+    route: '/contact',
+    refreshAfterClose: false
   })
 
-  const saveAsMutation = trpc.tauriMenuEvents.saveAs.useMutation({
+  const exportMutation = trpc.tauriMenuEvents.export.useMutation({
     onSuccess: (data) => {
       downloadDataAsJSON(data)
-      saveAsMutation.reset()
+      exportMutation.reset()
     },
     onError: () => {
       alert('There was an error submitting your request. Please try again.')
@@ -39,7 +38,6 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       }
     })
 
-    
   const deleteAllItemsMutation = trpc.items.deleteAllItems.useMutation({
     onSuccess: () => {
       deleteAllItemsMutation.reset()
@@ -59,26 +57,14 @@ const MyApp: AppType = ({ Component, pageProps }) => {
 
   mounted &&
     listen('tauri://menu', (event) => {
-      //if (event.payload === 'quit') {
-      //  deleteAllItemsMutation.mutate()
-      //}
-      //if (event.payload === 'close') {
-      //  deleteAllItemsMutation.mutate()
-      //}
-      //if (event.payload === 'save') {
-      //  saveMutation.mutate({
-      //    event: 'tauri://menu',
-      //    payload: 'save'
-      //  })
-      //}
-      if (event.payload === 'save_as') {
-        saveAsMutation.mutate({
+      if (event.payload === 'export') {
+        exportMutation.mutate({
           event: 'tauri://menu',
-          payload: 'save_as'
+          payload: 'export'
         })
       }
 
-      if (event.payload === 'open') {
+      if (event.payload === 'import') {
         const fileInput = document.createElement('input')
         fileInput.type = 'file'
         fileInput.accept = '.json'
@@ -95,6 +81,14 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         }
         fileInput.click()
       }
+
+      if (event.payload === 'about') {
+        if (modalOpen) {
+          close()
+        } else {
+          open()
+        }
+      }
     })
 
   return (
@@ -102,7 +96,17 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       key='theme'
       attribute='class'
       defaultTheme='light'>
-      <Component {...pageProps} />
+      <AnimatePresence
+        initial={false}
+        mode='wait'>
+        {modalOpen && (
+          <Modal
+            handleClose={close}
+            text='Template.io'
+          />
+        )}
+        <Component {...pageProps} />
+      </AnimatePresence>
     </ThemeProvider>
   )
 }
