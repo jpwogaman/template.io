@@ -48,7 +48,7 @@ const TrackList: FC<TrackListProps> = ({
   })
   const updateSingleItemMutation = trpc.items.updateSingleItem.useMutation({
     onSuccess: () => {
-      //updateSingleItemMutation.reset()
+      updateSingleItemMutation.reset()
       refetch()
       refetchSelected()
     },
@@ -84,10 +84,21 @@ const TrackList: FC<TrackListProps> = ({
     layoutDataSingleId: id,
     key
   }: OnChangeHelperArgsType) => {
+    //I need to throttle this so it doesn't fire on every keypress, only when the user stops typing for a second or so.
+
     updateSingleItemMutation.mutate({
       itemId: id,
       [key]: newValue
     })
+
+    //const timer = setTimeout(() => {
+    //  updateSingleItemMutation.mutate({
+    //    itemId: id,
+    //    [key]: newValue
+    //  })
+    //}, 500)
+
+    //return () => clearTimeout(timer)
   }
 
   const trackTh = `border-[1.5px]
@@ -178,22 +189,21 @@ const TrackList: FC<TrackListProps> = ({
                     ? 'bg-zinc-200 hover:bg-zinc-500 hover:text-zinc-50 dark:bg-zinc-600 dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
                     : ''
                 )}>
-                <td className='p-0.5'>
-                  <div
-                    style={{ backgroundColor: color }}
-                    className='rounded-sm'>
+                <td>
+                  <div style={{ backgroundColor: color }}>
                     <input
                       type='color'
                       disabled={locked}
                       defaultValue={color}
                       className={tw(
                         locked ? 'cursor-not-allowed' : 'cursor-pointer',
-                        'h-[24px] rounded-sm opacity-0'
+                        'opacity-0'
                       )}
                       onChange={(event) =>
-                        updateSingleItemMutation.mutate({
-                          itemId: id,
-                          color: event.target.value
+                        onChangeHelper({
+                          newValue: event.target.value,
+                          layoutDataSingleId: id,
+                          key: 'color'
                         })
                       }
                     />
