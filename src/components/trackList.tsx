@@ -179,22 +179,25 @@ const TrackList: FC<TrackListProps> = ({
                     : ''
                 )}>
                 <td className='p-0.5'>
-                  <input
-                    type='color'
-                    disabled={locked}
-                    defaultValue={color}
+                  <div
                     style={{ backgroundColor: color }}
-                    className={tw(
-                      locked ? 'cursor-not-allowed' : 'cursor-pointer',
-                      'w-full rounded-sm'
-                    )}
-                    onChange={(event) =>
-                      updateSingleItemMutation.mutate({
-                        itemId: id,
-                        color: event.target.value
-                      })
-                    }
-                  />
+                    className='rounded-sm'>
+                    <input
+                      type='color'
+                      disabled={locked}
+                      defaultValue={color}
+                      className={tw(
+                        locked ? 'cursor-not-allowed' : 'cursor-pointer',
+                        'h-[24px] rounded-sm opacity-0'
+                      )}
+                      onChange={(event) =>
+                        updateSingleItemMutation.mutate({
+                          itemId: id,
+                          color: event.target.value
+                        })
+                      }
+                    />
+                  </div>
                 </td>
                 <td className='p-0.5 text-center'>
                   <IconBtnToggle
