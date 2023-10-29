@@ -4,7 +4,7 @@ import tw from '@/utils/tw'
 interface InputCheckBoxProps {
   id: string | undefined
   title?: string
-  defaultValue?: string
+  defaultValue?: boolean | string
   artFad?: boolean
   toggle?: boolean
   showVals?: boolean
@@ -22,7 +22,9 @@ export const InputCheckBox: FC<InputCheckBoxProps> = ({
   id,
   codeDisabled
 }) => {
-  const [isChecked, setChecked] = useState<boolean>(defaultValue === 'false')
+  const [isChecked, setChecked] = useState<boolean>(
+    typeof defaultValue === 'boolean' ? defaultValue : defaultValue === 'true'
+  )
 
   const valChange = (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
@@ -43,6 +45,7 @@ export const InputCheckBox: FC<InputCheckBoxProps> = ({
       <input
         id={id}
         type='checkbox'
+        checked={isChecked}
         disabled={codeDisabled}
         value={isChecked ? 'false' : 'true'}
         onChange={(event) => valChange(event)}

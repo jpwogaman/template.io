@@ -248,7 +248,7 @@ const TrackList: FC<TrackListProps> = ({
                   )
                 })}
                 <td className='p-0.5'>
-                  {_count?.artListTog + _count?.artListSwitch}
+                  {_count?.artListTog + _count?.artListTap}
                 </td>
                 <td className='p-0.5 text-center'>
                   <button

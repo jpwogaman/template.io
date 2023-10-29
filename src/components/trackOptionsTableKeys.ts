@@ -47,8 +47,8 @@ const TrackOptionsTableKeys = [
     ]
   },
   {
-    title: 'Articulations (Switch)',
-    label: 'artListSwitch',
+    title: 'Articulations (Tap)',
+    label: 'artListTap',
     layout: 'table',
     keys: [
       {

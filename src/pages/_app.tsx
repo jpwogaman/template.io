@@ -33,8 +33,8 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       onSuccess: () => {
         createAllItemsFromJSONMutation.reset()
       },
-      onError: () => {
-        alert('There was an error submitting your request. Please try again.')
+      onError: (error) => {
+        alert(error.message)
       }
     })
 

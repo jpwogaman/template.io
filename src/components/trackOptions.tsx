@@ -10,7 +10,7 @@ import {
 } from './inputs'
 
 import {
-  type ItemsArtListSwitch,
+  type ItemsArtListTap,
   type ItemsArtListTog,
   type ItemsFadList,
   type ItemsFullRanges
@@ -45,10 +45,10 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
         alert('There was an error submitting your request. Please try again.')
       }
     })
-  const updateSingleArtListSwitchMutation =
-    trpc.items.updateSingleArtListSwitch.useMutation({
+  const updateSingleArtListTapMutation =
+    trpc.items.updateSingleArtListTap.useMutation({
       onSuccess: () => {
-        updateSingleArtListSwitchMutation.reset()
+        updateSingleArtListTapMutation.reset()
         refetch()
       },
       onError: () => {
@@ -86,10 +86,10 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
         alert('There was an error submitting your request. Please try again.')
       }
     })
-  const createSingleArtListSwitchMutation =
-    trpc.items.createSingleArtListSwitch.useMutation({
+  const createSingleArtListTapMutation =
+    trpc.items.createSingleArtListTap.useMutation({
       onSuccess: () => {
-        createSingleArtListSwitchMutation.reset()
+        createSingleArtListTapMutation.reset()
         renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
         refetch()
       },
@@ -132,10 +132,10 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
         )
       }
     })
-  const deleteSingleArtListSwitchMutation =
-    trpc.items.deleteSingleArtListSwitch.useMutation({
+  const deleteSingleArtListTapMutation =
+    trpc.items.deleteSingleArtListTap.useMutation({
       onSuccess: () => {
-        deleteSingleArtListSwitchMutation.reset()
+        deleteSingleArtListTapMutation.reset()
         refetch()
       },
       onError: (error) => {
@@ -174,7 +174,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
   //////////////////////////////////////////
   const [trackOptionsLayouts, setTrackOptionsLayouts] = useState({
     fullRange: 'table',
-    artListSwitch: 'table',
+    artListTap: 'table',
     artListTog: 'table',
     fadList: 'table'
   })
@@ -205,14 +205,14 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
         })
       }
     }
-    if (label === 'artListSwitch') {
+    if (label === 'artListTap') {
       if (key === 'default') {
-        updateSingleArtListSwitchMutation.mutate({
+        updateSingleArtListTapMutation.mutate({
           artId: layoutDataSingleId ?? '',
           default: newValue === 'true'
         })
       } else {
-        updateSingleArtListSwitchMutation.mutate({
+        updateSingleArtListTapMutation.mutate({
           artId: layoutDataSingleId ?? '',
           [key]: newValue
         })
@@ -237,8 +237,8 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
         itemId: selectedItemId ?? ''
       })
     }
-    if (label === 'artListSwitch') {
-      createSingleArtListSwitchMutation.mutate({
+    if (label === 'artListTap') {
+      createSingleArtListTapMutation.mutate({
         itemId: selectedItemId ?? ''
       })
     }
@@ -260,8 +260,8 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
         rangeId: id
       })
     }
-    if (label === 'artListSwitch') {
-      deleteSingleArtListSwitchMutation.mutate({
+    if (label === 'artListTap') {
+      deleteSingleArtListTapMutation.mutate({
         fileItemsItemId: selectedItemId ?? '',
         artId: id
       })
@@ -300,7 +300,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
 
       {TrackOptionsTableKeys.map((layoutConfig) => {
         let layoutDataArray:
-          | ItemsArtListSwitch[]
+          | ItemsArtListTap[]
           | ItemsArtListTog[]
           | ItemsFadList[]
           | ItemsFullRanges[]
@@ -309,8 +309,8 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
         if (layoutConfig.label === 'fullRange') {
           layoutDataArray = selectedItem?.fullRange
         }
-        if (layoutConfig.label === 'artListSwitch') {
-          layoutDataArray = selectedItem?.artListSwitch
+        if (layoutConfig.label === 'artListTap') {
+          layoutDataArray = selectedItem?.artListTap
         }
         if (layoutConfig.label === 'artListTog') {
           layoutDataArray = selectedItem?.artListTog

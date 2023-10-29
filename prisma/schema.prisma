@@ -15,17 +15,17 @@ datasource db {
 }
 
 model FileItems {
-  id            String               @id @map("itemId")
-  locked        Boolean              @default(false)
-  name          String               @default("")
-  channel       Float?               @default(1)
-  baseDelay     Float?               @default(0)
-  avgDelay      Float?               @default(0)
-  color         String               @default("#71717A")
-  fullRange     ItemsFullRanges[]
-  artListTog    ItemsArtListTog[]
-  artListSwitch ItemsArtListSwitch[]
-  fadList       ItemsFadList[]
+  id         String            @id @map("itemId")
+  locked     Boolean           @default(false)
+  name       String            @default("")
+  channel    Float?            @default(1)
+  baseDelay  Float?            @default(0)
+  avgDelay   Float?            @default(0)
+  color      String            @default("#71717A")
+  fullRange  ItemsFullRanges[]
+  artListTog ItemsArtListTog[]
+  artListTap ItemsArtListTap[]
+  fadList    ItemsFadList[]
 }
 
 model ItemsFullRanges {
@@ -39,8 +39,8 @@ model ItemsFullRanges {
   fileItemsItemId String?
   //ItemsArtListTog         ItemsArtListTog?    @relation(fields: [itemsArtListTogArtId], references: [id])
   //itemsArtListTogArtId    String?
-  //ItemsArtListSwitch      ItemsArtListSwitch? @relation(fields: [itemsArtListSwitchArtId], references: [id])
-  //itemsArtListSwitchArtId String?
+  //ItemsArtListTap      ItemsArtListTap? @relation(fields: [ItemsArtListTapArtId], references: [id])
+  //ItemsArtListTapArtId String?
 }
 
 model ItemsArtListTog {
@@ -60,7 +60,7 @@ model ItemsArtListTog {
   fileItemsItemId String?
 }
 
-model ItemsArtListSwitch {
+model ItemsArtListTap {
   id         String   @id @map("artId")
   name       String?  @default("")
   toggle     Boolean  @default(false)

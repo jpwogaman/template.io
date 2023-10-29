@@ -3,7 +3,7 @@ import { createTRPCRouter, publicProcedure } from '@/server/trpc/trpc'
 
 import {
   type FileItems,
-  type ItemsArtListSwitch,
+  type ItemsArtListTap,
   type ItemsArtListTog,
   type ItemsFadList,
   type ItemsFullRanges
@@ -25,20 +25,17 @@ export const ItemsRouter = createTRPCRouter({
         color: string
         fullRange: ItemsFullRanges[]
         artListTog: ItemsArtListTog[]
-        artListSwitch: ItemsArtListSwitch[]
+        artListTap: ItemsArtListTap[]
         fadList: ItemsFadList[]
       }
 
-      const {
-        fileMetaData,
-        items
-      }: { fileMetaData: any; items: FileItemsExtended[] } = fileData
+      const { items }: { items: FileItemsExtended[] } = fileData
 
       const deleteAllItemsAndMetaData = async () => {
         await ctx.prisma.fileItems.deleteMany({})
         await ctx.prisma.itemsFullRanges.deleteMany({})
+        await ctx.prisma.itemsArtListTap.deleteMany({})
         await ctx.prisma.itemsArtListTog.deleteMany({})
-        await ctx.prisma.itemsArtListSwitch.deleteMany({})
         await ctx.prisma.itemsFadList.deleteMany({})
       }
 
@@ -51,27 +48,106 @@ export const ItemsRouter = createTRPCRouter({
             locked: item.locked,
             name: item.name,
             channel: item.channel,
-            baseDelay: item.baseDelay,
-            avgDelay: item.avgDelay,
+            baseDelay:
+              typeof item.baseDelay === 'string'
+                ? parseInt(item.baseDelay)
+                : item.baseDelay,
+            avgDelay:
+              typeof item.avgDelay === 'string'
+                ? parseInt(item.avgDelay)
+                : item.avgDelay,
             color: item.color,
             fullRange: {
               create: item.fullRange.map((range) => {
-                return range
+                //cannot map the fileItemsItemId, this is done by prisma connect
+                const newRange = {
+                  id: range.id,
+                  name: range.name,
+                  low: range.low,
+                  high: range.high,
+                  whiteKeysOnly: range.whiteKeysOnly
+                }
+
+                return newRange
+              })
+            },
+            artListTap: {
+              create: item.artListTap.map((art) => {
+                //cannot map the fileItemsItemId, this is done by prisma connect
+                const newArt = {
+                  id: art.id,
+                  name: art.name,
+                  toggle: art.toggle,
+                  codeType: art.codeType,
+                  code: art.code,
+                  on: art.on,
+                  off: art.off,
+                  default: art.default,
+                  delay: art.delay,
+                  changeType: art.changeType,
+                  ranges: art.ranges
+                }
+
+                return {
+                  ...newArt,
+                  delay:
+                    typeof newArt.delay === 'string'
+                      ? parseInt(newArt.delay)
+                      : newArt.delay,
+                  default:
+                    typeof newArt.default === 'string' ? false : newArt.default,
+                  ranges: JSON.stringify(newArt.ranges)
+                }
               })
             },
             artListTog: {
               create: item.artListTog.map((art) => {
-                return { ...art, ranges: JSON.stringify(art.ranges) }
-              })
-            },
-            artListSwitch: {
-              create: item.artListSwitch.map((art) => {
-                return { ...art, ranges: JSON.stringify(art.ranges) }
+                //cannot map the fileItemsItemId, this is done by prisma connect
+                const newArt = {
+                  id: art.id,
+                  name: art.name,
+                  toggle: art.toggle,
+                  codeType: art.codeType,
+                  code: art.code,
+                  on: art.on,
+                  off: art.off,
+                  default: art.default,
+                  delay: art.delay,
+                  changeType: art.changeType,
+                  ranges: art.ranges
+                }
+
+                return {
+                  ...newArt,
+                  delay:
+                    typeof newArt.delay === 'string'
+                      ? parseInt(newArt.delay)
+                      : newArt.delay,
+                  ranges: JSON.stringify(newArt.ranges)
+                }
               })
             },
             fadList: {
               create: item.fadList.map((fad) => {
-                return fad
+                //cannot map the fileItemsItemId, this is done by prisma connect
+                const newFad = {
+                  id: fad.id,
+                  name: fad.name,
+                  codeType: fad.codeType,
+                  code: fad.code,
+                  default: fad.default,
+                  changeType: fad.changeType
+                }
+
+                return {
+                  ...newFad,
+                  default:
+                    typeof newFad.default === 'boolean'
+                      ? null
+                      : typeof newFad.default === 'string'
+                      ? parseInt(newFad.default)
+                      : newFad.default
+                }
               })
             }
           }
@@ -83,7 +159,7 @@ export const ItemsRouter = createTRPCRouter({
       include: {
         _count: {
           select: {
-            artListSwitch: true,
+            artListTap: true,
             artListTog: true
           }
         }
@@ -93,7 +169,7 @@ export const ItemsRouter = createTRPCRouter({
   deleteAllItems: publicProcedure.mutation(async ({ ctx }) => {
     await ctx.prisma.fileItems.deleteMany({})
     await ctx.prisma.itemsFullRanges.deleteMany({})
-    await ctx.prisma.itemsArtListSwitch.deleteMany({})
+    await ctx.prisma.itemsArtListTap.deleteMany({})
     await ctx.prisma.itemsArtListTog.deleteMany({})
     await ctx.prisma.itemsFadList.deleteMany({})
     return true
@@ -135,7 +211,7 @@ export const ItemsRouter = createTRPCRouter({
             id: newItemId + '_FR_0'
           }
         },
-        artListSwitch: {
+        artListTap: {
           create: {
             id: newItemId + '_AL_0',
             ranges: JSON.stringify([newItemId + '_FR_0'])
@@ -205,7 +281,7 @@ export const ItemsRouter = createTRPCRouter({
         },
         include: {
           fullRange: true,
-          artListSwitch: true,
+          artListTap: true,
           artListTog: true,
           fadList: true
         }
@@ -241,7 +317,7 @@ export const ItemsRouter = createTRPCRouter({
           fileItemsItemId: itemId
         }
       })
-      await ctx.prisma.itemsArtListSwitch.deleteMany({
+      await ctx.prisma.itemsArtListTap.deleteMany({
         where: {
           fileItemsItemId: itemId
         }
@@ -353,7 +429,7 @@ export const ItemsRouter = createTRPCRouter({
       console.log('renumberArtList')
       const { itemId } = input
 
-      const allArtListSwitch = await ctx.prisma.itemsArtListSwitch.findMany({
+      const allArtListTap = await ctx.prisma.itemsArtListTap.findMany({
         where: {
           fileItemsItemId: itemId
         }
@@ -365,10 +441,10 @@ export const ItemsRouter = createTRPCRouter({
         }
       })
 
-      const allArtList = [...allArtListSwitch, ...allArtListTog]
+      const allArtList = [...allArtListTap, ...allArtListTog]
 
       return allArtList.map((art, index) => {
-        return ctx.prisma.itemsArtListSwitch.update({
+        return ctx.prisma.itemsArtListTap.update({
           where: {
             id: art.id
           },
@@ -381,7 +457,7 @@ export const ItemsRouter = createTRPCRouter({
     }),
 
   ////////////////////////////
-  createSingleArtListSwitch: publicProcedure
+  createSingleArtListTap: publicProcedure
     .input(
       z.object({
         itemId: z.string()
@@ -396,7 +472,7 @@ export const ItemsRouter = createTRPCRouter({
         }
       })
 
-      const lastArtSwitchNumber = await ctx.prisma.itemsArtListSwitch.count({
+      const lastArtSwitchNumber = await ctx.prisma.itemsArtListTap.count({
         where: {
           fileItemsItemId: itemId
         }
@@ -404,7 +480,7 @@ export const ItemsRouter = createTRPCRouter({
 
       const nextArtNumber = lastArtTogNumber + lastArtSwitchNumber
 
-      const newArt = await ctx.prisma.itemsArtListSwitch.create({
+      const newArt = await ctx.prisma.itemsArtListTap.create({
         data: {
           FileItems: {
             connect: {
@@ -417,7 +493,7 @@ export const ItemsRouter = createTRPCRouter({
       })
       return newArt
     }),
-  updateSingleArtListSwitch: publicProcedure
+  updateSingleArtListTap: publicProcedure
     .input(
       z.object({
         artId: z.string(),
@@ -448,32 +524,61 @@ export const ItemsRouter = createTRPCRouter({
         ranges
       } = input
 
-      const currentArtListSwitch =
-        await ctx.prisma.itemsArtListSwitch.findUnique({
-          where: {
-            id: artId
-          }
-        })
+      const currentArtListTap = await ctx.prisma.itemsArtListTap.findUnique({
+        where: {
+          id: artId
+        }
+      })
 
-      return await ctx.prisma.itemsArtListSwitch.update({
+      const updateCurrentArtListTap = await ctx.prisma.itemsArtListTap.update({
         where: {
           id: artId
         },
         data: {
-          name: name ?? currentArtListSwitch?.name,
-          toggle: toggle ?? currentArtListSwitch?.toggle,
-          codeType: codeType ?? currentArtListSwitch?.codeType,
-          code: code ? parseInt(code) : currentArtListSwitch?.code,
-          on: on ? parseInt(on) : currentArtListSwitch?.on,
-          off: off ? parseInt(off) : currentArtListSwitch?.off,
-          default: defaultCode ?? currentArtListSwitch?.default,
-          delay: delay ? parseInt(delay) : currentArtListSwitch?.delay,
-          changeType: changeType ?? currentArtListSwitch?.changeType,
-          ranges: ranges ?? currentArtListSwitch?.ranges
+          name: name ?? currentArtListTap?.name,
+          toggle: toggle ?? currentArtListTap?.toggle,
+          codeType: codeType ?? currentArtListTap?.codeType,
+          code: code ? parseInt(code) : currentArtListTap?.code,
+          on: on ? parseInt(on) : currentArtListTap?.on,
+          off: off ? parseInt(off) : currentArtListTap?.off,
+          //default: defaultCode ?? currentArtListTap?.default,
+          delay: delay ? parseInt(delay) : currentArtListTap?.delay,
+          changeType: changeType ?? currentArtListTap?.changeType,
+          ranges: ranges ?? currentArtListTap?.ranges
         }
       })
+
+      const allArtListTap = await ctx.prisma.itemsArtListTap.findMany({
+        where: {
+          fileItemsItemId: currentArtListTap?.fileItemsItemId
+        }
+      })
+
+      const onlyOneArtListTapCanBeDefault = allArtListTap.forEach((art) => {
+        if (defaultCode === true) {
+          ctx.prisma.itemsArtListTap.update({
+            where: {
+              id: art.id
+            },
+            data: {
+              default: true
+            }
+          })
+        } else {
+          ctx.prisma.itemsArtListTap.update({
+            where: {
+              id: art.id
+            },
+            data: {
+              default: false
+            }
+          })
+        }
+      })
+
+      return onlyOneArtListTapCanBeDefault
     }),
-  deleteSingleArtListSwitch: publicProcedure
+  deleteSingleArtListTap: publicProcedure
     .input(
       z.object({
         artId: z.string(),
@@ -483,17 +588,16 @@ export const ItemsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { artId, fileItemsItemId } = input
 
-      const mustHaveOneArtListSwitch =
-        await ctx.prisma.itemsArtListSwitch.count({
-          where: {
-            fileItemsItemId: fileItemsItemId
-          }
-        })
+      const mustHaveOneArtListTap = await ctx.prisma.itemsArtListTap.count({
+        where: {
+          fileItemsItemId: fileItemsItemId
+        }
+      })
 
-      if (mustHaveOneArtListSwitch <= 1) {
+      if (mustHaveOneArtListTap <= 1) {
         throw new Error('Must have at least one switch articulation')
       }
-      await ctx.prisma.itemsArtListSwitch.delete({
+      await ctx.prisma.itemsArtListTap.delete({
         where: {
           id: artId
         }
@@ -516,7 +620,7 @@ export const ItemsRouter = createTRPCRouter({
         }
       })
 
-      const lastArtSwitchNumber = await ctx.prisma.itemsArtListSwitch.count({
+      const lastArtSwitchNumber = await ctx.prisma.itemsArtListTap.count({
         where: {
           fileItemsItemId: itemId
         }
@@ -602,13 +706,13 @@ export const ItemsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { artId, fileItemsItemId } = input
 
-      const mustHaveOneArtListSwitch = await ctx.prisma.itemsArtListTog.count({
+      const mustHaveOneArtListTap = await ctx.prisma.itemsArtListTog.count({
         where: {
           fileItemsItemId: fileItemsItemId
         }
       })
 
-      if (mustHaveOneArtListSwitch <= 1) {
+      if (mustHaveOneArtListTap <= 1) {
         throw new Error('Must have at least one toggle articulation')
       }
       await ctx.prisma.itemsArtListTog.delete({

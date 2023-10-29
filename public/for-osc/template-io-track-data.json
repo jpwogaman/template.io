@@ -148,7 +148,7 @@
             },
             {
                 "title": "Articulations (Toggle)",
-                "label": "artListSwitch",
+                "label": "artListTap",
                 "layout": "table",
                 "keys": [
                     {
@@ -340,7 +340,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_0_AL_2",
                     "name": "Sustain",
@@ -463,7 +463,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_1_AL_2",
                     "name": "Sustain",
@@ -608,7 +608,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_2_AL_1",
                     "name": "Trills",
@@ -828,7 +828,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_3_AL_2",
                     "name": "Sustain",
@@ -951,7 +951,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_4_AL_2",
                     "name": "Sustain",
@@ -1096,7 +1096,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_5_AL_1",
                     "name": "Trills",
@@ -1316,7 +1316,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_6_AL_2",
                     "name": "Sustain",
@@ -1439,7 +1439,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_7_AL_2",
                     "name": "Sustain",
@@ -1584,7 +1584,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_8_AL_1",
                     "name": "Trills",
@@ -1804,7 +1804,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_9_AL_2",
                     "name": "Sustain",
@@ -1927,7 +1927,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_10_AL_2",
                     "name": "Sustain",
@@ -2072,7 +2072,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_11_AL_1",
                     "name": "Trills",
@@ -2292,7 +2292,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_12_AL_2",
                     "name": "Sustain",
@@ -2415,7 +2415,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_13_AL_2",
                     "name": "Sustain",
@@ -2560,7 +2560,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_14_AL_1",
                     "name": "Trills",
@@ -2780,7 +2780,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_15_AL_2",
                     "name": "Sustain",
@@ -2896,7 +2896,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_16_AL_2",
                     "name": "Sustain",
@@ -3012,7 +3012,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_17_AL_1",
                     "name": "Trills",
@@ -3232,7 +3232,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_18_AL_2",
                     "name": "",
@@ -3302,7 +3302,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_19_AL_1",
                     "name": "",
@@ -3420,7 +3420,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_20_AL_1",
                     "name": "",
@@ -3530,7 +3530,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_21_AL_1",
                     "name": "",
@@ -3608,7 +3608,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_22_AL_1",
                     "name": "",
@@ -3699,7 +3699,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_23_AL_1",
                     "name": "Normale",
@@ -3877,7 +3877,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_24_AL_1",
                     "name": "Whole Tone",
@@ -4068,7 +4068,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_25_AL_1",
                     "name": "Secco",
@@ -4175,7 +4175,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_26_AL_1",
                     "name": "Secco",
@@ -4252,7 +4252,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_27_AL_1",
                     "name": "Legato",
@@ -4352,7 +4352,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_28_AL_1",
                     "name": "Sustain",
@@ -4602,7 +4602,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_29_AL_1",
                     "name": "Staccato ",
@@ -4747,7 +4747,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_30_AL_1",
                     "name": "Legato",
@@ -4847,7 +4847,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_31_AL_1",
                     "name": "Sustain",
@@ -5082,7 +5082,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_32_AL_1",
                     "name": "Staccato ",
@@ -5235,7 +5235,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_33_AL_1",
                     "name": "Hits Long",
@@ -5346,7 +5346,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_34_AL_1",
                     "name": "Rolls",
@@ -5443,7 +5443,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_35_AL_1",
                     "name": "",
@@ -5513,7 +5513,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_36_AL_1",
                     "name": "",
@@ -5576,7 +5576,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_37_AL_1",
                     "name": "",
@@ -5638,7 +5638,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_38_AL_1",
                     "name": "",
@@ -5700,7 +5700,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_39_AL_1",
                     "name": "",
@@ -5762,7 +5762,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_40_AL_1",
                     "name": "",
@@ -5824,7 +5824,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_41_AL_1",
                     "name": "",
@@ -5886,7 +5886,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_42_AL_1",
                     "name": "",
@@ -5956,7 +5956,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_43_AL_1",
                     "name": "",
@@ -6019,7 +6019,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_44_AL_1",
                     "name": "",
@@ -6081,7 +6081,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_45_AL_1",
                     "name": "",
@@ -6143,7 +6143,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_46_AL_1",
                     "name": "",
@@ -6205,7 +6205,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_47_AL_1",
                     "name": "",
@@ -6267,7 +6267,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_48_AL_1",
                     "name": "",
@@ -6329,7 +6329,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_49_AL_1",
                     "name": "",
@@ -6415,7 +6415,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_50_AL_1",
                     "name": "",
@@ -6501,7 +6501,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_51_AL_1",
                     "name": "",
@@ -6587,7 +6587,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_52_AL_1",
                     "name": "Legato Slur",
@@ -6672,7 +6672,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_53_AL_1",
                     "name": "Sustain",
@@ -6862,7 +6862,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_54_AL_1",
                     "name": "Staccato",
@@ -6962,7 +6962,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_55_AL_1",
                     "name": "Legato",
@@ -7137,7 +7137,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_56_AL_1",
                     "name": "Staccato",
@@ -7237,7 +7237,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_57_AL_1",
                     "name": "",
@@ -7299,7 +7299,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_58_AL_1",
                     "name": "",
@@ -7399,7 +7399,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_59_AL_1",
                     "name": "Long",
@@ -7750,7 +7750,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_60_AL_1",
                     "name": "",
@@ -7840,7 +7840,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_61_AL_1",
                     "name": "",
@@ -7912,7 +7912,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_62_AL_1",
                     "name": "",
@@ -7982,7 +7982,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_63_AL_1",
                     "name": "",
@@ -8052,7 +8052,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_64_AL_1",
                     "name": "Legato Slur",
@@ -8167,7 +8167,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_65_AL_1",
                     "name": "Legato Slur",
@@ -8297,7 +8297,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_66_AL_2",
                     "name": "",
@@ -8398,7 +8398,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_67_AL_2",
                     "name": "Legato",
@@ -8499,7 +8499,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_68_AL_2",
                     "name": "Legato",
@@ -8600,7 +8600,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_69_AL_2",
                     "name": "",
@@ -8701,7 +8701,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_70_AL_2",
                     "name": "Legato",
@@ -8802,7 +8802,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_71_AL_2",
                     "name": "Legato",
@@ -8888,7 +8888,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_72_AL_1",
                     "name": "Sustain",
@@ -8958,7 +8958,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_73_AL_1",
                     "name": "Sustain",
@@ -9028,7 +9028,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_74_AL_1",
                     "name": "",
@@ -9098,7 +9098,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_75_AL_1",
                     "name": "Short 1/8",
@@ -9198,7 +9198,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_76_AL_1",
                     "name": "Sustain",
@@ -9283,7 +9283,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_77_AL_1",
                     "name": "Legato Slur",
@@ -9345,7 +9345,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_78_AL_1",
                     "name": "Legato Slur",
@@ -9460,7 +9460,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_79_AL_1",
                     "name": "Sustain",
@@ -9575,7 +9575,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_80_AL_1",
                     "name": "Legato Slur",
@@ -9675,7 +9675,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_81_AL_1",
                     "name": "Legato Slur",
@@ -9775,7 +9775,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_82_AL_1",
                     "name": "Sustain",
@@ -9852,7 +9852,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_83_AL_1",
                     "name": "Legato Slur",
@@ -9944,7 +9944,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_84_AL_1",
                     "name": "Legato Slur",
@@ -10044,7 +10044,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_85_AL_1",
                     "name": "Sustain",
@@ -10129,7 +10129,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_86_AL_1",
                     "name": "Legato Slur",
@@ -10207,7 +10207,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_87_AL_1",
                     "name": "",
@@ -10286,7 +10286,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_88_AL_1",
                     "name": "",
@@ -10390,7 +10390,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_89_AL_1",
                     "name": "",
@@ -10504,7 +10504,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_90_AL_1",
                     "name": "",
@@ -10571,7 +10571,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_91_AL_1",
                     "name": "",
@@ -10654,7 +10654,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_92_AL_1",
                     "name": "",
@@ -10719,7 +10719,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_93_AL_1",
                     "name": "",
@@ -10789,7 +10789,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_94_AL_1",
                     "name": "",
@@ -10852,7 +10852,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_95_AL_1",
                     "name": "",
@@ -10914,7 +10914,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_96_AL_1",
                     "name": "Staccato",
@@ -11044,7 +11044,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_97_AL_1",
                     "name": "Staccato",
@@ -11174,7 +11174,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_98_AL_1",
                     "name": "Staccato",
@@ -11274,7 +11274,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_99_AL_1",
                     "name": "Staccato",
@@ -11336,7 +11336,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_100_AL_1",
                     "name": "Staccato",
@@ -11451,7 +11451,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_101_AL_1",
                     "name": "Staccato",
@@ -11581,7 +11581,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_102_AL_1",
                     "name": "Staccato",
@@ -11711,7 +11711,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_103_AL_1",
                     "name": "Staccato",
@@ -11833,7 +11833,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_104_AL_1",
                     "name": "Staccato",
@@ -11925,7 +11925,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_105_AL_1",
                     "name": "Staccato",
@@ -12047,7 +12047,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_106_AL_1",
                     "name": "Staccato",
@@ -12177,7 +12177,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_107_AL_1",
                     "name": "Staccato",
@@ -12277,7 +12277,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_108_AL_1",
                     "name": "Staccato",
@@ -12377,7 +12377,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_109_AL_1",
                     "name": "Short 1/8",
@@ -12447,7 +12447,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_110_AL_1",
                     "name": "Short 1/8",
@@ -12547,7 +12547,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_111_AL_1",
                     "name": "Short 1/8",
@@ -12647,7 +12647,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_112_AL_1",
                     "name": "Short 1/8",
@@ -12747,7 +12747,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_113_AL_1",
                     "name": "Short 1/8",
@@ -12847,7 +12847,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_114_AL_1",
                     "name": "Short 1/8",
@@ -12917,7 +12917,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_115_AL_1",
                     "name": "",
@@ -12987,7 +12987,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_116_AL_1",
                     "name": "",
@@ -13081,7 +13081,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_117_AL_1",
                     "name": "",
@@ -13175,7 +13175,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_118_AL_1",
                     "name": "",
@@ -13245,7 +13245,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_119_AL_1",
                     "name": "",
@@ -13339,7 +13339,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_120_AL_1",
                     "name": "",
@@ -13433,7 +13433,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_121_AL_1",
                     "name": "",
@@ -13527,7 +13527,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_122_AL_1",
                     "name": "",
@@ -13621,7 +13621,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_123_AL_1",
                     "name": "",
@@ -13691,7 +13691,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_124_AL_1",
                     "name": "",
@@ -13761,7 +13761,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_125_AL_1",
                     "name": "",
@@ -13831,7 +13831,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_126_AL_1",
                     "name": "",
@@ -13925,7 +13925,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_127_AL_1",
                     "name": "",
@@ -13995,7 +13995,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_128_AL_1",
                     "name": "",
@@ -14065,7 +14065,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_129_AL_1",
                     "name": "",
@@ -14135,7 +14135,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_130_AL_1",
                     "name": "",
@@ -14229,7 +14229,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_131_AL_1",
                     "name": "",
@@ -14323,7 +14323,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_132_AL_1",
                     "name": "",
@@ -14417,7 +14417,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_133_AL_1",
                     "name": "",
@@ -14511,7 +14511,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_134_AL_1",
                     "name": "",
@@ -14605,7 +14605,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_135_AL_1",
                     "name": "",
@@ -14699,7 +14699,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_136_AL_1",
                     "name": "Chrm. Asc. 1 Oct.",
@@ -14934,7 +14934,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_137_AL_1",
                     "name": "Chrm. Asc. 1 Oct.",
@@ -15169,7 +15169,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_138_AL_1",
                     "name": "",
@@ -15261,7 +15261,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_139_AL_1",
                     "name": "Long",
@@ -15587,7 +15587,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_140_AL_1",
                     "name": "Long",
@@ -15808,7 +15808,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_141_AL_1",
                     "name": "Staccato",
@@ -15992,7 +15992,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_142_AL_1",
                     "name": "",
@@ -16078,7 +16078,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_143_AL_1",
                     "name": "",
@@ -16163,7 +16163,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_144_AL_1",
                     "name": "Main",
@@ -16373,7 +16373,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_145_AL_1",
                     "name": "Main",
@@ -16578,7 +16578,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_146_AL_1",
                     "name": "x soft",
@@ -16813,7 +16813,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_147_AL_1",
                     "name": "felt",
@@ -17003,7 +17003,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_148_AL_1",
                     "name": "",
@@ -17065,7 +17065,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_149_AL_1",
                     "name": "",
@@ -17127,7 +17127,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_150_AL_1",
                     "name": "",
@@ -17189,7 +17189,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_151_AL_1",
                     "name": "",
@@ -17251,7 +17251,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_152_AL_1",
                     "name": "",
@@ -17321,7 +17321,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_153_AL_1",
                     "name": "",
@@ -17391,7 +17391,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_154_AL_1",
                     "name": "",
@@ -17461,7 +17461,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_155_AL_1",
                     "name": "",
@@ -17531,7 +17531,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_156_AL_1",
                     "name": "",
@@ -17601,7 +17601,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_157_AL_1",
                     "name": "",
@@ -17663,7 +17663,7 @@
                     ]
                 }
             ],
-            "artListSwitch": [
+            "artListTap": [
                 {
                     "id": "T_158_AL_2",
                     "name": "",

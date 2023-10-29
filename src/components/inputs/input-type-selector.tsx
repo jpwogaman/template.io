@@ -9,7 +9,7 @@ import {
 
 import {
   type FileItems,
-  type ItemsArtListSwitch,
+  type ItemsArtListTap,
   type ItemsArtListTog,
   type ItemsFadList,
   type ItemsFullRanges
@@ -26,7 +26,7 @@ export type OnChangeHelperArgsType = {
 }
 
 export type SelectedItemType = FileItems & { fullRange: ItemsFullRanges[] } & {
-  artListSwitch: ItemsArtListSwitch[]
+  artListTap: ItemsArtListTap[]
 } & { artListTog: ItemsArtListTog[] } & { fadList: ItemsFadList[] }
 
 type InputTypeSelectorProps = {
@@ -35,10 +35,10 @@ type InputTypeSelectorProps = {
     | (typeof TrackListTableKeys)['keys'][number]
   layoutConfigLabel?: string
   layoutDataSingle?:
-    | ItemsArtListSwitch
+    | ItemsFullRanges
+    | ItemsArtListTap
     | ItemsArtListTog
     | ItemsFadList
-    | ItemsFullRanges
   onChangeHelper: ({
     newValue,
     layoutDataSingleId,
@@ -121,8 +121,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
     }
 
     const artRangeOptions =
-      layoutConfigLabel === 'artListSwitch' ||
-      layoutConfigLabel === 'artListTog'
+      layoutConfigLabel === 'artListTap' || layoutConfigLabel === 'artListTog'
     const rangeOptions = key === 'ranges' && artRangeOptions
     const stringListOfFullRangeIds = JSON.stringify(
       selectedItem?.fullRange.map((fullRange: ItemsFullRanges) =>

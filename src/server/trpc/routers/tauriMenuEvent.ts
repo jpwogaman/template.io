@@ -11,16 +11,18 @@ export const TauriMenuEvents = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx }) => {
-      const allItems = await ctx.prisma.fileItems.findMany({
+      const items = await ctx.prisma.fileItems.findMany({
         include: {
           fullRange: true,
+          artListTap: true,
           artListTog: true,
-          artListSwitch: true,
           fadList: true
         }
       })
       return {
-        allItems
+        fileMetaData: {},
+        items
       }
+      
     })
 })
