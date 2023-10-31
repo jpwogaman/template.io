@@ -33,7 +33,6 @@ export const InputCheckBox: FC<InputCheckBoxProps> = ({
       if (onChangeFunction) {
         onChangeFunction(event)
       }
-
       setChecked(!isChecked)
     }
   }

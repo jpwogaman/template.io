@@ -530,6 +530,27 @@ export const ItemsRouter = createTRPCRouter({
         }
       })
 
+      const allArtListTap = await ctx.prisma.itemsArtListTap.findMany({
+        where: {
+          fileItemsItemId: currentArtListTap?.fileItemsItemId,
+          id: {
+            not: currentArtListTap?.id
+          }
+        }
+      })
+
+      const anyArtIsDefault = allArtListTap.some((art) => {
+        return art.default === true
+      })
+
+      if (
+        currentArtListTap?.default === true &&
+        defaultCode === false &&
+        anyArtIsDefault === false
+      ) {
+        throw new Error('At least one articulation must be default')
+      }
+
       const updateCurrentArtListTap = await ctx.prisma.itemsArtListTap.update({
         where: {
           id: artId
@@ -541,42 +562,27 @@ export const ItemsRouter = createTRPCRouter({
           code: code ? parseInt(code) : currentArtListTap?.code,
           on: on ? parseInt(on) : currentArtListTap?.on,
           off: off ? parseInt(off) : currentArtListTap?.off,
-          //default: defaultCode ?? currentArtListTap?.default,
+          default: defaultCode ?? currentArtListTap?.default,
           delay: delay ? parseInt(delay) : currentArtListTap?.delay,
           changeType: changeType ?? currentArtListTap?.changeType,
           ranges: ranges ?? currentArtListTap?.ranges
         }
       })
 
-      const allArtListTap = await ctx.prisma.itemsArtListTap.findMany({
-        where: {
-          fileItemsItemId: currentArtListTap?.fileItemsItemId
-        }
-      })
-
-      const onlyOneArtListTapCanBeDefault = allArtListTap.forEach((art) => {
-        if (defaultCode === true) {
-          ctx.prisma.itemsArtListTap.update({
-            where: {
-              id: art.id
-            },
-            data: {
-              default: true
+      const changeAllArtDefaultsToFalse =
+        await ctx.prisma.itemsArtListTap.updateMany({
+          where: {
+            fileItemsItemId: currentArtListTap?.fileItemsItemId,
+            id: {
+              not: currentArtListTap?.id
             }
-          })
-        } else {
-          ctx.prisma.itemsArtListTap.update({
-            where: {
-              id: art.id
-            },
-            data: {
-              default: false
-            }
-          })
-        }
-      })
+          },
+          data: {
+            default: false
+          }
+        })
 
-      return onlyOneArtListTapCanBeDefault
+      return true
     }),
   deleteSingleArtListTap: publicProcedure
     .input(

@@ -9,6 +9,8 @@ import {
   InputTypeSelector
 } from './inputs'
 
+import { useRouter } from 'next/router'
+
 import {
   type ItemsArtListTap,
   type ItemsArtListTog,
@@ -21,9 +23,12 @@ type TrackOptionsProps = {
 }
 
 const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
+  const { reload } = useRouter()
+
   const { data: selectedItem, refetch } = trpc.items.getSingleItem.useQuery({
     itemId: selectedItemId ?? ''
   })
+
   //////////////////////////////////////////
   const renumberArtListMutation = trpc.items.renumberArtList.useMutation({
     onSuccess: () => {
@@ -50,9 +55,11 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
       onSuccess: () => {
         updateSingleArtListTapMutation.reset()
         refetch()
+        reload()
       },
-      onError: () => {
-        alert('There was an error submitting your request. Please try again.')
+      onError: (error) => {
+        alert(error.message)
+        reload()
       }
     })
   const updateSingleArtListTogMutation =
