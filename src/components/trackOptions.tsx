@@ -46,8 +46,11 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
         updateSingleFullRangeMutation.reset()
         refetch()
       },
-      onError: () => {
-        alert('There was an error submitting your request. Please try again.')
+      onError: (error) => {
+        alert(
+          error.message ??
+            'There was an error submitting your request. Please try again.'
+        )
       }
     })
   const updateSingleArtListTapMutation =
@@ -55,11 +58,12 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
       onSuccess: () => {
         updateSingleArtListTapMutation.reset()
         refetch()
-        reload()
       },
       onError: (error) => {
-        alert(error.message)
-        reload()
+        alert(
+          error.message ??
+            'There was an error submitting your request. Please try again.'
+        )
       }
     })
   const updateSingleArtListTogMutation =
@@ -68,8 +72,11 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
         updateSingleArtListTogMutation.reset()
         refetch()
       },
-      onError: () => {
-        alert('There was an error submitting your request. Please try again.')
+      onError: (error) => {
+        alert(
+          error.message ??
+            'There was an error submitting your request. Please try again.'
+        )
       }
     })
   const updateSingleFadListMutation =
@@ -78,8 +85,11 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
         updateSingleFadListMutation.reset()
         refetch()
       },
-      onError: () => {
-        alert('There was an error submitting your request. Please try again.')
+      onError: (error) => {
+        alert(
+          error.message ??
+            'There was an error submitting your request. Please try again.'
+        )
       }
     })
   //////////////////////////////////////////
@@ -89,8 +99,11 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
         createSingleFullRangeMutation.reset()
         refetch()
       },
-      onError: () => {
-        alert('There was an error submitting your request. Please try again.')
+      onError: (error) => {
+        alert(
+          error.message ??
+            'There was an error submitting your request. Please try again.'
+        )
       }
     })
   const createSingleArtListTapMutation =
@@ -100,8 +113,11 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
         renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
         refetch()
       },
-      onError: () => {
-        alert('There was an error submitting your request. Please try again.')
+      onError: (error) => {
+        alert(
+          error.message ??
+            'There was an error submitting your request. Please try again.'
+        )
       }
     })
   const createSingleArtListTogMutation =
@@ -111,8 +127,11 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
         renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
         refetch()
       },
-      onError: () => {
-        alert('There was an error submitting your request. Please try again.')
+      onError: (error) => {
+        alert(
+          error.message ??
+            'There was an error submitting your request. Please try again.'
+        )
       }
     })
   const createSingleFadListMutation =
@@ -121,8 +140,11 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
         createSingleFadListMutation.reset()
         refetch()
       },
-      onError: () => {
-        alert('There was an error submitting your request. Please try again.')
+      onError: (error) => {
+        alert(
+          error.message ??
+            'There was an error submitting your request. Please try again.'
+        )
       }
     })
   //////////////////////////////////////////
@@ -134,7 +156,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
       },
       onError: (error) => {
         alert(
-          error ??
+          error.message ??
             'There was an error submitting your request. Please try again.'
         )
       }
@@ -147,7 +169,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
       },
       onError: (error) => {
         alert(
-          error ??
+          error.message ??
             'There was an error submitting your request. Please try again.'
         )
       }
@@ -160,7 +182,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
       },
       onError: (error) => {
         alert(
-          error ??
+          error.message ??
             'There was an error submitting your request. Please try again.'
         )
       }
@@ -173,12 +195,13 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
       },
       onError: (error) => {
         alert(
-          error ??
+          error.message ??
             'There was an error submitting your request. Please try again.'
         )
       }
     })
   //////////////////////////////////////////
+  //This could be a user-setting in local storage, but for now, it's hard-coded.
   const [trackOptionsLayouts, setTrackOptionsLayouts] = useState({
     fullRange: 'table',
     artListTap: 'table',
@@ -351,7 +374,9 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
               />
             </div>
             {table && (
-              <table className='w-full table-fixed border-separate border-spacing-0 text-left text-xs '>
+              <table
+                id={'table_' + layoutConfig.label}
+                className='w-full table-fixed border-separate border-spacing-0 text-left text-xs '>
                 <thead>
                   <tr>
                     {layoutConfig.keys.map((key) => {
@@ -418,7 +443,9 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
               </table>
             )}
             {!table && (
-              <div className='flex gap-1 overflow-x-scroll'>
+              <div
+                id={'card_' + layoutConfig.label}
+                className='flex gap-1 overflow-x-scroll'>
                 {layoutDataArray?.map((layoutDataSingle) => {
                   const layoutDataSingleId = layoutDataSingle.id
                   return (
