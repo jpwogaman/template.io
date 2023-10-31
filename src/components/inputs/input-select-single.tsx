@@ -1,26 +1,17 @@
-import { type FC, type ChangeEvent, type ReactNode, useState } from 'react'
-import { selectArrays } from './index'
+import { type FC, type ChangeEvent, useState } from 'react'
+import { selectArrays, type InputComponentProps } from './index'
 import tw from '@/utils/tw'
 
-interface InputSelectProps {
-  id: string | undefined
-  options: string | number
-  codeDisabled?: boolean
-  onChangeFunction?: (
-    event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
-  ) => void | undefined
-  children?: ReactNode
-  defaultValue?: string
-}
-
-export const InputSelectSingle: FC<InputSelectProps> = ({
-  onChangeFunction,
-  codeDisabled,
+export const InputSelectSingle: FC<InputComponentProps> = ({
   id,
+  codeDisabled,
+  defaultValue,
   options,
-  defaultValue
+  onChangeFunction
 }) => {
-  const [value, setVal] = useState<string | number>(defaultValue ?? '')
+  const [value, setVal] = useState<string | number>(
+    (defaultValue as unknown as string | number) ?? ''
+  )
 
   let inputSelectOptionElements:
     | React.JSX.Element

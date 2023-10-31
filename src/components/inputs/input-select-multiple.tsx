@@ -1,27 +1,17 @@
-import { type FC, type ChangeEvent, type ReactNode, useState } from 'react'
-import { selectArrays } from './index'
+import { type FC, type ChangeEvent, useState } from 'react'
+import { selectArrays, type InputComponentProps } from './index'
 import tw from '@/utils/tw'
 
-interface InputSelectMultipleProps {
-  id: string | undefined
-  options: string | number
-  codeDisabled?: boolean
-  onChangeFunction?: (
-    event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
-    //| React.MouseEvent<HTMLOptionElement, MouseEvent>
-  ) => void | undefined
-  children?: ReactNode
-  defaultValue: string
-}
-
-export const InputSelectMultiple: FC<InputSelectMultipleProps> = ({
-  onChangeFunction,
-  codeDisabled,
+export const InputSelectMultiple: FC<InputComponentProps> = ({
   id,
+  codeDisabled,
+  defaultValue,
   options,
-  defaultValue
+  onChangeFunction
 }) => {
-  const [value, setValue] = useState<string[]>(JSON.parse(defaultValue) ?? [])
+  const [value, setValue] = useState<string[]>(
+    JSON.parse(defaultValue as unknown as string) ?? []
+  )
 
   let inputSelectOptionElements:
     | React.JSX.Element

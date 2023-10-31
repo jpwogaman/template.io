@@ -1,26 +1,12 @@
-import { type FC, type ChangeEvent, type ReactNode, useState } from 'react'
+import { type FC, type ChangeEvent, useState } from 'react'
+import { type InputComponentProps } from './index'
 import tw from '@/utils/tw'
 
-interface InputCheckBoxProps {
-  id: string | undefined
-  title?: string
-  defaultValue?: boolean | string
-  artFad?: boolean
-  toggle?: boolean
-  showVals?: boolean
-  codeDisabled?: boolean
-  children?: ReactNode
-  onChangeFunction?: (
-    event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
-  ) => void | undefined
-}
-
-export const InputCheckBox: FC<InputCheckBoxProps> = ({
-  onChangeFunction,
-  title,
-  defaultValue,
+export const InputCheckBox: FC<InputComponentProps> = ({
   id,
-  codeDisabled
+  codeDisabled,
+  defaultValue,
+  onChangeFunction
 }) => {
   const [isChecked, setChecked] = useState<boolean>(
     typeof defaultValue === 'boolean' ? defaultValue : defaultValue === 'true'
@@ -29,12 +15,10 @@ export const InputCheckBox: FC<InputCheckBoxProps> = ({
   const valChange = (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
-    if (!codeDisabled) {
-      if (onChangeFunction) {
-        onChangeFunction(event)
-      }
-      setChecked(!isChecked)
-    }
+    if (codeDisabled) return
+    if (!onChangeFunction) return
+    onChangeFunction(event)
+    setChecked(!isChecked)
   }
   return (
     <label
@@ -44,7 +28,8 @@ export const InputCheckBox: FC<InputCheckBoxProps> = ({
       <input
         id={id}
         type='checkbox'
-        checked={isChecked}
+        defaultChecked={isChecked}
+        //checked={isChecked}
         disabled={codeDisabled}
         value={isChecked ? 'false' : 'true'}
         onChange={(event) => valChange(event)}

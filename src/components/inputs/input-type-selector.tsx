@@ -1,4 +1,4 @@
-import { type ChangeEvent, type FC } from 'react'
+import { ReactNode, type ChangeEvent, type FC } from 'react'
 import {
   InputText,
   InputSelectSingle,
@@ -46,6 +46,20 @@ type InputTypeSelectorProps = {
     label
   }: OnChangeHelperArgsType) => void | undefined
   selectedItem?: SelectedItemType
+}
+
+export type InputComponentProps = {
+  id: string
+  toggle?: boolean
+  codeDisabled?: boolean
+  defaultValue?: string | number | boolean
+  placeholder?: string | number
+  options?: string
+  children?: ReactNode
+  textTypeValidator: string
+  onChangeFunction: (
+    event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
+  ) => void | undefined
 }
 
 export const InputTypeSelector: FC<InputTypeSelectorProps> = ({

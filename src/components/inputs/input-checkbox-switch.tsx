@@ -1,35 +1,15 @@
-import { type FC, type ChangeEvent, type ReactNode, useState } from 'react'
-import { selectArrays } from './index'
+import { type FC, type ChangeEvent, useState } from 'react'
+import { selectArrays, type InputComponentProps } from './index'
 import tw from '@/utils/tw'
 
-interface InputCheckBoxSwitchProps {
-  id: string | undefined
-  title?: string
-  defaultValue?: string
-  codeDisabled?: boolean
-  options?: string | number
-  artFad?: boolean
-  toggle?: boolean
-  showVals?: boolean
-  children?: ReactNode
-  onChangeFunction?: (
-    event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
-  ) => void | undefined
-}
-
-export const InputCheckBoxSwitch: FC<InputCheckBoxSwitchProps> = ({
-  onChangeFunction,
-  artFad,
-  toggle,
-  //showVals,
-  options,
-  title,
-  defaultValue,
+export const InputCheckBoxSwitch: FC<InputComponentProps> = ({
+  id,
   codeDisabled,
-  id
+  defaultValue,
+  options,
+  onChangeFunction
 }) => {
   const [isChecked, setChecked] = useState<boolean>(defaultValue === 'b')
-  const showVals = false
   let inputSelectOptionElements: string[] = ['a', 'b']
 
   for (const array in selectArrays) {
@@ -53,51 +33,8 @@ export const InputCheckBoxSwitch: FC<InputCheckBoxSwitchProps> = ({
     }
   }
 
-  let val1SpanTitle =
-    'the DEFAULT value relates to the CODE itself (i.e. DEFAULT = CC11)'
-  let val2SpanTitle =
-    "the DEFAULT value relates to the CODE's second Value (i.e. CODE = C#3, DEFAULT = Velocity 20)"
-
-  if (artFad && toggle) {
-    val1SpanTitle =
-      'the ON and OFF values relate to the CODE itself (i.e. ON = CC18, OFF = CC35)'
-    val2SpanTitle =
-      "the ON and OFF values relate to the CODE's second Value (i.e. CODE = C#3, ON = Velocity 20, OFF = Velocity 21)"
-  }
-
-  if (artFad && !toggle) {
-    val1SpanTitle = 'the ON value relates to the CODE itself (i.e. ON = CC18)'
-    val2SpanTitle =
-      "the ON value relates to the CODE's second Value (i.e. CODE = C#3, ON = Velocity 20)"
-  }
-
-  const valSpan1 = (
-    <span
-      title={val1SpanTitle}
-      className={
-        isChecked
-          ? 'cursor-default text-zinc-400 transition-colors dark:text-zinc-500'
-          : 'cursor-default transition-colors'
-      }>
-      {a}
-    </span>
-  )
-
-  const valSpan2 = (
-    <span
-      title={val2SpanTitle}
-      className={
-        !isChecked
-          ? 'cursor-default  text-zinc-400 transition-colors dark:text-zinc-500'
-          : 'cursor-default transition-colors'
-      }>
-      {b}
-    </span>
-  )
-
   return (
     <div className='flex items-center justify-evenly'>
-      {showVals ? valSpan1 : null}
       <label
         htmlFor={id}
         title={id + '_currentValue: ' + (isChecked ? b : a)}
@@ -119,7 +56,6 @@ export const InputCheckBoxSwitch: FC<InputCheckBoxSwitchProps> = ({
           )}
         />
       </label>
-      {showVals ? valSpan2 : null}
     </div>
   )
 }
