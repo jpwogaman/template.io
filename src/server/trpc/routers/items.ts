@@ -518,7 +518,7 @@ export const ItemsRouter = createTRPCRouter({
         code,
         on,
         off,
-        default: defaultCode,
+        default: inputDefaultCode,
         delay,
         changeType,
         ranges
@@ -530,59 +530,69 @@ export const ItemsRouter = createTRPCRouter({
         }
       })
 
-      const allArtListTap = await ctx.prisma.itemsArtListTap.findMany({
-        where: {
-          fileItemsItemId: currentArtListTap?.fileItemsItemId,
-          id: {
-            not: currentArtListTap?.id
+      if (inputDefaultCode === undefined) {
+        return await ctx.prisma.itemsArtListTap.update({
+          where: {
+            id: artId
+          },
+          data: {
+            name: name ?? currentArtListTap?.name,
+            toggle: toggle ?? currentArtListTap?.toggle,
+            codeType: codeType ?? currentArtListTap?.codeType,
+            code: code ? parseInt(code) : currentArtListTap?.code,
+            on: on ? parseInt(on) : currentArtListTap?.on,
+            off: off ? parseInt(off) : currentArtListTap?.off,
+            delay: delay ? parseInt(delay) : currentArtListTap?.delay,
+            changeType: changeType ?? currentArtListTap?.changeType,
+            ranges: ranges ?? currentArtListTap?.ranges
           }
-        }
-      })
-
-      const anyArtIsDefault = allArtListTap.some((art) => {
-        return art.default === true
-      })
-
-      if (
-        currentArtListTap?.default === true &&
-        defaultCode === false &&
-        anyArtIsDefault === false
-      ) {
-        throw new Error('At least one articulation must be default')
+        })
       }
 
-      const updateCurrentArtListTap = await ctx.prisma.itemsArtListTap.update({
-        where: {
-          id: artId
-        },
-        data: {
-          name: name ?? currentArtListTap?.name,
-          toggle: toggle ?? currentArtListTap?.toggle,
-          codeType: codeType ?? currentArtListTap?.codeType,
-          code: code ? parseInt(code) : currentArtListTap?.code,
-          on: on ? parseInt(on) : currentArtListTap?.on,
-          off: off ? parseInt(off) : currentArtListTap?.off,
-          default: defaultCode ?? currentArtListTap?.default,
-          delay: delay ? parseInt(delay) : currentArtListTap?.delay,
-          changeType: changeType ?? currentArtListTap?.changeType,
-          ranges: ranges ?? currentArtListTap?.ranges
-        }
-      })
-
-      const changeAllArtDefaultsToFalse =
-        await ctx.prisma.itemsArtListTap.updateMany({
+      const anyArtIsDefault = await ctx.prisma.itemsArtListTap
+        .findMany({
           where: {
             fileItemsItemId: currentArtListTap?.fileItemsItemId,
             id: {
               not: currentArtListTap?.id
             }
-          },
-          data: {
-            default: false
           }
         })
+        .then((artList) => {
+          return artList.some((art) => {
+            return art.default === true
+          })
+        })
 
-      return true
+      if (
+        currentArtListTap?.default &&
+        inputDefaultCode === false &&
+        !anyArtIsDefault
+      ) {
+        throw new Error('At least one articulation must be default')
+      }
+
+      await ctx.prisma.itemsArtListTap.update({
+        where: {
+          id: artId
+        },
+        data: {
+          default: true
+        }
+      })
+      await ctx.prisma.itemsArtListTap.updateMany({
+        where: {
+          fileItemsItemId: currentArtListTap?.fileItemsItemId,
+          id: {
+            not: currentArtListTap?.id
+          }
+        },
+        data: {
+          default: false
+        }
+      })
+
+      return 'reload'
     }),
   deleteSingleArtListTap: publicProcedure
     .input(

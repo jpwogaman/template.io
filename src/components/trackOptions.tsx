@@ -55,15 +55,20 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
     })
   const updateSingleArtListTapMutation =
     trpc.items.updateSingleArtListTap.useMutation({
-      onSuccess: () => {
+      onSuccess: (data) => {
         updateSingleArtListTapMutation.reset()
         refetch()
+
+        if (data === 'reload') {
+          reload()
+        }
       },
       onError: (error) => {
         alert(
           error.message ??
             'There was an error submitting your request. Please try again.'
         )
+        reload()
       }
     })
   const updateSingleArtListTogMutation =
