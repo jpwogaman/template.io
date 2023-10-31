@@ -197,7 +197,7 @@ const TrackList: FC<TrackListProps> = ({
                       defaultValue={color}
                       className={tw(
                         locked ? 'cursor-not-allowed' : 'cursor-pointer',
-                        'opacity-0'
+                        'w-full opacity-0'
                       )}
                       onChange={(event) =>
                         onChangeHelper({
