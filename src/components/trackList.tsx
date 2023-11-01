@@ -193,6 +193,7 @@ const TrackList: FC<TrackListProps> = ({
                   <div style={{ backgroundColor: color }}>
                     <input
                       type='color'
+                      title={selectedItemId + '_color_currentValue: ' + color}
                       disabled={locked}
                       defaultValue={color}
                       className={tw(
@@ -212,8 +213,8 @@ const TrackList: FC<TrackListProps> = ({
                 <td className='p-0.5 text-center'>
                   <IconBtnToggle
                     classes={''}
-                    titleA='Lock Item'
-                    titleB='Unlock Item'
+                    titleA={selectedItemId + '_locked_currentValue: ' + locked}
+                    titleB={selectedItemId + '_locked_currentValue: ' + locked}
                     id='lockItem'
                     a='fa-solid fa-lock-open'
                     b='fa-solid fa-lock'

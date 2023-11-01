@@ -130,11 +130,13 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
         {!input && (
           <p
             title={
-              selectedItem.id +
-              '_' +
-              key +
-              '_currentValue: ' +
-              `${selectedItem[key as 'id']}`
+              key === 'id'
+                ? selectedItem.id
+                : selectedItem.id +
+                  '_' +
+                  key +
+                  '_currentValue: ' +
+                  `${selectedItem[key as 'id']}`
             }
             className={tw(
               'cursor-default overflow-hidden p-1',
@@ -164,9 +166,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
       layoutConfigLabel === 'artListTap' || layoutConfigLabel === 'artListTog'
     const rangeOptions = key === 'ranges' && artRangeOptions
     const stringListOfFullRangeIds = JSON.stringify(
-      selectedItem?.fullRange.map((fullRange: ItemsFullRanges) =>
-        shortenedSubComponentId(fullRange.id)
-      )
+      selectedItem?.fullRange.map((fullRange: ItemsFullRanges) => fullRange.id)
     )
 
     const thisArtTap = artTapIndividualComponentLocked?.find(
@@ -230,11 +230,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
       <>
         {!input && (
           <p
-            title={
-              layoutDataSingle.id +
-              '_currentValue: ' +
-              `${shortenedSubComponentId(layoutDataSingle[key as 'id'])}`
-            }
+            title={layoutDataSingle.id}
             className='cursor-default overflow-hidden p-1'>
             {shortenedSubComponentId(layoutDataSingle[key as 'id'])}
           </p>

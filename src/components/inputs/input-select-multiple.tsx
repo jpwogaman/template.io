@@ -13,6 +13,12 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
     JSON.parse(defaultValue as unknown as string) ?? []
   )
 
+  const shortenedSubComponentId = (initialId: string) => {
+    return `${initialId.split('_')[2]}_${
+      parseInt(initialId.split('_')[3] as string) + 1
+    }`
+  }
+
   let inputSelectOptionElements:
     | React.JSX.Element
     | string[]
@@ -69,7 +75,7 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
               target: { ...event.target, value: name }
             } as unknown as ChangeEvent<HTMLSelectElement>)
           }>
-          {name}
+          {shortenedSubComponentId(name)}
         </li>
       ))}
     </>

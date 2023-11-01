@@ -30,128 +30,124 @@ export const ItemsRouter = createTRPCRouter({
 
       const { items }: { items: FileItemsExtended[] } = fileData
 
-      const deleteAllItemsAndMetaData = async () => {
         await ctx.prisma.fileItems.deleteMany({})
         await ctx.prisma.itemsFullRanges.deleteMany({})
         await ctx.prisma.itemsArtListTap.deleteMany({})
         await ctx.prisma.itemsArtListTog.deleteMany({})
         await ctx.prisma.itemsFadList.deleteMany({})
-      }
 
-      deleteAllItemsAndMetaData()
+        for (const item of items) {
+          await ctx.prisma.fileItems.create({
+            data: {
+              id: item.id,
+              locked: item.locked,
+              name: item.name,
+              channel: item.channel,
+              baseDelay:
+                typeof item.baseDelay === 'string'
+                  ? parseInt(item.baseDelay)
+                  : item.baseDelay,
+              avgDelay:
+                typeof item.avgDelay === 'string'
+                  ? parseInt(item.avgDelay)
+                  : item.avgDelay,
+              color: item.color,
+              fullRange: {
+                create: item.fullRange.map((range) => {
+                  //cannot map the fileItemsItemId, this is done by prisma connect
+                  const newRange = {
+                    id: range.id,
+                    name: range.name,
+                    low: range.low,
+                    high: range.high,
+                    whiteKeysOnly: range.whiteKeysOnly
+                  }
 
-      for (const item of items) {
-        await ctx.prisma.fileItems.create({
-          data: {
-            id: item.id,
-            locked: item.locked,
-            name: item.name,
-            channel: item.channel,
-            baseDelay:
-              typeof item.baseDelay === 'string'
-                ? parseInt(item.baseDelay)
-                : item.baseDelay,
-            avgDelay:
-              typeof item.avgDelay === 'string'
-                ? parseInt(item.avgDelay)
-                : item.avgDelay,
-            color: item.color,
-            fullRange: {
-              create: item.fullRange.map((range) => {
-                //cannot map the fileItemsItemId, this is done by prisma connect
-                const newRange = {
-                  id: range.id,
-                  name: range.name,
-                  low: range.low,
-                  high: range.high,
-                  whiteKeysOnly: range.whiteKeysOnly
-                }
+                  return newRange
+                })
+              },
+              artListTap: {
+                create: item.artListTap.map((art) => {
+                  //cannot map the fileItemsItemId, this is done by prisma connect
+                  const newArt = {
+                    id: art.id,
+                    name: art.name,
+                    toggle: art.toggle,
+                    codeType: art.codeType,
+                    code: art.code,
+                    on: art.on,
+                    off: art.off,
+                    default: art.default,
+                    delay: art.delay,
+                    changeType: art.changeType,
+                    ranges: art.ranges
+                  }
 
-                return newRange
-              })
-            },
-            artListTap: {
-              create: item.artListTap.map((art) => {
-                //cannot map the fileItemsItemId, this is done by prisma connect
-                const newArt = {
-                  id: art.id,
-                  name: art.name,
-                  toggle: art.toggle,
-                  codeType: art.codeType,
-                  code: art.code,
-                  on: art.on,
-                  off: art.off,
-                  default: art.default,
-                  delay: art.delay,
-                  changeType: art.changeType,
-                  ranges: art.ranges
-                }
+                  return {
+                    ...newArt,
+                    delay:
+                      typeof newArt.delay === 'string'
+                        ? parseInt(newArt.delay)
+                        : newArt.delay,
+                    default:
+                      typeof newArt.default === 'string'
+                        ? false
+                        : newArt.default
+                  }
+                })
+              },
+              artListTog: {
+                create: item.artListTog.map((art) => {
+                  //cannot map the fileItemsItemId, this is done by prisma connect
+                  const newArt = {
+                    id: art.id,
+                    name: art.name,
+                    toggle: art.toggle,
+                    codeType: art.codeType,
+                    code: art.code,
+                    on: art.on,
+                    off: art.off,
+                    default: art.default,
+                    delay: art.delay,
+                    changeType: art.changeType,
+                    ranges: art.ranges
+                  }
 
-                return {
-                  ...newArt,
-                  delay:
-                    typeof newArt.delay === 'string'
-                      ? parseInt(newArt.delay)
-                      : newArt.delay,
-                  default:
-                    typeof newArt.default === 'string' ? false : newArt.default,
-                  ranges: JSON.stringify(newArt.ranges)
-                }
-              })
-            },
-            artListTog: {
-              create: item.artListTog.map((art) => {
-                //cannot map the fileItemsItemId, this is done by prisma connect
-                const newArt = {
-                  id: art.id,
-                  name: art.name,
-                  toggle: art.toggle,
-                  codeType: art.codeType,
-                  code: art.code,
-                  on: art.on,
-                  off: art.off,
-                  default: art.default,
-                  delay: art.delay,
-                  changeType: art.changeType,
-                  ranges: art.ranges
-                }
+                  return {
+                    ...newArt,
+                    delay:
+                      typeof newArt.delay === 'string'
+                        ? parseInt(newArt.delay)
+                        : newArt.delay
+                  }
+                })
+              },
+              fadList: {
+                create: item.fadList.map((fad) => {
+                  //cannot map the fileItemsItemId, this is done by prisma connect
+                  const newFad = {
+                    id: fad.id,
+                    name: fad.name,
+                    codeType: fad.codeType,
+                    code: fad.code,
+                    default: fad.default,
+                    changeType: fad.changeType
+                  }
 
-                return {
-                  ...newArt,
-                  delay:
-                    typeof newArt.delay === 'string'
-                      ? parseInt(newArt.delay)
-                      : newArt.delay,
-                  ranges: JSON.stringify(newArt.ranges)
-                }
-              })
-            },
-            fadList: {
-              create: item.fadList.map((fad) => {
-                //cannot map the fileItemsItemId, this is done by prisma connect
-                const newFad = {
-                  id: fad.id,
-                  name: fad.name,
-                  codeType: fad.codeType,
-                  code: fad.code,
-                  default: fad.default,
-                  changeType: fad.changeType
-                }
-
-                return {
-                  ...newFad,
-                  default:
-                    typeof newFad.default === 'boolean'
-                      ? null
-                      : typeof newFad.default === 'string'
-                      ? parseInt(newFad.default)
-                      : newFad.default
-                }
-              })
+                  return {
+                    ...newFad,
+                    default:
+                      typeof newFad.default === 'boolean'
+                        ? null
+                        : typeof newFad.default === 'string'
+                        ? parseInt(newFad.default)
+                        : newFad.default
+                  }
+                })
+              }
             }
-          }
-        })
-      }
+          })
+        }
     }),
   getAllItems: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.fileItems.findMany({
