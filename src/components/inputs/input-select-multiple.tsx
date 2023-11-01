@@ -1,4 +1,4 @@
-import { type FC, type ChangeEvent, useState } from 'react'
+import { type FC, type ChangeEvent } from 'react'
 import { selectArrays, type InputComponentProps } from './index'
 import tw from '@/utils/tw'
 
@@ -9,9 +9,7 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
   options,
   onChangeFunction
 }) => {
-  const [value, setValue] = useState<string[]>(
-    JSON.parse(defaultValue as unknown as string) ?? []
-  )
+  const value = JSON.parse(defaultValue as unknown as string)
 
   const shortenedSubComponentId = (initialId: string) => {
     return `${initialId.split('_')[2]}_${
@@ -29,28 +27,24 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
     const newValueIsAlreadySelected = value.includes(event.target.value)
-    const newValueFiltered = value.filter((val) => val !== event.target.value)
+    const newValueFiltered = value.filter(
+      (val: string) => val !== event.target.value
+    )
 
+    if (!onChangeFunction) return
     if (newValueIsAlreadySelected) {
-      setValue(newValueFiltered)
-
-      if (onChangeFunction) {
-        onChangeFunction({
-          ...event,
-          target: { ...event.target, value: JSON.stringify(newValueFiltered) }
-        })
-      }
+      onChangeFunction({
+        ...event,
+        target: { ...event.target, value: JSON.stringify(newValueFiltered) }
+      })
     } else {
-      setValue([...value, event.target.value])
-      if (onChangeFunction) {
-        onChangeFunction({
-          ...event,
-          target: {
-            ...event.target,
-            value: JSON.stringify([...value, event.target.value])
-          }
-        })
-      }
+      onChangeFunction({
+        ...event,
+        target: {
+          ...event.target,
+          value: JSON.stringify([...value, event.target.value])
+        }
+      })
     }
   }
 
@@ -85,7 +79,7 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
     <ul
       id={id}
       className={tw(
-        'w-full overflow-x-hidden overflow-y-scroll bg-inherit p-[4.5px]  outline-offset-4 outline-green-600 focus:bg-white focus:text-zinc-900 dark:outline-green-800',
+        'w-full overflow-x-hidden bg-inherit p-[4.5px] outline-offset-4 outline-green-600 focus:bg-white focus:text-zinc-900 dark:outline-green-800',
         codeDisabled ? 'cursor-not-allowed text-gray-400' : 'cursor-pointer'
       )}>
       {inputSelectOptionElements}

@@ -62,6 +62,20 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
     }
   ])
 
+  const [artTapRanges, setArtTapRanges] = useState([
+    {
+      id: selectedItemId + 'AL_0',
+      ranges: `[${selectedItemId} + 'FR_0',]`
+    }
+  ])
+
+  const [artTogRanges, setArtTogRanges] = useState([
+    {
+      id: selectedItemId + 'AL_1',
+      ranges: `[${selectedItemId} + 'FR_0',]`
+    }
+  ])
+
   useEffect(() => {
     setArtTapIndividualComponentLocked(
       allArtTaps?.map((artTap) => {
@@ -81,6 +95,14 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
         }
       })
     )
+    setArtTapRanges(
+      allArtTaps?.map((artTap) => {
+        return {
+          id: artTap.id,
+          ranges: artTap.ranges ?? '[]'
+        }
+      })
+    )
   }, [allArtTaps])
 
   useEffect(() => {
@@ -90,6 +112,14 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
         return {
           id: artTog.id,
           code: V1
+        }
+      })
+    )
+    setArtTogRanges(
+      allArtTogs?.map((artTog) => {
+        return {
+          id: artTog.id,
+          ranges: artTog.ranges ?? '[]'
         }
       })
     )

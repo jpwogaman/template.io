@@ -170,6 +170,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
     const artRangeOptions =
       layoutConfigLabel === 'artListTap' || layoutConfigLabel === 'artListTog'
     const rangeOptions = key === 'ranges' && artRangeOptions
+
     const stringListOfFullRangeIds = JSON.stringify(
       selectedItem?.fullRange.map((fullRange: ItemsFullRanges) => fullRange.id)
     )
