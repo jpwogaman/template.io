@@ -8,7 +8,7 @@ import { useTheme } from 'next-themes'
 
 const Index: NextPage = () => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>('T_0')
-  const { setTheme } = useTheme()
+  const { setTheme, resolvedTheme } = useTheme()
 
   const { refetch: allRefetch, data } = trpc.items.getAllItems.useQuery()
   const { refetch: selectedRefetch } = trpc.items.getSingleItem.useQuery({
@@ -59,7 +59,7 @@ const Index: NextPage = () => {
               id='themeChange'
               a='fa-solid fa-circle-half-stroke fa-rotate-180'
               b='fa-solid fa-circle-half-stroke'
-              defaultIcon='a'
+              defaultIcon={resolvedTheme === 'light' ? 'a' : 'b'}
               onToggleA={() => setTheme('dark')}
               onToggleB={() => setTheme('light')}
             />
