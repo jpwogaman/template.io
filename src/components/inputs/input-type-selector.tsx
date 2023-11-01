@@ -196,15 +196,6 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
     const artTapDefaultHelper =
       layoutConfigLabel === 'artListTap' && key === 'default'
 
-    if (artTapDefaultHelper) {
-      console.log('artTapOneDefaultOnly2', artTapOneDefaultOnly)
-      console.log(
-        layoutDataSingle.id,
-        'artTapDefaultHelper',
-        thisArtTapDefault?.default
-      )
-    }
-
     const checkBoxSwitchValueHelper = () => {
       if (layoutDataSingle[key as 'id'] === 'Value 2') {
         return 'b'
