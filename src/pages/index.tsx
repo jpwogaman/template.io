@@ -26,6 +26,16 @@ const Index: NextPage = () => {
       alert('There was an error submitting your request. Please try again.')
     }
   })
+  const renumberAllItemsMutation = trpc.items.renumberAllItems.useMutation({
+    onSuccess: () => {
+      renumberAllItemsMutation.reset()
+      selectedRefetch()
+      allRefetch()
+    },
+    onError: () => {
+      alert('There was an error submitting your request. Please try again.')
+    }
+  })
   const createSingleItemMutation = trpc.items.createSingleItem.useMutation({
     onSuccess: () => {
       createSingleItemMutation.reset()
@@ -65,6 +75,11 @@ const Index: NextPage = () => {
                 renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
               }>
               Renumber Arts
+            </button>
+            <button
+              className='border px-2'
+              onClick={() => renumberAllItemsMutation.mutate()}>
+              Renumber Tracks
             </button>
           </li>
           <li className='block w-60 cursor-pointer p-2 text-right text-zinc-200'>

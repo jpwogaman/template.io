@@ -8,25 +8,25 @@ import {
   type ItemsFullRanges
 } from '@prisma/client'
 
+type FileItemsExtended = {
+  id: string
+  locked: boolean
+  name: string
+  channel: number | null
+  baseDelay: number | null
+  avgDelay: number | null
+  color: string
+  fullRange: ItemsFullRanges[]
+  artListTog: ItemsArtListTog[]
+  artListTap: ItemsArtListTap[]
+  fadList: ItemsFadList[]
+}
+
 export const ItemsRouter = createTRPCRouter({
   createAllItemsFromJSON: publicProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
       const fileData = JSON.parse(input)
-
-      type FileItemsExtended = {
-        id: string
-        locked: boolean
-        name: string
-        channel: number | null
-        baseDelay: number | null
-        avgDelay: number | null
-        color: string
-        fullRange: ItemsFullRanges[]
-        artListTog: ItemsArtListTog[]
-        artListTap: ItemsArtListTap[]
-        fadList: ItemsFadList[]
-      }
 
       const { items }: { items: FileItemsExtended[] } = fileData
 
@@ -147,6 +147,179 @@ export const ItemsRouter = createTRPCRouter({
         })
       }
     }),
+  renumberAllItems: publicProcedure.mutation(async ({ ctx }) => {
+    const allItems = await ctx.prisma.fileItems.findMany()
+    const allArtListTap = await ctx.prisma.itemsArtListTap.findMany()
+    const allArtListTog = await ctx.prisma.itemsArtListTog.findMany()
+    const allFadList = await ctx.prisma.itemsFadList.findMany()
+    const allFullRanges = await ctx.prisma.itemsFullRanges.findMany()
+
+    await ctx.prisma.fileItems.deleteMany({})
+    await ctx.prisma.itemsFullRanges.deleteMany({})
+    await ctx.prisma.itemsArtListTap.deleteMany({})
+    await ctx.prisma.itemsArtListTog.deleteMany({})
+    await ctx.prisma.itemsFadList.deleteMany({})
+
+    const newItems = allItems.map((item, itemIndex) => {
+      return {
+        ...item,
+        id: 'T_' + itemIndex,
+        fullRange: allFullRanges
+          .filter((range) => {
+            return range.fileItemsItemId === item.id
+          })
+          .map((range, index) => {
+            return {
+              ...range,
+              id: 'T_' + itemIndex + '_FR_' + index
+            }
+          }),
+        artListTap: allArtListTap
+          .filter((art) => {
+            return art.fileItemsItemId === item.id
+          })
+          .map((art, index) => {
+            return {
+              ...art,
+              id: 'T_' + itemIndex + '_AL_' + index,
+              ranges: art.ranges
+            }
+          }),
+        artListTog: allArtListTog
+          .filter((art) => {
+            return art.fileItemsItemId === item.id
+          })
+          .map((art, index) => {
+            return {
+              ...art,
+              id: 'T_' + itemIndex + '_AL_' + (index + allArtListTap.length),
+              ranges: art.ranges
+            }
+          }),
+        fadList: allFadList
+          .filter((fad) => {
+            return fad.fileItemsItemId === item.id
+          })
+          .map((fad, index) => {
+            return {
+              ...fad,
+              id: 'T_' + itemIndex + '_FL_' + index
+            }
+          })
+      } as FileItemsExtended
+    })
+
+    for (const item of newItems) {
+      await ctx.prisma.fileItems.create({
+        data: {
+          id: item.id,
+          locked: item.locked,
+          name: item.name,
+          channel: item.channel,
+          baseDelay:
+            typeof item.baseDelay === 'string'
+              ? parseInt(item.baseDelay)
+              : item.baseDelay,
+          avgDelay:
+            typeof item.avgDelay === 'string'
+              ? parseInt(item.avgDelay)
+              : item.avgDelay,
+          color: item.color,
+          fullRange: {
+            create: item.fullRange.map((range) => {
+              //cannot map the fileItemsItemId, this is done by prisma connect
+              const newRange = {
+                id: range.id,
+                name: range.name,
+                low: range.low,
+                high: range.high,
+                whiteKeysOnly: range.whiteKeysOnly
+              }
+
+              return newRange
+            })
+          },
+          artListTap: {
+            create: item.artListTap.map((art) => {
+              //cannot map the fileItemsItemId, this is done by prisma connect
+              const newArt = {
+                id: art.id,
+                name: art.name,
+                toggle: art.toggle,
+                codeType: art.codeType,
+                code: art.code,
+                on: art.on,
+                off: art.off,
+                default: art.default,
+                delay: art.delay,
+                changeType: art.changeType,
+                ranges: art.ranges
+              }
+
+              return {
+                ...newArt,
+                delay:
+                  typeof newArt.delay === 'string'
+                    ? parseInt(newArt.delay)
+                    : newArt.delay,
+                default:
+                  typeof newArt.default === 'string' ? false : newArt.default
+              }
+            })
+          },
+          artListTog: {
+            create: item.artListTog.map((art) => {
+              //cannot map the fileItemsItemId, this is done by prisma connect
+              const newArt = {
+                id: art.id,
+                name: art.name,
+                toggle: art.toggle,
+                codeType: art.codeType,
+                code: art.code,
+                on: art.on,
+                off: art.off,
+                default: art.default,
+                delay: art.delay,
+                changeType: art.changeType,
+                ranges: art.ranges
+              }
+
+              return {
+                ...newArt,
+                delay:
+                  typeof newArt.delay === 'string'
+                    ? parseInt(newArt.delay)
+                    : newArt.delay
+              }
+            })
+          },
+          fadList: {
+            create: item.fadList.map((fad) => {
+              //cannot map the fileItemsItemId, this is done by prisma connect
+              const newFad = {
+                id: fad.id,
+                name: fad.name,
+                codeType: fad.codeType,
+                code: fad.code,
+                default: fad.default,
+                changeType: fad.changeType
+              }
+
+              return {
+                ...newFad,
+                default:
+                  typeof newFad.default === 'boolean'
+                    ? null
+                    : typeof newFad.default === 'string'
+                    ? parseInt(newFad.default)
+                    : newFad.default
+              }
+            })
+          }
+        }
+      })
+    }
+  }),
   getAllItems: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.fileItems.findMany({
       include: {
@@ -419,7 +592,6 @@ export const ItemsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      
       const { itemId } = input
 
       const allArtListTap = await ctx.prisma.itemsArtListTap.findMany({
@@ -475,7 +647,6 @@ export const ItemsRouter = createTRPCRouter({
           }
         })
       }
-
     }),
   ////////////////////////////
   createSingleArtListTap: publicProcedure
@@ -574,7 +745,9 @@ export const ItemsRouter = createTRPCRouter({
       // RANGES UPDATE
       if (ranges != undefined && inputDefaultCode === undefined) {
         if (ranges === '[]') {
-          throw new Error('Each articulation must be connected to at least one range')
+          throw new Error(
+            'Each articulation must be connected to at least one range'
+          )
         }
         return await ctx.prisma.itemsArtListTap.update({
           where: {
@@ -751,7 +924,9 @@ export const ItemsRouter = createTRPCRouter({
       // RANGES UPDATE
       if (ranges != undefined && inputDefaultCode === undefined) {
         if (ranges === '[]') {
-          throw new Error('Each articulation must be connected to at least one range')
+          throw new Error(
+            'Each articulation must be connected to at least one range'
+          )
         }
         return await ctx.prisma.itemsArtListTap.update({
           where: {
