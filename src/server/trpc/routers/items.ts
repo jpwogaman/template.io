@@ -2,7 +2,6 @@ import { z } from 'zod'
 import { createTRPCRouter, publicProcedure } from '@/server/trpc/trpc'
 
 import {
-  type FileItems,
   type ItemsArtListTap,
   type ItemsArtListTog,
   type ItemsFadList,
@@ -455,7 +454,6 @@ export const ItemsRouter = createTRPCRouter({
         })
       })
     }),
-
   ////////////////////////////
   createSingleArtListTap: publicProcedure
     .input(
@@ -591,8 +589,6 @@ export const ItemsRouter = createTRPCRouter({
           default: false
         }
       })
-
-      return 'reload'
     }),
   deleteSingleArtListTap: publicProcedure
     .input(

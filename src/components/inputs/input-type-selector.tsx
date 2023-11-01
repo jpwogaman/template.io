@@ -60,6 +60,10 @@ type InputTypeSelectorProps = {
     id: string
     code: boolean
   }[]
+  artTapOneDefaultOnly?: {
+    id: string
+    default: boolean
+  }[]
   selectedItem?: SelectedItemType
 }
 
@@ -85,6 +89,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
   onChangeHelper,
   artTapIndividualComponentLocked,
   fadIndividualComponentLocked,
+  artTapOneDefaultOnly,
   selectedItem
 }) => {
   const { input, selectArray, key } = keySingle
@@ -169,20 +174,36 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
         artTapIndividualComponentLocked.id === layoutDataSingle.id
     )
 
+    const thisArtTapDefault = artTapOneDefaultOnly?.find(
+      (artTapOneDefaultOnly) => artTapOneDefaultOnly.id === layoutDataSingle.id
+    )
+
     const thisFad = fadIndividualComponentLocked?.find(
       (fadIndividualComponentLocked) =>
         fadIndividualComponentLocked.id === layoutDataSingle.id
     )
 
     const artTapLockedHelper =
+      layoutConfigLabel === 'artListTap' &&
       key === 'on' &&
-      thisArtTap?.on === true &&
-      layoutConfigLabel === 'artListTap'
+      thisArtTap?.on === true
 
     const fadLockedHelper =
+      layoutConfigLabel === 'fadList' &&
       key === 'code' &&
-      thisFad?.code === true &&
-      layoutConfigLabel === 'fadList'
+      thisFad?.code === true
+
+    const artTapDefaultHelper =
+      layoutConfigLabel === 'artListTap' && key === 'default'
+
+    if (artTapDefaultHelper) {
+      console.log('artTapOneDefaultOnly2', artTapOneDefaultOnly)
+      console.log(
+        layoutDataSingle.id,
+        'artTapDefaultHelper',
+        thisArtTapDefault?.default
+      )
+    }
 
     const checkBoxSwitchValueHelper = () => {
       if (layoutDataSingle[key as 'id'] === 'Value 2') {
@@ -199,6 +220,8 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
         fadLockedHelper,
       defaultValue: inputCheckBoxSwitch
         ? checkBoxSwitchValueHelper()
+        : artTapDefaultHelper
+        ? thisArtTapDefault?.default
         : layoutDataSingle[key as 'id'],
       options: rangeOptions ? stringListOfFullRangeIds : selectArray ?? '',
       textTypeValidator: typeof layoutDataSingle[key as 'id'],

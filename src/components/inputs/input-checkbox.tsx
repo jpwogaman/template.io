@@ -1,4 +1,4 @@
-import { type FC, type ChangeEvent, useState } from 'react'
+import { type FC, type ChangeEvent } from 'react'
 import { type InputComponentProps } from './index'
 import tw from '@/utils/tw'
 
@@ -8,9 +8,8 @@ export const InputCheckBox: FC<InputComponentProps> = ({
   defaultValue,
   onChangeFunction
 }) => {
-  const [isChecked, setIsChecked] = useState<boolean>(
+  const isChecked =
     typeof defaultValue === 'boolean' ? defaultValue : defaultValue === 'true'
-  )
 
   const valChange = (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
@@ -18,7 +17,6 @@ export const InputCheckBox: FC<InputComponentProps> = ({
     if (codeFullLocked) return
     if (!onChangeFunction) return
     onChangeFunction(event)
-    setIsChecked(!isChecked)
   }
   return (
     <label
@@ -28,7 +26,6 @@ export const InputCheckBox: FC<InputComponentProps> = ({
       <input
         id={id}
         type='checkbox'
-        //defaultChecked={isChecked}
         checked={isChecked}
         disabled={codeFullLocked}
         value={isChecked ? 'false' : 'true'}

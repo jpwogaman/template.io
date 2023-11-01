@@ -55,7 +55,6 @@ export const InputCheckBoxSwitch: FC<InputComponentProps> = ({
             codeFullLocked
               ? 'cursor-not-allowed after:border-gray-400 after:bg-gray-400'
               : 'cursor-pointer after:border-white after:bg-white',
-
             'peer-checked:bg-green-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none dark:peer-checked:bg-green-800'
           )}
         />
