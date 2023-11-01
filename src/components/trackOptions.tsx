@@ -1,4 +1,4 @@
-import { type FC, Fragment, useState, useEffect } from 'react'
+import { type FC, Fragment, useState, useEffect, use } from 'react'
 import { trpc } from '@/utils/trpc'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
@@ -28,14 +28,22 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
   //////////////////////////////////////////
   // This logic is used to disable individual components in the artTap, artTog, and fadList tables.
   const allArtTaps = selectedItem?.artListTap ?? []
+  const allArtTogs = selectedItem?.artListTog ?? []
   const allFads = selectedItem?.fadList ?? []
 
   const [artTapIndividualComponentLocked, setArtTapIndividualComponentLocked] =
     useState([
       {
         id: selectedItemId + 'AL_0',
-        code: false,
         on: false
+      }
+    ])
+
+  const [artTogIndividualComponentLocked, setArtTogIndividualComponentLocked] =
+    useState([
+      {
+        id: selectedItemId + 'AL_1',
+        code: false
       }
     ])
 
@@ -74,6 +82,18 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
       })
     )
   }, [allArtTaps])
+
+  useEffect(() => {
+    setArtTogIndividualComponentLocked(
+      allArtTogs?.map((artTog) => {
+        const V1 = artTog.changeType === 'Value 1'
+        return {
+          id: artTog.id,
+          code: V1
+        }
+      })
+    )
+  }, [allArtTogs])
 
   useEffect(() => {
     setFadIndividualComponentLocked(
@@ -491,6 +511,9 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                                 artTapIndividualComponentLocked={
                                   artTapIndividualComponentLocked
                                 }
+                                artTogIndividualComponentLocked={
+                                  artTogIndividualComponentLocked
+                                }
                                 fadIndividualComponentLocked={
                                   fadIndividualComponentLocked
                                 }
@@ -571,6 +594,9 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                                   keySingle={key}
                                   artTapIndividualComponentLocked={
                                     artTapIndividualComponentLocked
+                                  }
+                                  artTogIndividualComponentLocked={
+                                    artTogIndividualComponentLocked
                                   }
                                   fadIndividualComponentLocked={
                                     fadIndividualComponentLocked

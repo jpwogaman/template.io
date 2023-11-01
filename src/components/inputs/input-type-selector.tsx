@@ -56,6 +56,10 @@ type InputTypeSelectorProps = {
     id: string
     on: boolean
   }[]
+  artTogIndividualComponentLocked?: {
+    id: string
+    code: boolean
+  }[]
   fadIndividualComponentLocked?: {
     id: string
     code: boolean
@@ -88,6 +92,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
   layoutDataSingle,
   onChangeHelper,
   artTapIndividualComponentLocked,
+  artTogIndividualComponentLocked,
   fadIndividualComponentLocked,
   artTapOneDefaultOnly,
   selectedItem
@@ -174,6 +179,11 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
         artTapIndividualComponentLocked.id === layoutDataSingle.id
     )
 
+    const thisArtTog = artTogIndividualComponentLocked?.find(
+      (artTogIndividualComponentLocked) =>
+        artTogIndividualComponentLocked.id === layoutDataSingle.id
+    )
+
     const thisArtTapDefault = artTapOneDefaultOnly?.find(
       (artTapOneDefaultOnly) => artTapOneDefaultOnly.id === layoutDataSingle.id
     )
@@ -187,6 +197,11 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
       layoutConfigLabel === 'artListTap' &&
       key === 'on' &&
       thisArtTap?.on === true
+
+    const artTogLockedHelper =
+      layoutConfigLabel === 'artListTog' &&
+      key === 'code' &&
+      thisArtTog?.code === true
 
     const fadLockedHelper =
       layoutConfigLabel === 'fadList' &&
@@ -208,6 +223,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
       codeFullLocked: selectedItem?.locked,
       codeDisabled:
         artTapLockedHelper || //NOSONAR
+        artTogLockedHelper || //NOSONAR
         fadLockedHelper,
       defaultValue: inputCheckBoxSwitch
         ? checkBoxSwitchValueHelper()
