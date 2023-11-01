@@ -48,35 +48,39 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
     }
   }
 
-  if (!codeDisabled) {
-    inputSelectOptionElements = (
-      <>
-        {JSON.parse(options as string).map((name: string) => (
-          <li
-            key={name}
-            title={
-              id + '_' + name + '_currentlySelected: ' + value.includes(name)
-            }
-            className={tw(value.includes(name) ? 'font-bold text-red-700' : '')}
-            onClick={(event) =>
-              valChange({
-                ...event,
-                target: { ...event.target, value: name }
-              } as unknown as ChangeEvent<HTMLSelectElement>)
-            }>
-            {name}
-          </li>
-        ))}
-      </>
-    )
-  }
+  inputSelectOptionElements = (
+    <>
+      {JSON.parse(options as string).map((name: string) => (
+        <li
+          key={name}
+          title={
+            id + '_' + name + '_currentlySelected: ' + value.includes(name)
+          }
+          className={tw(
+            value.includes(name) && !codeDisabled
+              ? 'font-bold text-red-700'
+              : '',
+            value.includes(name) && codeDisabled ? 'font-bold text-red-800' : ''
+          )}
+          onKeyDown={() => console.log('keydown')}
+          onClick={(event) =>
+            valChange({
+              ...event,
+              target: { ...event.target, value: name }
+            } as unknown as ChangeEvent<HTMLSelectElement>)
+          }>
+          {name}
+        </li>
+      ))}
+    </>
+  )
 
   return (
     <ul
       id={id}
       className={tw(
         'w-full overflow-x-hidden overflow-y-scroll bg-inherit p-[4.5px]  outline-offset-4 outline-green-600 focus:bg-white focus:text-zinc-900 dark:outline-green-800',
-        codeDisabled ? 'cursor-not-allowed' : 'cursor-pointer'
+        codeDisabled ? 'cursor-not-allowed text-gray-400' : 'cursor-pointer'
       )}>
       {inputSelectOptionElements}
     </ul>

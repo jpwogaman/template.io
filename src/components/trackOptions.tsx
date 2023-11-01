@@ -1,4 +1,4 @@
-import { type FC, Fragment, useState, type ChangeEvent } from 'react'
+import { type FC, Fragment, useState, type ChangeEvent, useEffect } from 'react'
 import { trpc } from '@/utils/trpc'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
@@ -28,6 +28,66 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
   const { data: selectedItem, refetch } = trpc.items.getSingleItem.useQuery({
     itemId: selectedItemId ?? ''
   })
+
+  //////////////////////////////////////////
+  // This logic is used to disable individual components in the artTap, artTog, and fadList tables.
+  const allArtTaps = selectedItem?.artListTap ?? []
+  const allFads = selectedItem?.fadList ?? []
+
+  const [artTapIndividualComponentLocked, setArtTapIndividualComponentLocked] =
+    useState([
+      {
+        id: selectedItemId + 'AL_0',
+        code: false,
+        on: false
+      }
+    ])
+
+  const [fadIndividualComponentLocked, setFadIndividualComponentLocked] =
+    useState([
+      {
+        id: selectedItemId + 'FL_0',
+        code: false
+      }
+    ])
+
+  useEffect(() => {
+    setArtTapIndividualComponentLocked(
+      allArtTaps?.map((artTap) => {
+        const V1 = artTap.changeType === 'Value 1'
+        return {
+          id: artTap.id,
+          code: false,
+          on: V1
+        }
+      })
+    )
+  }, [allArtTaps])
+
+  useEffect(() => {
+    setFadIndividualComponentLocked(
+      allFads?.map((fad) => {
+        const V1 = fad.changeType === 'Value 1'
+        return {
+          id: fad.id,
+          code: V1
+        }
+      })
+    )
+  }, [allFads])
+
+  //if (artTap) {
+  //  V1 = 'the ON value relates to the CODE itself (i.e. ON = CC18)'
+  //  V2 = 'the ON value relates to the CODE's second Value (i.e. CODE = C#3, ON = Velocity 20)'
+  //}
+  //if (artTog) {
+  //  V1 = 'the ON and OFF values relate to the CODE itself (i.e. ON = CC18, OFF = CC35)'
+  //  V2 = 'the ON and OFF values relate to the CODE's second Value (i.e. CODE = C#3, ON = Velocity 20, OFF = Velocity 21)'
+  //}
+  // if (fad) {
+  //  V1 = 'the DEFAULT value relates to the CODE itself (i.e. DEFAULT = CC11)'
+  //  V2 = 'the DEFAULT value relates to the CODE's second Value (i.e. CODE = C#3, DEFAULT = Velocity 20)'
+  //}
 
   //////////////////////////////////////////
   const renumberArtListMutation = trpc.items.renumberArtList.useMutation({
@@ -246,12 +306,12 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
           artId: layoutDataSingleId ?? '',
           default: newValue === 'true'
         })
-      } else {
-        updateSingleArtListTapMutation.mutate({
-          artId: layoutDataSingleId ?? '',
-          [key]: newValue
-        })
+        return
       }
+      updateSingleArtListTapMutation.mutate({
+        artId: layoutDataSingleId ?? '',
+        [key]: newValue
+      })
     }
     if (label === 'artListTog') {
       updateSingleArtListTogMutation.mutate({
@@ -422,6 +482,12 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                               className={'p-0.5'}>
                               <InputTypeSelector
                                 keySingle={key}
+                                artTapIndividualComponentLocked={
+                                  artTapIndividualComponentLocked
+                                }
+                                fadIndividualComponentLocked={
+                                  fadIndividualComponentLocked
+                                }
                                 layoutConfigLabel={layoutConfig.label}
                                 layoutDataSingle={layoutDataSingle}
                                 onChangeHelper={onChangeHelper}
@@ -496,6 +562,12 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                               <td className={'p-0.5'}>
                                 <InputTypeSelector
                                   keySingle={key}
+                                  artTapIndividualComponentLocked={
+                                    artTapIndividualComponentLocked
+                                  }
+                                  fadIndividualComponentLocked={
+                                    fadIndividualComponentLocked
+                                  }
                                   layoutConfigLabel={layoutConfig.label}
                                   layoutDataSingle={layoutDataSingle}
                                   onChangeHelper={onChangeHelper}

@@ -5,11 +5,12 @@ import tw from '@/utils/tw'
 export const InputSelectSingle: FC<InputComponentProps> = ({
   id,
   codeDisabled,
+  codeFullLocked,
   defaultValue,
   options,
   onChangeFunction
 }) => {
-  const [value, setVal] = useState<string | number>(
+  const [value, setValue] = useState<string | number>(
     (defaultValue as unknown as string | number) ?? ''
   )
 
@@ -30,7 +31,7 @@ export const InputSelectSingle: FC<InputComponentProps> = ({
   const valChange = (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
-    setVal(event.target.value)
+    setValue(event.target.value)
 
     if (onChangeFunction) {
       onChangeFunction(event)
@@ -40,13 +41,13 @@ export const InputSelectSingle: FC<InputComponentProps> = ({
   return (
     <select
       id={id}
-      disabled={codeDisabled}
+      disabled={codeFullLocked ?? codeDisabled}
       title={id + '_currentValue: ' + value}
       value={!codeDisabled ? value : undefined}
       onChange={valChange}
       className={tw(
         'w-full overflow-scroll bg-inherit outline-offset-4 outline-green-600 focus:bg-white focus:text-zinc-900 dark:outline-green-800',
-        codeDisabled ? 'cursor-not-allowed' : 'cursor-pointer'
+        codeDisabled ? 'cursor-not-allowed text-gray-400' : 'cursor-pointer'
       )}>
       {inputSelectOptionElements}
     </select>

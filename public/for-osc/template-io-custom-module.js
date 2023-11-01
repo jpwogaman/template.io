@@ -346,6 +346,8 @@ module.exports = {
           receive(nameOsc, nameJsn)
         }
 
+        //NEED TO ADD LOGIC FOR CHANGETYPE VALUE 1 VS 2
+
         receive(typeOsc, typeJsn)
         receive(codeOsc, codeJsn)
         receive(deftOsc, off_Jsn)

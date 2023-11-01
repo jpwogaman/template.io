@@ -31,9 +31,8 @@ export const InputText: FC<InputComponentProps> = ({
       onChange={nameChange}
       className={tw(
         codeDisabled
-          ? 'hover:cursor-not-allowed hover:placeholder-zinc-400 dark:hover:placeholder-zinc-500'
+          ? 'text-gray-400 hover:cursor-not-allowed hover:placeholder-zinc-400 dark:hover:placeholder-zinc-500'
           : 'hover:cursor-text hover:placeholder-zinc-200 dark:hover:placeholder-zinc-600',
-        //td ? 'w-full' : 'w-10',
         'w-full border border-transparent bg-inherit pl-1 placeholder-zinc-400 outline-offset-4 outline-green-600 focus:cursor-text focus:bg-white focus:text-zinc-900 focus:placeholder-zinc-500 dark:placeholder-zinc-500 dark:outline-green-800'
       )}
     />

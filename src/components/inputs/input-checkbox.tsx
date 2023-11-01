@@ -8,7 +8,7 @@ export const InputCheckBox: FC<InputComponentProps> = ({
   defaultValue,
   onChangeFunction
 }) => {
-  const [isChecked, setChecked] = useState<boolean>(
+  const [isChecked, setIsChecked] = useState<boolean>(
     typeof defaultValue === 'boolean' ? defaultValue : defaultValue === 'true'
   )
 
@@ -18,7 +18,7 @@ export const InputCheckBox: FC<InputComponentProps> = ({
     if (codeDisabled) return
     if (!onChangeFunction) return
     onChangeFunction(event)
-    setChecked(!isChecked)
+    setIsChecked(!isChecked)
   }
   return (
     <label
@@ -28,8 +28,8 @@ export const InputCheckBox: FC<InputComponentProps> = ({
       <input
         id={id}
         type='checkbox'
-        defaultChecked={isChecked}
-        //checked={isChecked}
+        //defaultChecked={isChecked}
+        checked={isChecked}
         disabled={codeDisabled}
         value={isChecked ? 'false' : 'true'}
         onChange={(event) => valChange(event)}

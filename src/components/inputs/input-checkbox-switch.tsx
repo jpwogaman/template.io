@@ -9,7 +9,7 @@ export const InputCheckBoxSwitch: FC<InputComponentProps> = ({
   options,
   onChangeFunction
 }) => {
-  const [isChecked, setChecked] = useState<boolean>(defaultValue === 'b')
+  const [isChecked, setIsChecked] = useState<boolean>(defaultValue === 'b')
   let inputSelectOptionElements: string[] = ['a', 'b']
 
   for (const array in selectArrays) {
@@ -29,7 +29,7 @@ export const InputCheckBoxSwitch: FC<InputComponentProps> = ({
         onChangeFunction(event)
       }
 
-      setChecked(!isChecked)
+      setIsChecked(!isChecked)
     }
   }
 
@@ -44,7 +44,7 @@ export const InputCheckBoxSwitch: FC<InputComponentProps> = ({
           type='checkbox'
           disabled={codeDisabled}
           checked={isChecked}
-          value={isChecked ? b : a}
+          value={isChecked ? a : b}
           onChange={(event) => valChange(event)}
           className='peer sr-only'
         />

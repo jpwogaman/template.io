@@ -1,4 +1,10 @@
-import { ReactNode, type ChangeEvent, type FC } from 'react'
+import {
+  ReactNode,
+  type ChangeEvent,
+  type FC,
+  Dispatch,
+  SetStateAction
+} from 'react'
 import {
   InputText,
   InputSelectSingle,
@@ -17,6 +23,7 @@ import {
 
 import TrackOptionsTableKeys from '../trackOptionsTableKeys'
 import TrackListTableKeys from '../trackListTableKeys'
+import tw from '@/utils/tw'
 
 export type OnChangeHelperArgsType = {
   newValue?: string | number | boolean
@@ -45,6 +52,14 @@ type InputTypeSelectorProps = {
     key,
     label
   }: OnChangeHelperArgsType) => void | undefined
+  artTapIndividualComponentLocked?: {
+    id: string
+    on: boolean
+  }[]
+  fadIndividualComponentLocked?: {
+    id: string
+    code: boolean
+  }[]
   selectedItem?: SelectedItemType
 }
 
@@ -52,6 +67,7 @@ export type InputComponentProps = {
   id: string
   toggle?: boolean
   codeDisabled?: boolean
+  codeFullLocked?: boolean
   defaultValue?: string | number | boolean
   placeholder?: string | number
   options?: string
@@ -67,6 +83,8 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
   layoutConfigLabel,
   layoutDataSingle,
   onChangeHelper,
+  artTapIndividualComponentLocked,
+  fadIndividualComponentLocked,
   selectedItem
 }) => {
   const { input, selectArray, key } = keySingle
@@ -113,7 +131,10 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
               '_currentValue: ' +
               `${selectedItem[key as 'id']}`
             }
-            className='cursor-default overflow-hidden p-1'>
+            className={tw(
+              'cursor-default overflow-hidden p-1',
+              selectedItem?.locked && key != 'id' ? 'text-gray-400' : ''
+            )}>
             {selectedItem[key as 'id']}
           </p>
         )}
@@ -143,10 +164,42 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
       )
     )
 
+    const thisArtTap = artTapIndividualComponentLocked?.find(
+      (artTapIndividualComponentLocked) =>
+        artTapIndividualComponentLocked.id === layoutDataSingle.id
+    )
+
+    const thisFad = fadIndividualComponentLocked?.find(
+      (fadIndividualComponentLocked) =>
+        fadIndividualComponentLocked.id === layoutDataSingle.id
+    )
+
+    const artTapLockedHelper =
+      key === 'on' &&
+      thisArtTap?.on === true &&
+      layoutConfigLabel === 'artListTap'
+
+    const fadLockedHelper =
+      key === 'code' &&
+      thisFad?.code === true &&
+      layoutConfigLabel === 'fadList'
+
+    const checkBoxSwitchValueHelper = () => {
+      if (layoutDataSingle[key as 'id'] === 'Value 2') {
+        return 'b'
+      }
+      return 'a'
+    }
+
     const inputPropsHelper = {
       id: `${layoutDataSingle.id}_${key}`,
-      codeDisabled: selectedItem?.locked,
-      defaultValue: layoutDataSingle[key as 'id'],
+      codeFullLocked: selectedItem?.locked,
+      codeDisabled:
+        artTapLockedHelper || //NOSONAR
+        fadLockedHelper,
+      defaultValue: inputCheckBoxSwitch
+        ? checkBoxSwitchValueHelper()
+        : layoutDataSingle[key as 'id'],
       options: rangeOptions ? stringListOfFullRangeIds : selectArray ?? '',
       textTypeValidator: typeof layoutDataSingle[key as 'id'],
       onChangeFunction: (

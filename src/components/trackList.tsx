@@ -18,7 +18,7 @@ const TrackList: FC<TrackListProps> = ({
   selectedItemId,
   setSelectedItemId
 }) => {
-  const [addMultipleItemsNumber, setMultipleItemsNumber] = useState(1)
+  const [addMultipleItemsNumber, setAddMultipleItemsNumber] = useState(1)
 
   const { data, refetch } = trpc.items.getAllItems.useQuery()
 
@@ -73,9 +73,9 @@ const TrackList: FC<TrackListProps> = ({
   ) => {
     const input = event.target.value as unknown as number
     if (input > 1) {
-      setMultipleItemsNumber(input)
+      setAddMultipleItemsNumber(input)
     } else {
-      setMultipleItemsNumber(1)
+      setAddMultipleItemsNumber(1)
     }
   }
 
@@ -247,7 +247,7 @@ const TrackList: FC<TrackListProps> = ({
                     </td>
                   )
                 })}
-                <td className='p-0.5'>
+                <td className={tw('p-0.5', locked ? 'text-gray-400' : '')}>
                   {_count?.artListTog + _count?.artListTap}
                 </td>
                 <td className='p-0.5 text-center'>
