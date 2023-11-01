@@ -43,11 +43,13 @@ export const InputSelectSingle: FC<InputComponentProps> = ({
       id={id}
       disabled={codeFullLocked ?? codeDisabled}
       title={id + '_currentValue: ' + value}
-      value={!codeDisabled ? value : undefined}
+      value={codeFullLocked ?? codeDisabled ? undefined : value}
       onChange={valChange}
       className={tw(
         'w-full overflow-scroll bg-inherit outline-offset-4 outline-green-600 focus:bg-white focus:text-zinc-900 dark:outline-green-800',
-        codeDisabled ? 'cursor-not-allowed text-gray-400' : 'cursor-pointer'
+        codeFullLocked ?? codeDisabled
+          ? 'cursor-not-allowed text-gray-400'
+          : 'cursor-pointer'
       )}>
       {inputSelectOptionElements}
     </select>

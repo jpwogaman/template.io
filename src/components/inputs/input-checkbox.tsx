@@ -4,7 +4,7 @@ import tw from '@/utils/tw'
 
 export const InputCheckBox: FC<InputComponentProps> = ({
   id,
-  codeDisabled,
+  codeFullLocked,
   defaultValue,
   onChangeFunction
 }) => {
@@ -15,7 +15,7 @@ export const InputCheckBox: FC<InputComponentProps> = ({
   const valChange = (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
-    if (codeDisabled) return
+    if (codeFullLocked) return
     if (!onChangeFunction) return
     onChangeFunction(event)
     setIsChecked(!isChecked)
@@ -30,12 +30,12 @@ export const InputCheckBox: FC<InputComponentProps> = ({
         type='checkbox'
         //defaultChecked={isChecked}
         checked={isChecked}
-        disabled={codeDisabled}
+        disabled={codeFullLocked}
         value={isChecked ? 'false' : 'true'}
         onChange={(event) => valChange(event)}
         className={tw(
           'w-full p-1 text-zinc-900',
-          codeDisabled ? 'cursor-not-allowed bg-zinc-300' : 'cursor-pointer'
+          codeFullLocked ? 'cursor-not-allowed bg-zinc-300' : 'cursor-pointer'
         )}
       />
     </label>
