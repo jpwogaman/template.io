@@ -242,7 +242,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
         {!input && (
           <p
             title={layoutDataSingle.id}
-            className='cursor-default overflow-hidden p-1'>
+            className='cursor-default p-1'>
             {shortenedSubComponentId(layoutDataSingle[key as 'id'])}
           </p>
         )}

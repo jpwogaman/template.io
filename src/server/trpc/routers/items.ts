@@ -419,7 +419,7 @@ export const ItemsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      console.log('renumberArtList')
+      
       const { itemId } = input
 
       const allArtListTap = await ctx.prisma.itemsArtListTap.findMany({
@@ -434,19 +434,48 @@ export const ItemsRouter = createTRPCRouter({
         }
       })
 
-      const allArtList = [...allArtListTap, ...allArtListTog]
+      const newArtTapList = allArtListTap.map((art, index) => {
+        return {
+          ...art,
+          id: itemId + '_AL_' + index
+        }
+      })
 
-      return allArtList.map((art, index) => {
-        return ctx.prisma.itemsArtListTap.update({
-          where: {
-            id: art.id
-          },
+      const newArtTogList = allArtListTog.map((art, index) => {
+        return {
+          ...art,
+          id: itemId + '_AL_' + (index + allArtListTap.length)
+        }
+      })
+
+      await ctx.prisma.itemsArtListTap.deleteMany({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
+
+      await ctx.prisma.itemsArtListTog.deleteMany({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
+
+      for (const element of newArtTapList) {
+        await ctx.prisma.itemsArtListTap.create({
           data: {
-            id: art.id.split('_')[0] + '_AL_' + index,
-            name: 'hi'
+            ...element
           }
         })
-      })
+      }
+
+      for (const element of newArtTogList) {
+        await ctx.prisma.itemsArtListTog.create({
+          data: {
+            ...element
+          }
+        })
+      }
+
     }),
   ////////////////////////////
   createSingleArtListTap: publicProcedure

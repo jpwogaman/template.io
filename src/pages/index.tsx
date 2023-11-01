@@ -16,7 +16,16 @@ const Index: NextPage = () => {
   })
 
   const dataLength = data?.length ?? 0
-
+  const renumberArtListMutation = trpc.items.renumberArtList.useMutation({
+    onSuccess: () => {
+      renumberArtListMutation.reset()
+      selectedRefetch()
+      allRefetch()
+    },
+    onError: () => {
+      alert('There was an error submitting your request. Please try again.')
+    }
+  })
   const createSingleItemMutation = trpc.items.createSingleItem.useMutation({
     onSuccess: () => {
       createSingleItemMutation.reset()
@@ -44,11 +53,18 @@ const Index: NextPage = () => {
           <li className='block w-60 p-2 pl-5 text-left text-zinc-200'>
             {dataLength} {dataLength > 1 ? 'Tracks' : 'Track'}
           </li>
-          <li className='block w-60 p-2 pl-5 text-left text-zinc-200'>
+          <li className='min-w-60 block flex gap-2 p-2 pl-5 text-left text-zinc-200'>
             <button
               className='border px-2'
               onClick={() => deleteAllItemsMutation.mutate()}>
               Flush DB / Clear All
+            </button>
+            <button
+              className='border px-2'
+              onClick={() =>
+                renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
+              }>
+              Renumber Arts
             </button>
           </li>
           <li className='block w-60 cursor-pointer p-2 text-right text-zinc-200'>

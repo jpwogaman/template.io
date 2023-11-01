@@ -202,7 +202,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
       onSuccess: () => {
         createSingleArtListTapMutation.reset()
         renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-        refetch()
+        //refetch()
       },
       onError: (error) => {
         alert(
@@ -216,7 +216,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
       onSuccess: () => {
         createSingleArtListTogMutation.reset()
         renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-        refetch()
+        //refetch()
       },
       onError: (error) => {
         alert(
@@ -256,7 +256,8 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
     trpc.items.deleteSingleArtListTap.useMutation({
       onSuccess: () => {
         deleteSingleArtListTapMutation.reset()
-        refetch()
+        renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
+        //refetch()
       },
       onError: (error) => {
         alert(
@@ -269,7 +270,8 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
     trpc.items.deleteSingleArtListTog.useMutation({
       onSuccess: () => {
         deleteSingleArtListTogMutation.reset()
-        refetch()
+        renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
+        //refetch()
       },
       onError: (error) => {
         alert(
