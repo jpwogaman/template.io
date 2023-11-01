@@ -42,8 +42,8 @@ export const InputCheckBoxSwitch: FC<InputComponentProps> = ({
         <input
           id={id}
           type='checkbox'
-          disabled={codeFullLocked}
           checked={isChecked}
+          disabled={codeFullLocked}
           value={isChecked ? a : b}
           onChange={(event) => valChange(event)}
           className='peer sr-only'
