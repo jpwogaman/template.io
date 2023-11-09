@@ -1,11 +1,19 @@
-export const downloadDataAsJSON = (data: any) => {
+import { writeFile } from '@tauri-apps/api/fs'
+import { save } from '@tauri-apps/api/dialog'
+
+export const exportJSON = async (data: any) => {
   const json = JSON.stringify(data)
-  const blob = new Blob([json], { type: 'application/json' })
-  const href = URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  link.href = href
-  link.download = 'template-io-track-data.json'
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
+
+  const result = await save({
+    title: 'Save Track Data',
+    filters: [
+      {
+        name: 'JSON',
+        extensions: ['json']
+      }
+    ]
+  })
+
+  if (!result) return
+  await writeFile(result, json)
 }

@@ -1,7 +1,8 @@
 import { type AppType } from 'next/app'
 import { ThemeProvider } from 'next-themes'
 import { listen } from '@tauri-apps/api/event'
-import { downloadDataAsJSON } from '@/utils/exportJSON'
+import { exportJSON } from '@/utils/exportJSON'
+import { importJSON } from '@/utils/importJSON'
 import { trpc } from '@/utils/trpc'
 import { useState, useEffect } from 'react'
 import { AnimatePresence } from 'framer-motion'
@@ -20,7 +21,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
 
   const exportMutation = trpc.tauriMenuEvents.export.useMutation({
     onSuccess: (data) => {
-      downloadDataAsJSON(data)
+      exportJSON(data)
       exportMutation.reset()
     },
     onError: () => {
@@ -65,21 +66,9 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       }
 
       if (event.payload === 'import') {
-        const fileInput = document.createElement('input')
-        fileInput.type = 'file'
-        fileInput.accept = '.json'
-
-        fileInput.onchange = (e) => {
-          const targetFile = (e.target as HTMLInputElement).files![0]
-          const fileReader = new FileReader()
-          fileReader.readAsText(targetFile as unknown as Blob, 'UTF-8')
-          fileReader.onload = (loadedEvent) => {
-            createAllItemsFromJSONMutation.mutate(
-              loadedEvent.target!.result as unknown as string
-            )
-          }
-        }
-        fileInput.click()
+        importJSON().then((data) => {
+          createAllItemsFromJSONMutation.mutate(data)
+        })
       }
 
       if (event.payload === 'about') {
