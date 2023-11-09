@@ -24,7 +24,6 @@ fn main() {
   let context = tauri::generate_context!();  
 
   let quit = CustomMenuItem::new("quit".to_string(), "Quit");
-  let close = CustomMenuItem::new("close".to_string(), "Close");
   let about = CustomMenuItem::new("about".to_string(), "About (v0.1.0)");  
   let import = CustomMenuItem::new("import".to_string(), "Import");    
   let export = CustomMenuItem::new("export".to_string(), "Export");  
@@ -36,7 +35,6 @@ fn main() {
     .add_item(export)
     .add_native_item(MenuItem::Separator)
     .add_item(quit.clone())
-    .add_item(close)
   );
 
   let help_submenu = Submenu::new(
@@ -61,10 +59,7 @@ fn main() {
       match event.menu_item_id() {
         "quit" => {
           std::process::exit(0);
-        }
-        "close" => {
-          event.window().close().unwrap();
-        }
+        }        
         "import" => {
           event.window().emit("open", Some("open")).unwrap();
         }
