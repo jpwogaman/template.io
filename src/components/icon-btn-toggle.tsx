@@ -1,4 +1,4 @@
-import { type ReactNode, type FC, useState } from 'react'
+import { type FC, useState } from 'react'
 interface IconBtnToggleProps {
   id: string
   titleA: string
@@ -9,7 +9,6 @@ interface IconBtnToggleProps {
   defaultIcon: string
   onToggleA?: () => void | string | undefined
   onToggleB?: () => void | string | undefined
-  children?: ReactNode
 }
 
 export const IconBtnToggle: FC<IconBtnToggleProps> = ({
@@ -23,14 +22,14 @@ export const IconBtnToggle: FC<IconBtnToggleProps> = ({
   a,
   b
 }) => {
-  const [isToggleOn, setToggle] = useState<boolean>(defaultIcon === 'a')
+  const [isToggleOn, setIsToggleOn] = useState<boolean>(defaultIcon === 'a')
 
   const handleClick = () => {
     if (isToggleOn) {
-      setToggle(false)
+      setIsToggleOn(false)
       onToggleA!()
     } else {
-      setToggle(true)
+      setIsToggleOn(true)
       onToggleB!()
     }
   }
