@@ -398,7 +398,7 @@ module.exports = {
     oscInFilter: function (data) {
         const { host, port, address, args } = data
 
-        if (mcuToOsc(host, port, address, args)) return
+          if (mcuToOsc(host, port, address, args)) return
 
         return data
     }
