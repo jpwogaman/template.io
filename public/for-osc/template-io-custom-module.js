@@ -124,6 +124,10 @@ module.exports = {
   oscInFilter: function (data) {
     const { address, args, host, port } = data
 
+    for (const myPort in myPorts__loc) {
+      if (port !== `${myPorts__loc[myPort].name}`) return data
+    }
+
     portAddr(address, port)
 
     const arg1 = args[1].value
