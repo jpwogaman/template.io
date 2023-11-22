@@ -1,20 +1,62 @@
-//variable & input values to be sent to OSC
-//const workFile_jsn = loadJSON('template-io-workfile.json')
 const allTrack_jsn = loadJSON('template-io-track-data.json')
 
 const items = allTrack_jsn.items
-//const fileInfo = allTrack_jsn.fileInfo
+// full schema for an item in the JSON file
+//{
+//  id: string
+//  locked: boolean
+//  name: string
+//  channel: number | null
+//  baseDelay: number | null
+//  avgDelay: number | null
+//  color: string
+//  fullRange:  {
+//      id: string;
+//      name: string | null;
+//      low: string | null;
+//      high: string | null;
+//      whiteKeysOnly: boolean | null;
+//      fileItemsItemId: string | null;
+//  }[]
+//  artListTap: {
+//      id: string;
+//      name: string | null;
+//      toggle: boolean;
+//      codeType: string | null;
+//      code: number | null;
+//      on: number | null;
+//      off: number | null;
+//      default: boolean | null;
+//      delay: number | null;
+//      changeType: string | null;
+//      ranges: string | null;
+//      fileItemsItemId: string | null;
+//  }[]
+//  artListTog: {
+//      id: string;
+//      name: string | null;
+//      toggle: boolean;
+//      codeType: string | null;
+//      code: number | null;
+//      on: number | null;
+//      off: number | null;
+//      default: string | null;
+//      delay: number | null;
+//      changeType: string | null;
+//      ranges: string | null;
+//      fileItemsItemId: string | null;
+//  }[]
+//  fadList:  {
+//      id: string;
+//      name: string | null;
+//      codeType: string | null;
+//      code: number | null;
+//      default: number | null;
+//      changeType: string | null;
+//      fileItemsItemId: string | null;
+//  }[]
+//}
 
-//go through workFile and get number of faders and articulations
-// let artListOsc = []
-// let fadListOsc = []
-// for (var i in workFile_jsn.content.widgets[0].tabs[1].widgets) {
-// 	if (workFile_jsn.content.widgets[0].tabs[0].widgets[i].id.includes('Art'))
-// 		artListOsc.push(workFile_jsn.content.widgets[0].tabs[0].widgets[i].id)
-
-// 	if (workFile_jsn.content.widgets[0].tabs[0].widgets[i].id.includes('CC_fad'))
-// 		fadListOsc.push(workFile_jsn.content.widgets[0].tabs[0].widgets[i].id)
-// }
 //array of all notes (Middle C == C3 == MIDI Code 60)
 const allNotes_loc = []
 for (let i = -2; i < 9; i++) {
@@ -33,11 +75,12 @@ for (let i = -2; i < 9; i++) {
     'B' + i
   )
 }
-//update current MIDI track
+// update current MIDI track, when a track in Cubase receives this code, it will in turn send a Key Pressure message to this module
 function trkUpdate() {
   send('midi', 'OSC4', '/control', 1, 127, 127)
 }
-//send default articulation parameters to Cubase
+
+// send default articulation parameters to Cubase, this does not just update the template-io UI, it actually sends the MIDI command to Cubase
 function prmUpdate(x, typeJsn, codeJsn, deftJsn) {
   if (x === 3) {
     send('midi', 'OSC3', typeJsn, 1, codeJsn, deftJsn)
@@ -46,52 +89,22 @@ function prmUpdate(x, typeJsn, codeJsn, deftJsn) {
     send('midi', 'OSC4', typeJsn, 1, codeJsn, deftJsn)
   }
 }
-//toggle counters
+
+// toggles
 let togUpdat_loc = false
 let togCodes_loc = true
 let togClkTr_loc = false
-let myPorts__loc = {
-  osc1: { bool: false, name: 'OSC1' },
-  osc2: { bool: false, name: 'OSC2' },
-  osc3: { bool: false, name: 'OSC3' },
-  osc4: { bool: false, name: 'OSC4' }
-}
-let myAddrs__loc = {
-  note: { bool: false, name: '/note' },
-  ntof: { bool: false, name: '/note_off' },
-  ctrl: { bool: false, name: '/control' },
-  pgrm: { bool: false, name: '/program' },
-  ptch: { bool: false, name: '/pitch' },
-  sysx: { bool: false, name: '/sysex' },
-  mtcT: { bool: false, name: '/mtc' },
-  chnP: { bool: false, name: '/channel_pressure' },
-  keyP: { bool: false, name: '/key_pressure' }
-}
-
-function portAddr(address, port) {
-  for (const myPort in myPorts__loc) {
-    if (port === `${myPorts__loc[myPort].name}`) {
-      myPorts__loc[myPort].bool = true
-    } else {
-      myPorts__loc[myPort].bool = false
-    }
-  }
-  for (const myAddrs in myAddrs__loc) {
-    if (address === `${myAddrs__loc[myAddrs].name}`) {
-      myAddrs__loc[myAddrs].bool = true
-    } else {
-      myAddrs__loc[myAddrs].bool = false
-    }
-  }
-}
 
 function toggles(arg1, arg2) {
+  // auto-update on track selection
   if (arg1 === 127 && arg2 === 1) {
     togUpdat_loc = true
   }
   if (arg1 === 127 && arg2 === 0) {
     togUpdat_loc = false
   }
+
+  // show codes in UI
   if (arg1 === 119 && arg2 === 1) {
     trkUpdate()
     togCodes_loc = true
@@ -113,45 +126,56 @@ function clickTrk(arg1, arg2) {
 //
 module.exports = {
   init: function () {
-    send('midi', 'OSC1', '/control', 3, 17, 1) //'whole notes'
-    send('midi', 'OSC1', '/control', 3, 25, 1) //'grid'
-    send('midi', 'OSC1', '/control', 2, 9, 1) //'A5X + SUB8'
+    // this assumes that Cubase is open before OSC, this will reset some of the basic settings in Cubase
+
+    send('midi', 'OSC1', '/control', 3, 17, 1) // grid: 'whole notes'
+    send('midi', 'OSC1', '/control', 3, 25, 1) // snap type: 'grid'
+    send('midi', 'OSC1', '/control', 2, 9, 1) // control room monitor 1: 'A5X + SUB8'
     setTimeout(() => {
-      send('midi', 'OSC1', '/control', 3, 20, 1) //grid eighth notes
+      send('midi', 'OSC1', '/control', 3, 20, 1) // grid: 'eighth notes'
     }, 100)
   },
 
   oscInFilter: function (data) {
     const { address, args, host, port } = data
 
-    for (const myPort in myPorts__loc) {
-      if (port !== `${myPorts__loc[myPort].name}`) return data
-    }
+    // this borrows from the MCU protocol to find the selected track name
+    //if (address === '/sysex') {
+    //  // FILTER OUT UNWANTED SYSEX
 
-    portAddr(address, port)
+    //  if (args[0].value.includes('f0 00 00 66 14 12')) {
+    //    // CUBASE TRACKS HEX TO ASCII STRING
+    //    console.log(args[0].value)
+    //    let input = args[0].value.split(' ').splice(7, 35)
+    //    input.pop()
+    //    input = input.join('')
+    //    let trackname = ''
+    //    for (let n = 0; n < input.length; n += 2) {
+    //      trackname += String.fromCharCode(parseInt(input.substr(n, 2), 16))
+    //    }
+
+    //    console.log(trackname)
+    //  }
+    //}
+
+    // these are the only two ports that should affect this module
+    // for some reason the && is the only way to get this to work, but sometimes it breaks the MCU module? I don't know why, I feel like ?? should work but it doesn't
+
+    if (port !== 'OSC2' && port !== 'OSC3') return data
 
     const arg1 = args[1].value
     const arg2 = args[2].value
-    //const osc1 = myPorts__loc.osc1.bool
-    const osc2 = myPorts__loc.osc2.bool
-    const osc3 = myPorts__loc.osc3.bool
-    //const osc4 = myPorts__loc.osc4.bool
-    //const note = myAddrs__loc.note.bool
-    //const ntof = myAddrs__loc.ntof.bool
-    const ctrl = myAddrs__loc.ctrl.bool
-    //const pgrm = myAddrs__loc.pgrm.bool
-    //const ptch = myAddrs__loc.ptch.bool
-    //const sysx = myAddrs__loc.sysx.bool
-    //const mtcT = myAddrs__loc.mtcT.bool
-    //const chnP = myAddrs__loc.chnP.bool
-    const keyP = myAddrs__loc.keyP.bool
-
-    if (ctrl && osc2) {
+    // these codes are sent from OSC to itself for toggling UI elements and functions
+    if (port === 'OSC2' && address === '/control') {
       toggles(arg1, arg2)
     }
-    if (ctrl && osc3) {
+
+    // these codes are sent from Cubase upon track selection
+    if (port === 'OSC3' && address === '/control') {
       clickTrk(arg1, arg2)
     }
+
+    // if we are auto-updating the track, then we set the UI in OSC to blue, otherwise red
     if (togUpdat_loc) {
       receive('/trackNameColor', '#70b7ff')
       receive('/template-io_trackNameColor', '#70b7ff')
@@ -159,232 +183,195 @@ module.exports = {
       receive('/trackNameColor', 'red')
       receive('/template-io_trackNameColor', 'red')
     }
+
+    // if we are auto-updating the track, then this actually send the command to Cubase to update the track
     if (togUpdat_loc && togClkTr_loc) {
       trkUpdate()
       togClkTr_loc = false // need this to avoid infinite loop
     }
 
-    //if I receive more than 4 in less than, maybe a half-second, then halt. this should help prevent issues when selecting all tracks, etc.
+    // TODO: if I receive more than 4 in less than, maybe a half-second, then halt. this should help prevent issues when selecting all tracks, etc.
 
-    if (keyP) {
-      const trkNumb = arg1 * 128 + arg2
+    // this is the main function of this module, it receives the track number from Cubase and then sends the appropriate data to the UI
+    if (address !== '/key_pressure') return data
 
-      for (let i = 0; i < 8; i++) {
-        const nameOsc = '/CC_disp_' + parseInt(i + 1)
-        const addrOsc = '/CC_fad__' + parseInt(i + 1)
-        const codeOsc = '/CC_incr_' + parseInt(i + 1)
-        receive(nameOsc, ' ')
-        receive(addrOsc, 0)
-        receive(codeOsc, 0)
+    // Here we could say something like if sysex gives us trackname, find the track in the json file and then send the data to the template-io module
+    const trkNumb = arg1 * 128 + arg2
+
+    // might not need to hardcode the number of faders and articulations, but it's fine for now. in OSC we can use a matrix widget and dynamically create the number of faders and articulations based on the JSON file
+
+    // reset all fader info in OSC
+    for (let i = 0; i < 8; i++) {
+      const nameOsc = '/CC_disp_' + parseInt(i + 1)
+      const addrOsc = '/CC_fad__' + parseInt(i + 1)
+      const codeOsc = '/CC_incr_' + parseInt(i + 1)
+      receive(nameOsc, ' ')
+      receive(addrOsc, 0)
+      receive(codeOsc, 0)
+    }
+    // reset all articulation info in OSC
+    for (let i = 0; i < 18; i++) {
+      const nameOsc = '/artname_' + parseInt(i + 1)
+      const inptOsc = '/artinpt_' + parseInt(i + 1)
+      const colrOsc = '/artcolr_' + parseInt(i + 1)
+      const modAOsc = '/artmodA_' + parseInt(i + 1)
+      const modBOsc = '/artmodB_' + parseInt(i + 1)
+      receive(nameOsc, ' ')
+      receive(inptOsc, 'true')
+      receive(colrOsc, '#A9A9A9')
+      receive(modAOsc, 0.15)
+      receive(modBOsc, 0.15)
+    }
+
+    // reset the range information in OSC
+    receive('/template-io_keyRangeVar1', [])
+    receive('/template-io_keyRangeVar2', [])
+    receive('/template-io_keyRangeScript', 1)
+    receive('/selectedTrackKeyRanges', ' ')
+    receive('/selectedTrackDelays', ' ')
+
+    if (!items[trkNumb]) {
+      receive('/selectedTrackName', 'No Track Data!')
+      return data
+    }
+
+    const trkName = items[trkNumb].name
+    const trkRang = items[trkNumb].fullRange
+    const trkDely1 = items[trkNumb].baseDelay
+    const trkDely2 = items[trkNumb].avgDelay
+
+    // hack to get the base delay to show positive or negative
+    let sign1 = ''
+    let sign2 = ''
+    if (Math.sign(trkDely1) === 1) {
+      sign1 = '+'
+    }
+    if (Math.sign(trkDely2) === 1) {
+      sign2 = '+'
+    }
+
+    receive('/selectedTrackName', trkName)
+    receive('/template-io_selectedTrackName', trkName)
+    receive(
+      '/selectedTrackDelays',
+      `Base Delay: ${sign1}${trkDely1}ms\nAvg Delay: ${sign2}${trkDely2}ms`
+    )
+
+    // if there are more than 4 faders in the JSON file, then we show a red border around the fader panel so that the user knows to paginate
+    if (items[trkNumb].fadList.length > 4) {
+      receive('/faderPanel-color-2', '1px solid red')
+    } else {
+      receive('/faderPanel-color-2', '')
+    }
+
+    const fadListJsn = items[trkNumb].fadList
+    for (let i = 0; i < fadListJsn.length; i++) {
+      const nameOsc = '/CC_disp_' + parseInt(i + 1)
+      const addrOsc = '/CC_fad__' + parseInt(i + 1)
+      const codeOsc = '/CC_incr_' + parseInt(i + 1)
+      const nameJsn = fadListJsn[i].name
+      const typeJsn = fadListJsn[i].codeType
+      const codeJsn = parseInt(fadListJsn[i].code)
+      const deftJsn = parseInt(fadListJsn[i].default)
+      receive(nameOsc, nameJsn)
+      receive(addrOsc, deftJsn)
+      receive(codeOsc, codeJsn)
+      prmUpdate(4, typeJsn, codeJsn, deftJsn)
+    }
+    const artListJsn = [
+      ...items[trkNumb].artListTap,
+      ...items[trkNumb].artListTog
+    ]
+
+    for (let i = 0; i < artListJsn.length; i++) {
+      const nameOsc = '/artname_' + parseInt(i + 1)
+      const typeOsc = '/arttype_' + parseInt(i + 1)
+      const codeOsc = '/artcode_' + parseInt(i + 1)
+      const inptOsc = '/artinpt_' + parseInt(i + 1)
+      const deftOsc = '/artdeft_' + parseInt(i + 1)
+      const on__Osc = '/arton___' + parseInt(i + 1)
+      const off_Osc = '/artoff__' + parseInt(i + 1)
+      const colrOsc = '/artcolr_' + parseInt(i + 1)
+      const modAOsc = '/artmodA_' + parseInt(i + 1)
+      const modBOsc = '/artmodB_' + parseInt(i + 1)
+      const modeOsc = '/artMode_' + parseInt(i + 1)
+      const rangOsc = '/artrang_' + parseInt(i + 1)
+      const nameJsn = artListJsn[i].name
+      const typeJsn = artListJsn[i].codeType
+      const deftJsn = artListJsn[i].default
+      const codeJsn = parseInt(artListJsn[i].code)
+      const on__Jsn = parseInt(artListJsn[i].on)
+      const off_Jsn = parseInt(artListJsn[i].off)
+      const rangJsn = artListJsn[i].ranges
+
+      if (!artListJsn[i].name) {
+        receive('/template-io_keyRangeVar1', trkRang)
+        receive('/template-io_keyRangeVar2', rangJsn)
+        receive('/template-io_keyRangeScript', 1)
+        continue
       }
-      for (let i = 0; i < 18; i++) {
-        const nameOsc = '/artname_' + parseInt(i + 1)
-        const inptOsc = '/artinpt_' + parseInt(i + 1)
-        const colrOsc = '/artcolr_' + parseInt(i + 1)
-        const modAOsc = '/artmodA_' + parseInt(i + 1)
-        const modBOsc = '/artmodB_' + parseInt(i + 1)
-        receive(nameOsc, ' ')
-        receive(inptOsc, 'true')
-        receive(colrOsc, '#A9A9A9')
-        receive(modAOsc, 0.15)
-        receive(modBOsc, 0.15)
-      }
 
-      receive('/template-io_keyRangeVar1', [])
-      receive('/template-io_keyRangeVar2', [])
-      receive('/template-io_keyRangeScript', 1)
-      receive('/selectedTrackKeyRanges', ' ')
-      receive('/selectedTrackDelays', ' ')
+      // this will display the note name or CC number, as well as it's value under the articulation button in the UI, e.g. (CC32/1), (C3/20)
+      let codeDsp
 
-      if (!items[trkNumb]) {
-        receive('/selectedTrackName', 'No Track Data!')
-        return
-      }
-
-      //{
-      //  id: string
-      //  locked: boolean
-      //  name: string
-      //  channel: number | null
-      //  baseDelay: number | null
-      //  avgDelay: number | null
-      //  color: string
-      //  fullRange:  {
-      //      id: string;
-      //      name: string | null;
-      //      low: string | null;
-      //      high: string | null;
-      //      whiteKeysOnly: boolean | null;
-      //      fileItemsItemId: string | null;
-      //  }[]
-      //  artListTap: {
-      //      id: string;
-      //      name: string | null;
-      //      toggle: boolean;
-      //      codeType: string | null;
-      //      code: number | null;
-      //      on: number | null;
-      //      off: number | null;
-      //      default: boolean | null;
-      //      delay: number | null;
-      //      changeType: string | null;
-      //      ranges: string | null;
-      //      fileItemsItemId: string | null;
-      //  }[]
-      //  artListTog: {
-      //      id: string;
-      //      name: string | null;
-      //      toggle: boolean;
-      //      codeType: string | null;
-      //      code: number | null;
-      //      on: number | null;
-      //      off: number | null;
-      //      default: string | null;
-      //      delay: number | null;
-      //      changeType: string | null;
-      //      ranges: string | null;
-      //      fileItemsItemId: string | null;
-      //  }[]
-      //  fadList:  {
-      //      id: string;
-      //      name: string | null;
-      //      codeType: string | null;
-      //      code: number | null;
-      //      default: number | null;
-      //      changeType: string | null;
-      //      fileItemsItemId: string | null;
-      //  }[]
-      //}
-
-      const trkName = items[trkNumb].name
-      const trkRang = items[trkNumb].fullRange
-      const trkDely1 = items[trkNumb].baseDelay
-      const trkDely2 = items[trkNumb].avgDelay
-      let sign1 = ''
-      let sign2 = ''
-      if (Math.sign(trkDely1) === 1) {
-        sign1 = '+'
-      }
-      if (Math.sign(trkDely2) === 1) {
-        sign2 = '+'
-      }
-
-      receive('/selectedTrackName', trkName)
-      receive('/template-io_selectedTrackName', trkName)
-      receive(
-        '/selectedTrackDelays',
-        `Base Delay: ${sign1}${trkDely1}ms\nAvg Delay: ${sign2}${trkDely2}ms`
-      )
-
-      if (items[trkNumb].fadList.length > 4) {
-        receive('/faderPanel-color-2', '1px solid red')
+      if (typeJsn === '/control') {
+        codeDsp = 'CC'
+      } else if (typeJsn === '/note') {
+        codeDsp = `${allNotes_loc[codeJsn]}/`
       } else {
-        receive('/faderPanel-color-2', '')
+        codeDsp = ''
       }
 
-      const fadListJsn = items[trkNumb].fadList
-      for (let i = 0; i < fadListJsn.length; i++) {
-        const nameOsc = '/CC_disp_' + parseInt(i + 1)
-        const addrOsc = '/CC_fad__' + parseInt(i + 1)
-        const codeOsc = '/CC_incr_' + parseInt(i + 1)
-        const nameJsn = fadListJsn[i].name
-        const typeJsn = fadListJsn[i].codeType
-        const codeJsn = parseInt(fadListJsn[i].code)
-        const deftJsn = parseInt(fadListJsn[i].default)
+      if (togCodes_loc && nameJsn !== '') {
+        receive(
+          nameOsc,
+          `${nameJsn} (${codeDsp}${codeJsn}/${on__Jsn}${
+            off_Jsn ? '/' + off_Jsn : ''
+          })`
+        )
+      } else {
         receive(nameOsc, nameJsn)
-        receive(addrOsc, deftJsn)
-        receive(codeOsc, codeJsn)
-        prmUpdate(4, typeJsn, codeJsn, deftJsn)
       }
-      const artListJsn = [
-        ...items[trkNumb].artListTap,
-        ...items[trkNumb].artListTog
-      ]
 
-      for (let i = 0; i < artListJsn.length; i++) {
-        const nameOsc = '/artname_' + parseInt(i + 1)
-        const typeOsc = '/arttype_' + parseInt(i + 1)
-        const codeOsc = '/artcode_' + parseInt(i + 1)
-        const inptOsc = '/artinpt_' + parseInt(i + 1)
-        const deftOsc = '/artdeft_' + parseInt(i + 1)
-        const on__Osc = '/arton___' + parseInt(i + 1)
-        const off_Osc = '/artoff__' + parseInt(i + 1)
-        const colrOsc = '/artcolr_' + parseInt(i + 1)
-        const modAOsc = '/artmodA_' + parseInt(i + 1)
-        const modBOsc = '/artmodB_' + parseInt(i + 1)
-        const modeOsc = '/artMode_' + parseInt(i + 1)
-        const rangOsc = '/artrang_' + parseInt(i + 1)
-        const nameJsn = artListJsn[i].name
-        const typeJsn = artListJsn[i].codeType
-        const deftJsn = artListJsn[i].default
-        const codeJsn = parseInt(artListJsn[i].code)
-        const on__Jsn = parseInt(artListJsn[i].on)
-        const off_Jsn = parseInt(artListJsn[i].off)
-        const rangJsn = artListJsn[i].ranges
+      //NEED TO ADD LOGIC FOR CHANGETYPE VALUE 1 VS 2
 
-        if (!artListJsn[i].name) {
-          receive('/template-io_keyRangeVar1', trkRang)
-          receive('/template-io_keyRangeVar2', rangJsn)
-          receive('/template-io_keyRangeScript', 1)
-          continue
-        }
+      // this populates the articulation button with the appropriate data
+      receive(typeOsc, typeJsn)
+      receive(codeOsc, codeJsn)
+      receive(deftOsc, off_Jsn)
+      receive(on__Osc, on__Jsn)
+      receive(off_Osc, off_Jsn)
+      receive(rangOsc, rangJsn)
+      receive(inptOsc, 'false')
+      receive(colrOsc, '#6dfdbb')
 
-        let codeDsp
+      if (artListJsn[i].toggle) {
+        receive(modeOsc, 'toggle')
+        receive(colrOsc, '#a86739')
+        receive(modBOsc, 0.75)
+        prmUpdate(4, typeJsn, codeJsn, off_Jsn)
 
-        if (typeJsn === '/control') {
-          codeDsp = 'CC'
-        } else if (typeJsn === '/note') {
-          codeDsp = `${allNotes_loc[codeJsn]}/`
-        } else {
-          codeDsp = ''
-        }
+        if (deftJsn !== 'On') continue
 
-        if (togCodes_loc && nameJsn !== '') {
-          receive(
-            nameOsc,
-            `${nameJsn} (${codeDsp}${codeJsn}/${on__Jsn}${
-              off_Jsn ? '/' + off_Jsn : ''
-            })`
-          )
-        } else {
-          receive(nameOsc, nameJsn)
-        }
+        prmUpdate(4, typeJsn, codeJsn, on__Jsn)
+        receive(deftOsc, on__Jsn)
+        receive('/template-io_keyRangeVar1', trkRang)
+        receive('/template-io_keyRangeVar2', rangJsn)
+        receive('/template-io_keyRangeScript', 1)
+      } else {
+        receive(modeOsc, 'tap')
 
-        //NEED TO ADD LOGIC FOR CHANGETYPE VALUE 1 VS 2
+        if (!deftJsn) continue
 
-        receive(typeOsc, typeJsn)
-        receive(codeOsc, codeJsn)
-        receive(deftOsc, off_Jsn)
-        receive(on__Osc, on__Jsn)
-        receive(off_Osc, off_Jsn)
-        receive(rangOsc, rangJsn)
-        receive(inptOsc, 'false')
-        receive(colrOsc, '#6dfdbb')
-
-        if (artListJsn[i].toggle) {
-          receive(modeOsc, 'toggle')
-          receive(colrOsc, '#a86739')
-          receive(modBOsc, 0.75)
-          prmUpdate(4, typeJsn, codeJsn, off_Jsn)
-          if (deftJsn !== 'On') continue
-          prmUpdate(4, typeJsn, codeJsn, on__Jsn)
-          receive(deftOsc, on__Jsn)
-          receive('/template-io_keyRangeVar1', trkRang)
-          receive('/template-io_keyRangeVar2', rangJsn)
-          receive('/template-io_keyRangeScript', 1)
-        } else {
-          receive(modeOsc, 'tap')
-          if (deftJsn !== true) continue
-
-          receive(modAOsc, 0.75)
-          receive(deftOsc, on__Jsn)
-          prmUpdate(4, typeJsn, codeJsn, on__Jsn)
-          receive('/template-io_keyRangeVar1', trkRang)
-          receive('/template-io_keyRangeVar2', rangJsn)
-          receive('/template-io_keyRangeScript', 1)
-        }
+        receive(modAOsc, 0.75)
+        receive(deftOsc, on__Jsn)
+        prmUpdate(4, typeJsn, codeJsn, on__Jsn)
+        receive('/template-io_keyRangeVar1', trkRang)
+        receive('/template-io_keyRangeVar2', rangJsn)
+        receive('/template-io_keyRangeScript', 1)
       }
     }
+
     return { address, args, host, port }
   }
 }

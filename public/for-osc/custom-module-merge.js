@@ -1,7 +1,6 @@
 const submodules = [
   require('./template-io-custom-module.js'),
   require('./mcu-ext.js')
-  // etc
 ]
 
 module.exports = {
@@ -20,7 +19,6 @@ module.exports = {
       if (m.oscInFilter) data = m.oscInFilter(data)
       if (!data) return
     }
-
     return data
   },
   oscOutFilter: function (data) {

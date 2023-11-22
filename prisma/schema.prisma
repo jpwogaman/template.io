@@ -36,11 +36,7 @@ model ItemsFullRanges {
   whiteKeysOnly Boolean? @default(false)
 
   FileItems       FileItems? @relation(fields: [fileItemsItemId], references: [id])
-  fileItemsItemId String?
-  //ItemsArtListTog         ItemsArtListTog?    @relation(fields: [itemsArtListTogArtId], references: [id])
-  //itemsArtListTogArtId    String?
-  //ItemsArtListTap      ItemsArtListTap? @relation(fields: [ItemsArtListTapArtId], references: [id])
-  //ItemsArtListTapArtId String?
+  fileItemsItemId String?  
 }
 
 model ItemsArtListTog {
