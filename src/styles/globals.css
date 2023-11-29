@@ -17,7 +17,7 @@ body {
   text-main 
   min-h-[100svh] 
   transition-colors
-  font-caviar 
+  font-mono 
   duration-200;
 }
 

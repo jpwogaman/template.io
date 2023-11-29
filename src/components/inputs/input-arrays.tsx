@@ -42,14 +42,14 @@ const valNoteArray: string[] = []
 for (let i = 0; i <= 127; i++) {
   valNoteArray.push(i + ' / ' + allNoteArray[i])
 }
-const smpOutsArray: string[] = []
+const smpOutsArray: string[] = ['N/A']
 for (let i = 1; i < smpOutSettings; i++) {
   if (i % 2 === 0) continue
   const j: number = i + 1
   const output: string = i + '/' + j
   smpOutsArray.push(output)
 }
-const vepOutsArray: string[] = []
+const vepOutsArray: string[] = ['N/A']
 for (let i = 1; i < vepOutSettings; i++) {
   if (i % 2 === 0) continue
   const j: number = i + 1

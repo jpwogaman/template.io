@@ -21,9 +21,9 @@ model FileItems {
   channel    Float?            @default(1)
   baseDelay  Float?            @default(0)
   avgDelay   Float?            @default(0)
-  vepOut     String            @default("1/2")
+  vepOut     String            @default("N/A")
   vepInstance String           @default("N/A")  
-  smpOut     String            @default("1/2")
+  smpOut     String            @default("N/A")
   color      String            @default("#71717A")
   fullRange  ItemsFullRanges[]
   artListTog ItemsArtListTog[]
