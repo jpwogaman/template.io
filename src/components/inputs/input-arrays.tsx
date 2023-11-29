@@ -1,7 +1,7 @@
 import React, { type FC } from 'react'
 
 const smpOutSettings = 32
-const vepOutSettings = 32
+const vepOutSettings = 64
 
 const MiddleC = {
   bottom: -2,
@@ -44,17 +44,17 @@ for (let i = 0; i <= 127; i++) {
 }
 const smpOutsArray: string[] = []
 for (let i = 1; i < smpOutSettings; i++) {
+  if (i % 2 === 0) continue
   const j: number = i + 1
-  const output: string = i + '-' + j
+  const output: string = i + '/' + j
   smpOutsArray.push(output)
-  //  i = i + 1
 }
 const vepOutsArray: string[] = []
 for (let i = 1; i < vepOutSettings; i++) {
+  if (i % 2 === 0) continue
   const j: number = i + 1
-  const output: string = i + '-' + j
+  const output: string = i + '/' + j
   vepOutsArray.push(output)
-  //  i = i + 1
 }
 const valPtchArray: number[] = []
 for (let i = 0; i < 16384; i++) {
@@ -73,6 +73,15 @@ const smpTypeArray: string[] = [
   'Spitfire Audio BBC Symphony Orchestra',
   'Vienna Synchron Player',
   'Vienna Instruments'
+]
+
+// make this user-input option
+const vepInstanceArray: string[] = [
+  'N/A',
+  'Strings',
+  'Percussion + Pianos',
+  'Brass',
+  'Woodwinds'
 ]
 
 const valAddrArray: string[] = [
@@ -156,6 +165,10 @@ export const selectArrays: {
   vepOutsList: {
     name: 'vepOutsList',
     array: <SelectList numbers={vepOutsArray} />
+  },
+  vepInstList: {
+    name: 'vepInstList',
+    array: <SelectList numbers={vepInstanceArray} />
   },
   valAddrList: {
     name: 'valAddrList',

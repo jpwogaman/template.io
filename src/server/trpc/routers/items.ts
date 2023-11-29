@@ -15,6 +15,9 @@ type FileItemsExtended = {
   channel: number | null
   baseDelay: number | null
   avgDelay: number | null
+  vepOut: string
+  vepInstance: string
+  smpOut: string
   color: string
   fullRange: ItemsFullRanges[]
   artListTog: ItemsArtListTog[]
@@ -51,6 +54,9 @@ export const ItemsRouter = createTRPCRouter({
               typeof item.avgDelay === 'string'
                 ? parseInt(item.avgDelay)
                 : item.avgDelay,
+            vepOut: item.vepOut,
+            vepInstance: item.vepInstance,
+            smpOut: item.smpOut,
             color: item.color,
             fullRange: {
               create: item.fullRange.map((range) => {
@@ -138,8 +144,8 @@ export const ItemsRouter = createTRPCRouter({
                     typeof newFad.default === 'boolean'
                       ? null
                       : typeof newFad.default === 'string'
-                      ? parseInt(newFad.default)
-                      : newFad.default
+                        ? parseInt(newFad.default)
+                        : newFad.default
                 }
               })
             }
@@ -224,6 +230,9 @@ export const ItemsRouter = createTRPCRouter({
             typeof item.avgDelay === 'string'
               ? parseInt(item.avgDelay)
               : item.avgDelay,
+          vepOut: item.vepOut,
+          vepInstance: item.vepInstance,
+          smpOut: item.smpOut,
           color: item.color,
           fullRange: {
             create: item.fullRange.map((range) => {
@@ -311,8 +320,8 @@ export const ItemsRouter = createTRPCRouter({
                   typeof newFad.default === 'boolean'
                     ? null
                     : typeof newFad.default === 'string'
-                    ? parseInt(newFad.default)
-                    : newFad.default
+                      ? parseInt(newFad.default)
+                      : newFad.default
               }
             })
           }
@@ -406,12 +415,25 @@ export const ItemsRouter = createTRPCRouter({
         channel: z.string().optional(),
         baseDelay: z.string().optional(),
         avgDelay: z.string().optional(),
+        vepOut: z.string().optional(),
+        vepInstance: z.string().optional(),
+        smpOut: z.string().optional(),
         color: z.string().optional()
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const { itemId, locked, name, channel, baseDelay, avgDelay, color } =
-        input
+      const {
+        itemId,
+        locked,
+        name,
+        channel,
+        baseDelay,
+        avgDelay,
+        vepOut,
+        vepInstance,
+        smpOut,
+        color
+      } = input
 
       const currentItem = await ctx.prisma.fileItems.findUnique({
         where: {
@@ -429,6 +451,9 @@ export const ItemsRouter = createTRPCRouter({
           channel: channel ? parseInt(channel) : currentItem?.channel,
           baseDelay: baseDelay ? parseInt(baseDelay) : currentItem?.baseDelay,
           avgDelay: avgDelay ? parseInt(avgDelay) : currentItem?.avgDelay,
+          vepOut: vepOut ?? currentItem?.vepOut,
+          vepInstance: vepInstance ?? currentItem?.vepInstance,
+          smpOut: smpOut ?? currentItem?.smpOut,
           color: color ?? currentItem?.color
         }
       })
