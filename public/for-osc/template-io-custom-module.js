@@ -1,4 +1,4 @@
-const allTrack_jsn = loadJSON('template-io-track-data.json')
+const allTrack_jsn = loadJSON('tracks-11.27.2023-v1.json')
 
 const items = allTrack_jsn.items
 // full schema for an item in the JSON file
@@ -145,16 +145,28 @@ module.exports = {
 
     //  if (args[0].value.includes('f0 00 00 66 14 12')) {
     //    // CUBASE TRACKS HEX TO ASCII STRING
-    //    console.log(args[0].value)
     //    let input = args[0].value.split(' ').splice(7, 35)
     //    input.pop()
     //    input = input.join('')
-    //    let trackname = ''
+    //    let sysexTrackName = ''
     //    for (let n = 0; n < input.length; n += 2) {
-    //      trackname += String.fromCharCode(parseInt(input.substr(n, 2), 16))
+    //      sysexTrackName += String.fromCharCode(
+    //        parseInt(input.substr(n, 2), 16)
+    //      )
     //    }
 
-    //    console.log(trackname)
+    //    console.log(sysexTrackName)
+    //    let debugItem
+
+    //    for (const item of items) {
+    //      if (item.name.includes(sysexTrackName)) {
+    //        debugItem = 'item'
+    //      } else {
+    //        debugItem = 'no item'
+    //      }
+    //    }
+
+    //    console.log(debugItem)
     //  }
     //}
 
@@ -162,6 +174,8 @@ module.exports = {
     // for some reason the && is the only way to get this to work, but sometimes it breaks the MCU module? I don't know why, I feel like ?? should work but it doesn't
 
     if (port !== 'OSC2' && port !== 'OSC3') return data
+    if (!args[1]) return data
+    if (!args[2]) return data
 
     const arg1 = args[1].value
     const arg2 = args[2].value
@@ -171,6 +185,8 @@ module.exports = {
     }
 
     // these codes are sent from Cubase upon track selection
+    // Here we could say something like if sysex gives us trackname, find the track in the json file and then send the data to the template-io module
+
     if (port === 'OSC3' && address === '/control') {
       clickTrk(arg1, arg2)
     }
@@ -195,7 +211,6 @@ module.exports = {
     // this is the main function of this module, it receives the track number from Cubase and then sends the appropriate data to the UI
     if (address !== '/key_pressure') return data
 
-    // Here we could say something like if sysex gives us trackname, find the track in the json file and then send the data to the template-io module
     const trkNumb = arg1 * 128 + arg2
 
     // might not need to hardcode the number of faders and articulations, but it's fine for now. in OSC we can use a matrix widget and dynamically create the number of faders and articulations based on the JSON file
