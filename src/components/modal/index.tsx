@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Backdrop from './backdrop'
-import useModal from '@/hooks/useModal'
+import SettingsTableKeys from '../settingsTableKeys'
+import { InputTypeSelector, OnChangeHelperArgsType } from '../inputs'
 //https://github.com/fireship-io/framer-demo/tree/framer-motion-demo/src
 
 const dropIn = {
@@ -47,6 +48,10 @@ const Modal = ({ handleClose, modalText }: ModalProps) => {
     }
   }, [handleClose])
 
+  const onChangeHelper = ({ newValue, key }: OnChangeHelperArgsType) => {
+    localStorage.setItem(key, newValue as string)
+  }
+
   return (
     <Backdrop onClick={handleClose}>
       <motion.div
@@ -89,7 +94,25 @@ const Modal = ({ handleClose, modalText }: ModalProps) => {
         {modalText === 'settings' && (
           <div className='text-main relative top-12 w-full'>
             <h3 className='text-center text-2xl'>Settings</h3>
-            <div className='text-main mt-4 text-left font-mono text-base'></div>
+            <div className='text-main mt-4 text-left font-mono text-base'>
+              {SettingsTableKeys.keys.map((keyActual) => {
+                const { key, label } = keyActual
+                return (
+                  <li
+                    key={key}
+                    className='flex'>
+                    <label className='mr-4'>{`${label}:`}</label>
+                    <div>
+                      <InputTypeSelector
+                        keySingle={keyActual}
+                        onChangeHelper={onChangeHelper}
+                        settingsModal
+                      />
+                    </div>
+                  </li>
+                )
+              })}
+            </div>
           </div>
         )}
         <button

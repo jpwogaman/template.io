@@ -17,11 +17,12 @@ import {
 
 import TrackOptionsTableKeys from '../trackOptionsTableKeys'
 import TrackListTableKeys from '../trackListTableKeys'
+import SettingsTableKeys from '../settingsTableKeys'
 import tw from '@/utils/tw'
 
 export type OnChangeHelperArgsType = {
   newValue?: string | number | boolean
-  layoutDataSingleId: string
+  layoutDataSingleId?: string
   key: string
   label?: string
 }
@@ -34,6 +35,7 @@ type InputTypeSelectorProps = {
   keySingle:
     | (typeof TrackOptionsTableKeys)[number]['keys'][number]
     | (typeof TrackListTableKeys)['keys'][number]
+    | (typeof SettingsTableKeys)['keys'][number]
   layoutConfigLabel?: string
   layoutDataSingle?:
     | ItemsFullRanges
@@ -63,6 +65,7 @@ type InputTypeSelectorProps = {
     default: boolean
   }[]
   selectedItem?: SelectedItemType
+  settingsModal?: boolean
 }
 
 export type InputComponentProps = {
@@ -74,7 +77,7 @@ export type InputComponentProps = {
   placeholder?: string | number
   options?: string
   children?: ReactNode
-  textTypeValidator: string
+  textTypeValidator?: string
   onChangeFunction: (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => void | undefined
@@ -89,7 +92,8 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
   artTogIndividualComponentLocked,
   fadIndividualComponentLocked,
   artTapOneDefaultOnly,
-  selectedItem
+  selectedItem,
+  settingsModal
 }) => {
   const { input, selectArray, key } = keySingle
 
@@ -107,6 +111,30 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
   const SubComponentLevel =
     typeof layoutDataSingle !== 'undefined' &&
     typeof layoutConfigLabel !== 'undefined'
+
+  if (settingsModal) {
+    const inputPropsHelper = {
+      id: `${key}`,
+      defaultValue: localStorage.getItem(key) ?? '',
+      onChangeFunction: (
+        event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
+      ) =>
+        onChangeHelper({
+          newValue: event.target.value,
+          key
+        })
+    }
+    const inputComponent = (
+      <>
+        {inputSelectSingle && <InputSelectSingle {...inputPropsHelper} />}
+        {inputSelectMultiple && <InputSelectMultiple {...inputPropsHelper} />}
+        {inputText && <InputText {...inputPropsHelper} />}
+        {inputCheckBox && <InputCheckBox {...inputPropsHelper} />}
+        {inputCheckBoxSwitch && <InputCheckBoxSwitch {...inputPropsHelper} />}
+      </>
+    )
+    return inputComponent
+  }
 
   if (MainComponentLevel) {
     const inputPropsHelper = {
@@ -223,8 +251,8 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
       defaultValue: inputCheckBoxSwitch
         ? checkBoxSwitchValueHelper()
         : artTapDefaultHelper
-        ? thisArtTapDefault?.default
-        : layoutDataSingle[key as 'id'],
+          ? thisArtTapDefault?.default
+          : layoutDataSingle[key as 'id'],
       options: rangeOptions ? stringListOfFullRangeIds : selectArray ?? '',
       textTypeValidator: typeof layoutDataSingle[key as 'id'],
       onChangeFunction: (
