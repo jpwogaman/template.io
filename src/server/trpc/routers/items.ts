@@ -334,8 +334,10 @@ export const ItemsRouter = createTRPCRouter({
       include: {
         _count: {
           select: {
+            fullRange: true,
             artListTap: true,
-            artListTog: true
+            artListTog: true,
+            fadList: true
           }
         }
       }
