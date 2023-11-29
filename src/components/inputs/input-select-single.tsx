@@ -20,13 +20,13 @@ export const InputSelectSingle: FC<InputComponentProps> = ({
     | number[]
     | undefined = selectArrays.valNoneList?.array
 
-  if (!codeDisabled) {
-    for (const array in selectArrays) {
-      if (options === selectArrays[array]?.name) {
-        inputSelectOptionElements = selectArrays[array]?.array
-      }
+  //if (!codeDisabled) {
+  for (const array in selectArrays) {
+    if (options === selectArrays[array]?.name) {
+      inputSelectOptionElements = selectArrays[array]?.array
     }
   }
+  //}
 
   const valChange = (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
