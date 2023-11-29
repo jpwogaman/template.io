@@ -294,25 +294,25 @@ const TrackList: FC<TrackListProps> = ({
         })
       }
 
-      if (e.pageY - 15 > window.innerHeight - 200) {
+      if (e.pageY - 15 > window.innerHeight - 250) {
         setContextMenuPosition({
           left: e.pageX + 15,
-          top: e.pageY - 200
+          top: e.pageY - 250
         })
       }
 
       if (
         e.pageX + 15 > window.innerWidth - 250 &&
-        e.pageY - 15 > window.innerHeight - 200
+        e.pageY - 15 > window.innerHeight - 250
       )
         setContextMenuPosition({
           left: e.pageX - 250,
-          top: e.pageY - 200
+          top: e.pageY - 250
         })
 
       if (
         e.pageX + 15 < window.innerWidth - 250 &&
-        e.pageY - 15 < window.innerHeight - 200
+        e.pageY - 15 < window.innerHeight - 250
       ) {
         setContextMenuPosition({
           left: e.pageX + 15,
