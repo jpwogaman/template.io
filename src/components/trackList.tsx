@@ -1,4 +1,11 @@
-import { type ChangeEvent, useState, FC, Dispatch, SetStateAction } from 'react'
+import {
+  type ChangeEvent,
+  useState,
+  FC,
+  Dispatch,
+  SetStateAction,
+  useEffect
+} from 'react'
 import { trpc } from '@/utils/trpc'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
@@ -25,6 +32,12 @@ const TrackList: FC<TrackListProps> = ({
   const { refetch: refetchSelected } = trpc.items.getSingleItem.useQuery({
     itemId: selectedItemId ?? ''
   })
+
+  const selectedItemIndex =
+    data?.findIndex((item) => item.id === selectedItemId) ?? 0
+
+  const previousItemId = data?.[selectedItemIndex - 1]?.id ?? ''
+  const nextItemId = data?.[selectedItemIndex + 1]?.id ?? ''
 
   const createItemsHelper = () => {
     if (addMultipleItemsNumber >= 51) {
@@ -90,16 +103,51 @@ const TrackList: FC<TrackListProps> = ({
       itemId: id,
       [key]: newValue
     })
-
-    //const timer = setTimeout(() => {
-    //  updateSingleItemMutation.mutate({
-    //    itemId: id,
-    //    [key]: newValue
-    //  })
-    //}, 500)
-
-    //return () => clearTimeout(timer)
   }
+
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      const selectedInput = window.document.activeElement as HTMLInputElement
+      const isSelect = selectedInput?.tagName === 'SELECT'
+
+      if (e.key === 'ArrowUp') {
+        e.preventDefault()
+        if (previousItemId === '') return
+
+        const newInput = selectedInput?.id.replace(
+          selectedItemId ?? '',
+          previousItemId
+        )
+        const previousInput = window.document.getElementById(newInput ?? '')
+
+        previousInput?.focus()
+        setSelectedItemId(previousItemId)
+      }
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault()
+        if (nextItemId === '') return
+
+        const newInput = selectedInput?.id.replace(
+          selectedItemId ?? '',
+          nextItemId
+        )
+        const nextInput = window.document.getElementById(newInput ?? '')
+
+        nextInput?.focus()
+        setSelectedItemId(nextItemId)
+      }
+
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        if (isSelect) e.preventDefault()
+      }
+    }
+
+    window.addEventListener('keydown', handleEsc)
+    return () => {
+      window.removeEventListener('keydown', handleEsc)
+    }
+  }, [setSelectedItemId, nextItemId, previousItemId])
 
   const trackTh = `border-[1.5px]
   border-b-transparent
@@ -182,12 +230,12 @@ const TrackList: FC<TrackListProps> = ({
                   selectedUnlocked
                     ? 'bg-red-300 hover:bg-red-400 hover:text-zinc-50 dark:bg-red-600 dark:hover:bg-red-400 dark:hover:text-zinc-50'
                     : selectedLocked
-                    ? 'bg-red-500 hover:bg-red-600 hover:text-zinc-50 dark:bg-red-800 dark:hover:bg-red-500 dark:hover:text-zinc-50'
-                    : unselectedLocked
-                    ? 'bg-zinc-200 hover:bg-zinc-500 hover:text-zinc-50 dark:bg-zinc-600 dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
-                    : unselectedUnlocked
-                    ? 'bg-zinc-200 hover:bg-zinc-500 hover:text-zinc-50 dark:bg-zinc-600 dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
-                    : ''
+                      ? 'bg-red-500 hover:bg-red-600 hover:text-zinc-50 dark:bg-red-800 dark:hover:bg-red-500 dark:hover:text-zinc-50'
+                      : unselectedLocked
+                        ? 'bg-zinc-200 hover:bg-zinc-500 hover:text-zinc-50 dark:bg-zinc-600 dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
+                        : unselectedUnlocked
+                          ? 'bg-zinc-200 hover:bg-zinc-500 hover:text-zinc-50 dark:bg-zinc-600 dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
+                          : ''
                 )}>
                 <td>
                   <div style={{ backgroundColor: color }}>
@@ -215,7 +263,7 @@ const TrackList: FC<TrackListProps> = ({
                     classes={''}
                     titleA={selectedItemId + '_locked_currentValue: ' + locked}
                     titleB={selectedItemId + '_locked_currentValue: ' + locked}
-                    id='lockItem'
+                    id={selectedItemId + '_lock'}
                     a='fa-solid fa-lock-open'
                     b='fa-solid fa-lock'
                     defaultIcon={locked ? 'b' : 'a'}
