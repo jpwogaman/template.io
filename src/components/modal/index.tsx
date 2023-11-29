@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Backdrop from './backdrop'
+import useModal from '@/hooks/useModal'
 //https://github.com/fireship-io/framer-demo/tree/framer-motion-demo/src
 
 const dropIn = {
@@ -24,16 +25,16 @@ const dropIn = {
   }
 }
 
-interface ModalProps {
+type ModalProps = {
   handleClose: () => void
-  text: string
+  modalText: string
 }
 
 function tw(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-const Modal = ({ handleClose, text }: ModalProps) => {
+const Modal = ({ handleClose, modalText }: ModalProps) => {
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -59,30 +60,38 @@ const Modal = ({ handleClose, text }: ModalProps) => {
         initial='hidden'
         animate='visible'
         exit='exit'>
-        <div className='text-main relative top-12 w-full'>
-          <h3 className='text-center text-2xl'>Template.io</h3>
-          <div className='text-main mt-4 text-left font-mono text-base'>
-            <p>
-              Version: 0.1.0{' '}
-              <a
-                className='text-blue-600 dark:text-blue-400'
-                href=''>
-                (check for updates)
-              </a>
-            </p>
-            <p>Written by: JP Wogaman II</p>
-            <p>
-              Source code & Tutorials:{' '}
-              <a
-                className='text-blue-600 dark:text-blue-400'
-                href='https://www.github.com/jpwogaman/template.io'
-                target='_blank'>
-                https://www.github.com/jpwogaman/template.io
-              </a>
-            </p>
+        {modalText === 'about' && (
+          <div className='text-main relative top-12 w-full'>
+            <h3 className='text-center text-2xl'>Template.io</h3>
+            <div className='text-main mt-4 text-left font-mono text-base'>
+              <p>
+                Version: 0.1.0{' '}
+                <a
+                  className='text-blue-600 dark:text-blue-400'
+                  href=''>
+                  (check for updates)
+                </a>
+              </p>
+              <p>Written by: JP Wogaman II</p>
+              <p>
+                Source code & Tutorials:{' '}
+                <a
+                  className='text-blue-600 dark:text-blue-400'
+                  href='https://www.github.com/jpwogaman/template.io'
+                  target='_blank'>
+                  https://www.github.com/jpwogaman/template.io
+                </a>
+              </p>
+            </div>
           </div>
-        </div>
+        )}
 
+        {modalText === 'settings' && (
+          <div className='text-main relative top-12 w-full'>
+            <h3 className='text-center text-2xl'>Settings</h3>
+            <div className='text-main mt-4 text-left font-mono text-base'></div>
+          </div>
+        )}
         <button
           onClick={handleClose}
           type='button'

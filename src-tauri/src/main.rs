@@ -23,10 +23,12 @@ use tauri::{
 fn main() {
   let context = tauri::generate_context!();  
 
-  let quit = CustomMenuItem::new("quit".to_string(), "Quit");
-  let about = CustomMenuItem::new("about".to_string(), "About (v0.1.0)");  
   let import = CustomMenuItem::new("import".to_string(), "Import");    
   let export = CustomMenuItem::new("export".to_string(), "Export");  
+  let quit = CustomMenuItem::new("quit".to_string(), "Quit");
+
+  let about = CustomMenuItem::new("about".to_string(), "About (v0.1.0)");  
+  let settings = CustomMenuItem::new("settings".to_string(), "Settings");
 
   let file_submenu = Submenu::new(
     "File", 
@@ -41,6 +43,7 @@ fn main() {
     "Help", 
     Menu::new()
     .add_item(about)
+    .add_item(settings)
   );
 
   let menu = Menu::new()
@@ -56,19 +59,22 @@ fn main() {
   tauri::Builder::default()
     .menu(menu)
     .on_menu_event(|event| {
-      match event.menu_item_id() {
-        "quit" => {
-          std::process::exit(0);
-        }        
+      match event.menu_item_id() {          
         "import" => {
           event.window().emit("open", Some("open")).unwrap();
         }
         "export" => {
           event.window().emit("export", Some("export")).unwrap();
         }
+        "quit" => {
+          std::process::exit(0);
+        } 
         "about" => {
           event.window().emit("about", Some("about")).unwrap();
         }      
+        "settings" => {
+          event.window().emit("settings", Some("settings")).unwrap();
+        }
         _ => {}
       }})
     .system_tray(system_tray)

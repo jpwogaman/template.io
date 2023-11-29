@@ -14,10 +14,7 @@ import '@/styles/globals.css'
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   const [mounted, setMounted] = useState(false)
-  const { modalOpen, close, open } = useModal({
-    route: '/contact',
-    refreshAfterClose: false
-  })
+  const { modalOpen, close, open, setModalText, modalText } = useModal()
 
   const exportMutation = trpc.tauriMenuEvents.export.useMutation({
     onSuccess: (data) => {
@@ -76,6 +73,16 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           close()
         } else {
           open()
+          setModalText('about')
+        }
+      }
+
+      if (event.payload === 'settings') {
+        if (modalOpen) {
+          close()
+        } else {
+          open()
+          setModalText('settings')
         }
       }
     })
@@ -91,7 +98,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         {modalOpen && (
           <Modal
             handleClose={close}
-            text='Template.io'
+            modalText={modalText}
           />
         )}
         <Component {...pageProps} />
