@@ -1,4 +1,6 @@
 import { type FC, useState } from 'react'
+import tw from '@/utils/tw'
+
 interface IconBtnToggleProps {
   id: string
   titleA: string
@@ -36,11 +38,16 @@ export const IconBtnToggle: FC<IconBtnToggleProps> = ({
 
   return (
     <button
-      className={`transition-transform duration-200 ${classes}`}
+      className={tw(
+        'rounded-sm p-1 outline-none transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-600',
+        classes
+      )}
       title={isToggleOn ? titleA : titleB}
       onClick={handleClick}
       id={id}>
-      <i className={isToggleOn ? a : b}></i>
+      <i
+        id={id + '_icon'}
+        className={isToggleOn ? a : b}></i>
     </button>
   )
 }

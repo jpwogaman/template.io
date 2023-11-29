@@ -483,14 +483,14 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                         </td>
                       )
                     })}
-                    <td className={tw(trackTh, 'w-[5%] text-center')}>
+                    {/*<td className={tw(trackTh, 'w-[5%] text-center')}>
                       <button
                         onClick={() =>
                           createSingleSubItemMutationHelper(layoutConfig.label)
                         }>
                         <i className='fa-solid fa-plus' />
                       </button>
-                    </td>
+                    </td>*/}
                   </tr>
                 </thead>
                 <tbody>
@@ -528,7 +528,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                             </td>
                           )
                         })}
-                        <td className='text-center'>
+                        {/*<td className='text-center'>
                           <button
                             onClick={() =>
                               deleteSingleSubItemMutationHelper(
@@ -538,7 +538,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                             }>
                             <i className='fa-solid fa-minus' />
                           </button>
-                        </td>
+                        </td>*/}
                       </tr>
                     )
                   })}

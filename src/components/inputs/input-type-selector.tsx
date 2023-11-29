@@ -156,6 +156,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
       <>
         {!input && (
           <p
+            id={`${selectedItem.id}_${key}`}
             title={
               key === 'id'
                 ? selectedItem.id
@@ -269,6 +270,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
       <>
         {!input && (
           <p
+            id={`${layoutDataSingle.id}_${key}`}
             title={layoutDataSingle.id}
             className='cursor-default p-1'>
             {shortenedSubComponentId(layoutDataSingle[key as 'id'])}

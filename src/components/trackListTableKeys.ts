@@ -57,7 +57,6 @@ const TrackListTableKeys = {
       selectArray: 'smpOutsList',
       label: 'Sampler Outs'
     },
-
     {
       className: 'w-[10%]',
       show: true,

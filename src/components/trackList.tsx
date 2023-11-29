@@ -1,4 +1,4 @@
-import {
+import React, {
   type ChangeEvent,
   useState,
   FC,
@@ -15,6 +15,11 @@ import {
   type SelectedItemType,
   InputTypeSelector
 } from './inputs'
+import {
+  TrackListContextMenu,
+  TrackOptionsContextMenu
+} from './contextMenuOptions'
+import { set } from 'zod'
 
 type TrackListProps = {
   selectedItemId: string | null
@@ -99,9 +104,23 @@ const TrackList: FC<TrackListProps> = ({
     })
   }
 
+  const [isContextMenuOpen, setIsContextMenuOpen] = useState(false)
+  const [contextMenuIsOverTrackList, setContextMenuIsOverTrackList] =
+    useState(false)
+  const [contextMenuIsOverTrackOptions, setContextMenuIsOverTrackOptions] =
+    useState(false)
+
+  const [contextMenuId, setContextMenuId] = useState('')
+  const [contextMenuPosition, setContextMenuPosition] = useState({
+    top: 0,
+    left: 0
+  })
+
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       const selectedInput = window.document.activeElement as HTMLInputElement
+
+      const isButton = selectedInput?.tagName === 'BUTTON'
       const isSelect = selectedInput?.tagName === 'SELECT'
 
       const selectedItemIndex =
@@ -163,6 +182,7 @@ const TrackList: FC<TrackListProps> = ({
         )
         const previousInput = window.document.getElementById(newInput ?? '')
 
+        selectedInput?.blur()
         previousInput?.focus()
         setSelectedItemId(previousItemId)
       }
@@ -228,11 +248,100 @@ const TrackList: FC<TrackListProps> = ({
       }
     }
 
+    const handleRightClick = (e: MouseEvent) => {
+      e.preventDefault()
+
+      const target = e.target as HTMLElement
+      const targetId = target.id
+      const allDataIds = data?.map((item) => item.id) ?? []
+      setContextMenuId(targetId)
+
+      let notAnId = true
+
+      allDataIds.forEach((id) => {
+        if (targetId.includes(id)) {
+          notAnId = false
+        }
+      })
+
+      if (notAnId) {
+        setIsContextMenuOpen(false)
+        setContextMenuIsOverTrackOptions(false)
+        setContextMenuIsOverTrackList(false)
+        setContextMenuPosition({
+          top: 0,
+          left: 0
+        })
+        return
+      }
+      if (
+        targetId.includes('FR_') ||
+        targetId.includes('AL_') ||
+        targetId.includes('FL_')
+      ) {
+        setContextMenuIsOverTrackOptions(true)
+        setContextMenuIsOverTrackList(false)
+      } else {
+        setContextMenuIsOverTrackOptions(false)
+        setContextMenuIsOverTrackList(true)
+      }
+      setIsContextMenuOpen(true)
+
+      if (e.pageX + 15 > window.innerWidth - 250) {
+        setContextMenuPosition({
+          left: e.pageX - 250,
+          top: e.pageY - 15
+        })
+      }
+
+      if (e.pageY - 15 > window.innerHeight - 200) {
+        setContextMenuPosition({
+          left: e.pageX + 15,
+          top: e.pageY - 200
+        })
+      }
+
+      if (
+        e.pageX + 15 > window.innerWidth - 250 &&
+        e.pageY - 15 > window.innerHeight - 200
+      )
+        setContextMenuPosition({
+          left: e.pageX - 250,
+          top: e.pageY - 200
+        })
+
+      if (
+        e.pageX + 15 < window.innerWidth - 250 &&
+        e.pageY - 15 < window.innerHeight - 200
+      ) {
+        setContextMenuPosition({
+          left: e.pageX + 15,
+          top: e.pageY - 15
+        })
+      }
+    }
+
+    const handleLeftClick = (e: MouseEvent) => {
+      if (isContextMenuOpen) {
+        setIsContextMenuOpen(false)
+        setContextMenuIsOverTrackOptions(false)
+        setContextMenuIsOverTrackList(false)
+        setContextMenuPosition({
+          top: 0,
+          left: 0
+        })
+      }
+    }
+
     window.addEventListener('keydown', handleEsc)
+    window.addEventListener('click', handleLeftClick)
+    window.addEventListener('contextmenu', handleRightClick)
     return () => {
       window.removeEventListener('keydown', handleEsc)
+      window.removeEventListener('click', handleLeftClick)
+      window.removeEventListener('contextmenu', handleRightClick)
     }
-  }, [setSelectedItemId])
+  }, [setSelectedItemId, selectedItemId, data])
 
   const trackTh = `border-[1.5px]
   border-b-transparent
@@ -249,6 +358,73 @@ const TrackList: FC<TrackListProps> = ({
   `
   return (
     <div className='h-full w-1/2 overflow-y-scroll'>
+      <div className='absolute left-0 top-0 z-[100]'>
+        {isContextMenuOpen && (
+          <div
+            className={tw(
+              'absolute z-[100] rounded-sm border border-zinc-200 bg-white shadow-md dark:bg-zinc-900',
+              'min-h-40 p-4',
+              'border border-gray-200 text-xs dark:border-zinc-800'
+            )}
+            style={{
+              top: contextMenuPosition.top,
+              left: contextMenuPosition.left
+            }}>
+            <h3 className='mx-auto'>{`Selected: ${contextMenuId}`}</h3>
+            <hr className='my-2' />
+            {contextMenuIsOverTrackList &&
+              TrackListContextMenu.map((item) => {
+                const { id, label, icon1, icon2 } = item
+
+                if (id.includes('break'))
+                  return (
+                    <hr
+                      key={id}
+                      className='my-2'
+                    />
+                  )
+
+                return (
+                  <button
+                    key={id}
+                    onClick={() => {
+                      setIsContextMenuOpen(false)
+                    }}
+                    className='flex items-center gap-2 whitespace-nowrap'>
+                    <p>{label}</p>
+                    <i className={`fa-solid ${icon1}`} />
+                    {icon2 && <i className={`fa-solid ${icon2}`} />}
+                  </button>
+                )
+              })}
+            {contextMenuIsOverTrackOptions &&
+              TrackOptionsContextMenu.map((item) => {
+                const { id, label, icon1, icon2 } = item
+
+                if (id.includes('break'))
+                  return (
+                    <hr
+                      key={id}
+                      className='my-2'
+                    />
+                  )
+
+                return (
+                  <button
+                    key={id}
+                    onClick={() => {
+                      setIsContextMenuOpen(false)
+                    }}
+                    className='flex items-center gap-2 whitespace-nowrap'>
+                    <p>{label}</p>
+                    <i className={`fa-solid ${icon1}`} />
+                    {icon2 && <i className={`fa-solid ${icon2}`} />}
+                  </button>
+                )
+              })}
+          </div>
+        )}
+      </div>
       {/*<div className='z-50 mt-4 flex gap-2'>
         <h2 className='font-caviarBold text-base'>{`${TrackListTableKeys.label} (${data?.length})`}</h2>
       </div>*/}
@@ -281,7 +457,7 @@ const TrackList: FC<TrackListProps> = ({
               )
             })}
             <td className={tw(trackTh, 'sticky z-50 w-[5%]')}>Arts.</td>
-            <td className={tw(trackTh, 'sticky z-50 w-[10%] p-0.5')}>
+            {/*<td className={tw(trackTh, 'sticky z-50 w-[10%] p-0.5')}>
               <button
                 title={`Add Tracks (${addMultipleItemsNumber})`}
                 onClick={createItemsHelper}
@@ -295,7 +471,7 @@ const TrackList: FC<TrackListProps> = ({
                 className='min-h-[20px] w-1/2 border border-transparent bg-inherit px-1 pl-1 placeholder-zinc-400 outline-offset-4 outline-green-600 focus:cursor-text focus:bg-white focus:text-zinc-900 focus:placeholder-zinc-500 dark:placeholder-zinc-500 dark:outline-green-800'
               />
             </td>
-            <td className={tw(trackTh, 'sticky z-50 w-[5%]')} />
+            <td className={tw(trackTh, 'sticky z-50 w-[5%]')} />*/}
           </tr>
         </thead>
         <tbody>
@@ -309,6 +485,7 @@ const TrackList: FC<TrackListProps> = ({
 
             return (
               <tr
+                id={id + '_row'}
                 key={id}
                 onClick={() => setSelectedItemId(id)}
                 className={tw(
@@ -322,8 +499,11 @@ const TrackList: FC<TrackListProps> = ({
                           ? 'bg-zinc-200 hover:bg-zinc-500 hover:text-zinc-50 dark:bg-zinc-600 dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
                           : ''
                 )}>
-                <td>
-                  <div style={{ backgroundColor: color }}>
+                <td
+                  id={id + '_color_' + 'cell'}
+                  style={{ backgroundColor: color }}
+                  className='border-y border-black'>
+                  <div>
                     <input
                       type='color'
                       title={selectedItemId + '_color_currentValue: ' + color}
@@ -331,7 +511,7 @@ const TrackList: FC<TrackListProps> = ({
                       defaultValue={color}
                       className={tw(
                         locked ? 'cursor-not-allowed' : 'cursor-pointer',
-                        'w-full opacity-0'
+                        'peer sr-only'
                       )}
                       onChange={(event) =>
                         onChangeHelper({
@@ -341,14 +521,17 @@ const TrackList: FC<TrackListProps> = ({
                         })
                       }
                     />
+                    <div className='rounded-sm border-none p-1 transition-all duration-200 peer-focus-visible:border-none peer-focus-visible:ring-4 peer-focus-visible:ring-indigo-600' />
                   </div>
                 </td>
-                <td className='p-0.5 text-center'>
+                <td
+                  id={id + '_lock_' + 'cell'}
+                  className='p-0.5 text-center'>
                   <IconBtnToggle
                     classes={''}
-                    titleA={selectedItemId + '_locked_currentValue: ' + locked}
-                    titleB={selectedItemId + '_locked_currentValue: ' + locked}
-                    id={selectedItemId + '_lock'}
+                    titleA={id + '_locked_currentValue: ' + locked}
+                    titleB={id + '_locked_currentValue: ' + locked}
+                    id={id + '_lock_' + 'button'}
                     a='fa-solid fa-lock-open'
                     b='fa-solid fa-lock'
                     defaultIcon={locked ? 'b' : 'a'}
@@ -371,6 +554,7 @@ const TrackList: FC<TrackListProps> = ({
                   if (!show) return
                   return (
                     <td
+                      id={id + '_' + key + '_' + 'cell'}
                       key={key}
                       className='p-0.5'>
                       <InputTypeSelector
@@ -381,10 +565,12 @@ const TrackList: FC<TrackListProps> = ({
                     </td>
                   )
                 })}
-                <td className={tw('p-0.5', locked ? 'text-gray-400' : '')}>
+                <td
+                  id={id + '_artCount_' + 'cell'}
+                  className={tw('p-0.5', locked ? 'text-gray-400' : '')}>
                   {_count?.artListTog + _count?.artListTap}
                 </td>
-                <td className='p-0.5 text-center'>
+                {/*<td className='p-0.5 text-center'>
                   <button
                     onClick={() =>
                       deleteSingleItemMutation.mutate({
@@ -400,7 +586,7 @@ const TrackList: FC<TrackListProps> = ({
                   >
                     <i className='fa-solid fa-copy' />
                   </button>
-                </td>
+                </td>*/}
               </tr>
             )
           })}
