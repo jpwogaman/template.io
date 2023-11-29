@@ -58,15 +58,15 @@ export const TrackListContextMenu = [
 
 export const TrackOptionsContextMenu = [
   {
-    id: 'moveRangeUp',
-    label: 'Move Range Up',
+    id: 'moveItemUp',
+    label: 'Move Item Up',
     icon1: 'fa-arrow-up',
     icon2: null
   },
 
   {
-    id: 'moveRangeDown',
-    label: 'Move Range Down',
+    id: 'moveItemDown',
+    label: 'Move Item Down',
     icon1: 'fa-arrow-down',
     icon2: null
   },
@@ -74,26 +74,26 @@ export const TrackOptionsContextMenu = [
     id: 'break1'
   },
   {
-    id: 'addRangeAbove',
-    label: 'Add Range Above',
+    id: 'addItemAbove',
+    label: 'Add Item Above',
     icon1: 'fa-plus',
     icon2: 'fa-arrow-up'
   },
   {
-    id: 'addRangeBelow',
-    label: 'Add Range Below',
+    id: 'addItemBelow',
+    label: 'Add Item Below',
     icon1: 'fa-plus',
     icon2: 'fa-arrow-down'
   },
   {
-    id: 'duplicateRangeAbove',
-    label: 'Duplicate Range Above',
+    id: 'duplicateItemAbove',
+    label: 'Duplicate Item Above',
     icon1: 'fa-copy',
     icon2: 'fa-arrow-up'
   },
   {
-    id: 'duplicateRangeBelow',
-    label: 'Duplicate Range Below',
+    id: 'duplicateItemBelow',
+    label: 'Duplicate Item Below',
     icon1: 'fa-copy',
     icon2: 'fa-arrow-down'
   },
@@ -101,13 +101,13 @@ export const TrackOptionsContextMenu = [
     id: 'break2'
   },
   {
-    id: 'clearRange',
-    label: 'Clear Range',
+    id: 'clearItem',
+    label: 'Clear Item',
     icon1: 'fa-eraser',
     icon2: null
   },
   {
-    id: 'deleteRange',
+    id: 'deleteItem',
     label: 'Delete Range',
     icon1: 'fa-xmark',
     icon2: null

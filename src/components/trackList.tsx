@@ -399,7 +399,24 @@ const TrackList: FC<TrackListProps> = ({
               })}
             {contextMenuIsOverTrackOptions &&
               TrackOptionsContextMenu.map((item) => {
+                
                 const { id, label, icon1, icon2 } = item
+
+                let newId = id
+                let newLabel = label
+
+                if (contextMenuId.includes('FR_')) {
+                  newId = id.replace('Item', 'Range')
+                  newLabel = label?.replace('Item', 'Range')
+                }
+                if (contextMenuId.includes('AL_')) {
+                  newId = id.replace('Item', 'Articulation')
+                  newLabel = label?.replace('Item', 'Articulation')
+                }
+                if (contextMenuId.includes('FL_')) {
+                  newId = id.replace('Item', 'Fader')
+                  newLabel = label?.replace('Item', 'Fader')
+                }
 
                 if (id.includes('break'))
                   return (
@@ -411,12 +428,12 @@ const TrackList: FC<TrackListProps> = ({
 
                 return (
                   <button
-                    key={id}
+                    key={newId}
                     onClick={() => {
                       setIsContextMenuOpen(false)
                     }}
                     className='flex items-center gap-2 whitespace-nowrap'>
-                    <p>{label}</p>
+                    <p>{newLabel}</p>
                     <i className={`fa-solid ${icon1}`} />
                     {icon2 && <i className={`fa-solid ${icon2}`} />}
                   </button>
