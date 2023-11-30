@@ -22,6 +22,15 @@ const useMutations = ({
     data?.findIndex((item) => item.id === selectedItemId) ?? 0
   const previousItemId = data?.[selectedItemIndex - 1]?.id ?? ''
   const nextItemId = data?.[selectedItemIndex + 1]?.id ?? ''
+  
+  const selectedItemRangeCount =
+    data?.[selectedItemIndex]?._count?.fullRange ?? 0
+  const selectedItemArtTogCount =
+    data?.[selectedItemIndex]?._count?.artListTog ?? 0
+  const selectedItemArtTapCount =
+    data?.[selectedItemIndex]?._count?.artListTap ?? 0
+  const selectedItemArtCount = selectedItemArtTogCount + selectedItemArtTapCount
+  const selectedItemFadCount = data?.[selectedItemIndex]?._count?.fadList ?? 0
 
   const createSingleItemMutation = trpc.items.createSingleItem.useMutation({
     onSuccess: () => {
@@ -252,9 +261,15 @@ const useMutations = ({
     selectedItem,
     refetchAll,
     refetchSelected,
+    selectedItemIndex,
     dataLength,
     previousItemId,
     nextItemId,
+    selectedItemRangeCount,
+    selectedItemArtTogCount,
+    selectedItemArtTapCount,
+    selectedItemArtCount,
+    selectedItemFadCount,
     createSingleItemMutation,
     deleteSingleItemMutation,
     renumberArtListMutation,

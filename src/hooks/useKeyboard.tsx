@@ -1,30 +1,24 @@
 import { useEffect, type Dispatch, type SetStateAction } from 'react'
 
-const useKeyboard = (
-  data:
-    | ({
-        _count: {
-          fullRange: number
-          artListTog: number
-          artListTap: number
-          fadList: number
-        }
-      } & {
-        id: string
-        locked: boolean
-        name: string
-        channel: number | null
-        baseDelay: number | null
-        avgDelay: number | null
-        vepOut: string
-        vepInstance: string
-        smpOut: string
-        color: string
-      })[]
-    | undefined,
-  selectedItemId: string | null,
+type useKeyboardProps = {
+  previousItemId: string
+  nextItemId: string
+  selectedItemRangeCount: number
+  selectedItemArtCount: number
+  selectedItemFadCount: number
+  selectedItemId: string | null
   setSelectedItemId: Dispatch<SetStateAction<string | null>>
-) => {
+}
+
+const useKeyboard = ({
+  previousItemId,
+  nextItemId,
+  selectedItemRangeCount: rangeCount,
+  selectedItemArtCount: artCount,
+  selectedItemFadCount: fadCount,
+  selectedItemId,
+  setSelectedItemId
+}: useKeyboardProps) => {
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       const selectedInput = window.document.activeElement as HTMLInputElement
@@ -32,21 +26,10 @@ const useKeyboard = (
       const isButton = selectedInput?.tagName === 'BUTTON'
       const isSelect = selectedInput?.tagName === 'SELECT'
 
-      const selectedItemIndex =
-        data?.findIndex((item) => item.id === selectedItemId) ?? 0
-      const previousItemId = data?.[selectedItemIndex - 1]?.id ?? ''
-      const nextItemId = data?.[selectedItemIndex + 1]?.id ?? ''
-
       const selectedInputIsInTrackOptions =
         selectedInput?.id.includes('_FR_') ||
         selectedInput?.id.includes('_AL_') ||
         selectedInput?.id.includes('_FL_')
-
-      const rangeCount = data?.[selectedItemIndex]?._count?.fullRange ?? 0
-      const artTogCount = data?.[selectedItemIndex]?._count?.artListTog ?? 0
-      const artTapCount = data?.[selectedItemIndex]?._count?.artListTap ?? 0
-      const artCount = artTogCount + artTapCount
-      const fadCount = data?.[selectedItemIndex]?._count?.fadList ?? 0
 
       const optionType = selectedInput?.id.split('_')[2]
       const optionNumber = selectedInput?.id.split('_')[3]
@@ -161,7 +144,7 @@ const useKeyboard = (
     return () => {
       window.removeEventListener('keydown', handleEsc)
     }
-  }, [setSelectedItemId, selectedItemId, data])
+  }, [setSelectedItemId, selectedItemId])
 
   return {}
 }

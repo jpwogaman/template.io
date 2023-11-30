@@ -17,13 +17,25 @@ const Index: NextPage = () => {
     renumberAllItemsMutation,
     deleteAllItemsMutation,
     dataLength,
-    data
+    previousItemId,
+    nextItemId,
+    selectedItemRangeCount,
+    selectedItemArtCount,
+    selectedItemFadCount
   } = useMutations({
     selectedItemId,
     setSelectedItemId
   })
 
-  useKeyboard(data, selectedItemId, setSelectedItemId)
+  useKeyboard({
+    selectedItemId,
+    setSelectedItemId,
+    previousItemId,
+    nextItemId,
+    selectedItemRangeCount,
+    selectedItemArtCount,
+    selectedItemFadCount
+  })
   const { setTheme, resolvedTheme } = useTheme()
   const {
     contextMenuPosition,
