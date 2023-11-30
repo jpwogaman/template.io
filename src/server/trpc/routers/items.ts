@@ -72,6 +72,32 @@ export const ItemsRouter = createTRPCRouter({
                 return newRange
               })
             },
+            artListTog: {
+              create: item.artListTog.map((art) => {
+                //cannot map the fileItemsItemId, this is done by prisma connect
+                const newArt = {
+                  id: art.id,
+                  name: art.name,
+                  toggle: art.toggle,
+                  codeType: art.codeType,
+                  code: art.code,
+                  on: art.on,
+                  off: art.off,
+                  default: art.default,
+                  delay: art.delay,
+                  changeType: art.changeType,
+                  ranges: art.ranges
+                }
+
+                return {
+                  ...newArt,
+                  delay:
+                    typeof newArt.delay === 'string'
+                      ? parseInt(newArt.delay)
+                      : newArt.delay
+                }
+              })
+            },
             artListTap: {
               create: item.artListTap.map((art) => {
                 //cannot map the fileItemsItemId, this is done by prisma connect
@@ -100,32 +126,7 @@ export const ItemsRouter = createTRPCRouter({
                 }
               })
             },
-            artListTog: {
-              create: item.artListTog.map((art) => {
-                //cannot map the fileItemsItemId, this is done by prisma connect
-                const newArt = {
-                  id: art.id,
-                  name: art.name,
-                  toggle: art.toggle,
-                  codeType: art.codeType,
-                  code: art.code,
-                  on: art.on,
-                  off: art.off,
-                  default: art.default,
-                  delay: art.delay,
-                  changeType: art.changeType,
-                  ranges: art.ranges
-                }
 
-                return {
-                  ...newArt,
-                  delay:
-                    typeof newArt.delay === 'string'
-                      ? parseInt(newArt.delay)
-                      : newArt.delay
-                }
-              })
-            },
             fadList: {
               create: item.fadList.map((fad) => {
                 //cannot map the fileItemsItemId, this is done by prisma connect
@@ -180,7 +181,7 @@ export const ItemsRouter = createTRPCRouter({
               id: 'T_' + itemIndex + '_FR_' + index
             }
           }),
-        artListTap: allArtListTap
+        artListTog: allArtListTog
           .filter((art) => {
             return art.fileItemsItemId === item.id
           })
@@ -191,17 +192,18 @@ export const ItemsRouter = createTRPCRouter({
               ranges: art.ranges
             }
           }),
-        artListTog: allArtListTog
+        artListTap: allArtListTap
           .filter((art) => {
             return art.fileItemsItemId === item.id
           })
           .map((art, index) => {
             return {
               ...art,
-              id: 'T_' + itemIndex + '_AL_' + (index + allArtListTap.length),
+              id: 'T_' + itemIndex + '_AL_' + (index + allArtListTog.length),
               ranges: art.ranges
             }
           }),
+
         fadList: allFadList
           .filter((fad) => {
             return fad.fileItemsItemId === item.id
@@ -248,6 +250,32 @@ export const ItemsRouter = createTRPCRouter({
               return newRange
             })
           },
+          artListTog: {
+            create: item.artListTog.map((art) => {
+              //cannot map the fileItemsItemId, this is done by prisma connect
+              const newArt = {
+                id: art.id,
+                name: art.name,
+                toggle: art.toggle,
+                codeType: art.codeType,
+                code: art.code,
+                on: art.on,
+                off: art.off,
+                default: art.default,
+                delay: art.delay,
+                changeType: art.changeType,
+                ranges: art.ranges
+              }
+
+              return {
+                ...newArt,
+                delay:
+                  typeof newArt.delay === 'string'
+                    ? parseInt(newArt.delay)
+                    : newArt.delay
+              }
+            })
+          },
           artListTap: {
             create: item.artListTap.map((art) => {
               //cannot map the fileItemsItemId, this is done by prisma connect
@@ -276,32 +304,7 @@ export const ItemsRouter = createTRPCRouter({
               }
             })
           },
-          artListTog: {
-            create: item.artListTog.map((art) => {
-              //cannot map the fileItemsItemId, this is done by prisma connect
-              const newArt = {
-                id: art.id,
-                name: art.name,
-                toggle: art.toggle,
-                codeType: art.codeType,
-                code: art.code,
-                on: art.on,
-                off: art.off,
-                default: art.default,
-                delay: art.delay,
-                changeType: art.changeType,
-                ranges: art.ranges
-              }
 
-              return {
-                ...newArt,
-                delay:
-                  typeof newArt.delay === 'string'
-                    ? parseInt(newArt.delay)
-                    : newArt.delay
-              }
-            })
-          },
           fadList: {
             create: item.fadList.map((fad) => {
               //cannot map the fileItemsItemId, this is done by prisma connect
@@ -335,8 +338,8 @@ export const ItemsRouter = createTRPCRouter({
         _count: {
           select: {
             fullRange: true,
-            artListTap: true,
             artListTog: true,
+            artListTap: true,
             fadList: true
           }
         }
@@ -346,8 +349,8 @@ export const ItemsRouter = createTRPCRouter({
   deleteAllItems: publicProcedure.mutation(async ({ ctx }) => {
     await ctx.prisma.fileItems.deleteMany({})
     await ctx.prisma.itemsFullRanges.deleteMany({})
-    await ctx.prisma.itemsArtListTap.deleteMany({})
     await ctx.prisma.itemsArtListTog.deleteMany({})
+    await ctx.prisma.itemsArtListTap.deleteMany({})
     await ctx.prisma.itemsFadList.deleteMany({})
     return true
   }),
@@ -388,13 +391,13 @@ export const ItemsRouter = createTRPCRouter({
             id: newItemId + '_FR_0'
           }
         },
-        artListTap: {
+        artListTog: {
           create: {
             id: newItemId + '_AL_0',
             ranges: JSON.stringify([newItemId + '_FR_0'])
           }
         },
-        artListTog: {
+        artListTap: {
           create: {
             id: newItemId + '_AL_1',
             ranges: JSON.stringify([newItemId + '_FR_0'])
@@ -474,8 +477,8 @@ export const ItemsRouter = createTRPCRouter({
         },
         include: {
           fullRange: true,
-          artListTap: true,
           artListTog: true,
+          artListTap: true,
           fadList: true
         }
       })
@@ -621,15 +624,20 @@ export const ItemsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { itemId } = input
 
+      const allArtListTog = await ctx.prisma.itemsArtListTog.findMany({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
       const allArtListTap = await ctx.prisma.itemsArtListTap.findMany({
         where: {
           fileItemsItemId: itemId
         }
       })
-
-      const allArtListTog = await ctx.prisma.itemsArtListTog.findMany({
-        where: {
-          fileItemsItemId: itemId
+      const newArtTogList = allArtListTog.map((art, index) => {
+        return {
+          ...art,
+          id: itemId + '_AL_' + (index + allArtListTap.length)
         }
       })
 
@@ -639,11 +647,9 @@ export const ItemsRouter = createTRPCRouter({
           id: itemId + '_AL_' + index
         }
       })
-
-      const newArtTogList = allArtListTog.map((art, index) => {
-        return {
-          ...art,
-          id: itemId + '_AL_' + (index + allArtListTap.length)
+      await ctx.prisma.itemsArtListTog.deleteMany({
+        where: {
+          fileItemsItemId: itemId
         }
       })
 
@@ -653,11 +659,13 @@ export const ItemsRouter = createTRPCRouter({
         }
       })
 
-      await ctx.prisma.itemsArtListTog.deleteMany({
-        where: {
-          fileItemsItemId: itemId
-        }
-      })
+      for (const element of newArtTogList) {
+        await ctx.prisma.itemsArtListTog.create({
+          data: {
+            ...element
+          }
+        })
+      }
 
       for (const element of newArtTapList) {
         await ctx.prisma.itemsArtListTap.create({
@@ -666,14 +674,141 @@ export const ItemsRouter = createTRPCRouter({
           }
         })
       }
+    }),
+  ////////////////////////////
+  createSingleArtListTog: publicProcedure
+    .input(
+      z.object({
+        itemId: z.string()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { itemId } = input
 
-      for (const element of newArtTogList) {
-        await ctx.prisma.itemsArtListTog.create({
+      const lastArtTogNumber = await ctx.prisma.itemsArtListTog.count({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
+
+      const lastArtSwitchNumber = await ctx.prisma.itemsArtListTap.count({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
+
+      const nextArtNumber = lastArtTogNumber + lastArtSwitchNumber
+
+      const newArt = await ctx.prisma.itemsArtListTog.create({
+        data: {
+          FileItems: {
+            connect: {
+              id: itemId
+            }
+          },
+          id: itemId + '_AL_' + nextArtNumber,
+          ranges: JSON.stringify([itemId + '_FR_0'])
+        }
+      })
+      return newArt
+    }),
+  updateSingleArtListTog: publicProcedure
+    .input(
+      z.object({
+        artId: z.string(),
+        name: z.string().optional(),
+        toggle: z.boolean().optional(),
+        codeType: z.string().optional(),
+        code: z.string().optional(),
+        on: z.string().optional(),
+        off: z.string().optional(),
+        default: z.string().optional(),
+        delay: z.string().optional(),
+        changeType: z.string().optional(),
+        ranges: z.string().optional()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const {
+        artId,
+        name,
+        toggle,
+        codeType,
+        code,
+        on,
+        off,
+        default: inputDefaultCode,
+        delay,
+        changeType,
+        ranges
+      } = input
+
+      const currentArtListTog = await ctx.prisma.itemsArtListTog.findUnique({
+        where: {
+          id: artId
+        }
+      })
+
+      if (ranges === undefined) {
+        return await ctx.prisma.itemsArtListTog.update({
+          where: {
+            id: artId
+          },
           data: {
-            ...element
+            name: name ?? currentArtListTog?.name,
+            toggle: toggle ?? currentArtListTog?.toggle,
+            codeType: codeType ?? currentArtListTog?.codeType,
+            code: code ? parseInt(code) : currentArtListTog?.code,
+            on: on ? parseInt(on) : currentArtListTog?.on,
+            off: off ? parseInt(off) : currentArtListTog?.off,
+            default: inputDefaultCode ?? currentArtListTog?.default,
+            delay: delay ? parseInt(delay) : currentArtListTog?.delay,
+            changeType: changeType ?? currentArtListTog?.changeType
           }
         })
       }
+      // RANGES UPDATE
+      if (ranges != undefined && inputDefaultCode === undefined) {
+        if (ranges === '[]') {
+          throw new Error(
+            'Each articulation must be connected to at least one range'
+          )
+        }
+        return await ctx.prisma.itemsArtListTap.update({
+          where: {
+            id: artId
+          },
+          data: {
+            ranges: ranges ?? currentArtListTog?.ranges
+          }
+        })
+      }
+    }),
+  deleteSingleArtListTog: publicProcedure
+    .input(
+      z.object({
+        artId: z.string(),
+        fileItemsItemId: z.string()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { artId, fileItemsItemId } = input
+
+      const mustHaveOneArtListTap = await ctx.prisma.itemsArtListTog.count({
+        where: {
+          fileItemsItemId: fileItemsItemId
+        }
+      })
+
+      if (mustHaveOneArtListTap <= 1) {
+        throw new Error('Must have at least one toggle articulation')
+      }
+      await ctx.prisma.itemsArtListTog.delete({
+        where: {
+          id: artId
+        }
+      })
+      return true
     }),
   ////////////////////////////
   createSingleArtListTap: publicProcedure
@@ -850,141 +985,6 @@ export const ItemsRouter = createTRPCRouter({
         throw new Error('Must have at least one switch articulation')
       }
       await ctx.prisma.itemsArtListTap.delete({
-        where: {
-          id: artId
-        }
-      })
-      return true
-    }),
-  ////////////////////////////
-  createSingleArtListTog: publicProcedure
-    .input(
-      z.object({
-        itemId: z.string()
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const { itemId } = input
-
-      const lastArtTogNumber = await ctx.prisma.itemsArtListTog.count({
-        where: {
-          fileItemsItemId: itemId
-        }
-      })
-
-      const lastArtSwitchNumber = await ctx.prisma.itemsArtListTap.count({
-        where: {
-          fileItemsItemId: itemId
-        }
-      })
-
-      const nextArtNumber = lastArtTogNumber + lastArtSwitchNumber
-
-      const newArt = await ctx.prisma.itemsArtListTog.create({
-        data: {
-          FileItems: {
-            connect: {
-              id: itemId
-            }
-          },
-          id: itemId + '_AL_' + nextArtNumber,
-          ranges: JSON.stringify([itemId + '_FR_0'])
-        }
-      })
-      return newArt
-    }),
-  updateSingleArtListTog: publicProcedure
-    .input(
-      z.object({
-        artId: z.string(),
-        name: z.string().optional(),
-        toggle: z.boolean().optional(),
-        codeType: z.string().optional(),
-        code: z.string().optional(),
-        on: z.string().optional(),
-        off: z.string().optional(),
-        default: z.string().optional(),
-        delay: z.string().optional(),
-        changeType: z.string().optional(),
-        ranges: z.string().optional()
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const {
-        artId,
-        name,
-        toggle,
-        codeType,
-        code,
-        on,
-        off,
-        default: inputDefaultCode,
-        delay,
-        changeType,
-        ranges
-      } = input
-
-      const currentArtListTog = await ctx.prisma.itemsArtListTog.findUnique({
-        where: {
-          id: artId
-        }
-      })
-
-      if (ranges === undefined) {
-        return await ctx.prisma.itemsArtListTog.update({
-          where: {
-            id: artId
-          },
-          data: {
-            name: name ?? currentArtListTog?.name,
-            toggle: toggle ?? currentArtListTog?.toggle,
-            codeType: codeType ?? currentArtListTog?.codeType,
-            code: code ? parseInt(code) : currentArtListTog?.code,
-            on: on ? parseInt(on) : currentArtListTog?.on,
-            off: off ? parseInt(off) : currentArtListTog?.off,
-            default: inputDefaultCode ?? currentArtListTog?.default,
-            delay: delay ? parseInt(delay) : currentArtListTog?.delay,
-            changeType: changeType ?? currentArtListTog?.changeType
-          }
-        })
-      }
-      // RANGES UPDATE
-      if (ranges != undefined && inputDefaultCode === undefined) {
-        if (ranges === '[]') {
-          throw new Error(
-            'Each articulation must be connected to at least one range'
-          )
-        }
-        return await ctx.prisma.itemsArtListTap.update({
-          where: {
-            id: artId
-          },
-          data: {
-            ranges: ranges ?? currentArtListTog?.ranges
-          }
-        })
-      }
-    }),
-  deleteSingleArtListTog: publicProcedure
-    .input(
-      z.object({
-        artId: z.string(),
-        fileItemsItemId: z.string()
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const { artId, fileItemsItemId } = input
-
-      const mustHaveOneArtListTap = await ctx.prisma.itemsArtListTog.count({
-        where: {
-          fileItemsItemId: fileItemsItemId
-        }
-      })
-
-      if (mustHaveOneArtListTap <= 1) {
-        throw new Error('Must have at least one toggle articulation')
-      }
-      await ctx.prisma.itemsArtListTog.delete({
         where: {
           id: artId
         }

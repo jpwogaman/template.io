@@ -21,10 +21,35 @@ const ContextMenu: FC<ContextMenuProps> = ({
   selectedItemId,
   setSelectedItemId
 }) => {
-  const { createSingleItemMutation, deleteSingleItemMutation } = useMutations({
+  const {
+    createSingleItemMutation,
+    deleteSingleItemMutation,
+    renumberArtListMutation,
+    renumberAllItemsMutation,
+    deleteAllItemsMutation,
+    updateSingleItemMutation,
+    updateSingleFullRangeMutation,
+    updateSingleArtListTapMutation,
+    updateSingleArtListTogMutation,
+    updateSingleFadListMutation,
+    createSingleFullRangeMutation,
+    createSingleArtListTapMutation,
+    createSingleArtListTogMutation,
+    createSingleFadListMutation,
+    deleteSingleFullRangeMutation,
+    deleteSingleArtListTapMutation,
+    deleteSingleArtListTogMutation,
+    deleteSingleFadListMutation,
+    selectedItem
+  } = useMutations({
     selectedItemId,
     setSelectedItemId
   })
+
+  const isArtTog = (artId: string) => {
+    const art = selectedItem?.artListTap?.find((art) => art.id === artId)
+    if (!art || art === undefined) return true
+  }
 
   const handleClick = (newId: string) => {
     setIsContextMenuOpen(false)
@@ -81,7 +106,9 @@ const ContextMenu: FC<ContextMenuProps> = ({
           console.log('addRangeAbove')
           break
         case 'addRangeBelow':
-          console.log('addRangeBelow')
+          createSingleFullRangeMutation.mutate({
+            itemId: selectedItemId ?? ''
+          })
           break
         case 'duplicateRangeAbove':
           console.log('duplicateRangeAbove')
@@ -93,7 +120,10 @@ const ContextMenu: FC<ContextMenuProps> = ({
           console.log('clearRange')
           break
         case 'deleteRange':
-          console.log('deleteRange')
+          deleteSingleFullRangeMutation.mutate({
+            rangeId: contextMenuId ?? '',
+            fileItemsItemId: selectedItemId ?? ''
+          })
           break
 
         default:
@@ -102,29 +132,34 @@ const ContextMenu: FC<ContextMenuProps> = ({
     }
     if (newId.includes('Articulation')) {
       switch (newId) {
-        case 'moveArtUp':
-          console.log('moveArtUp')
+        case 'moveArticulationUp':
           break
-        case 'moveArtDown':
-          console.log('moveArtDown')
+        case 'moveArticulationDown':
           break
-        case 'addArtAbove':
-          console.log('addArtAbove')
+        case 'addArticulationAbove':
           break
-        case 'addArtBelow':
-          console.log('addArtBelow')
+        case 'addArticulationBelow':
+          if (isArtTog(contextMenuId ?? '')) {
+            createSingleArtListTogMutation.mutate({
+              itemId: selectedItemId ?? ''
+            })
+          } else {
+            createSingleArtListTapMutation.mutate({
+              itemId: selectedItemId ?? ''
+            })
+          }
           break
-        case 'duplicateArtAbove':
-          console.log('duplicateArtAbove')
+        case 'duplicateArticulationAbove':
           break
-        case 'duplicateArtBelow':
-          console.log('duplicateArtBelow')
+        case 'duplicateArticulationBelow':
           break
-        case 'clearArt':
-          console.log('clearArt')
+        case 'clearArticulation':
           break
-        case 'deleteArt':
-          console.log('deleteArt')
+        case 'deleteArticulation':
+          deleteSingleArtListTapMutation.mutate({
+            artId: contextMenuId ?? '',
+            fileItemsItemId: selectedItemId ?? ''
+          })
           break
 
         default:
@@ -133,29 +168,28 @@ const ContextMenu: FC<ContextMenuProps> = ({
     }
     if (newId.includes('Fader')) {
       switch (newId) {
-        case 'moveFadUp':
-          console.log('moveFadUp')
+        case 'moveFaderUp':
           break
-        case 'moveFadDown':
-          console.log('moveFadDown')
+        case 'moveFaderDown':
           break
-        case 'addFadAbove':
-          console.log('addFadAbove')
+        case 'addFaderAbove':
           break
-        case 'addFadBelow':
-          console.log('addFadBelow')
+        case 'addFaderBelow':
+          createSingleFadListMutation.mutate({
+            itemId: selectedItemId ?? ''
+          })
           break
-        case 'duplicateFadAbove':
-          console.log('duplicateFadAbove')
+        case 'duplicateFaderAbove':
           break
-        case 'duplicateFadBelow':
-          console.log('duplicateFadBelow')
+        case 'duplicateFaderBelow':
           break
-        case 'clearFad':
-          console.log('clearFad')
+        case 'clearFader':
           break
-        case 'deleteFad':
-          console.log('deleteFad')
+        case 'deleteFader':
+          deleteSingleFadListMutation.mutate({
+            fadId: contextMenuId ?? '',
+            fileItemsItemId: selectedItemId ?? ''
+          })
           break
 
         default:

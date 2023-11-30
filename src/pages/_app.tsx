@@ -64,7 +64,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
 
       if (event.payload === 'import') {
         importJSON().then((data) => {
-          createAllItemsFromJSONMutation.mutate(data)
+          createAllItemsFromJSONMutation.mutate(data ?? '')
         })
       }
 
