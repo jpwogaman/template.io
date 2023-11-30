@@ -1,62 +1,4 @@
-export const TrackListContextMenu = [
-  {
-    id: 'moveTrackUp',
-    label: 'Move Track Up',
-    icon1: 'fa-arrow-up',
-    icon2: null
-  },
-
-  {
-    id: 'moveTrackDown',
-    label: 'Move Track Down',
-    icon1: 'fa-arrow-down',
-    icon2: null
-  },
-  {
-    id: 'break1'
-  },
-  {
-    id: 'addTrackAbove',
-    label: 'Add Track Above',
-    icon1: 'fa-plus',
-    icon2: 'fa-arrow-up'
-  },
-  {
-    id: 'addTrackBelow',
-    label: 'Add Track Below',
-    icon1: 'fa-plus',
-    icon2: 'fa-arrow-down'
-  },
-  {
-    id: 'duplicateTrackAbove',
-    label: 'Duplicate Track Above',
-    icon1: 'fa-copy',
-    icon2: 'fa-arrow-up'
-  },
-  {
-    id: 'duplicateTrackBelow',
-    label: 'Duplicate Track Below',
-    icon1: 'fa-copy',
-    icon2: 'fa-arrow-down'
-  },
-  {
-    id: 'break2'
-  },
-  {
-    id: 'clearTrack',
-    label: 'Clear Track',
-    icon1: 'fa-eraser',
-    icon2: null
-  },
-  {
-    id: 'deleteTrack',
-    label: 'Delete Track',
-    icon1: 'fa-xmark',
-    icon2: null
-  }
-]
-
-export const TrackOptionsContextMenu = [
+export const ContextMenuOptions = [
   {
     id: 'moveItemUp',
     label: 'Move Item Up',
@@ -86,6 +28,15 @@ export const TrackOptionsContextMenu = [
     icon2: 'fa-arrow-down'
   },
   {
+    id: 'addItemAtEnd',
+    label: 'Add Item At End',
+    icon1: 'fa-plus',
+    icon2: 'fa-arrow-down'
+  },
+  {
+    id: 'break2'
+  },
+  {
     id: 'duplicateItemAbove',
     label: 'Duplicate Item Above',
     icon1: 'fa-copy',
@@ -98,7 +49,13 @@ export const TrackOptionsContextMenu = [
     icon2: 'fa-arrow-down'
   },
   {
-    id: 'break2'
+    id: 'duplicateItemAtEnd',
+    label: 'Duplicate Item At End',
+    icon1: 'fa-copy',
+    icon2: 'fa-arrow-down'
+  },
+  {
+    id: 'break3'
   },
   {
     id: 'clearItem',
@@ -108,7 +65,7 @@ export const TrackOptionsContextMenu = [
   },
   {
     id: 'deleteItem',
-    label: 'Delete Range',
+    label: 'Delete Item',
     icon1: 'fa-xmark',
     icon2: null
   }

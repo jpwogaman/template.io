@@ -1,6 +1,5 @@
 import { type NextPage } from 'next'
 import { useState } from 'react'
-import { trpc } from '@/utils/trpc'
 import TrackList from '@/components/trackList'
 import TrackOptions from '@/components/trackOptions'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
@@ -8,14 +7,20 @@ import { useTheme } from 'next-themes'
 import useKeyboard from '@/hooks/useKeyboard'
 import dynamic from 'next/dynamic'
 import useContextMenu from '@/hooks/useContextMenu'
+import useMutations from '@/hooks/useMutations'
 const ContextMenu = dynamic(() => import('@/components/contextMenu'))
 
 const Index: NextPage = () => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>('T_0')
-  const { refetch: allRefetch, data } = trpc.items.getAllItems.useQuery()
-  const dataLength = data?.length ?? 0
-  const { refetch: selectedRefetch } = trpc.items.getSingleItem.useQuery({
-    itemId: selectedItemId ?? ''
+  const {
+    renumberArtListMutation,
+    renumberAllItemsMutation,
+    deleteAllItemsMutation,
+    dataLength,
+    data
+  } = useMutations({
+    selectedItemId,
+    setSelectedItemId
   })
 
   useKeyboard(data, selectedItemId, setSelectedItemId)
@@ -28,46 +33,6 @@ const Index: NextPage = () => {
     setContextMenuId
   } = useContextMenu()
 
-  const renumberArtListMutation = trpc.items.renumberArtList.useMutation({
-    onSuccess: () => {
-      renumberArtListMutation.reset()
-      selectedRefetch()
-      allRefetch()
-    },
-    onError: () => {
-      alert('There was an error submitting your request. Please try again.')
-    }
-  })
-  const renumberAllItemsMutation = trpc.items.renumberAllItems.useMutation({
-    onSuccess: () => {
-      renumberAllItemsMutation.reset()
-      selectedRefetch()
-      allRefetch()
-    },
-    onError: () => {
-      alert('There was an error submitting your request. Please try again.')
-    }
-  })
-  const createSingleItemMutation = trpc.items.createSingleItem.useMutation({
-    onSuccess: () => {
-      createSingleItemMutation.reset()
-      deleteAllItemsMutation.reset()
-      allRefetch()
-      selectedRefetch()
-    },
-    onError: () => {
-      alert('There was an error submitting your request. Please try again.')
-    }
-  })
-  const deleteAllItemsMutation = trpc.items.deleteAllItems.useMutation({
-    onSuccess: () => {
-      createSingleItemMutation.mutate()
-    },
-    onError: () => {
-      alert('There was an error submitting your request. Please try again.')
-    }
-  })
-
   return (
     <div className='h-screen'>
       {/* CONTEXT MENU */}
@@ -76,6 +41,9 @@ const Index: NextPage = () => {
           <ContextMenu
             contextMenuId={contextMenuId}
             contextMenuPosition={contextMenuPosition}
+            setIsContextMenuOpen={setIsContextMenuOpen}
+            selectedItemId={selectedItemId}
+            setSelectedItemId={setSelectedItemId}
           />
         )}
       </div>
@@ -131,6 +99,7 @@ const Index: NextPage = () => {
           selectedItemId={selectedItemId}
           setIsContextMenuOpen={setIsContextMenuOpen}
           setContextMenuId={setContextMenuId}
+          setSelectedItemId={setSelectedItemId}
         />
       </main>
     </div>

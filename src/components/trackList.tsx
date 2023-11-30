@@ -1,5 +1,4 @@
-import React, { FC, Dispatch, SetStateAction } from 'react'
-import { trpc } from '@/utils/trpc'
+import React, { type FC, type Dispatch, type SetStateAction } from 'react'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
 import TrackListTableKeys from './utils/trackListTableKeys'
@@ -8,7 +7,7 @@ import {
   type SelectedItemType,
   InputTypeSelector
 } from './inputs'
-
+import useMutations from '@/hooks/useMutations'
 
 type TrackListProps = {
   selectedItemId: string | null
@@ -22,43 +21,10 @@ const TrackList: FC<TrackListProps> = ({
   setSelectedItemId,
   setIsContextMenuOpen,
   setContextMenuId
-  
 }) => {
-  const { data, refetch } = trpc.items.getAllItems.useQuery()
-
-  const { refetch: refetchSelected } = trpc.items.getSingleItem.useQuery({
-    itemId: selectedItemId ?? ''
-  })
-
-  const createSingleItemMutation = trpc.items.createSingleItem.useMutation({
-    onSuccess: () => {
-      createSingleItemMutation.reset()
-      refetch()
-    },
-    onError: () => {
-      alert('There was an error submitting your request. Please try again.')
-    }
-  })
-  const updateSingleItemMutation = trpc.items.updateSingleItem.useMutation({
-    onSuccess: () => {
-      updateSingleItemMutation.reset()
-      refetch()
-      refetchSelected()
-    },
-    onError: () => {
-      alert('There was an error submitting your request. Please try again.')
-    }
-  })
-
-  const deleteSingleItemMutation = trpc.items.deleteSingleItem.useMutation({
-    onSuccess: () => {
-      deleteSingleItemMutation.reset()
-      refetch()
-      refetchSelected()
-    },
-    onError: () => {
-      alert('There was an error submitting your request. Please try again.')
-    }
+  const { data, updateSingleItemMutation } = useMutations({
+    selectedItemId,
+    setSelectedItemId
   })
 
   const onChangeHelper = ({

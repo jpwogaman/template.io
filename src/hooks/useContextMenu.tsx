@@ -16,25 +16,25 @@ const useContextMenu = () => {
       })
     }
 
-    if (e.pageY - 15 > window.innerHeight - 250) {
+    if (e.pageY - 15 > window.innerHeight - 300) {
       setContextMenuPosition({
         left: e.pageX + 15,
-        top: e.pageY - 250
+        top: e.pageY - 300
       })
     }
 
     if (
       e.pageX + 15 > window.innerWidth - 250 &&
-      e.pageY - 15 > window.innerHeight - 250
+      e.pageY - 15 > window.innerHeight - 300
     )
       setContextMenuPosition({
         left: e.pageX - 250,
-        top: e.pageY - 250
+        top: e.pageY - 300
       })
 
     if (
       e.pageX + 15 < window.innerWidth - 250 &&
-      e.pageY - 15 < window.innerHeight - 250
+      e.pageY - 15 < window.innerHeight - 300
     ) {
       setContextMenuPosition({
         left: e.pageX + 15,
@@ -55,7 +55,6 @@ const useContextMenu = () => {
     }
 
     window.addEventListener('click', handleLeftClick)
-
     window.addEventListener('contextmenu', handleRightClick)
     return () => {
       window.addEventListener('click', handleLeftClick)

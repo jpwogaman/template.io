@@ -3,8 +3,8 @@ import {
   Fragment,
   useState,
   useEffect,
-  Dispatch,
-  SetStateAction
+  type Dispatch,
+  type SetStateAction
 } from 'react'
 import { trpc } from '@/utils/trpc'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
@@ -23,19 +23,38 @@ import {
   type ItemsFullRanges
 } from '@prisma/client'
 
+import useMutations from '@/hooks/useMutations'
+
 type TrackOptionsProps = {
   selectedItemId: string | null
   setIsContextMenuOpen: Dispatch<SetStateAction<boolean>>
   setContextMenuId: Dispatch<SetStateAction<string>>
+  setSelectedItemId: Dispatch<SetStateAction<string | null>>
 }
 
 const TrackOptions: FC<TrackOptionsProps> = ({
   selectedItemId,
   setIsContextMenuOpen,
-  setContextMenuId
+  setContextMenuId,
+  setSelectedItemId
 }) => {
-  const { data: selectedItem, refetch } = trpc.items.getSingleItem.useQuery({
-    itemId: selectedItemId ?? ''
+  const {
+    selectedItem,
+    updateSingleFullRangeMutation,
+    updateSingleArtListTapMutation,
+    updateSingleArtListTogMutation,
+    updateSingleFadListMutation,
+    createSingleFullRangeMutation,
+    createSingleArtListTapMutation,
+    createSingleArtListTogMutation,
+    createSingleFadListMutation,
+    deleteSingleFullRangeMutation,
+    deleteSingleArtListTapMutation,
+    deleteSingleArtListTogMutation,
+    deleteSingleFadListMutation
+  } = useMutations({
+    selectedItemId,
+    setSelectedItemId
   })
 
   //////////////////////////////////////////
@@ -134,179 +153,6 @@ const TrackOptions: FC<TrackOptionsProps> = ({
   //}
 
   //////////////////////////////////////////
-  const renumberArtListMutation = trpc.items.renumberArtList.useMutation({
-    onSuccess: () => {
-      renumberArtListMutation.reset()
-      refetch()
-    },
-    onError: () => {
-      alert('There was an error submitting your request. Please try again.')
-    }
-  })
-  //////////////////////////////////////////
-  const updateSingleFullRangeMutation =
-    trpc.items.updateSingleFullRange.useMutation({
-      onSuccess: () => {
-        updateSingleFullRangeMutation.reset()
-        refetch()
-      },
-      onError: (error) => {
-        alert(
-          error.message ??
-            'There was an error submitting your request. Please try again.'
-        )
-      }
-    })
-  const updateSingleArtListTapMutation =
-    trpc.items.updateSingleArtListTap.useMutation({
-      onSuccess: () => {
-        updateSingleArtListTapMutation.reset()
-        refetch()
-      },
-      onError: (error) => {
-        alert(
-          error.message ??
-            'There was an error submitting your request. Please try again.'
-        )
-      }
-    })
-  const updateSingleArtListTogMutation =
-    trpc.items.updateSingleArtListTog.useMutation({
-      onSuccess: () => {
-        updateSingleArtListTogMutation.reset()
-        refetch()
-      },
-      onError: (error) => {
-        alert(
-          error.message ??
-            'There was an error submitting your request. Please try again.'
-        )
-      }
-    })
-  const updateSingleFadListMutation =
-    trpc.items.updateSingleFadList.useMutation({
-      onSuccess: () => {
-        updateSingleFadListMutation.reset()
-        refetch()
-      },
-      onError: (error) => {
-        alert(
-          error.message ??
-            'There was an error submitting your request. Please try again.'
-        )
-      }
-    })
-  //////////////////////////////////////////
-  const createSingleFullRangeMutation =
-    trpc.items.createSingleFullRange.useMutation({
-      onSuccess: () => {
-        createSingleFullRangeMutation.reset()
-        refetch()
-      },
-      onError: (error) => {
-        alert(
-          error.message ??
-            'There was an error submitting your request. Please try again.'
-        )
-      }
-    })
-  const createSingleArtListTapMutation =
-    trpc.items.createSingleArtListTap.useMutation({
-      onSuccess: () => {
-        createSingleArtListTapMutation.reset()
-        renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-        //refetch()
-      },
-      onError: (error) => {
-        alert(
-          error.message ??
-            'There was an error submitting your request. Please try again.'
-        )
-      }
-    })
-  const createSingleArtListTogMutation =
-    trpc.items.createSingleArtListTog.useMutation({
-      onSuccess: () => {
-        createSingleArtListTogMutation.reset()
-        renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-        //refetch()
-      },
-      onError: (error) => {
-        alert(
-          error.message ??
-            'There was an error submitting your request. Please try again.'
-        )
-      }
-    })
-  const createSingleFadListMutation =
-    trpc.items.createSingleFadList.useMutation({
-      onSuccess: () => {
-        createSingleFadListMutation.reset()
-        refetch()
-      },
-      onError: (error) => {
-        alert(
-          error.message ??
-            'There was an error submitting your request. Please try again.'
-        )
-      }
-    })
-  //////////////////////////////////////////
-  const deleteSingleFullRangeMutation =
-    trpc.items.deleteSingleFullRange.useMutation({
-      onSuccess: () => {
-        deleteSingleFullRangeMutation.reset()
-        refetch()
-      },
-      onError: (error) => {
-        alert(
-          error.message ??
-            'There was an error submitting your request. Please try again.'
-        )
-      }
-    })
-  const deleteSingleArtListTapMutation =
-    trpc.items.deleteSingleArtListTap.useMutation({
-      onSuccess: () => {
-        deleteSingleArtListTapMutation.reset()
-        renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-        //refetch()
-      },
-      onError: (error) => {
-        alert(
-          error.message ??
-            'There was an error submitting your request. Please try again.'
-        )
-      }
-    })
-  const deleteSingleArtListTogMutation =
-    trpc.items.deleteSingleArtListTog.useMutation({
-      onSuccess: () => {
-        deleteSingleArtListTogMutation.reset()
-        renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-        //refetch()
-      },
-      onError: (error) => {
-        alert(
-          error.message ??
-            'There was an error submitting your request. Please try again.'
-        )
-      }
-    })
-  const deleteSingleFadListMutation =
-    trpc.items.deleteSingleFadList.useMutation({
-      onSuccess: () => {
-        deleteSingleFadListMutation.reset()
-        refetch()
-      },
-      onError: (error) => {
-        alert(
-          error.message ??
-            'There was an error submitting your request. Please try again.'
-        )
-      }
-    })
-  //////////////////////////////////////////
   //This could be a user-setting in local storage, but for now, it's hard-coded.
   const [trackOptionsLayouts, setTrackOptionsLayouts] = useState({
     fullRange: 'table',
@@ -367,54 +213,54 @@ const TrackOptions: FC<TrackOptionsProps> = ({
       })
     }
   }
-  //const createSingleSubItemMutationHelper = (label: string) => {
-  //  if (label === 'fullRange') {
-  //    createSingleFullRangeMutation.mutate({
-  //      itemId: selectedItemId ?? ''
-  //    })
-  //  }
-  //  if (label === 'artListTap') {
-  //    createSingleArtListTapMutation.mutate({
-  //      itemId: selectedItemId ?? ''
-  //    })
-  //  }
-  //  if (label === 'artListTog') {
-  //    createSingleArtListTogMutation.mutate({
-  //      itemId: selectedItemId ?? ''
-  //    })
-  //  }
-  //  if (label === 'fadList') {
-  //    createSingleFadListMutation.mutate({
-  //      itemId: selectedItemId ?? ''
-  //    })
-  //  }
-  //}
-  //const deleteSingleSubItemMutationHelper = (id: string, label: string) => {
-  //  if (label === 'fullRange') {
-  //    deleteSingleFullRangeMutation.mutate({
-  //      fileItemsItemId: selectedItemId ?? '',
-  //      rangeId: id
-  //    })
-  //  }
-  //  if (label === 'artListTap') {
-  //    deleteSingleArtListTapMutation.mutate({
-  //      fileItemsItemId: selectedItemId ?? '',
-  //      artId: id
-  //    })
-  //  }
-  //  if (label === 'artListTog') {
-  //    deleteSingleArtListTogMutation.mutate({
-  //      fileItemsItemId: selectedItemId ?? '',
-  //      artId: id
-  //    })
-  //  }
-  //  if (label === 'fadList') {
-  //    deleteSingleFadListMutation.mutate({
-  //      fileItemsItemId: selectedItemId ?? '',
-  //      fadId: id
-  //    })
-  //  }
-  //}
+  const createSingleSubItemMutationHelper = (label: string) => {
+    if (label === 'fullRange') {
+      createSingleFullRangeMutation.mutate({
+        itemId: selectedItemId ?? ''
+      })
+    }
+    if (label === 'artListTap') {
+      createSingleArtListTapMutation.mutate({
+        itemId: selectedItemId ?? ''
+      })
+    }
+    if (label === 'artListTog') {
+      createSingleArtListTogMutation.mutate({
+        itemId: selectedItemId ?? ''
+      })
+    }
+    if (label === 'fadList') {
+      createSingleFadListMutation.mutate({
+        itemId: selectedItemId ?? ''
+      })
+    }
+  }
+  const deleteSingleSubItemMutationHelper = (id: string, label: string) => {
+    if (label === 'fullRange') {
+      deleteSingleFullRangeMutation.mutate({
+        fileItemsItemId: selectedItemId ?? '',
+        rangeId: id
+      })
+    }
+    if (label === 'artListTap') {
+      deleteSingleArtListTapMutation.mutate({
+        fileItemsItemId: selectedItemId ?? '',
+        artId: id
+      })
+    }
+    if (label === 'artListTog') {
+      deleteSingleArtListTogMutation.mutate({
+        fileItemsItemId: selectedItemId ?? '',
+        artId: id
+      })
+    }
+    if (label === 'fadList') {
+      deleteSingleFadListMutation.mutate({
+        fileItemsItemId: selectedItemId ?? '',
+        fadId: id
+      })
+    }
+  }
   //////////////////////////////////////////
   const trackTh = `border-[1.5px]
   border-b-transparent
