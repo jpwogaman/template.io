@@ -9,7 +9,7 @@ import {
 import { trpc } from '@/utils/trpc'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
-import TrackOptionsTableKeys from './trackOptionsTableKeys'
+import TrackOptionsTableKeys from './utils/trackOptionsTableKeys'
 import {
   type OnChangeHelperArgsType,
   type SelectedItemType,

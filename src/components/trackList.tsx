@@ -2,7 +2,7 @@ import React, { FC, Dispatch, SetStateAction } from 'react'
 import { trpc } from '@/utils/trpc'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
-import TrackListTableKeys from './trackListTableKeys'
+import TrackListTableKeys from './utils/trackListTableKeys'
 import {
   type OnChangeHelperArgsType,
   type SelectedItemType,

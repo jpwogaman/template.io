@@ -15,9 +15,9 @@ import {
   type ItemsFullRanges
 } from '@prisma/client'
 
-import TrackOptionsTableKeys from '../trackOptionsTableKeys'
-import TrackListTableKeys from '../trackListTableKeys'
-import SettingsTableKeys from '../settingsTableKeys'
+import TrackOptionsTableKeys from '../utils/trackOptionsTableKeys'
+import TrackListTableKeys from '../utils/trackListTableKeys'
+import SettingsTableKeys from '../utils/settingsTableKeys'
 import tw from '@/utils/tw'
 
 export type OnChangeHelperArgsType = {
@@ -185,9 +185,9 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
 
   if (SubComponentLevel) {
     const shortenedSubComponentId = (initialId: string) => {
-      return `${initialId.split('_')[2]}_${
-        parseInt(initialId.split('_')[3] as string) + 1
-      }`
+      return `${initialId.split('_')[2]}_${parseInt(
+        initialId.split('_')[3] as string
+      )}`
     }
 
     const artRangeOptions =

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Backdrop from './backdrop'
-import SettingsTableKeys from '../settingsTableKeys'
+import SettingsTableKeys from '../utils/settingsTableKeys'
 import { InputTypeSelector, OnChangeHelperArgsType } from '../inputs'
 //https://github.com/fireship-io/framer-demo/tree/framer-motion-demo/src
 
