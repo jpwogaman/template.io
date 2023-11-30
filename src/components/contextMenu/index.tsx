@@ -47,8 +47,8 @@ const ContextMenu: FC<ContextMenuProps> = ({
   })
 
   const isArtTog = (artId: string) => {
-    const art = selectedItem?.artListTap?.find((art) => art.id === artId)
-    if (!art || art === undefined) return true
+    const art = selectedItem?.artListTog?.find((art) => art.id === artId)
+    if (art) return true
   }
 
   const handleClick = (newId: string) => {
@@ -156,10 +156,17 @@ const ContextMenu: FC<ContextMenuProps> = ({
         case 'clearArticulation':
           break
         case 'deleteArticulation':
-          deleteSingleArtListTapMutation.mutate({
-            artId: contextMenuId ?? '',
-            fileItemsItemId: selectedItemId ?? ''
-          })
+          if (isArtTog(contextMenuId ?? '')) {
+            deleteSingleArtListTogMutation.mutate({
+              artId: contextMenuId ?? '',
+              fileItemsItemId: selectedItemId ?? ''
+            })
+          } else {
+            deleteSingleArtListTapMutation.mutate({
+              artId: contextMenuId ?? '',
+              fileItemsItemId: selectedItemId ?? ''
+            })
+          }
           break
 
         default:

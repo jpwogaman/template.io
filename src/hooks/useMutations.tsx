@@ -163,7 +163,7 @@ const useMutations = ({
     trpc.items.createSingleArtListTap.useMutation({
       onSuccess: () => {
         createSingleArtListTapMutation.reset()
-        renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
+        //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
         //selectedRefetch()
       },
       onError: (error) => {
@@ -177,7 +177,7 @@ const useMutations = ({
     trpc.items.createSingleArtListTog.useMutation({
       onSuccess: () => {
         createSingleArtListTogMutation.reset()
-        renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
+        //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
         //selectedRefetch()
       },
       onError: (error) => {
