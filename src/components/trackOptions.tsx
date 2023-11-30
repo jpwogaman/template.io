@@ -1,4 +1,11 @@
-import { type FC, Fragment, useState, useEffect } from 'react'
+import {
+  type FC,
+  Fragment,
+  useState,
+  useEffect,
+  Dispatch,
+  SetStateAction
+} from 'react'
 import { trpc } from '@/utils/trpc'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
@@ -18,9 +25,15 @@ import {
 
 type TrackOptionsProps = {
   selectedItemId: string | null
+  setIsContextMenuOpen: Dispatch<SetStateAction<boolean>>
+  setContextMenuId: Dispatch<SetStateAction<string>>
 }
 
-const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
+const TrackOptions: FC<TrackOptionsProps> = ({
+  selectedItemId,
+  setIsContextMenuOpen,
+  setContextMenuId
+}) => {
   const { data: selectedItem, refetch } = trpc.items.getSingleItem.useQuery({
     itemId: selectedItemId ?? ''
   })
@@ -354,54 +367,54 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
       })
     }
   }
-  const createSingleSubItemMutationHelper = (label: string) => {
-    if (label === 'fullRange') {
-      createSingleFullRangeMutation.mutate({
-        itemId: selectedItemId ?? ''
-      })
-    }
-    if (label === 'artListTap') {
-      createSingleArtListTapMutation.mutate({
-        itemId: selectedItemId ?? ''
-      })
-    }
-    if (label === 'artListTog') {
-      createSingleArtListTogMutation.mutate({
-        itemId: selectedItemId ?? ''
-      })
-    }
-    if (label === 'fadList') {
-      createSingleFadListMutation.mutate({
-        itemId: selectedItemId ?? ''
-      })
-    }
-  }
-  const deleteSingleSubItemMutationHelper = (id: string, label: string) => {
-    if (label === 'fullRange') {
-      deleteSingleFullRangeMutation.mutate({
-        fileItemsItemId: selectedItemId ?? '',
-        rangeId: id
-      })
-    }
-    if (label === 'artListTap') {
-      deleteSingleArtListTapMutation.mutate({
-        fileItemsItemId: selectedItemId ?? '',
-        artId: id
-      })
-    }
-    if (label === 'artListTog') {
-      deleteSingleArtListTogMutation.mutate({
-        fileItemsItemId: selectedItemId ?? '',
-        artId: id
-      })
-    }
-    if (label === 'fadList') {
-      deleteSingleFadListMutation.mutate({
-        fileItemsItemId: selectedItemId ?? '',
-        fadId: id
-      })
-    }
-  }
+  //const createSingleSubItemMutationHelper = (label: string) => {
+  //  if (label === 'fullRange') {
+  //    createSingleFullRangeMutation.mutate({
+  //      itemId: selectedItemId ?? ''
+  //    })
+  //  }
+  //  if (label === 'artListTap') {
+  //    createSingleArtListTapMutation.mutate({
+  //      itemId: selectedItemId ?? ''
+  //    })
+  //  }
+  //  if (label === 'artListTog') {
+  //    createSingleArtListTogMutation.mutate({
+  //      itemId: selectedItemId ?? ''
+  //    })
+  //  }
+  //  if (label === 'fadList') {
+  //    createSingleFadListMutation.mutate({
+  //      itemId: selectedItemId ?? ''
+  //    })
+  //  }
+  //}
+  //const deleteSingleSubItemMutationHelper = (id: string, label: string) => {
+  //  if (label === 'fullRange') {
+  //    deleteSingleFullRangeMutation.mutate({
+  //      fileItemsItemId: selectedItemId ?? '',
+  //      rangeId: id
+  //    })
+  //  }
+  //  if (label === 'artListTap') {
+  //    deleteSingleArtListTapMutation.mutate({
+  //      fileItemsItemId: selectedItemId ?? '',
+  //      artId: id
+  //    })
+  //  }
+  //  if (label === 'artListTog') {
+  //    deleteSingleArtListTogMutation.mutate({
+  //      fileItemsItemId: selectedItemId ?? '',
+  //      artId: id
+  //    })
+  //  }
+  //  if (label === 'fadList') {
+  //    deleteSingleFadListMutation.mutate({
+  //      fileItemsItemId: selectedItemId ?? '',
+  //      fadId: id
+  //    })
+  //  }
+  //}
   //////////////////////////////////////////
   const trackTh = `border-[1.5px]
   border-b-transparent
@@ -483,14 +496,6 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                         </td>
                       )
                     })}
-                    {/*<td className={tw(trackTh, 'w-[5%] text-center')}>
-                      <button
-                        onClick={() =>
-                          createSingleSubItemMutationHelper(layoutConfig.label)
-                        }>
-                        <i className='fa-solid fa-plus' />
-                      </button>
-                    </td>*/}
                   </tr>
                 </thead>
                 <tbody>
@@ -499,6 +504,10 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
 
                     return (
                       <tr
+                        onContextMenu={() => {
+                          setIsContextMenuOpen(true)
+                          setContextMenuId(layoutDataSingleId)
+                        }}
                         key={layoutDataSingleId}
                         className='bg-zinc-300 dark:bg-zinc-600 '>
                         {layoutConfig.keys.map((key) => {
@@ -528,17 +537,6 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                             </td>
                           )
                         })}
-                        {/*<td className='text-center'>
-                          <button
-                            onClick={() =>
-                              deleteSingleSubItemMutationHelper(
-                                layoutDataSingleId,
-                                layoutConfig.label
-                              )
-                            }>
-                            <i className='fa-solid fa-minus' />
-                          </button>
-                        </td>*/}
                       </tr>
                     )
                   })}
@@ -553,32 +551,18 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                   const layoutDataSingleId = layoutDataSingle.id
                   return (
                     <table
+                      onContextMenu={() => {
+                        setIsContextMenuOpen(true)
+                        setContextMenuId(layoutDataSingleId)
+                      }}
                       key={layoutDataSingleId}
                       className='w-max table-auto border-separate border-spacing-0 text-left text-xs'>
                       <thead>
                         <tr>
-                          <td className={tw(trackTh, 'w-1/2')}>
+                          <td className={tw(trackTh, 'w-1/2 border-r-0')}>
                             {layoutDataSingleId}
                           </td>
-                          <td className={tw(trackTh, 'flex justify-between')}>
-                            <button
-                              onClick={() =>
-                                deleteSingleSubItemMutationHelper(
-                                  layoutDataSingleId,
-                                  layoutConfig.label
-                                )
-                              }>
-                              <i className='fa-solid fa-minus' />
-                            </button>
-                            <button
-                              onClick={() =>
-                                createSingleSubItemMutationHelper(
-                                  layoutConfig.label
-                                )
-                              }>
-                              <i className='fa-solid fa-plus' />
-                            </button>
-                          </td>
+                          <td className={tw(trackTh, ' w-1/2 border-l-0')} />
                         </tr>
                       </thead>
                       <tbody>

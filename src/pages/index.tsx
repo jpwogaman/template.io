@@ -5,17 +5,29 @@ import TrackList from '@/components/trackList'
 import TrackOptions from '@/components/trackOptions'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import { useTheme } from 'next-themes'
+import useKeyboard from '@/hooks/useKeyboard'
+import dynamic from 'next/dynamic'
+import useContextMenu from '@/hooks/useContextMenu'
+const ContextMenu = dynamic(() => import('@/components/contextMenu'))
 
 const Index: NextPage = () => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>('T_0')
-  const { setTheme, resolvedTheme } = useTheme()
-
   const { refetch: allRefetch, data } = trpc.items.getAllItems.useQuery()
+  const dataLength = data?.length ?? 0
   const { refetch: selectedRefetch } = trpc.items.getSingleItem.useQuery({
     itemId: selectedItemId ?? ''
   })
 
-  const dataLength = data?.length ?? 0
+  useKeyboard(data, selectedItemId, setSelectedItemId)
+  const { setTheme, resolvedTheme } = useTheme()
+  const {
+    contextMenuPosition,
+    isContextMenuOpen,
+    setIsContextMenuOpen,
+    contextMenuId,
+    setContextMenuId
+  } = useContextMenu()
+
   const renumberArtListMutation = trpc.items.renumberArtList.useMutation({
     onSuccess: () => {
       renumberArtListMutation.reset()
@@ -58,6 +70,16 @@ const Index: NextPage = () => {
 
   return (
     <div className='h-screen'>
+      {/* CONTEXT MENU */}
+      <div className='absolute left-0 top-0 z-[100]'>
+        {isContextMenuOpen && (
+          <ContextMenu
+            contextMenuId={contextMenuId}
+            contextMenuPosition={contextMenuPosition}
+          />
+        )}
+      </div>
+      {/* NAVBAR */}
       <nav className='container sticky top-0 z-50 max-h-[40px] min-w-full items-center bg-zinc-900'>
         <ul className='flex justify-between'>
           <li className='block w-60 p-2 pl-5 text-left text-zinc-200'>
@@ -97,12 +119,19 @@ const Index: NextPage = () => {
           </li>
         </ul>
       </nav>
+      {/* MAIN */}
       <main className='flex h-[calc(100%-40px)]'>
         <TrackList
           selectedItemId={selectedItemId}
           setSelectedItemId={setSelectedItemId}
+          setIsContextMenuOpen={setIsContextMenuOpen}
+          setContextMenuId={setContextMenuId}
         />
-        <TrackOptions selectedItemId={selectedItemId} />
+        <TrackOptions
+          selectedItemId={selectedItemId}
+          setIsContextMenuOpen={setIsContextMenuOpen}
+          setContextMenuId={setContextMenuId}
+        />
       </main>
     </div>
   )
