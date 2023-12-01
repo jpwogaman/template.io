@@ -8,6 +8,8 @@ type useKeyboardProps = {
   selectedItemFadCount: number
   selectedItemId: string | null
   setSelectedItemId: Dispatch<SetStateAction<string | null>>
+  selectedSubItemId: string | null
+  setSelectedSubItemId: Dispatch<SetStateAction<string | null>>
 }
 
 const useKeyboard = ({
@@ -17,7 +19,8 @@ const useKeyboard = ({
   selectedItemArtCount: artCount,
   selectedItemFadCount: fadCount,
   selectedItemId,
-  setSelectedItemId
+  setSelectedItemId,
+  setSelectedSubItemId
 }: useKeyboardProps) => {
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -48,17 +51,25 @@ const useKeyboard = ({
             nextNumber +
             '_' +
             optionField
+
+          let previousSubItemId =
+            selectedItemId + '_' + optionType + '_' + nextNumber
+
           if (optionType === 'FR' && nextNumber < 0) {
             return
           }
           if (optionType === 'AL' && nextNumber < 0) {
             newInput =
               selectedItemId + '_FR_' + (rangeCount - 1) + '_' + optionField
+            previousSubItemId = selectedItemId + '_FR_' + (rangeCount - 1)
           }
           if (optionType === 'FL' && nextNumber < 0) {
             newInput =
               selectedItemId + '_AL_' + (artCount - 1) + '_' + optionField
+            previousSubItemId = selectedItemId + '_AL_' + (artCount - 1)
           }
+
+          setSelectedSubItemId(previousSubItemId)
 
           const nextInput = window.document.getElementById(newInput ?? '')
 
@@ -92,13 +103,21 @@ const useKeyboard = ({
             nextNumber +
             '_' +
             optionField
+
+          let nextSubItemId =
+            selectedItemId + '_' + optionType + '_' + nextNumber
+
           if (optionType === 'FR' && nextNumber > rangeCount - 1) {
             newInput = selectedItemId + '_AL_0_' + optionField
+            nextSubItemId = selectedItemId + '_AL_0'
           }
           if (optionType === 'AL' && nextNumber > artCount - 1) {
             newInput = selectedItemId + '_FL_0_' + optionField
+            nextSubItemId = selectedItemId + '_FL_0'
           }
-          if (optionType === 'FL' && nextNumber > fadCount) return
+          if (optionType === 'FL' && nextNumber === fadCount) return
+
+          setSelectedSubItemId(nextSubItemId)
 
           const nextInput = window.document.getElementById(newInput ?? '')
 
@@ -128,6 +147,7 @@ const useKeyboard = ({
         const trackOptionsNameInput = window.document.getElementById(
           selectedItemId + '_FR_0_name'
         )
+        setSelectedSubItemId(selectedItemId + '_FR_0')
         trackOptionsNameInput?.focus()
       }
       if (e.ctrlKey && e.key === 'ArrowLeft') {

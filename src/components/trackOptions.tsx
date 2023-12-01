@@ -6,7 +6,6 @@ import {
   type Dispatch,
   type SetStateAction
 } from 'react'
-import { trpc } from '@/utils/trpc'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
 import TrackOptionsTableKeys from './utils/trackOptionsTableKeys'
@@ -30,13 +29,17 @@ type TrackOptionsProps = {
   setIsContextMenuOpen: Dispatch<SetStateAction<boolean>>
   setContextMenuId: Dispatch<SetStateAction<string>>
   setSelectedItemId: Dispatch<SetStateAction<string | null>>
+  selectedSubItemId: string | null
+  setSelectedSubItemId: Dispatch<SetStateAction<string | null>>
 }
 
 const TrackOptions: FC<TrackOptionsProps> = ({
   selectedItemId,
   setIsContextMenuOpen,
   setContextMenuId,
-  setSelectedItemId
+  setSelectedItemId,
+  selectedSubItemId,
+  setSelectedSubItemId
 }) => {
   const {
     selectedItem,
@@ -347,15 +350,36 @@ const TrackOptions: FC<TrackOptionsProps> = ({
                 <tbody>
                   {layoutDataArray?.map((layoutDataSingle) => {
                     const layoutDataSingleId = layoutDataSingle.id
+                    const locked = selectedItem?.locked ?? false
+
+                    const selectedLocked =
+                      locked && selectedSubItemId === layoutDataSingleId
+                    const selectedUnlocked =
+                      !locked && selectedSubItemId === layoutDataSingleId
+                    const unselectedLocked =
+                      locked && selectedSubItemId !== layoutDataSingleId
+                    const unselectedUnlocked =
+                      !locked && selectedSubItemId !== layoutDataSingleId
 
                     return (
                       <tr
+                        onClick={() => setSelectedSubItemId(layoutDataSingleId)}
                         onContextMenu={() => {
                           setIsContextMenuOpen(true)
                           setContextMenuId(layoutDataSingleId)
                         }}
                         key={layoutDataSingleId}
-                        className='bg-zinc-300 dark:bg-zinc-600 '>
+                        className={tw(
+                          selectedUnlocked
+                            ? 'bg-red-300 hover:bg-red-400 hover:text-zinc-50 dark:bg-red-600 dark:hover:bg-red-400 dark:hover:text-zinc-50'
+                            : selectedLocked
+                              ? 'bg-red-500 hover:bg-red-600 hover:text-zinc-50 dark:bg-red-800 dark:hover:bg-red-500 dark:hover:text-zinc-50'
+                              : unselectedLocked
+                                ? 'bg-zinc-200 hover:bg-zinc-500 hover:text-zinc-50 dark:bg-zinc-600 dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
+                                : unselectedUnlocked
+                                  ? 'bg-zinc-200 hover:bg-zinc-500 hover:text-zinc-50 dark:bg-zinc-600 dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
+                                  : ''
+                        )}>
                         {layoutConfig.keys.map((key) => {
                           if (!key.show) return
                           return (
@@ -397,6 +421,8 @@ const TrackOptions: FC<TrackOptionsProps> = ({
                   const layoutDataSingleId = layoutDataSingle.id
                   return (
                     <table
+                      onClick={() => setSelectedSubItemId(layoutDataSingleId)}
+                      onKeyDown={() => {}}
                       onContextMenu={() => {
                         setIsContextMenuOpen(true)
                         setContextMenuId(layoutDataSingleId)

@@ -12,6 +12,10 @@ const ContextMenu = dynamic(() => import('@/components/contextMenu'))
 
 const Index: NextPage = () => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>('T_0')
+  const [selectedSubItemId, setSelectedSubItemId] = useState<null | string>(
+    'T_0_FR_0'
+  )
+
   const {
     renumberArtListMutation,
     renumberAllItemsMutation,
@@ -34,7 +38,9 @@ const Index: NextPage = () => {
     nextItemId,
     selectedItemRangeCount,
     selectedItemArtCount,
-    selectedItemFadCount
+    selectedItemFadCount,
+    selectedSubItemId,
+    setSelectedSubItemId
   })
   const { setTheme, resolvedTheme } = useTheme()
   const {
@@ -106,12 +112,15 @@ const Index: NextPage = () => {
           setSelectedItemId={setSelectedItemId}
           setIsContextMenuOpen={setIsContextMenuOpen}
           setContextMenuId={setContextMenuId}
+          setSelectedSubItemId={setSelectedSubItemId}
         />
         <TrackOptions
           selectedItemId={selectedItemId}
           setIsContextMenuOpen={setIsContextMenuOpen}
           setContextMenuId={setContextMenuId}
           setSelectedItemId={setSelectedItemId}
+          selectedSubItemId={selectedSubItemId}
+          setSelectedSubItemId={setSelectedSubItemId}
         />
       </main>
     </div>

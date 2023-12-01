@@ -14,13 +14,15 @@ type TrackListProps = {
   setSelectedItemId: Dispatch<SetStateAction<string | null>>
   setIsContextMenuOpen: Dispatch<SetStateAction<boolean>>
   setContextMenuId: Dispatch<SetStateAction<string>>
+  setSelectedSubItemId: Dispatch<SetStateAction<string | null>>
 }
 
 const TrackList: FC<TrackListProps> = ({
   selectedItemId,
   setSelectedItemId,
   setIsContextMenuOpen,
-  setContextMenuId
+  setContextMenuId,
+  setSelectedSubItemId
 }) => {
   const { data, updateSingleItemMutation } = useMutations({
     selectedItemId,
