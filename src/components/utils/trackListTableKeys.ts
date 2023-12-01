@@ -50,6 +50,15 @@ const TrackListTableKeys = {
       label: 'VEP Outs'
     },
     {
+      className: 'w-[4%]',
+      show: true,
+      key: 'smpNumber',
+      input: 'text',
+      selectArray: undefined,
+      label: 'Sampler No.'
+    },
+
+    {
       className: 'w-[8%]',
       show: true,
       key: 'smpOut',

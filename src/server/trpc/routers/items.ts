@@ -17,6 +17,7 @@ type FileItemsExtended = {
   avgDelay: number | null
   vepOut: string
   vepInstance: string
+  smpNumber: string
   smpOut: string
   color: string
   fullRange: ItemsFullRanges[]
@@ -56,6 +57,7 @@ export const ItemsRouter = createTRPCRouter({
                 : item.avgDelay,
             vepOut: item.vepOut,
             vepInstance: item.vepInstance,
+            smpNumber: item.smpNumber,
             smpOut: item.smpOut,
             color: item.color,
             fullRange: {
@@ -422,6 +424,7 @@ export const ItemsRouter = createTRPCRouter({
         avgDelay: z.string().optional(),
         vepOut: z.string().optional(),
         vepInstance: z.string().optional(),
+        smpNumber: z.string().optional(),
         smpOut: z.string().optional(),
         color: z.string().optional()
       })
@@ -436,6 +439,7 @@ export const ItemsRouter = createTRPCRouter({
         avgDelay,
         vepOut,
         vepInstance,
+        smpNumber,
         smpOut,
         color
       } = input
@@ -458,6 +462,7 @@ export const ItemsRouter = createTRPCRouter({
           avgDelay: avgDelay ? parseInt(avgDelay) : currentItem?.avgDelay,
           vepOut: vepOut ?? currentItem?.vepOut,
           vepInstance: vepInstance ?? currentItem?.vepInstance,
+          smpNumber: smpNumber ?? currentItem?.smpNumber,
           smpOut: smpOut ?? currentItem?.smpOut,
           color: color ?? currentItem?.color
         }
@@ -546,6 +551,7 @@ export const ItemsRouter = createTRPCRouter({
           avgDelay: 0,
           vepOut: 'N/A',
           vepInstance: 'N/A',
+          smpNumber: 'N/A',
           smpOut: 'N/A',
           color: '#71717A'
         }
