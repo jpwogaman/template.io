@@ -59,7 +59,7 @@ const Modal = ({ handleClose, modalText }: ModalProps) => {
         className='bg-main m-auto flex flex-col items-center rounded-xl px-8 py-0 dark:shadow-lg dark:shadow-zinc-600'
         style={{
           width: 'clamp(50%, 700px, 90%)',
-          height: 'min(50%, 300px)'
+          height: 'min(50%, 700px)'
         }}
         variants={dropIn}
         initial='hidden'
@@ -97,10 +97,20 @@ const Modal = ({ handleClose, modalText }: ModalProps) => {
             <div className='text-main mt-4 text-left font-mono text-base'>
               {SettingsTableKeys.keys.map((keyActual) => {
                 const { key, label } = keyActual
+
+                if (key.includes('break')) {
+                  return (
+                    <hr
+                      key={key}
+                      className='my-2'
+                    />
+                  )
+                }
+
                 return (
-                  <li
+                  <div
                     key={key}
-                    className='flex'>
+                    className='flex items-center'>
                     <label className='mr-4'>{`${label}:`}</label>
                     <div>
                       <InputTypeSelector
@@ -109,7 +119,7 @@ const Modal = ({ handleClose, modalText }: ModalProps) => {
                         settingsModal
                       />
                     </div>
-                  </li>
+                  </div>
                 )
               })}
             </div>
