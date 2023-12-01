@@ -250,6 +250,8 @@ module.exports = {
       return data
     }
 
+    receive('/selectedTrackKeyRanges', trkNumb)
+
     const trkName = items[trkNumb].name
     const trkRang = items[trkNumb].fullRange
     const trkDely1 = items[trkNumb].baseDelay
