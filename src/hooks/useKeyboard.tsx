@@ -88,6 +88,7 @@ const useKeyboard = ({
         selectedInput?.blur()
         previousInput?.focus()
         setSelectedItemId(previousItemId)
+        setSelectedSubItemId(previousItemId + '_FR_0')
       }
 
       if (e.key === 'ArrowDown') {
@@ -135,6 +136,7 @@ const useKeyboard = ({
 
         nextInput?.focus()
         setSelectedItemId(nextItemId)
+        setSelectedSubItemId(nextItemId + '_FR_0')
       }
 
       if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {

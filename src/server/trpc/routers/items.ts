@@ -7,6 +7,9 @@ import {
   type ItemsFadList,
   type ItemsFullRanges
 } from '@prisma/client'
+import { trpc } from '@/utils/trpc'
+import Trpc from '@/pages/api/trpc/[trpc]'
+import { randomUUID } from 'crypto'
 
 type FileItemsExtended = {
   id: string
@@ -634,19 +637,21 @@ export const ItemsRouter = createTRPCRouter({
           fileItemsItemId: itemId
         }
       })
+
       const newArtTogList = allArtListTog.map((art, index) => {
         return {
           ...art,
-          id: itemId + '_AL_' + (index + allArtListTap.length)
+          id: itemId + '_AL_' + index
         }
       })
 
       const newArtTapList = allArtListTap.map((art, index) => {
         return {
           ...art,
-          id: itemId + '_AL_' + index
+          id: itemId + '_AL_' + (index + allArtListTog.length)
         }
       })
+
       await ctx.prisma.itemsArtListTog.deleteMany({
         where: {
           fileItemsItemId: itemId

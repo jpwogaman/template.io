@@ -109,7 +109,10 @@ const TrackList: FC<TrackListProps> = ({
                   setIsContextMenuOpen(true)
                   setContextMenuId(id)
                 }}
-                onClick={() => setSelectedItemId(id)}
+                onClick={() => {
+                  setSelectedItemId(id)
+                  setSelectedSubItemId(id + '_FR_0')
+                }}
                 className={tw(
                   selectedUnlocked
                     ? 'bg-red-300 hover:bg-red-400 hover:text-zinc-50 dark:bg-red-600 dark:hover:bg-red-400 dark:hover:text-zinc-50'

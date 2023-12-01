@@ -152,6 +152,7 @@ const useMutations = ({
   const renumberArtListMutation = trpc.items.renumberArtList.useMutation({
     onSuccess: () => {
       renumberArtListMutation.reset()
+
       refetchSelected()
       refetchAll()
     },
@@ -164,7 +165,7 @@ const useMutations = ({
       onSuccess: () => {
         createSingleArtListTapMutation.reset()
         //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-        //selectedRefetch()
+        refetchSelected()
       },
       onError: (error) => {
         alert(
@@ -178,7 +179,7 @@ const useMutations = ({
       onSuccess: () => {
         createSingleArtListTogMutation.reset()
         //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-        //selectedRefetch()
+        refetchSelected()
       },
       onError: (error) => {
         alert(
@@ -218,8 +219,8 @@ const useMutations = ({
     trpc.items.deleteSingleArtListTap.useMutation({
       onSuccess: () => {
         deleteSingleArtListTapMutation.reset()
-        renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-        //selectedRefetch()
+        //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
+        refetchSelected()
       },
       onError: (error) => {
         alert(
@@ -232,8 +233,8 @@ const useMutations = ({
     trpc.items.deleteSingleArtListTog.useMutation({
       onSuccess: () => {
         deleteSingleArtListTogMutation.reset()
-        renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-        //selectedRefetch()
+        //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
+        refetchSelected()
       },
       onError: (error) => {
         alert(
