@@ -22,7 +22,7 @@ const useMutations = ({
     data?.findIndex((item) => item.id === selectedItemId) ?? 0
   const previousItemId = data?.[selectedItemIndex - 1]?.id ?? ''
   const nextItemId = data?.[selectedItemIndex + 1]?.id ?? ''
-  
+
   const selectedItemRangeCount =
     data?.[selectedItemIndex]?._count?.fullRange ?? 0
   const selectedItemArtTogCount =
@@ -83,6 +83,19 @@ const useMutations = ({
       alert('There was an error submitting your request. Please try again.')
     }
   })
+
+  const clearSingleItemMutation = trpc.items.clearSingleItem.useMutation({
+    onSuccess: () => {
+      clearSingleItemMutation.reset()
+      refetchSelected()
+      refetchAll()
+    },
+    onError: () => {
+      alert('There was an error submitting your request. Please try again.')
+    }
+  })
+
+  //////////////////////////////////////////
   const updateSingleFullRangeMutation =
     trpc.items.updateSingleFullRange.useMutation({
       onSuccess: () => {
@@ -273,6 +286,7 @@ const useMutations = ({
     selectedItemFadCount,
     createSingleItemMutation,
     deleteSingleItemMutation,
+    clearSingleItemMutation,
     renumberArtListMutation,
     renumberAllItemsMutation,
     deleteAllItemsMutation,

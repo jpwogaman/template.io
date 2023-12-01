@@ -24,6 +24,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
   const {
     createSingleItemMutation,
     deleteSingleItemMutation,
+    clearSingleItemMutation,
     renumberArtListMutation,
     renumberAllItemsMutation,
     deleteAllItemsMutation,
@@ -82,7 +83,9 @@ const ContextMenu: FC<ContextMenuProps> = ({
           console.log('duplicateTrackBelow')
           break
         case 'clearTrack':
-          console.log('clearTrack')
+          clearSingleItemMutation.mutate({
+            itemId: selectedItemId ?? ''
+          })
           break
         case 'deleteTrack':
           deleteSingleItemMutation.mutate({

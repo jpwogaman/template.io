@@ -7,9 +7,6 @@ import {
   type ItemsFadList,
   type ItemsFullRanges
 } from '@prisma/client'
-import { trpc } from '@/utils/trpc'
-import Trpc from '@/pages/api/trpc/[trpc]'
-import { randomUUID } from 'crypto'
 
 type FileItemsExtended = {
   id: string
@@ -527,6 +524,83 @@ export const ItemsRouter = createTRPCRouter({
         }
       })
       return true
+    }),
+  clearSingleItem: publicProcedure
+    .input(
+      z.object({
+        itemId: z.string()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { itemId } = input
+
+      await ctx.prisma.fileItems.update({
+        where: {
+          id: itemId
+        },
+        data: {
+          locked: false,
+          name: '',
+          channel: 1,
+          baseDelay: 0,
+          avgDelay: 0,
+          vepOut: 'N/A',
+          vepInstance: 'N/A',
+          smpOut: 'N/A',
+          color: '#71717A'
+        }
+      })
+
+      await ctx.prisma.itemsFullRanges.deleteMany({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
+      await ctx.prisma.itemsArtListTog.deleteMany({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
+      await ctx.prisma.itemsArtListTap.deleteMany({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
+      await ctx.prisma.itemsFadList.deleteMany({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
+
+      return await ctx.prisma.fileItems.update({
+        where: {
+          id: itemId
+        },
+        data: {
+          fullRange: {
+            create: {
+              id: itemId + '_FR_0'
+            }
+          },
+          artListTog: {
+            create: {
+              id: itemId + '_AL_0',
+              ranges: JSON.stringify([itemId + '_FR_0'])
+            }
+          },
+          artListTap: {
+            create: {
+              id: itemId + '_AL_1',
+              ranges: JSON.stringify([itemId + '_FR_0'])
+            }
+          },
+          fadList: {
+            create: {
+              id: itemId + '_FL_0'
+            }
+          }
+        }
+      })
     }),
   ////////////////////////////
   createSingleFullRange: publicProcedure
