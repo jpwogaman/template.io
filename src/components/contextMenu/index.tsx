@@ -260,7 +260,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
             onClick={() => {
               handleClick(newId)
             }}
-            className='flex items-center gap-2 whitespace-nowrap'>
+            className='flex items-center gap-2 whitespace-nowrap px-1 py-0.5 hover:bg-zinc-600'>
             <p>{newLabel}</p>
             <i className={`fa-solid ${icon1}`} />
             {icon2 && <i className={`fa-solid ${icon2}`} />}
