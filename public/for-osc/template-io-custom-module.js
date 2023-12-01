@@ -1,4 +1,4 @@
-const allTrack_jsn = loadJSON('tracks-11.27.2023-v1.json')
+const allTrack_jsn = loadJSON('tracks-11.27.2023-v2.json')
 
 const items = allTrack_jsn.items
 // full schema for an item in the JSON file
@@ -9,6 +9,10 @@ const items = allTrack_jsn.items
 //  channel: number | null
 //  baseDelay: number | null
 //  avgDelay: number | null
+//  vepOut: string
+//  vepInstance: string
+//  smpNumber: string
+//  smpOut: string
 //  color: string
 //  fullRange:  {
 //      id: string;
@@ -29,7 +33,7 @@ const items = allTrack_jsn.items
 //      default: boolean | null;
 //      delay: number | null;
 //      changeType: string | null;
-//      ranges: string | null;
+//      ranges: string | null; // actually a string[], parsed in OSC
 //      fileItemsItemId: string | null;
 //  }[]
 //  artListTog: {
@@ -43,7 +47,7 @@ const items = allTrack_jsn.items
 //      default: string | null;
 //      delay: number | null;
 //      changeType: string | null;
-//      ranges: string | null;
+//      ranges: string | null; // actually a string[], parsed in OSC
 //      fileItemsItemId: string | null;
 //  }[]
 //  fadList:  {
@@ -250,20 +254,21 @@ module.exports = {
       return data
     }
 
+    // need to rename this OSC address to something more generic, currently just using to show track number
     receive('/selectedTrackKeyRanges', trkNumb)
 
-    const trkName = items[trkNumb].name
-    const trkRang = items[trkNumb].fullRange
-    const trkDely1 = items[trkNumb].baseDelay
-    const trkDely2 = items[trkNumb].avgDelay
+    const trkName = items[trkNumb].name // string
+    const trkRang = items[trkNumb].fullRange // {}[]
+    const baseDely = items[trkNumb].baseDelay // number | null
+    const avgDely = items[trkNumb].avgDelay // number | null
 
     // hack to get the base delay to show positive or negative
     let sign1 = ''
     let sign2 = ''
-    if (Math.sign(trkDely1) === 1) {
+    if (Math.sign(baseDely) === 1) {
       sign1 = '+'
     }
-    if (Math.sign(trkDely2) === 1) {
+    if (Math.sign(avgDely) === 1) {
       sign2 = '+'
     }
 
@@ -271,7 +276,7 @@ module.exports = {
     receive('/template-io_selectedTrackName', trkName)
     receive(
       '/selectedTrackDelays',
-      `Base Delay: ${sign1}${trkDely1}ms\nAvg Delay: ${sign2}${trkDely2}ms`
+      `Base Delay: ${sign1}${baseDely}ms\nAvg Delay: ${sign2}${avgDely}ms`
     )
 
     // if there are more than 4 faders in the JSON file, then we show a red border around the fader panel so that the user knows to paginate
@@ -286,13 +291,13 @@ module.exports = {
       const nameOsc = '/CC_disp_' + parseInt(i + 1)
       const addrOsc = '/CC_fad__' + parseInt(i + 1)
       const codeOsc = '/CC_incr_' + parseInt(i + 1)
-      const nameJsn = fadListJsn[i].name
-      const typeJsn = fadListJsn[i].codeType
-      const codeJsn = parseInt(fadListJsn[i].code)
-      const deftJsn = parseInt(fadListJsn[i].default)
-      receive(nameOsc, nameJsn)
-      receive(addrOsc, deftJsn)
-      receive(codeOsc, codeJsn)
+      const nameJsn = fadListJsn[i].name // string | null
+      const typeJsn = fadListJsn[i].codeType // string | null
+      const codeJsn = parseInt(fadListJsn[i].code) // number | null
+      const deftJsn = parseInt(fadListJsn[i].default) // number | null
+      receive(nameOsc, nameJsn) // string | null
+      receive(addrOsc, deftJsn) // number | null
+      receive(codeOsc, codeJsn) // number | null
       prmUpdate(4, typeJsn, codeJsn, deftJsn)
     }
     const artListJsn = [
@@ -313,17 +318,18 @@ module.exports = {
       const modBOsc = '/artmodB_' + parseInt(i + 1)
       const modeOsc = '/artMode_' + parseInt(i + 1)
       const rangOsc = '/artrang_' + parseInt(i + 1)
-      const nameJsn = artListJsn[i].name
-      const typeJsn = artListJsn[i].codeType
-      const deftJsn = artListJsn[i].default
-      const codeJsn = parseInt(artListJsn[i].code)
-      const on__Jsn = parseInt(artListJsn[i].on)
-      const off_Jsn = parseInt(artListJsn[i].off)
-      const rangJsn = artListJsn[i].ranges
+      const nameJsn = artListJsn[i].name // string
+      const typeJsn = artListJsn[i].codeType // string
+      const deftJsn = artListJsn[i].default // string | number | boolean | null
+      const codeJsn = parseInt(artListJsn[i].code) // number | null
+      const on__Jsn = parseInt(artListJsn[i].on) // number | null
+      const off_Jsn = parseInt(artListJsn[i].off) // number | null
+      const rangJsn = artListJsn[i].ranges // string[]
+      const delyJsn = artListJsn[i].delay // number | null
 
       if (!artListJsn[i].name) {
-        receive('/template-io_keyRangeVar1', trkRang)
-        receive('/template-io_keyRangeVar2', rangJsn)
+        receive('/template-io_keyRangeVar1', trkRang) // {}[]
+        receive('/template-io_keyRangeVar2', rangJsn) // string[]
         receive('/template-io_keyRangeScript', 1)
         continue
       }
@@ -339,12 +345,17 @@ module.exports = {
         codeDsp = ''
       }
 
+      let sign3 = ''
+      if (Math.sign(delyJsn) === 1) {
+        sign3 = '+'
+      }
+
       if (togCodes_loc && nameJsn !== '') {
         receive(
           nameOsc,
-          `${nameJsn} (${codeDsp}${codeJsn}/${on__Jsn}${
+          `${nameJsn}\n(${codeDsp}${codeJsn}/${on__Jsn}${
             off_Jsn ? '/' + off_Jsn : ''
-          })`
+          })\n(${sign3}${delyJsn}ms)`
         )
       } else {
         receive(nameOsc, nameJsn)
@@ -353,12 +364,12 @@ module.exports = {
       //NEED TO ADD LOGIC FOR CHANGETYPE VALUE 1 VS 2
 
       // this populates the articulation button with the appropriate data
-      receive(typeOsc, typeJsn)
-      receive(codeOsc, codeJsn)
-      receive(deftOsc, off_Jsn)
-      receive(on__Osc, on__Jsn)
-      receive(off_Osc, off_Jsn)
-      receive(rangOsc, rangJsn)
+      receive(typeOsc, typeJsn) // string
+      receive(codeOsc, codeJsn) // number | null
+      receive(deftOsc, off_Jsn) // number | null
+      receive(on__Osc, on__Jsn) // number | null
+      receive(off_Osc, off_Jsn) // number | null
+      receive(rangOsc, rangJsn) // string[]
       receive(inptOsc, 'false')
       receive(colrOsc, '#6dfdbb')
 
@@ -371,9 +382,9 @@ module.exports = {
         if (deftJsn !== 'On') continue
 
         prmUpdate(4, typeJsn, codeJsn, on__Jsn)
-        receive(deftOsc, on__Jsn)
-        receive('/template-io_keyRangeVar1', trkRang)
-        receive('/template-io_keyRangeVar2', rangJsn)
+        receive(deftOsc, on__Jsn) // number | null
+        receive('/template-io_keyRangeVar1', trkRang) // {}[]
+        receive('/template-io_keyRangeVar2', rangJsn) // string[]
         receive('/template-io_keyRangeScript', 1)
       } else {
         receive(modeOsc, 'tap')
@@ -381,10 +392,10 @@ module.exports = {
         if (!deftJsn) continue
 
         receive(modAOsc, 0.75)
-        receive(deftOsc, on__Jsn)
+        receive(deftOsc, on__Jsn) // number | null
         prmUpdate(4, typeJsn, codeJsn, on__Jsn)
-        receive('/template-io_keyRangeVar1', trkRang)
-        receive('/template-io_keyRangeVar2', rangJsn)
+        receive('/template-io_keyRangeVar1', trkRang) // {}[]
+        receive('/template-io_keyRangeVar2', rangJsn) // string[]
         receive('/template-io_keyRangeScript', 1)
       }
     }
