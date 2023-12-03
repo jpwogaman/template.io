@@ -18,7 +18,8 @@ const useMutations = ({
     })
   //////////////////////////////////////////
   const dataLength = data?.length ?? 0
-  let samplerCount = 0
+  let vepSamplerCount = 0
+  let nonVepSamplerCount = 0
 
   const vepInstanceArray: string[] = []
   for (const item of data ?? []) {
@@ -45,14 +46,17 @@ const useMutations = ({
     })
   }
 
-  for (let i = 0; i < dataLength; i++) {
-    if (!data) continue
-    const item = data[i]
-    if (!item) continue
+  for (const item of data ?? []) {
     const itemInstance = item.vepInstance
-    if (!itemInstance) continue
     if (itemInstance === '') continue
-    if (itemInstance === 'N/A') continue
+
+    if (itemInstance === 'N/A') {
+      if (item.name === '') continue
+      if (item.channel !== 1) continue
+      nonVepSamplerCount++
+      continue
+    }
+
     if (vepInstanceArraySetArray.find((element) => element === itemInstance)) {
       instanceArraysObject[itemInstance]?.push(item.smpNumber)
     }
@@ -85,9 +89,9 @@ const useMutations = ({
   const eachInstanceArraySetArrayLengthArray = Object.values(
     eachInstanceArraySetArrayLength
   )
-  
+
   for (const element of eachInstanceArraySetArrayLengthArray) {
-    samplerCount += element
+    vepSamplerCount += element
   }
 
   //////////////////////////////////////////
@@ -351,8 +355,9 @@ const useMutations = ({
     refetchSelected,
     selectedItemIndex,
     dataLength,
-    samplerCount,
+    samplerCount: vepSamplerCount,
     vepInstanceCount,
+    nonVepSamplerCount,
     previousItemId,
     nextItemId,
     selectedItemRangeCount,
