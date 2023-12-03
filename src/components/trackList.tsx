@@ -129,26 +129,24 @@ const TrackList: FC<TrackListProps> = ({
                   id={id + '_color_' + 'cell'}
                   style={{ backgroundColor: color }}
                   className='border-y border-black'>
-                  <div>
-                    <input
-                      type='color'
-                      title={selectedItemId + '_color_currentValue: ' + color}
-                      disabled={locked}
-                      defaultValue={color}
-                      className={tw(
-                        locked ? 'cursor-not-allowed' : 'cursor-pointer',
-                        'peer sr-only'
-                      )}
-                      onChange={(event) =>
-                        onChangeHelper({
-                          newValue: event.target.value,
-                          layoutDataSingleId: id,
-                          key: 'color'
-                        })
-                      }
-                    />
-                    <div className='rounded-sm border-none p-1 transition-all duration-200 peer-focus-visible:border-none peer-focus-visible:ring-4 peer-focus-visible:ring-indigo-600' />
-                  </div>
+                  <input
+                    type='color'
+                    title={selectedItemId + '_color_currentValue: ' + color}
+                    disabled={locked}
+                    defaultValue={color}
+                    className={tw(
+                      locked ? 'cursor-not-allowed' : 'cursor-pointer',
+                      'w-1/2 opacity-0'
+                    )}
+                    onChange={(event) =>
+                      onChangeHelper({
+                        newValue: event.target.value,
+                        layoutDataSingleId: id,
+                        key: 'color'
+                      })
+                    }
+                  />
+                  {/*<div className='rounded-sm border-none p-1 transition-all duration-200 peer-focus-visible:border-none peer-focus-visible:ring-4 peer-focus-visible:ring-indigo-600' />*/}
                 </td>
                 {/* LOCK CELL */}
                 <td
