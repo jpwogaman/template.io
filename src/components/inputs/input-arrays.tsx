@@ -76,7 +76,7 @@ const smpTypeArray: string[] = [
 ]
 
 // make this user-input option
-const vepInstanceArray: string[] = [
+export const vepInstanceArray: string[] = [
   'N/A',
   'Strings',
   'Percussion + Pianos',

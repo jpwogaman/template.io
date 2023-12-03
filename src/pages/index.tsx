@@ -21,6 +21,8 @@ const Index: NextPage = () => {
     renumberAllItemsMutation,
     deleteAllItemsMutation,
     dataLength,
+    samplerCount,
+    vepInstanceCount,
     previousItemId,
     nextItemId,
     selectedItemRangeCount,
@@ -68,8 +70,19 @@ const Index: NextPage = () => {
       {/* NAVBAR */}
       <nav className='container sticky top-0 z-50 max-h-[40px] min-w-full items-center bg-zinc-900'>
         <ul className='flex justify-between'>
-          <li className='block w-60 p-2 pl-5 text-left text-zinc-200'>
-            {dataLength} {dataLength > 1 ? 'Tracks' : 'Track'}
+          <li className='block w-60 whitespace-nowrap p-2 pl-5 text-left text-zinc-200'>
+            <span className='underline underline-offset-4'>
+              {dataLength} {dataLength > 1 ? 'Tracks' : 'Track'}
+            </span>
+            <span> across </span>
+            <span className='underline underline-offset-4'>
+              {samplerCount} {samplerCount > 1 ? 'Samplers' : 'Sampler'}
+            </span>
+            <span> across </span>
+            <span className='underline underline-offset-4'>
+              {vepInstanceCount}{' '}
+              {vepInstanceCount > 1 ? 'VEP Instances' : 'VEP Instance'}
+            </span>
           </li>
           <li className='min-w-60 block flex gap-2 p-2 pl-5 text-left text-zinc-200'>
             <button

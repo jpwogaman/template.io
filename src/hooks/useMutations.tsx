@@ -1,5 +1,6 @@
 import { type Dispatch, type SetStateAction } from 'react'
 import { trpc } from '@/utils/trpc'
+//import { vepInstanceArray } from '@/components/inputs/input-arrays'
 
 type UseMutationsProps = {
   selectedItemId: string | null
@@ -15,8 +16,81 @@ const useMutations = ({
     trpc.items.getSingleItem.useQuery({
       itemId: selectedItemId ?? ''
     })
-
+  //////////////////////////////////////////
   const dataLength = data?.length ?? 0
+  let samplerCount = 0
+
+  const vepInstanceArray: string[] = []
+  for (const item of data ?? []) {
+    vepInstanceArray.push(item.vepInstance)
+  }
+  const vepInstanceArraySet = new Set(
+    vepInstanceArray.filter((item) => item !== '')
+  )
+  const vepInstanceArraySetArray = Array.from(vepInstanceArraySet)
+  const vepInstanceCount = vepInstanceArraySetArray.filter(
+    (item) => item !== 'N/A'
+  ).length
+
+  const instanceArraysObject: {
+    [key: string]: string[]
+  } = {}
+
+  for (const element of vepInstanceArraySetArray) {
+    Object.defineProperty(instanceArraysObject, element, {
+      value: [],
+      writable: true,
+      enumerable: true,
+      configurable: true
+    })
+  }
+
+  for (let i = 0; i < dataLength; i++) {
+    if (!data) continue
+    const item = data[i]
+    if (!item) continue
+    const itemInstance = item.vepInstance
+    if (!itemInstance) continue
+    if (itemInstance === '') continue
+    if (itemInstance === 'N/A') continue
+    if (vepInstanceArraySetArray.find((element) => element === itemInstance)) {
+      instanceArraysObject[itemInstance]?.push(item.smpNumber)
+    }
+  }
+
+  const eachInstanceArraySet: {
+    [key: string]: Set<string>
+  } = {}
+
+  for (const [key, value] of Object.entries(instanceArraysObject)) {
+    eachInstanceArraySet[key] = new Set(value)
+  }
+
+  const eachInstanceArraySetArray: {
+    [key: string]: string[]
+  } = {}
+
+  for (const [key, value] of Object.entries(eachInstanceArraySet)) {
+    eachInstanceArraySetArray[key] = Array.from(value)
+  }
+
+  const eachInstanceArraySetArrayLength: {
+    [key: string]: number
+  } = {}
+
+  for (const [key, value] of Object.entries(eachInstanceArraySetArray)) {
+    eachInstanceArraySetArrayLength[key] = value.length
+  }
+
+  const eachInstanceArraySetArrayLengthArray = Object.values(
+    eachInstanceArraySetArrayLength
+  )
+  
+  for (const element of eachInstanceArraySetArrayLengthArray) {
+    samplerCount += element
+  }
+
+  //////////////////////////////////////////
 
   const selectedItemIndex =
     data?.findIndex((item) => item.id === selectedItemId) ?? 0
@@ -277,6 +351,8 @@ const useMutations = ({
     refetchSelected,
     selectedItemIndex,
     dataLength,
+    samplerCount,
+    vepInstanceCount,
     previousItemId,
     nextItemId,
     selectedItemRangeCount,
