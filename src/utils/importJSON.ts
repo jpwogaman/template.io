@@ -15,5 +15,6 @@ export const importJSON = async () => {
   if (!result) return
 
   const json = await readTextFile(result as string)
+
   return json
 }

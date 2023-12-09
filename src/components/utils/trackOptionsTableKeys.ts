@@ -138,6 +138,14 @@ const TrackOptionsTableKeys = [
         input: 'select-multiple',
         selectArray: 'artRngsArray',
         label: 'Ranges'
+      },
+      {
+        className: 'w-[9.5%]',
+        show: true,
+        key: 'artLayers',
+        input: 'select-multiple',
+        selectArray: 'artLayersArray',
+        label: 'Layers'
       }
     ]
   },
@@ -233,10 +241,88 @@ const TrackOptionsTableKeys = [
         input: 'select-multiple',
         selectArray: 'artRngsArray',
         label: 'Ranges'
+      },
+      {
+        className: 'w-[9.5%]',
+        show: true,
+        key: 'artLayers',
+        input: 'select-multiple',
+        selectArray: 'artLayersArray',
+        label: 'Layers'
       }
     ]
   },
-
+  {
+    title: 'Additional Layers',
+    label: 'artLayers',
+    layout: 'table',
+    keys: [
+      {
+        className: 'w-[7.5%]',
+        show: true,
+        key: 'id',
+        input: undefined,
+        selectArray: null,
+        label: 'ID'
+      },
+      {
+        className: 'w-[16.5%]',
+        show: true,
+        key: 'name',
+        input: 'text',
+        selectArray: null,
+        label: 'Name'
+      },
+      {
+        className: 'w-[14%]',
+        show: true,
+        key: 'codeType',
+        input: 'select',
+        selectArray: 'valAddrList',
+        label: 'Code Type'
+      },
+      {
+        className: 'w-[9.5%]',
+        show: true,
+        key: 'code',
+        input: 'select',
+        selectArray: 'valMidiList',
+        label: 'Code'
+      },
+      {
+        className: 'w-[9.5%]',
+        show: true,
+        key: 'on',
+        input: 'select',
+        selectArray: 'valMidiList',
+        label: 'On'
+      },
+      {
+        className: 'w-[9.5%]',
+        show: true,
+        key: 'off',
+        input: 'select',
+        selectArray: 'valMidiList',
+        label: 'Off'
+      },
+      {
+        className: 'w-[19%]',
+        show: true,
+        key: 'default',
+        input: 'select',
+        selectArray: 'valDeftList',
+        label: 'Default'
+      },
+      {
+        className: 'w-[9.5%]',
+        show: true,
+        key: 'changeType',
+        input: 'checkbox-switch',
+        selectArray: 'valChngList',
+        label: 'Change'
+      }
+    ]
+  },
   {
     title: 'Faders',
     label: 'fadList',

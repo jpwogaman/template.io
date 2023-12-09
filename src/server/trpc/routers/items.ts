@@ -2,11 +2,14 @@ import { z } from 'zod'
 import { createTRPCRouter, publicProcedure } from '@/server/trpc/trpc'
 
 import {
-  type ItemsArtListTap,
+  type FileItems,
+  type ItemsFullRanges,
   type ItemsArtListTog,
-  type ItemsFadList,
-  type ItemsFullRanges
+  type ItemsArtListTap,
+  type ItemArtLayers,
+  type ItemsFadList
 } from '@prisma/client'
+import { it } from 'node:test'
 
 type FileItemsExtended = {
   id: string
@@ -23,6 +26,7 @@ type FileItemsExtended = {
   fullRange: ItemsFullRanges[]
   artListTog: ItemsArtListTog[]
   artListTap: ItemsArtListTap[]
+  artLayers: ItemArtLayers[]
   fadList: ItemsFadList[]
 }
 
@@ -31,13 +35,14 @@ export const ItemsRouter = createTRPCRouter({
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
       const fileData = JSON.parse(input)
-
+      console.log(fileData)
       const { items }: { items: FileItemsExtended[] } = fileData
 
       await ctx.prisma.fileItems.deleteMany({})
       await ctx.prisma.itemsFullRanges.deleteMany({})
-      await ctx.prisma.itemsArtListTap.deleteMany({})
       await ctx.prisma.itemsArtListTog.deleteMany({})
+      await ctx.prisma.itemsArtListTap.deleteMany({})
+      await ctx.prisma.itemArtLayers.deleteMany({})
       await ctx.prisma.itemsFadList.deleteMany({})
 
       for (const item of items) {
@@ -61,96 +66,142 @@ export const ItemsRouter = createTRPCRouter({
             smpOut: item.smpOut,
             color: item.color,
             fullRange: {
-              create: item.fullRange.map((range) => {
-                //cannot map the fileItemsItemId, this is done by prisma connect
-                const newRange = {
-                  id: range.id,
-                  name: range.name,
-                  low: range.low,
-                  high: range.high,
-                  whiteKeysOnly: range.whiteKeysOnly
-                }
+              create: !item.fullRange
+                ? {
+                    id: item.id + '_FR_0'
+                  }
+                : item.fullRange.map((range) => {
+                    //cannot map the fileItemsItemId, this is done by prisma connect
+                    const newRange = {
+                      id: range.id,
+                      name: range.name,
+                      low: range.low,
+                      high: range.high,
+                      whiteKeysOnly: range.whiteKeysOnly
+                    }
 
-                return newRange
-              })
+                    return newRange
+                  })
             },
             artListTog: {
-              create: item.artListTog.map((art) => {
-                //cannot map the fileItemsItemId, this is done by prisma connect
-                const newArt = {
-                  id: art.id,
-                  name: art.name,
-                  toggle: art.toggle,
-                  codeType: art.codeType,
-                  code: art.code,
-                  on: art.on,
-                  off: art.off,
-                  default: art.default,
-                  delay: art.delay,
-                  changeType: art.changeType,
-                  ranges: art.ranges
-                }
+              create: !item.artListTog
+                ? {
+                    id: item.id + '_AT_0',
+                    ranges: JSON.stringify([item.id + '_FR_0']),
+                    artLayers: '[]'
+                  }
+                : item.artListTog.map((art) => {
+                    //cannot map the fileItemsItemId, this is done by prisma connect
+                    const newArt = {
+                      id: art.id,
+                      name: art.name,
+                      toggle: art.toggle,
+                      codeType: art.codeType,
+                      code: art.code,
+                      on: art.on,
+                      off: art.off,
+                      default: art.default,
+                      delay: art.delay,
+                      changeType: art.changeType,
+                      ranges: art.ranges,
+                      artLayers: art.artLayers
+                    }
 
-                return {
-                  ...newArt,
-                  delay:
-                    typeof newArt.delay === 'string'
-                      ? parseInt(newArt.delay)
-                      : newArt.delay
-                }
-              })
+                    return {
+                      ...newArt,
+                      delay:
+                        typeof newArt.delay === 'string'
+                          ? parseInt(newArt.delay)
+                          : newArt.delay
+                    }
+                  })
             },
             artListTap: {
-              create: item.artListTap.map((art) => {
-                //cannot map the fileItemsItemId, this is done by prisma connect
-                const newArt = {
-                  id: art.id,
-                  name: art.name,
-                  toggle: art.toggle,
-                  codeType: art.codeType,
-                  code: art.code,
-                  on: art.on,
-                  off: art.off,
-                  default: art.default,
-                  delay: art.delay,
-                  changeType: art.changeType,
-                  ranges: art.ranges
-                }
+              create: !item.artListTap
+                ? {
+                    id: item.id + '_AT_1',
+                    ranges: JSON.stringify([item.id + '_FR_0']),
+                    artLayers: '[]'
+                  }
+                : item.artListTap.map((art) => {
+                    //cannot map the fileItemsItemId, this is done by prisma connect
+                    const newArt = {
+                      id: art.id,
+                      name: art.name,
+                      toggle: art.toggle,
+                      codeType: art.codeType,
+                      code: art.code,
+                      on: art.on,
+                      off: art.off,
+                      default: art.default,
+                      delay: art.delay,
+                      changeType: art.changeType,
+                      ranges: art.ranges,
+                      artLayers: art.artLayers
+                    }
 
-                return {
-                  ...newArt,
-                  delay:
-                    typeof newArt.delay === 'string'
-                      ? parseInt(newArt.delay)
-                      : newArt.delay,
-                  default:
-                    typeof newArt.default === 'string' ? false : newArt.default
-                }
-              })
+                    return {
+                      ...newArt,
+                      delay:
+                        typeof newArt.delay === 'string'
+                          ? parseInt(newArt.delay)
+                          : newArt.delay,
+                      default:
+                        typeof newArt.default === 'string'
+                          ? false
+                          : newArt.default
+                    }
+                  })
+            },
+
+            artLayers: {
+              create: !item.artLayers
+                ? {
+                    id: item.id + '_AL_0'
+                  }
+                : item.artLayers.map((layer) => {
+                    const newLayer = {
+                      id: layer.id,
+                      name: layer.name,
+                      codeType: layer.codeType,
+                      code: layer.code,
+                      on: layer.on,
+                      off: layer.off,
+                      default: layer.default,
+                      changeType: layer.changeType
+                    }
+                    return {
+                      ...newLayer
+                    }
+                  })
             },
 
             fadList: {
-              create: item.fadList.map((fad) => {
-                //cannot map the fileItemsItemId, this is done by prisma connect
-                const newFad = {
-                  id: fad.id,
-                  name: fad.name,
-                  codeType: fad.codeType,
-                  code: fad.code,
-                  default: fad.default,
-                  changeType: fad.changeType
-                }
+              create: !item.fadList
+                ? {
+                    id: item.id + '_FL_0'
+                  }
+                : item.fadList.map((fad) => {
+                    //cannot map the fileItemsItemId, this is done by prisma connect
+                    const newFad = {
+                      id: fad.id,
+                      name: fad.name,
+                      codeType: fad.codeType,
+                      code: fad.code,
+                      default: fad.default,
+                      changeType: fad.changeType
+                    }
 
-                return {
-                  ...newFad,
-                  default:
-                    typeof newFad.default === 'boolean'
-                      ? null
-                      : typeof newFad.default === 'string'
-                        ? parseInt(newFad.default)
-                        : newFad.default
-                }
-              })
+                    return {
+                      ...newFad,
+                      default:
+                        typeof newFad.default === 'boolean'
+                          ? null
+                          : typeof newFad.default === 'string'
+                            ? parseInt(newFad.default)
+                            : newFad.default
+                    }
+                  })
             }
           }
         })
@@ -158,18 +209,23 @@ export const ItemsRouter = createTRPCRouter({
     }),
   renumberAllItems: publicProcedure.mutation(async ({ ctx }) => {
     const allItems = await ctx.prisma.fileItems.findMany()
-    const allArtListTap = await ctx.prisma.itemsArtListTap.findMany()
-    const allArtListTog = await ctx.prisma.itemsArtListTog.findMany()
-    const allFadList = await ctx.prisma.itemsFadList.findMany()
     const allFullRanges = await ctx.prisma.itemsFullRanges.findMany()
+    const allArtListTog = await ctx.prisma.itemsArtListTog.findMany()
+    const allArtListTap = await ctx.prisma.itemsArtListTap.findMany()
+    const allFadList = await ctx.prisma.itemsFadList.findMany()
+    const allArtLayers = await ctx.prisma.itemArtLayers.findMany()
 
     await ctx.prisma.fileItems.deleteMany({})
     await ctx.prisma.itemsFullRanges.deleteMany({})
-    await ctx.prisma.itemsArtListTap.deleteMany({})
     await ctx.prisma.itemsArtListTog.deleteMany({})
+    await ctx.prisma.itemsArtListTap.deleteMany({})
+    await ctx.prisma.itemArtLayers.deleteMany({})
     await ctx.prisma.itemsFadList.deleteMany({})
 
     const newItems = allItems.map((item, itemIndex) => {
+      const thisArtListTogCount = allArtListTog.filter((art) => {
+        return art.fileItemsItemId === item.id
+      }).length
       return {
         ...item,
         id: 'T_' + itemIndex,
@@ -190,8 +246,9 @@ export const ItemsRouter = createTRPCRouter({
           .map((art, index) => {
             return {
               ...art,
-              id: 'T_' + itemIndex + '_AL_' + index,
-              ranges: art.ranges
+              id: 'T_' + itemIndex + '_AT_' + index,
+              ranges: art.ranges,
+              artLayers: art.artLayers
             }
           }),
         artListTap: allArtListTap
@@ -201,8 +258,19 @@ export const ItemsRouter = createTRPCRouter({
           .map((art, index) => {
             return {
               ...art,
-              id: 'T_' + itemIndex + '_AL_' + (index + allArtListTog.length),
-              ranges: art.ranges
+              id: 'T_' + itemIndex + '_AT_' + (index + thisArtListTogCount),
+              ranges: art.ranges,
+              artLayers: art.artLayers
+            }
+          }),
+        artLayers: allArtLayers
+          .filter((layer) => {
+            return layer.fileItemsItemId === item.id
+          })
+          .map((layer, index) => {
+            return {
+              ...layer,
+              id: 'T_' + itemIndex + '_AL_' + index
             }
           }),
 
@@ -266,7 +334,8 @@ export const ItemsRouter = createTRPCRouter({
                 default: art.default,
                 delay: art.delay,
                 changeType: art.changeType,
-                ranges: art.ranges
+                ranges: art.ranges,
+                artLayers: art.artLayers
               }
 
               return {
@@ -292,7 +361,8 @@ export const ItemsRouter = createTRPCRouter({
                 default: art.default,
                 delay: art.delay,
                 changeType: art.changeType,
-                ranges: art.ranges
+                ranges: art.ranges,
+                artLayers: art.artLayers
               }
 
               return {
@@ -303,6 +373,24 @@ export const ItemsRouter = createTRPCRouter({
                     : newArt.delay,
                 default:
                   typeof newArt.default === 'string' ? false : newArt.default
+              }
+            })
+          },
+
+          artLayers: {
+            create: item.artLayers.map((layer) => {
+              const newLayer = {
+                id: layer.id,
+                name: layer.name,
+                codeType: layer.codeType,
+                code: layer.code,
+                on: layer.on,
+                off: layer.off,
+                default: layer.default,
+                changeType: layer.changeType
+              }
+              return {
+                ...newLayer
               }
             })
           },
@@ -342,6 +430,7 @@ export const ItemsRouter = createTRPCRouter({
             fullRange: true,
             artListTog: true,
             artListTap: true,
+            artLayers: true,
             fadList: true
           }
         }
@@ -353,6 +442,7 @@ export const ItemsRouter = createTRPCRouter({
     await ctx.prisma.itemsFullRanges.deleteMany({})
     await ctx.prisma.itemsArtListTog.deleteMany({})
     await ctx.prisma.itemsArtListTap.deleteMany({})
+    await ctx.prisma.itemArtLayers.deleteMany({})
     await ctx.prisma.itemsFadList.deleteMany({})
     return true
   }),
@@ -395,14 +485,21 @@ export const ItemsRouter = createTRPCRouter({
         },
         artListTog: {
           create: {
-            id: newItemId + '_AL_0',
-            ranges: JSON.stringify([newItemId + '_FR_0'])
+            id: newItemId + '_AT_0',
+            ranges: JSON.stringify([newItemId + '_FR_0']),
+            artLayers: '[]'
           }
         },
         artListTap: {
           create: {
-            id: newItemId + '_AL_1',
-            ranges: JSON.stringify([newItemId + '_FR_0'])
+            id: newItemId + '_AT_1',
+            ranges: JSON.stringify([newItemId + '_FR_0']),
+            artLayers: '[]'
+          }
+        },
+        artLayers: {
+          create: {
+            id: newItemId + '_AL_0'
           }
         },
         fadList: {
@@ -484,6 +581,7 @@ export const ItemsRouter = createTRPCRouter({
           fullRange: true,
           artListTog: true,
           artListTap: true,
+          artLayers: true,
           fadList: true
         }
       })
@@ -519,6 +617,11 @@ export const ItemsRouter = createTRPCRouter({
         }
       })
       await ctx.prisma.itemsArtListTap.deleteMany({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
+      await ctx.prisma.itemArtLayers.deleteMany({
         where: {
           fileItemsItemId: itemId
         }
@@ -572,6 +675,11 @@ export const ItemsRouter = createTRPCRouter({
           fileItemsItemId: itemId
         }
       })
+      await ctx.prisma.itemArtLayers.deleteMany({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
       await ctx.prisma.itemsFadList.deleteMany({
         where: {
           fileItemsItemId: itemId
@@ -590,14 +698,21 @@ export const ItemsRouter = createTRPCRouter({
           },
           artListTog: {
             create: {
-              id: itemId + '_AL_0',
-              ranges: JSON.stringify([itemId + '_FR_0'])
+              id: itemId + '_AT_0',
+              ranges: JSON.stringify([itemId + '_FR_0']),
+              artLayers: ''
             }
           },
           artListTap: {
             create: {
-              id: itemId + '_AL_1',
-              ranges: JSON.stringify([itemId + '_FR_0'])
+              id: itemId + '_AT_1',
+              ranges: JSON.stringify([itemId + '_FR_0']),
+              artLayers: ''
+            }
+          },
+          artLayers: {
+            create: {
+              id: itemId + '_AL_0'
             }
           },
           fadList: {
@@ -1072,6 +1187,110 @@ export const ItemsRouter = createTRPCRouter({
       await ctx.prisma.itemsArtListTap.delete({
         where: {
           id: artId
+        }
+      })
+      return true
+    }),
+  ////////////////////////////
+  createSingleArtLayer: publicProcedure
+    .input(
+      z.object({
+        itemId: z.string()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { itemId } = input
+
+      const lastRangeNumber = await ctx.prisma.itemArtLayers.count({
+        where: {
+          fileItemsItemId: itemId
+        }
+      })
+
+      const newRange = await ctx.prisma.itemArtLayers.create({
+        data: {
+          FileItems: {
+            connect: {
+              id: itemId
+            }
+          },
+          id: itemId + '_AL_' + lastRangeNumber
+        }
+      })
+      return newRange
+    }),
+  getAllArtLayers: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.itemArtLayers.findMany({})
+  }),
+  updateSingleArtLayer: publicProcedure
+    .input(
+      z.object({
+        layerId: z.string(),
+        name: z.string().optional(),
+        codeType: z.string().optional(),
+        code: z.string().optional(),
+        on: z.string().optional(),
+        off: z.string().optional(),
+        default: z.string().optional(),
+        changeType: z.string().optional()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const {
+        layerId,
+        name,
+        codeType,
+        code,
+        on,
+        off,
+        default: defaultCode,
+        changeType
+      } = input
+
+      const currentArtLayers = await ctx.prisma.itemArtLayers.findUnique({
+        where: {
+          id: layerId
+        }
+      })
+
+      return await ctx.prisma.itemArtLayers.update({
+        where: {
+          id: layerId
+        },
+        data: {
+          name: name ?? currentArtLayers?.name,
+          codeType: codeType ?? currentArtLayers?.codeType,
+          code: code ? parseInt(code) : currentArtLayers?.code,
+          on: on ? parseInt(on) : currentArtLayers?.on,
+          off: off ? parseInt(off) : currentArtLayers?.off,
+          default: defaultCode ?? currentArtLayers?.default,
+          changeType: changeType ?? currentArtLayers?.changeType
+        }
+      })
+    }),
+  deleteSingleArtLayer: publicProcedure
+    .input(
+      z.object({
+        layerId: z.string(),
+        fileItemsItemId: z.string()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { layerId, fileItemsItemId } = input
+
+      const mustHaveOneRange = await ctx.prisma.itemArtLayers.count({
+        where: {
+          fileItemsItemId: fileItemsItemId
+        }
+      })
+
+      if (mustHaveOneRange <= 1) {
+        throw new Error('Must have at least one range')
+      }
+
+      await ctx.prisma.itemArtLayers.delete({
+        where: {
+          id: layerId
         }
       })
       return true

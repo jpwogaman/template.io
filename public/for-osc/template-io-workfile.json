@@ -51558,6 +51558,24 @@
       {
         "type": "variable",
         "lock": false,
+        "id": "template-io_artLayersVar1",
+        "comments": "",
+        "value": "",
+        "default": "",
+        "linkId": "",
+        "address": "auto",
+        "preArgs": "",
+        "typeTags": "",
+        "decimals": 2,
+        "target": "",
+        "ignoreDefaults": false,
+        "bypass": false,
+        "onCreate": "",
+        "onValue": ""
+      },
+      {
+        "type": "variable",
+        "lock": false,
         "id": "template-io_keyRangeColors",
         "comments": "",
         "value": [

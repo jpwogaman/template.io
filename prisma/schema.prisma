@@ -15,21 +15,22 @@ datasource db {
 }
 
 model FileItems {
-  id         String            @id @map("itemId")
-  locked     Boolean           @default(false)
-  name       String            @default("")
-  channel    Float?            @default(1)
-  baseDelay  Float?            @default(0)
-  avgDelay   Float?            @default(0)
-  vepOut     String            @default("N/A")
-  vepInstance String           @default("N/A")
-  smpNumber  String            @default("N/A")  
-  smpOut     String            @default("N/A")
-  color      String            @default("#71717A")
-  fullRange  ItemsFullRanges[]
-  artListTog ItemsArtListTog[]
-  artListTap ItemsArtListTap[]
-  fadList    ItemsFadList[]
+  id          String            @id @map("itemId")
+  locked      Boolean           @default(false)
+  name        String            @default("")
+  channel     Float?            @default(1)
+  baseDelay   Float?            @default(0)
+  avgDelay    Float?            @default(0)
+  vepOut      String            @default("N/A")
+  vepInstance String            @default("N/A")
+  smpNumber   String            @default("N/A")
+  smpOut      String            @default("N/A")
+  color       String            @default("#71717A")
+  fullRange   ItemsFullRanges[]
+  artListTog  ItemsArtListTog[]
+  artListTap  ItemsArtListTap[]
+  fadList     ItemsFadList[]
+  artLayers   ItemArtLayers[]
 }
 
 model ItemsFullRanges {
@@ -40,7 +41,7 @@ model ItemsFullRanges {
   whiteKeysOnly Boolean? @default(false)
 
   FileItems       FileItems? @relation(fields: [fileItemsItemId], references: [id])
-  fileItemsItemId String?  
+  fileItemsItemId String?
 }
 
 model ItemsArtListTog {
@@ -55,9 +56,11 @@ model ItemsArtListTog {
   delay      Float?  @default(0)
   changeType String? @default("Value 2")
   ranges     String? @default("")
+  artLayers  String? @default("")
 
-  FileItems       FileItems? @relation(fields: [fileItemsItemId], references: [id])
+  FileItems       FileItems?      @relation(fields: [fileItemsItemId], references: [id])
   fileItemsItemId String?
+  ItemArtLayers   ItemArtLayers[]
 }
 
 model ItemsArtListTap {
@@ -72,9 +75,29 @@ model ItemsArtListTap {
   delay      Float?   @default(0)
   changeType String?  @default("Value 2")
   ranges     String?  @default("")
+  artLayers  String?  @default("")
 
-  FileItems       FileItems? @relation(fields: [fileItemsItemId], references: [id])
+  FileItems       FileItems?      @relation(fields: [fileItemsItemId], references: [id])
   fileItemsItemId String?
+  ItemArtLayers   ItemArtLayers[]
+}
+
+model ItemArtLayers {
+  id         String  @id @map("artLayerId")
+  name       String? @default("")
+  codeType   String? @default("/control")
+  code       Float?  @default(0)
+  on         Float?  @default(127)
+  off        Float?  @default(0)
+  default    String  @default("Off")
+  changeType String? @default("Value 2")
+
+  FileItems         FileItems?       @relation(fields: [fileItemsItemId], references: [id])
+  fileItemsItemId   String?
+  ItemsArtListTog   ItemsArtListTog? @relation(fields: [itemsArtListTogId], references: [id])
+  itemsArtListTogId String?
+  ItemsArtListTap   ItemsArtListTap? @relation(fields: [itemsArtListTapId], references: [id])
+  itemsArtListTapId String?
 }
 
 model ItemsFadList {

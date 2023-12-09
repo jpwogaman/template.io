@@ -16,10 +16,11 @@ import {
 } from './inputs'
 
 import {
-  type ItemsArtListTap,
+  type ItemsFullRanges,
   type ItemsArtListTog,
-  type ItemsFadList,
-  type ItemsFullRanges
+  type ItemsArtListTap,
+  type ItemArtLayers,
+  type ItemsFadList
 } from '@prisma/client'
 
 import useMutations from '@/hooks/useMutations'
@@ -54,7 +55,10 @@ const TrackOptions: FC<TrackOptionsProps> = ({
     deleteSingleFullRangeMutation,
     deleteSingleArtListTapMutation,
     deleteSingleArtListTogMutation,
-    deleteSingleFadListMutation
+    deleteSingleFadListMutation,
+    updateSingleArtLayerMutation,
+    createSingleArtLayerMutation,
+    deleteSingleArtLayerMutation
   } = useMutations({
     selectedItemId,
     setSelectedItemId
@@ -62,23 +66,24 @@ const TrackOptions: FC<TrackOptionsProps> = ({
 
   //////////////////////////////////////////
   // This logic is used to disable individual components in the artTap, artTog, and fadList tables.
-  const allArtTaps = selectedItem?.artListTap ?? []
   const allArtTogs = selectedItem?.artListTog ?? []
+  const allArtTaps = selectedItem?.artListTap ?? []
+  const allArtLayers = selectedItem?.artLayers ?? []
   const allFads = selectedItem?.fadList ?? []
-
-  const [artTapIndividualComponentLocked, setArtTapIndividualComponentLocked] =
-    useState([
-      {
-        id: selectedItemId + 'AL_0',
-        on: false
-      }
-    ])
 
   const [artTogIndividualComponentLocked, setArtTogIndividualComponentLocked] =
     useState([
       {
-        id: selectedItemId + 'AL_1',
+        id: selectedItemId + 'AT_0',
         code: false
+      }
+    ])
+
+  const [artTapIndividualComponentLocked, setArtTapIndividualComponentLocked] =
+    useState([
+      {
+        id: selectedItemId + 'AT_1',
+        on: false
       }
     ])
 
@@ -92,10 +97,32 @@ const TrackOptions: FC<TrackOptionsProps> = ({
 
   const [artTapOneDefaultOnly, setArtTapOneDefaultOnly] = useState([
     {
-      id: selectedItemId + 'AL_0',
+      id: selectedItemId + 'AL_1',
       default: true
     }
   ])
+
+  const [
+    artLayerIndividualComponentLocked,
+    setArtLayerIndividualComponentLocked
+  ] = useState([
+    {
+      id: selectedItemId + 'AL_0',
+      code: false
+    }
+  ])
+
+  useEffect(() => {
+    setArtTogIndividualComponentLocked(
+      allArtTogs?.map((artTog) => {
+        const V1 = artTog.changeType === 'Value 1'
+        return {
+          id: artTog.id,
+          code: V1
+        }
+      })
+    )
+  }, [allArtTogs])
 
   useEffect(() => {
     setArtTapIndividualComponentLocked(
@@ -118,17 +145,18 @@ const TrackOptions: FC<TrackOptionsProps> = ({
     )
   }, [allArtTaps])
 
-  useEffect(() => {
-    setArtTogIndividualComponentLocked(
-      allArtTogs?.map((artTog) => {
-        const V1 = artTog.changeType === 'Value 1'
-        return {
-          id: artTog.id,
-          code: V1
-        }
-      })
-    )
-  }, [allArtTogs])
+  useEffect(
+    () =>
+      setArtLayerIndividualComponentLocked(
+        allArtLayers?.map((artLayer) => {
+          return {
+            id: artLayer.id,
+            code: false
+          }
+        })
+      ),
+    [allArtLayers]
+  )
 
   useEffect(() => {
     setFadIndividualComponentLocked(
@@ -159,8 +187,9 @@ const TrackOptions: FC<TrackOptionsProps> = ({
   //This could be a user-setting in local storage, but for now, it's hard-coded.
   const [trackOptionsLayouts, setTrackOptionsLayouts] = useState({
     fullRange: 'table',
-    artListTap: 'table',
     artListTog: 'table',
+    artListTap: 'table',
+    artLayers: 'table',
     fadList: 'table'
   })
 
@@ -190,6 +219,12 @@ const TrackOptions: FC<TrackOptionsProps> = ({
         })
       }
     }
+    if (label === 'artListTog') {
+      updateSingleArtListTogMutation.mutate({
+        artId: layoutDataSingleId ?? '',
+        [key]: newValue
+      })
+    }
     if (label === 'artListTap') {
       if (key === 'default') {
         updateSingleArtListTapMutation.mutate({
@@ -203,9 +238,9 @@ const TrackOptions: FC<TrackOptionsProps> = ({
         [key]: newValue
       })
     }
-    if (label === 'artListTog') {
-      updateSingleArtListTogMutation.mutate({
-        artId: layoutDataSingleId ?? '',
+    if (label === 'artLayers') {
+      updateSingleArtLayerMutation.mutate({
+        layerId: layoutDataSingleId ?? '',
         [key]: newValue
       })
     }
@@ -222,13 +257,19 @@ const TrackOptions: FC<TrackOptionsProps> = ({
         itemId: selectedItemId ?? ''
       })
     }
+    if (label === 'artListTog') {
+      createSingleArtListTogMutation.mutate({
+        itemId: selectedItemId ?? ''
+      })
+    }
     if (label === 'artListTap') {
       createSingleArtListTapMutation.mutate({
         itemId: selectedItemId ?? ''
       })
     }
-    if (label === 'artListTog') {
-      createSingleArtListTogMutation.mutate({
+
+    if (label === 'artLayers') {
+      createSingleArtLayerMutation.mutate({
         itemId: selectedItemId ?? ''
       })
     }
@@ -245,16 +286,22 @@ const TrackOptions: FC<TrackOptionsProps> = ({
         rangeId: id
       })
     }
+    if (label === 'artListTog') {
+      deleteSingleArtListTogMutation.mutate({
+        fileItemsItemId: selectedItemId ?? '',
+        artId: id
+      })
+    }
     if (label === 'artListTap') {
       deleteSingleArtListTapMutation.mutate({
         fileItemsItemId: selectedItemId ?? '',
         artId: id
       })
     }
-    if (label === 'artListTog') {
-      deleteSingleArtListTogMutation.mutate({
+    if (label === 'artLayers') {
+      deleteSingleArtLayerMutation.mutate({
         fileItemsItemId: selectedItemId ?? '',
-        artId: id
+        layerId: id
       })
     }
     if (label === 'fadList') {
@@ -285,20 +332,24 @@ const TrackOptions: FC<TrackOptionsProps> = ({
 
       {TrackOptionsTableKeys.map((layoutConfig) => {
         let layoutDataArray:
-          | ItemsArtListTap[]
-          | ItemsArtListTog[]
-          | ItemsFadList[]
           | ItemsFullRanges[]
+          | ItemsArtListTog[]
+          | ItemsArtListTap[]
+          | ItemArtLayers[]
+          | ItemsFadList[]
           | undefined = []
 
         if (layoutConfig.label === 'fullRange') {
           layoutDataArray = selectedItem?.fullRange
         }
+        if (layoutConfig.label === 'artListTog') {
+          layoutDataArray = selectedItem?.artListTog
+        }
         if (layoutConfig.label === 'artListTap') {
           layoutDataArray = selectedItem?.artListTap
         }
-        if (layoutConfig.label === 'artListTog') {
-          layoutDataArray = selectedItem?.artListTog
+        if (layoutConfig.label === 'artLayers') {
+          layoutDataArray = selectedItem?.artLayers
         }
         if (layoutConfig.label === 'fadList') {
           layoutDataArray = selectedItem?.fadList
@@ -389,11 +440,14 @@ const TrackOptions: FC<TrackOptionsProps> = ({
                               className={'p-0.5'}>
                               <InputTypeSelector
                                 keySingle={key}
+                                artTogIndividualComponentLocked={
+                                  artTogIndividualComponentLocked
+                                }
                                 artTapIndividualComponentLocked={
                                   artTapIndividualComponentLocked
                                 }
-                                artTogIndividualComponentLocked={
-                                  artTogIndividualComponentLocked
+                                artLayerIndividualComponentLocked={
+                                  artLayerIndividualComponentLocked
                                 }
                                 fadIndividualComponentLocked={
                                   fadIndividualComponentLocked

@@ -9,7 +9,15 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
   options,
   onChangeFunction
 }) => {
-  const value = JSON.parse(defaultValue as unknown as string)
+  
+  const value =
+    defaultValue === ''
+      ? JSON.parse(defaultValue as unknown as string)
+      : 'hello'
+
+  console.log('defaultValue', defaultValue, Boolean(defaultValue != ''))
+  console.log('value', value)
+  
 
   const shortenedSubComponentId = (initialId: string) => {
     return `${initialId.split('_')[2]}_${

@@ -9,10 +9,11 @@ import {
 
 import {
   type FileItems,
-  type ItemsArtListTap,
+  type ItemsFullRanges,
   type ItemsArtListTog,
-  type ItemsFadList,
-  type ItemsFullRanges
+  type ItemsArtListTap,
+  type ItemArtLayers,
+  type ItemsFadList
 } from '@prisma/client'
 
 import TrackOptionsTableKeys from '../utils/trackOptionsTableKeys'
@@ -29,7 +30,9 @@ export type OnChangeHelperArgsType = {
 
 export type SelectedItemType = FileItems & { fullRange: ItemsFullRanges[] } & {
   artListTap: ItemsArtListTap[]
-} & { artListTog: ItemsArtListTog[] } & { fadList: ItemsFadList[] }
+} & { artListTog: ItemsArtListTog[] } & { fadList: ItemsFadList[] } & {
+  artLayers: ItemArtLayers[]
+}
 
 type InputTypeSelectorProps = {
   keySingle:
@@ -39,8 +42,9 @@ type InputTypeSelectorProps = {
   layoutConfigLabel?: string
   layoutDataSingle?:
     | ItemsFullRanges
-    | ItemsArtListTap
     | ItemsArtListTog
+    | ItemsArtListTap
+    | ItemArtLayers
     | ItemsFadList
   onChangeHelper: ({
     newValue,
@@ -48,11 +52,15 @@ type InputTypeSelectorProps = {
     key,
     label
   }: OnChangeHelperArgsType) => void | undefined
+  artTogIndividualComponentLocked?: {
+    id: string
+    code: boolean
+  }[]
   artTapIndividualComponentLocked?: {
     id: string
     on: boolean
   }[]
-  artTogIndividualComponentLocked?: {
+  artLayerIndividualComponentLocked?: {
     id: string
     code: boolean
   }[]
@@ -88,8 +96,9 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
   layoutConfigLabel,
   layoutDataSingle,
   onChangeHelper,
-  artTapIndividualComponentLocked,
   artTogIndividualComponentLocked,
+  artTapIndividualComponentLocked,
+  artLayerIndividualComponentLocked,
   fadIndividualComponentLocked,
   artTapOneDefaultOnly,
   selectedItem,
@@ -190,6 +199,15 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
       )}`
     }
 
+    const artLayerOptions =
+      layoutConfigLabel === 'artListTap' || layoutConfigLabel === 'artListTog'
+    const layersOptions = key === 'artLayers' && artLayerOptions
+
+    const stringListFullArtLayerIds = JSON.stringify(
+      selectedItem?.artLayers.map((artLayer: ItemArtLayers) => artLayer.id) ??
+        ''
+    )
+
     const artRangeOptions =
       layoutConfigLabel === 'artListTap' || layoutConfigLabel === 'artListTog'
     const rangeOptions = key === 'ranges' && artRangeOptions
@@ -198,16 +216,20 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
       selectedItem?.fullRange.map((fullRange: ItemsFullRanges) => fullRange.id)
     )
 
-    const thisArtTap = artTapIndividualComponentLocked?.find(
-      (artTapIndividualComponentLocked) =>
-        artTapIndividualComponentLocked.id === layoutDataSingle.id
-    )
-
     const thisArtTog = artTogIndividualComponentLocked?.find(
       (artTogIndividualComponentLocked) =>
         artTogIndividualComponentLocked.id === layoutDataSingle.id
     )
 
+    const thisArtTap = artTapIndividualComponentLocked?.find(
+      (artTapIndividualComponentLocked) =>
+        artTapIndividualComponentLocked.id === layoutDataSingle.id
+    )
+
+    const thisArtLayer = artLayerIndividualComponentLocked?.find(
+      (artLayerIndividualComponentLocked) =>
+        artLayerIndividualComponentLocked.id === layoutDataSingle.id
+    )
     const thisArtTapDefault = artTapOneDefaultOnly?.find(
       (artTapOneDefaultOnly) => artTapOneDefaultOnly.id === layoutDataSingle.id
     )
@@ -217,15 +239,20 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
         fadIndividualComponentLocked.id === layoutDataSingle.id
     )
 
+    const artTogLockedHelper =
+      layoutConfigLabel === 'artListTog' &&
+      key === 'code' &&
+      thisArtTog?.code === true
+
     const artTapLockedHelper =
       layoutConfigLabel === 'artListTap' &&
       key === 'on' &&
       thisArtTap?.on === true
 
-    const artTogLockedHelper =
-      layoutConfigLabel === 'artListTog' &&
+    const artLayerLockedHelper =
+      layoutConfigLabel === 'artLayers' &&
       key === 'code' &&
-      thisArtTog?.code === true
+      thisArtLayer?.code === true
 
     const fadLockedHelper =
       layoutConfigLabel === 'fadList' &&
@@ -246,15 +273,20 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
       id: `${layoutDataSingle.id}_${key}`,
       codeFullLocked: selectedItem?.locked,
       codeDisabled:
-        artTapLockedHelper || //NOSONAR
         artTogLockedHelper || //NOSONAR
+        artTapLockedHelper || //NOSONAR
+        artLayerLockedHelper || //NOSONAR
         fadLockedHelper,
       defaultValue: inputCheckBoxSwitch
         ? checkBoxSwitchValueHelper()
         : artTapDefaultHelper
           ? thisArtTapDefault?.default
           : layoutDataSingle[key as 'id'],
-      options: rangeOptions ? stringListOfFullRangeIds : selectArray ?? '',
+      options: rangeOptions
+        ? stringListOfFullRangeIds
+        : layersOptions
+          ? stringListFullArtLayerIds
+          : selectArray ?? '',
       textTypeValidator: typeof layoutDataSingle[key as 'id'],
       onChangeFunction: (
         event: ChangeEvent<HTMLSelectElement | HTMLInputElement>

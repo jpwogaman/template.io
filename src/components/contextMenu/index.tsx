@@ -33,14 +33,17 @@ const ContextMenu: FC<ContextMenuProps> = ({
     updateSingleArtListTapMutation,
     updateSingleArtListTogMutation,
     updateSingleFadListMutation,
+    updateSingleArtLayerMutation,
     createSingleFullRangeMutation,
     createSingleArtListTapMutation,
     createSingleArtListTogMutation,
+    createSingleArtLayerMutation,
     createSingleFadListMutation,
     deleteSingleFullRangeMutation,
     deleteSingleArtListTapMutation,
     deleteSingleArtListTogMutation,
     deleteSingleFadListMutation,
+    deleteSingleArtLayerMutation,
     selectedItem
   } = useMutations({
     selectedItemId,
@@ -176,6 +179,37 @@ const ContextMenu: FC<ContextMenuProps> = ({
           break
       }
     }
+    if (newId.includes('Layer')) {
+      switch (newId) {
+        case 'moveLayerUp':
+          break
+        case 'moveLayerDown':
+          break
+        case 'addLayerAbove':
+          break
+        case 'addLayerBelow':
+          createSingleArtLayerMutation.mutate({
+            itemId: selectedItemId ?? ''
+          })
+          break
+        case 'duplicateLayerAbove':
+          break
+        case 'duplicateLayerBelow':
+          break
+        case 'clearLayer':
+          break
+        case 'deleteLayer':
+          deleteSingleArtLayerMutation.mutate({
+            layerId: contextMenuId ?? '',
+            fileItemsItemId: selectedItemId ?? ''
+          })
+          break
+
+        default:
+          break
+      }
+    }
+
     if (newId.includes('Fader')) {
       switch (newId) {
         case 'moveFaderUp':
@@ -237,9 +271,13 @@ const ContextMenu: FC<ContextMenuProps> = ({
           newId = optionId.replace('Item', 'Range')
           newLabel = label?.replace('Item', 'Range')
         }
-        if (contextMenuId.includes('AL_')) {
+        if (contextMenuId.includes('AT_')) {
           newId = optionId.replace('Item', 'Articulation')
           newLabel = label?.replace('Item', 'Articulation')
+        }
+        if (contextMenuId.includes('AL_')) {
+          newId = optionId.replace('Item', 'Layer')
+          newLabel = label?.replace('Item', 'Layer')
         }
         if (contextMenuId.includes('FL_')) {
           newId = optionId.replace('Item', 'Fader')

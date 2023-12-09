@@ -14,8 +14,9 @@ export const TauriMenuEvents = createTRPCRouter({
       const items = await ctx.prisma.fileItems.findMany({
         include: {
           fullRange: true,
-          artListTap: true,
           artListTog: true,
+          artListTap: true,
+          artLayers: true,
           fadList: true
         }
       })

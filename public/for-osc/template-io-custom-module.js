@@ -1,4 +1,4 @@
-const allTrack_jsn = loadJSON('tracks-11.27.2023-v2.json')
+const allTrack_jsn = loadJSON('tracks-11.27.2023-v3.json')
 
 const items = allTrack_jsn.items
 // full schema for an item in the JSON file
@@ -22,20 +22,6 @@ const items = allTrack_jsn.items
 //      whiteKeysOnly: boolean | null;
 //      fileItemsItemId: string | null;
 //  }[]
-//  artListTap: {
-//      id: string;
-//      name: string | null;
-//      toggle: boolean;
-//      codeType: string | null;
-//      code: number | null;
-//      on: number | null;
-//      off: number | null;
-//      default: boolean | null;
-//      delay: number | null;
-//      changeType: string | null;
-//      ranges: string | null; // actually a string[], parsed in OSC
-//      fileItemsItemId: string | null;
-//  }[]
 //  artListTog: {
 //      id: string;
 //      name: string | null;
@@ -48,7 +34,36 @@ const items = allTrack_jsn.items
 //      delay: number | null;
 //      changeType: string | null;
 //      ranges: string | null; // actually a string[], parsed in OSC
+//      artLayers: string | null; // actually a string[], parsed in OSC
 //      fileItemsItemId: string | null;
+//  }[]
+//  artListTap: {
+//      id: string;
+//      name: string | null;
+//      toggle: boolean;
+//      codeType: string | null;
+//      code: number | null;
+//      on: number | null;
+//      off: number | null;
+//      default: boolean | null;
+//      delay: number | null;
+//      changeType: string | null;
+//      ranges: string | null; // actually a string[], parsed in OSC
+//      artLayers: string | null; // actually a string[], parsed in OSC
+//      fileItemsItemId: string | null;
+//  }[]
+//  artLayers: {
+//      id: string;
+//      name: string | null;
+//      codeType: string | null;
+//      code: number | null;
+//      on: number | null;
+//      off: number | null;
+//      default: string;
+//      changeType: string | null;
+//      fileItemsItemId: string | null;
+//      itemsArtListTogId: string | null;
+//      itemsArtListTapId: string | null;
 //  }[]
 //  fadList:  {
 //      id: string;
@@ -305,6 +320,8 @@ module.exports = {
       ...items[trkNumb].artListTog
     ]
 
+    const allArtLayersJsn = items[trkNumb].artLayers
+
     for (let i = 0; i < artListJsn.length; i++) {
       const nameOsc = '/artname_' + parseInt(i + 1)
       const typeOsc = '/arttype_' + parseInt(i + 1)
@@ -326,6 +343,7 @@ module.exports = {
       const off_Jsn = parseInt(artListJsn[i].off) // number | null
       const rangJsn = artListJsn[i].ranges // string[]
       const delyJsn = artListJsn[i].delay // number | null
+      const layersJsn = JSON.parse(artListJsn[i].artLayers) ?? "['']" // string[]
 
       if (!artListJsn[i].name) {
         receive('/template-io_keyRangeVar1', trkRang) // {}[]
@@ -355,7 +373,7 @@ module.exports = {
           nameOsc,
           `${nameJsn}\n(${codeDsp}${codeJsn}/${on__Jsn}${
             off_Jsn ? '/' + off_Jsn : ''
-          })\n(${sign3}${delyJsn}ms)`
+          })\n(${sign3}${delyJsn}ms)\n(Layers: ${layersJsn.length})`
         )
       } else {
         receive(nameOsc, nameJsn)
@@ -373,15 +391,30 @@ module.exports = {
       receive(inptOsc, 'false')
       receive(colrOsc, '#6dfdbb')
 
+      prmUpdate(4, typeJsn, codeJsn, off_Jsn)
+
+      if (layersJsn !== "['']") {
+        for (const layer in allArtLayersJsn) {
+          if (layersJsn.includes(allArtLayersJsn[layer].id)) {
+            set('/template-io_artLayersVar1', artListJsn[i].artLayers) // string[]
+            if (layer.default === 'On') {
+              prmUpdate(4, layer.codeType, layer.code, layer.on)
+            }
+            if (layer.default === 'Off') {
+              prmUpdate(4, layer.codeType, layer.code, layer.off)
+            }
+          }
+        }
+      }
+
       if (artListJsn[i].toggle) {
         receive(modeOsc, 'toggle')
         receive(colrOsc, '#a86739')
         receive(modBOsc, 0.75)
-        prmUpdate(4, typeJsn, codeJsn, off_Jsn)
 
         if (deftJsn !== 'On') continue
 
-        prmUpdate(4, typeJsn, codeJsn, on__Jsn)
+        //prmUpdate(4, typeJsn, codeJsn, on__Jsn)
         receive(deftOsc, on__Jsn) // number | null
         receive('/template-io_keyRangeVar1', trkRang) // {}[]
         receive('/template-io_keyRangeVar2', rangJsn) // string[]
@@ -393,7 +426,6 @@ module.exports = {
 
         receive(modAOsc, 0.75)
         receive(deftOsc, on__Jsn) // number | null
-        prmUpdate(4, typeJsn, codeJsn, on__Jsn)
         receive('/template-io_keyRangeVar1', trkRang) // {}[]
         receive('/template-io_keyRangeVar2', rangJsn) // string[]
         receive('/template-io_keyRangeScript', 1)
@@ -401,5 +433,12 @@ module.exports = {
     }
 
     return { address, args, host, port }
+  },
+
+  oscOutFilter: function (data) {
+    // this is to get an artificial track response for testing without having to open Cubase
+    send('midi', 'OSC3', '/key_pressure', 0, 1, 31)
+
+    return data
   }
 }
