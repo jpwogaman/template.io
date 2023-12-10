@@ -88,7 +88,7 @@ export const ItemsRouter = createTRPCRouter({
                 ? {
                     id: item.id + '_AT_0',
                     ranges: JSON.stringify([item.id + '_FR_0']),
-                    artLayers: '[]'
+                    artLayers: JSON.stringify([''])
                   }
                 : item.artListTog.map((art) => {
                     //cannot map the fileItemsItemId, this is done by prisma connect
@@ -121,7 +121,7 @@ export const ItemsRouter = createTRPCRouter({
                 ? {
                     id: item.id + '_AT_1',
                     ranges: JSON.stringify([item.id + '_FR_0']),
-                    artLayers: '[]'
+                    artLayers: JSON.stringify([''])
                   }
                 : item.artListTap.map((art) => {
                     //cannot map the fileItemsItemId, this is done by prisma connect
@@ -487,14 +487,14 @@ export const ItemsRouter = createTRPCRouter({
           create: {
             id: newItemId + '_AT_0',
             ranges: JSON.stringify([newItemId + '_FR_0']),
-            artLayers: '[]'
+            artLayers: JSON.stringify([''])
           }
         },
         artListTap: {
           create: {
             id: newItemId + '_AT_1',
             ranges: JSON.stringify([newItemId + '_FR_0']),
-            artLayers: '[]'
+            artLayers: JSON.stringify([''])
           }
         },
         artLayers: {
@@ -700,14 +700,14 @@ export const ItemsRouter = createTRPCRouter({
             create: {
               id: itemId + '_AT_0',
               ranges: JSON.stringify([itemId + '_FR_0']),
-              artLayers: ''
+              artLayers: JSON.stringify([''])
             }
           },
           artListTap: {
             create: {
               id: itemId + '_AT_1',
               ranges: JSON.stringify([itemId + '_FR_0']),
-              artLayers: ''
+              artLayers: JSON.stringify([''])
             }
           },
           artLayers: {
@@ -907,7 +907,8 @@ export const ItemsRouter = createTRPCRouter({
             }
           },
           id: itemId + '_AL_' + nextArtNumber,
-          ranges: JSON.stringify([itemId + '_FR_0'])
+          ranges: JSON.stringify([itemId + '_FR_0']),
+          artLayers: JSON.stringify([''])
         }
       })
       return newArt
@@ -925,7 +926,8 @@ export const ItemsRouter = createTRPCRouter({
         default: z.string().optional(),
         delay: z.string().optional(),
         changeType: z.string().optional(),
-        ranges: z.string().optional()
+        ranges: z.string().optional(),
+        artLayers: z.string().optional()
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -940,7 +942,8 @@ export const ItemsRouter = createTRPCRouter({
         default: inputDefaultCode,
         delay,
         changeType,
-        ranges
+        ranges,
+        artLayers
       } = input
 
       const currentArtListTog = await ctx.prisma.itemsArtListTog.findUnique({
@@ -949,7 +952,7 @@ export const ItemsRouter = createTRPCRouter({
         }
       })
 
-      if (ranges === undefined) {
+      if (ranges === undefined && artLayers === undefined) {
         return await ctx.prisma.itemsArtListTog.update({
           where: {
             id: artId
@@ -964,6 +967,18 @@ export const ItemsRouter = createTRPCRouter({
             default: inputDefaultCode ?? currentArtListTog?.default,
             delay: delay ? parseInt(delay) : currentArtListTog?.delay,
             changeType: changeType ?? currentArtListTog?.changeType
+          }
+        })
+      }
+
+      // ART LAYERS UPDATE
+      if (artLayers != undefined && inputDefaultCode === undefined) {
+        return await ctx.prisma.itemsArtListTog.update({
+          where: {
+            id: artId
+          },
+          data: {
+            artLayers: artLayers ?? currentArtListTog?.artLayers
           }
         })
       }
@@ -1042,7 +1057,8 @@ export const ItemsRouter = createTRPCRouter({
             }
           },
           id: itemId + '_AL_' + nextArtNumber,
-          ranges: JSON.stringify([itemId + '_FR_0'])
+          ranges: JSON.stringify([itemId + '_FR_0']),
+          artLayers: JSON.stringify([''])
         }
       })
       return newArt
@@ -1060,7 +1076,8 @@ export const ItemsRouter = createTRPCRouter({
         default: z.boolean().optional(),
         delay: z.string().optional(),
         changeType: z.string().optional(),
-        ranges: z.string().optional()
+        ranges: z.string().optional(),
+        artLayers: z.string().optional()
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -1075,7 +1092,8 @@ export const ItemsRouter = createTRPCRouter({
         default: inputDefaultCode,
         delay,
         changeType,
-        ranges
+        ranges,
+        artLayers
       } = input
 
       ////////////////////////////
@@ -1086,7 +1104,7 @@ export const ItemsRouter = createTRPCRouter({
         }
       })
 
-      if (inputDefaultCode === undefined && ranges === undefined) {
+      if (inputDefaultCode === undefined && ranges === undefined && artLayers === undefined) {
         return await ctx.prisma.itemsArtListTap.update({
           where: {
             id: artId
@@ -1117,6 +1135,18 @@ export const ItemsRouter = createTRPCRouter({
           },
           data: {
             ranges: ranges ?? currentArtListTap?.ranges
+          }
+        })
+      }
+      ////////////////////////////
+      // ART LAYERS UPDATE
+      if (artLayers != undefined && inputDefaultCode === undefined) {
+        return await ctx.prisma.itemsArtListTap.update({
+          where: {
+            id: artId
+          },
+          data: {
+            artLayers: artLayers ?? currentArtListTap?.artLayers
           }
         })
       }

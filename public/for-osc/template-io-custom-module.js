@@ -1,4 +1,4 @@
-const allTrack_jsn = loadJSON('tracks-11.27.2023-v3.json')
+const allTrack_jsn = loadJSON('tracks-11.27.2023-v4.json')
 
 const items = allTrack_jsn.items
 // full schema for an item in the JSON file
@@ -343,7 +343,7 @@ module.exports = {
       const off_Jsn = parseInt(artListJsn[i].off) // number | null
       const rangJsn = artListJsn[i].ranges // string[]
       const delyJsn = artListJsn[i].delay // number | null
-      const layersJsn = JSON.parse(artListJsn[i].artLayers) ?? "['']" // string[]
+      const layersJsn = JSON.parse(artListJsn[i].artLayers) // string[]
 
       if (!artListJsn[i].name) {
         receive('/template-io_keyRangeVar1', trkRang) // {}[]
@@ -396,7 +396,7 @@ module.exports = {
       if (layersJsn !== "['']") {
         for (const layer in allArtLayersJsn) {
           if (layersJsn.includes(allArtLayersJsn[layer].id)) {
-            set('/template-io_artLayersVar1', artListJsn[i].artLayers) // string[]
+            receive('/template-io_artLayersVar1', artListJsn[i].artLayers) // string[]
             if (layer.default === 'On') {
               prmUpdate(4, layer.codeType, layer.code, layer.on)
             }
@@ -437,7 +437,7 @@ module.exports = {
 
   oscOutFilter: function (data) {
     // this is to get an artificial track response for testing without having to open Cubase
-    send('midi', 'OSC3', '/key_pressure', 0, 1, 31)
+    //send('midi', 'OSC3', '/key_pressure', 0, 1, 31)
 
     return data
   }
