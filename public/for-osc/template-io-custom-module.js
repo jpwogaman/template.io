@@ -335,6 +335,8 @@ module.exports = {
       const modBOsc = '/artmodB_' + parseInt(i + 1)
       const modeOsc = '/artMode_' + parseInt(i + 1)
       const rangOsc = '/artrang_' + parseInt(i + 1)
+      const layersOsc = '/artLayers_' + parseInt(i + 1)
+      const idJsn = artListJsn[i].id // string
       const nameJsn = artListJsn[i].name // string
       const typeJsn = artListJsn[i].codeType // string
       const deftJsn = artListJsn[i].default // string | number | boolean | null
@@ -395,14 +397,27 @@ module.exports = {
 
       if (layersJsn !== "['']") {
         for (const layer in allArtLayersJsn) {
-          if (layersJsn.includes(allArtLayersJsn[layer].id)) {
-            receive('/template-io_artLayersVar1', artListJsn[i].artLayers) // string[]
-            if (layer.default === 'On') {
-              prmUpdate(4, layer.codeType, layer.code, layer.on)
+          if (layersJsn.includes(layer.id)) {
+            const layersFiltered = artListJsn[i].artLayers.replace('"",', '')
+            const obj = JSON.parse(layersFiltered)
+            const layersFilteredObj = obj.map((item) => {
+              return item
+            })
+
+            const newObj = {
+              id: idJsn,
+              name: nameJsn,
+              layers: layersFilteredObj
             }
-            if (layer.default === 'Off') {
-              prmUpdate(4, layer.codeType, layer.code, layer.off)
-            }
+
+            receive(layersOsc, newObj)
+
+            //if (layer.default === 'On') {
+            //  prmUpdate(4, layer.codeType, layer.code, layer.on)
+            //}
+            //if (layer.default === 'Off') {
+            //  prmUpdate(4, layer.codeType, layer.code, layer.off)
+            //}
           }
         }
       }
