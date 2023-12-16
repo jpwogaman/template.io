@@ -23,6 +23,7 @@ const Index: NextPage = () => {
     nonVepSamplerCount,
     selectedItemRangeCount,
     selectedItemArtCount,
+    selectedItemLayerCount,
     selectedItemFadCount,
     previousItemId,
     nextItemId,
@@ -40,6 +41,7 @@ const Index: NextPage = () => {
     nextItemId,
     selectedItemRangeCount,
     selectedItemArtCount,
+    selectedItemLayerCount,
     selectedItemFadCount,
     selectedSubItemId,
     setSelectedSubItemId

@@ -5,6 +5,7 @@ type useKeyboardProps = {
   nextItemId: string
   selectedItemRangeCount: number
   selectedItemArtCount: number
+  selectedItemLayerCount: number
   selectedItemFadCount: number
   selectedItemId: string | null
   setSelectedItemId: Dispatch<SetStateAction<string | null>>
@@ -17,6 +18,7 @@ const useKeyboard = ({
   nextItemId,
   selectedItemRangeCount: rangeCount,
   selectedItemArtCount: artCount,
+  selectedItemLayerCount: layerCount,
   selectedItemFadCount: fadCount,
   selectedItemId,
   setSelectedItemId,
@@ -31,6 +33,7 @@ const useKeyboard = ({
 
       const selectedInputIsInTrackOptions =
         selectedInput?.id.includes('_FR_') ||
+        selectedInput?.id.includes('_AT_') ||
         selectedInput?.id.includes('_AL_') ||
         selectedInput?.id.includes('_FL_')
 
@@ -58,15 +61,20 @@ const useKeyboard = ({
           if (optionType === 'FR' && nextNumber < 0) {
             return
           }
-          if (optionType === 'AL' && nextNumber < 0) {
+          if (optionType === 'AT' && nextNumber < 0) {
             newInput =
               selectedItemId + '_FR_' + (rangeCount - 1) + '_' + optionField
             previousSubItemId = selectedItemId + '_FR_' + (rangeCount - 1)
           }
+          if (optionType === 'AL' && nextNumber < 0) {
+            newInput =
+              selectedItemId + '_AT_' + (artCount - 1) + '_' + optionField
+            previousSubItemId = selectedItemId + '_AT_' + (artCount - 1)
+          }
           if (optionType === 'FL' && nextNumber < 0) {
             newInput =
-              selectedItemId + '_AL_' + (artCount - 1) + '_' + optionField
-            previousSubItemId = selectedItemId + '_AL_' + (artCount - 1)
+              selectedItemId + '_AL_' + (layerCount - 1) + '_' + optionField
+            previousSubItemId = selectedItemId + '_AL_' + (layerCount - 1)
           }
 
           setSelectedSubItemId(previousSubItemId)
@@ -109,14 +117,20 @@ const useKeyboard = ({
             selectedItemId + '_' + optionType + '_' + nextNumber
 
           if (optionType === 'FR' && nextNumber > rangeCount - 1) {
+            newInput = selectedItemId + '_AT_0_' + optionField
+            nextSubItemId = selectedItemId + '_AT_0'
+          }
+          if (optionType === 'AT' && nextNumber > artCount - 1) {
             newInput = selectedItemId + '_AL_0_' + optionField
             nextSubItemId = selectedItemId + '_AL_0'
           }
-          if (optionType === 'AL' && nextNumber > artCount - 1) {
+          if (optionType === 'AL' && nextNumber > layerCount - 1) {
             newInput = selectedItemId + '_FL_0_' + optionField
             nextSubItemId = selectedItemId + '_FL_0'
           }
-          if (optionType === 'FL' && nextNumber === fadCount) return
+          if (optionType === 'FL' && nextNumber > fadCount - 1) {
+            return
+          }
 
           setSelectedSubItemId(nextSubItemId)
 

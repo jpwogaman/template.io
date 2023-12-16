@@ -108,6 +108,8 @@ const useMutations = ({
   const selectedItemArtTapCount =
     data?.[selectedItemIndex]?._count?.artListTap ?? 0
   const selectedItemArtCount = selectedItemArtTogCount + selectedItemArtTapCount
+  const selectedItemLayerCount =
+    data?.[selectedItemIndex]?._count?.artLayers ?? 0
   const selectedItemFadCount = data?.[selectedItemIndex]?._count?.fadList ?? 0
 
   const createSingleItemMutation = trpc.items.createSingleItem.useMutation({
@@ -279,208 +281,209 @@ const useMutations = ({
         )
       }
     })
-    const createSingleArtLayerMutation =
-      trpc.items.createSingleArtLayer.useMutation({
-        onSuccess: () => {
-          createSingleArtLayerMutation.reset()
-          //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-          refetchSelected()
-        },
-        onError: (error) => {
-          alert(
-            error.message ??
-              'There was an error submitting your request. Please try again.'
-          )
-        }
-      })
-    const updateSingleArtLayerMutation =
-      trpc.items.updateSingleArtLayer.useMutation({
-        onSuccess: () => {
-          updateSingleArtLayerMutation.reset()
-          //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-          refetchSelected()
-        },
-        onError: (error) => {
-          alert(
-            error.message ??
-              'There was an error submitting your request. Please try again.'
-          )
-        }
-      })
-    const deleteSingleArtLayerMutation =
-      trpc.items.deleteSingleArtLayer.useMutation({
-        onSuccess: () => {
-          deleteSingleArtLayerMutation.reset()
-          //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-          refetchSelected()
-        },
-        onError: (error) => {
-          alert(
-            error.message ??
-              'There was an error submitting your request. Please try again.'
-          )
-        }
-      })
-
-    const createSingleFadListMutation =
-      trpc.items.createSingleFadList.useMutation({
-        onSuccess: () => {
-          createSingleFadListMutation.reset()
-          refetchSelected()
-        },
-        onError: (error) => {
-          alert(
-            error.message ??
-              'There was an error submitting your request. Please try again.'
-          )
-        }
-      })
-    //////////////////////////////////////////
-    const deleteSingleFullRangeMutation =
-      trpc.items.deleteSingleFullRange.useMutation({
-        onSuccess: () => {
-          deleteSingleFullRangeMutation.reset()
-          refetchSelected()
-        },
-        onError: (error) => {
-          alert(
-            error.message ??
-              'There was an error submitting your request. Please try again.'
-          )
-        }
-      })
-    const deleteSingleArtListTapMutation =
-      trpc.items.deleteSingleArtListTap.useMutation({
-        onSuccess: () => {
-          deleteSingleArtListTapMutation.reset()
-          //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-          refetchSelected()
-        },
-        onError: (error) => {
-          alert(
-            error.message ??
-              'There was an error submitting your request. Please try again.'
-          )
-        }
-      })
-    const deleteSingleArtListTogMutation =
-      trpc.items.deleteSingleArtListTog.useMutation({
-        onSuccess: () => {
-          deleteSingleArtListTogMutation.reset()
-          //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-          refetchSelected()
-        },
-        onError: (error) => {
-          alert(
-            error.message ??
-              'There was an error submitting your request. Please try again.'
-          )
-        }
-      })
-    const deleteSingleFadListMutation =
-      trpc.items.deleteSingleFadList.useMutation({
-        onSuccess: () => {
-          deleteSingleFadListMutation.reset()
-          refetchSelected()
-        },
-        onError: (error) => {
-          alert(
-            error.message ??
-              'There was an error submitting your request. Please try again.'
-          )
-        }
-      })
-
-      const create = {
-        track: createSingleItemMutation.mutate,
-        fullRange: createSingleFullRangeMutation.mutate,
-        artListTog: createSingleArtListTogMutation.mutate,
-        artListTap: createSingleArtListTapMutation.mutate,
-        artLayer: createSingleArtLayerMutation.mutate,
-        fadList: createSingleFadListMutation.mutate
+  const createSingleArtLayerMutation =
+    trpc.items.createSingleArtLayer.useMutation({
+      onSuccess: () => {
+        createSingleArtLayerMutation.reset()
+        //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
+        refetchSelected()
+      },
+      onError: (error) => {
+        alert(
+          error.message ??
+            'There was an error submitting your request. Please try again.'
+        )
       }
-
-      const update = {
-        track: updateSingleItemMutation.mutate,
-        fullRange: updateSingleFullRangeMutation.mutate,
-        artListTog: updateSingleArtListTogMutation.mutate,
-        artListTap: updateSingleArtListTapMutation.mutate,
-        artLayer: updateSingleArtLayerMutation.mutate,
-        fadList: updateSingleFadListMutation.mutate
+    })
+  const updateSingleArtLayerMutation =
+    trpc.items.updateSingleArtLayer.useMutation({
+      onSuccess: () => {
+        updateSingleArtLayerMutation.reset()
+        //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
+        refetchSelected()
+      },
+      onError: (error) => {
+        alert(
+          error.message ??
+            'There was an error submitting your request. Please try again.'
+        )
       }
-
-      const del = {
-        track: deleteSingleItemMutation.mutate,
-        allTracks: deleteAllItemsMutation.mutate,
-        fullRange: deleteSingleFullRangeMutation.mutate,
-        artListTog: deleteSingleArtListTogMutation.mutate,
-        artListTap: deleteSingleArtListTapMutation.mutate,
-        artLayer: deleteSingleArtLayerMutation.mutate,
-        fadList: deleteSingleFadListMutation.mutate
+    })
+  const deleteSingleArtLayerMutation =
+    trpc.items.deleteSingleArtLayer.useMutation({
+      onSuccess: () => {
+        deleteSingleArtLayerMutation.reset()
+        //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
+        refetchSelected()
+      },
+      onError: (error) => {
+        alert(
+          error.message ??
+            'There was an error submitting your request. Please try again.'
+        )
       }
+    })
 
-      const clear = {
-        track: clearSingleItemMutation.mutate
+  const createSingleFadListMutation =
+    trpc.items.createSingleFadList.useMutation({
+      onSuccess: () => {
+        createSingleFadListMutation.reset()
+        refetchSelected()
+      },
+      onError: (error) => {
+        alert(
+          error.message ??
+            'There was an error submitting your request. Please try again.'
+        )
       }
+    })
+  //////////////////////////////////////////
+  const deleteSingleFullRangeMutation =
+    trpc.items.deleteSingleFullRange.useMutation({
+      onSuccess: () => {
+        deleteSingleFullRangeMutation.reset()
+        refetchSelected()
+      },
+      onError: (error) => {
+        alert(
+          error.message ??
+            'There was an error submitting your request. Please try again.'
+        )
+      }
+    })
+  const deleteSingleArtListTapMutation =
+    trpc.items.deleteSingleArtListTap.useMutation({
+      onSuccess: () => {
+        deleteSingleArtListTapMutation.reset()
+        //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
+        refetchSelected()
+      },
+      onError: (error) => {
+        alert(
+          error.message ??
+            'There was an error submitting your request. Please try again.'
+        )
+      }
+    })
+  const deleteSingleArtListTogMutation =
+    trpc.items.deleteSingleArtListTog.useMutation({
+      onSuccess: () => {
+        deleteSingleArtListTogMutation.reset()
+        //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
+        refetchSelected()
+      },
+      onError: (error) => {
+        alert(
+          error.message ??
+            'There was an error submitting your request. Please try again.'
+        )
+      }
+    })
+  const deleteSingleFadListMutation =
+    trpc.items.deleteSingleFadList.useMutation({
+      onSuccess: () => {
+        deleteSingleFadListMutation.reset()
+        refetchSelected()
+      },
+      onError: (error) => {
+        alert(
+          error.message ??
+            'There was an error submitting your request. Please try again.'
+        )
+      }
+    })
 
-      const renumber = {
-        allTracks: renumberAllItemsMutation.mutate,
-        artList: renumberArtListMutation.mutate
-      }
+  const create = {
+    track: createSingleItemMutation.mutate,
+    fullRange: createSingleFullRangeMutation.mutate,
+    artListTog: createSingleArtListTogMutation.mutate,
+    artListTap: createSingleArtListTapMutation.mutate,
+    artLayer: createSingleArtLayerMutation.mutate,
+    fadList: createSingleFadListMutation.mutate
+  }
 
-      return {
-        data,
-        dataLength,
-        refetchAll,
-        refetchSelected,
-        vepSamplerCount,
-        vepInstanceCount,
-        nonVepSamplerCount,
-        /////////////////////////////////
-        selectedItem,
-        selectedItemIndex,
-        selectedItemRangeCount,
-        selectedItemArtTogCount,
-        selectedItemArtTapCount,
-        selectedItemArtCount,
-        selectedItemFadCount,
-        previousItemId,
-        nextItemId,
-        /////////////////////////////////
-        create,
-        update,
-        del,
-        clear,
-        renumber,
-        /////////////////////////////////
-        createSingleItemMutation,
-        createSingleFullRangeMutation,
-        createSingleArtListTapMutation,
-        createSingleArtListTogMutation,
-        createSingleArtLayerMutation,
-        createSingleFadListMutation,
-        /////////////////////////////////
-        updateSingleItemMutation,
-        updateSingleFullRangeMutation,
-        updateSingleArtListTapMutation,
-        updateSingleArtListTogMutation,
-        updateSingleArtLayerMutation,
-        updateSingleFadListMutation,
-        /////////////////////////////////
-        deleteSingleItemMutation,
-        deleteAllItemsMutation,
-        deleteSingleFullRangeMutation,
-        deleteSingleArtListTapMutation,
-        deleteSingleArtListTogMutation,
-        deleteSingleFadListMutation,
-        deleteSingleArtLayerMutation,
-        ///////////////////////////////
-        clearSingleItemMutation,
-        /////////////////////////////////
-        renumberArtListMutation,
-        renumberAllItemsMutation
-        /////////////////////////////////
-      }
+  const update = {
+    track: updateSingleItemMutation.mutate,
+    fullRange: updateSingleFullRangeMutation.mutate,
+    artListTog: updateSingleArtListTogMutation.mutate,
+    artListTap: updateSingleArtListTapMutation.mutate,
+    artLayer: updateSingleArtLayerMutation.mutate,
+    fadList: updateSingleFadListMutation.mutate
+  }
+
+  const del = {
+    track: deleteSingleItemMutation.mutate,
+    allTracks: deleteAllItemsMutation.mutate,
+    fullRange: deleteSingleFullRangeMutation.mutate,
+    artListTog: deleteSingleArtListTogMutation.mutate,
+    artListTap: deleteSingleArtListTapMutation.mutate,
+    artLayer: deleteSingleArtLayerMutation.mutate,
+    fadList: deleteSingleFadListMutation.mutate
+  }
+
+  const clear = {
+    track: clearSingleItemMutation.mutate
+  }
+
+  const renumber = {
+    allTracks: renumberAllItemsMutation.mutate,
+    artList: renumberArtListMutation.mutate
+  }
+
+  return {
+    data,
+    dataLength,
+    refetchAll,
+    refetchSelected,
+    vepSamplerCount,
+    vepInstanceCount,
+    nonVepSamplerCount,
+    /////////////////////////////////
+    selectedItem,
+    selectedItemIndex,
+    selectedItemRangeCount,
+    selectedItemArtTogCount,
+    selectedItemArtTapCount,
+    selectedItemArtCount,
+    selectedItemLayerCount,
+    selectedItemFadCount,
+    previousItemId,
+    nextItemId,
+    /////////////////////////////////
+    create,
+    update,
+    del,
+    clear,
+    renumber,
+    /////////////////////////////////
+    createSingleItemMutation,
+    createSingleFullRangeMutation,
+    createSingleArtListTapMutation,
+    createSingleArtListTogMutation,
+    createSingleArtLayerMutation,
+    createSingleFadListMutation,
+    /////////////////////////////////
+    updateSingleItemMutation,
+    updateSingleFullRangeMutation,
+    updateSingleArtListTapMutation,
+    updateSingleArtListTogMutation,
+    updateSingleArtLayerMutation,
+    updateSingleFadListMutation,
+    /////////////////////////////////
+    deleteSingleItemMutation,
+    deleteAllItemsMutation,
+    deleteSingleFullRangeMutation,
+    deleteSingleArtListTapMutation,
+    deleteSingleArtListTogMutation,
+    deleteSingleFadListMutation,
+    deleteSingleArtLayerMutation,
+    ///////////////////////////////
+    clearSingleItemMutation,
+    /////////////////////////////////
+    renumberArtListMutation,
+    renumberAllItemsMutation
+    /////////////////////////////////
+  }
 }
 
 export default useMutations

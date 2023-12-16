@@ -9,7 +9,6 @@ import {
   type ItemArtLayers,
   type ItemsFadList
 } from '@prisma/client'
-import { it } from 'node:test'
 
 type FileItemsExtended = {
   id: string
@@ -29,6 +28,41 @@ type FileItemsExtended = {
   artLayers: ItemArtLayers[]
   fadList: ItemsFadList[]
 }
+
+
+
+//needed 
+// clear full range
+// clear art tog
+// clear art tap
+// clear art layer
+// clear fad list
+// duplicate item above/below
+// duplicate full range above/below/end
+// duplicate art tog above/below/end
+// duplicate art tap above/below/end
+// duplicate art layer above/below/end
+// duplicate fad list above/below/end  
+// create new item above/below/end
+// create new full range above/below/end
+// create new art tog above/below/end
+// create new art tap above/below/end
+// create new art layer above/below/end
+// create new fad list above/below/end
+// renumber full ranges
+// renumber art layers
+// renumber faders
+// move track up/down/drag
+// move full range up/down/drag
+// move art tog up/down/drag
+// move art tap up/down/drag
+// move art layer up/down/drag
+// move fad list up/down/drag
+
+
+
+
+
 
 export const ItemsRouter = createTRPCRouter({
   createAllItemsFromJSON: publicProcedure
