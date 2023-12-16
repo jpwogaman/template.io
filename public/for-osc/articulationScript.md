@@ -15,6 +15,10 @@ set('template-io_articulationScript', 1)
 set('template-io_keyRangeVar2', ranges)
 set('template-io_keyRangeScript', 1)
 
+var layers = get('artLayers_1')
+var allLayers = get('template-io_artLayersVar1')
+console.log(layers)
+console.log(allLayers)
 /////////////// 'template-io_articulationScript'
 
 var id = get('template-io_articulationVarID')

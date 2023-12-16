@@ -205,7 +205,6 @@ module.exports = {
 
     // these codes are sent from Cubase upon track selection
     // Here we could say something like if sysex gives us trackname, find the track in the json file and then send the data to the template-io module
-
     if (port === 'OSC3' && address === '/control') {
       clickTrk(arg1, arg2)
     }
@@ -226,7 +225,6 @@ module.exports = {
     }
 
     // TODO: if I receive more than 4 in less than, maybe a half-second, then halt. this should help prevent issues when selecting all tracks, etc.
-
     // this is the main function of this module, it receives the track number from Cubase and then sends the appropriate data to the UI
     if (address !== '/key_pressure') return data
 
@@ -395,9 +393,14 @@ module.exports = {
 
       prmUpdate(4, typeJsn, codeJsn, off_Jsn)
 
+      const allLayersThisTrack = []
+
       if (layersJsn !== "['']") {
-        for (const layer in allArtLayersJsn) {
+        for (const index in allArtLayersJsn) {
+          const layer = allArtLayersJsn[index]
+
           if (layersJsn.includes(layer.id)) {
+            allLayersThisTrack.push(layer)
             const layersFiltered = artListJsn[i].artLayers.replace('"",', '')
             const obj = JSON.parse(layersFiltered)
             const layersFilteredObj = obj.map((item) => {
@@ -421,6 +424,8 @@ module.exports = {
           }
         }
       }
+
+      receive('/template-io_artLayersVar1', allLayersThisTrack) // {}[]
 
       if (artListJsn[i].toggle) {
         receive(modeOsc, 'toggle')
