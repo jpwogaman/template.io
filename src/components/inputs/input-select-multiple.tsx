@@ -13,9 +13,10 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
   const value = JSON.parse(defaultValue as unknown as string)
 
   const shortenedSubComponentId = (initialId: string) => {
-    return `${initialId.split('_')[2]}_${parseInt(
-      initialId.split('_')[3] as string
-    )}`
+    return `${
+      //initialId.split('_')[2]}_${
+      parseInt(initialId.split('_')[3] as string)
+    }`
   }
 
   let inputSelectOptionElements:
@@ -81,7 +82,8 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
       id={id}
       className={tw(
         'w-full overflow-x-hidden bg-inherit p-[4.5px] outline-offset-4 outline-green-600 focus:bg-white focus:text-zinc-900 dark:outline-green-800',
-        codeDisabled ? 'cursor-not-allowed text-gray-400' : 'cursor-pointer'
+        codeDisabled ? 'cursor-not-allowed text-gray-400' : 'cursor-pointer',
+        'flex gap-2'
       )}>
       {inputSelectOptionElements}
     </ul>

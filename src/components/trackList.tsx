@@ -24,7 +24,7 @@ const TrackList: FC<TrackListProps> = ({
   setContextMenuId,
   setSelectedSubItemId
 }) => {
-  const { data, updateSingleItemMutation } = useMutations({
+  const { data, update } = useMutations({
     selectedItemId,
     setSelectedItemId
   })
@@ -36,7 +36,7 @@ const TrackList: FC<TrackListProps> = ({
   }: OnChangeHelperArgsType) => {
     //I need to throttle this so it doesn't fire on every keypress, only when the user stops typing for a second or so.
 
-    updateSingleItemMutation.mutate({
+    update.track({
       itemId: id,
       [key]: newValue
     })
@@ -161,13 +161,13 @@ const TrackList: FC<TrackListProps> = ({
                     b='fa-solid fa-lock'
                     defaultIcon={locked ? 'b' : 'a'}
                     onToggleA={() =>
-                      updateSingleItemMutation.mutate({
+                      update.track({
                         itemId: id,
                         locked: true
                       })
                     }
                     onToggleB={() =>
-                      updateSingleItemMutation.mutate({
+                      update.track({
                         itemId: id,
                         locked: false
                       })

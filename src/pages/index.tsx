@@ -17,18 +17,17 @@ const Index: NextPage = () => {
   )
 
   const {
-    renumberArtListMutation,
-    renumberAllItemsMutation,
-    deleteAllItemsMutation,
     dataLength,
-    samplerCount: vepSamplerCount,
+    vepSamplerCount,
     vepInstanceCount,
     nonVepSamplerCount,
-    previousItemId,
-    nextItemId,
     selectedItemRangeCount,
     selectedItemArtCount,
-    selectedItemFadCount
+    selectedItemFadCount,
+    previousItemId,
+    nextItemId,
+    del,
+    renumber
   } = useMutations({
     selectedItemId,
     setSelectedItemId
@@ -100,19 +99,19 @@ const Index: NextPage = () => {
           <li className='block flex gap-2 p-2 pl-5 text-left text-zinc-200'>
             <button
               className='border px-2'
-              onClick={() => deleteAllItemsMutation.mutate()}>
+              onClick={() => del.allTracks()}>
               Flush DB / Clear All
             </button>
             <button
               className='border px-2'
               onClick={() =>
-                renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
+                renumber.artList({ itemId: selectedItemId ?? '' })
               }>
               Renumber Arts
             </button>
             <button
               className='border px-2'
-              onClick={() => renumberAllItemsMutation.mutate()}>
+              onClick={() => renumber.allTracks()}>
               Renumber Tracks
             </button>
           </li>

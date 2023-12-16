@@ -21,31 +21,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
   selectedItemId,
   setSelectedItemId
 }) => {
-  const {
-    createSingleItemMutation,
-    deleteSingleItemMutation,
-    clearSingleItemMutation,
-    renumberArtListMutation,
-    renumberAllItemsMutation,
-    deleteAllItemsMutation,
-    updateSingleItemMutation,
-    updateSingleFullRangeMutation,
-    updateSingleArtListTapMutation,
-    updateSingleArtListTogMutation,
-    updateSingleFadListMutation,
-    updateSingleArtLayerMutation,
-    createSingleFullRangeMutation,
-    createSingleArtListTapMutation,
-    createSingleArtListTogMutation,
-    createSingleArtLayerMutation,
-    createSingleFadListMutation,
-    deleteSingleFullRangeMutation,
-    deleteSingleArtListTapMutation,
-    deleteSingleArtListTogMutation,
-    deleteSingleFadListMutation,
-    deleteSingleArtLayerMutation,
-    selectedItem
-  } = useMutations({
+  const { selectedItem, create, del, clear } = useMutations({
     selectedItemId,
     setSelectedItemId
   })
@@ -77,7 +53,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
           console.log('addTrackAbove')
           break
         case 'addTrackBelow':
-          createSingleItemMutation.mutate()
+          create.track()
           break
         case 'duplicateTrackAbove':
           console.log('duplicateTrackAbove')
@@ -86,12 +62,12 @@ const ContextMenu: FC<ContextMenuProps> = ({
           console.log('duplicateTrackBelow')
           break
         case 'clearTrack':
-          clearSingleItemMutation.mutate({
+          clear.track({
             itemId: selectedItemId ?? ''
           })
           break
         case 'deleteTrack':
-          deleteSingleItemMutation.mutate({
+          del.track({
             itemId: selectedItemId ?? ''
           })
           break
@@ -112,7 +88,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
           console.log('addRangeAbove')
           break
         case 'addRangeBelow':
-          createSingleFullRangeMutation.mutate({
+          create.fullRange({
             itemId: selectedItemId ?? ''
           })
           break
@@ -126,7 +102,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
           console.log('clearRange')
           break
         case 'deleteRange':
-          deleteSingleFullRangeMutation.mutate({
+          del.fullRange({
             rangeId: contextMenuId ?? '',
             fileItemsItemId: selectedItemId ?? ''
           })
@@ -146,11 +122,11 @@ const ContextMenu: FC<ContextMenuProps> = ({
           break
         case 'addArticulationBelow':
           if (isArtTog(contextMenuId ?? '')) {
-            createSingleArtListTogMutation.mutate({
+            create.artListTog({
               itemId: selectedItemId ?? ''
             })
           } else {
-            createSingleArtListTapMutation.mutate({
+            create.artListTap({
               itemId: selectedItemId ?? ''
             })
           }
@@ -163,12 +139,12 @@ const ContextMenu: FC<ContextMenuProps> = ({
           break
         case 'deleteArticulation':
           if (isArtTog(contextMenuId ?? '')) {
-            deleteSingleArtListTogMutation.mutate({
+            del.artListTog({
               artId: contextMenuId ?? '',
               fileItemsItemId: selectedItemId ?? ''
             })
           } else {
-            deleteSingleArtListTapMutation.mutate({
+            del.artListTap({
               artId: contextMenuId ?? '',
               fileItemsItemId: selectedItemId ?? ''
             })
@@ -188,7 +164,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
         case 'addLayerAbove':
           break
         case 'addLayerBelow':
-          createSingleArtLayerMutation.mutate({
+          create.artLayer({
             itemId: selectedItemId ?? ''
           })
           break
@@ -199,7 +175,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
         case 'clearLayer':
           break
         case 'deleteLayer':
-          deleteSingleArtLayerMutation.mutate({
+          del.artLayer({
             layerId: contextMenuId ?? '',
             fileItemsItemId: selectedItemId ?? ''
           })
@@ -219,7 +195,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
         case 'addFaderAbove':
           break
         case 'addFaderBelow':
-          createSingleFadListMutation.mutate({
+          create.fadList({
             itemId: selectedItemId ?? ''
           })
           break
@@ -230,7 +206,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
         case 'clearFader':
           break
         case 'deleteFader':
-          deleteSingleFadListMutation.mutate({
+          del.fadList({
             fadId: contextMenuId ?? '',
             fileItemsItemId: selectedItemId ?? ''
           })

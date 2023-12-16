@@ -391,46 +391,96 @@ const useMutations = ({
         }
       })
 
-    return {
-      data,
-      selectedItem,
-      refetchAll,
-      refetchSelected,
-      selectedItemIndex,
-      dataLength,
-      samplerCount: vepSamplerCount,
-      vepInstanceCount,
-      nonVepSamplerCount,
-      previousItemId,
-      nextItemId,
-      selectedItemRangeCount,
-      selectedItemArtTogCount,
-      selectedItemArtTapCount,
-      selectedItemArtCount,
-      selectedItemFadCount,
-      createSingleItemMutation,
-      deleteSingleItemMutation,
-      clearSingleItemMutation,
-      renumberArtListMutation,
-      renumberAllItemsMutation,
-      deleteAllItemsMutation,
-      updateSingleItemMutation,
-      updateSingleFullRangeMutation,
-      updateSingleArtListTapMutation,
-      updateSingleArtListTogMutation,
-      updateSingleArtLayerMutation,
-      updateSingleFadListMutation,
-      createSingleFullRangeMutation,
-      createSingleArtListTapMutation,
-      createSingleArtListTogMutation,
-      createSingleArtLayerMutation,
-      createSingleFadListMutation,
-      deleteSingleFullRangeMutation,
-      deleteSingleArtListTapMutation,
-      deleteSingleArtListTogMutation,
-      deleteSingleFadListMutation,
-      deleteSingleArtLayerMutation
-    }
+      const create = {
+        track: createSingleItemMutation.mutate,
+        fullRange: createSingleFullRangeMutation.mutate,
+        artListTog: createSingleArtListTogMutation.mutate,
+        artListTap: createSingleArtListTapMutation.mutate,
+        artLayer: createSingleArtLayerMutation.mutate,
+        fadList: createSingleFadListMutation.mutate
+      }
+
+      const update = {
+        track: updateSingleItemMutation.mutate,
+        fullRange: updateSingleFullRangeMutation.mutate,
+        artListTog: updateSingleArtListTogMutation.mutate,
+        artListTap: updateSingleArtListTapMutation.mutate,
+        artLayer: updateSingleArtLayerMutation.mutate,
+        fadList: updateSingleFadListMutation.mutate
+      }
+
+      const del = {
+        track: deleteSingleItemMutation.mutate,
+        allTracks: deleteAllItemsMutation.mutate,
+        fullRange: deleteSingleFullRangeMutation.mutate,
+        artListTog: deleteSingleArtListTogMutation.mutate,
+        artListTap: deleteSingleArtListTapMutation.mutate,
+        artLayer: deleteSingleArtLayerMutation.mutate,
+        fadList: deleteSingleFadListMutation.mutate
+      }
+
+      const clear = {
+        track: clearSingleItemMutation.mutate
+      }
+
+      const renumber = {
+        allTracks: renumberAllItemsMutation.mutate,
+        artList: renumberArtListMutation.mutate
+      }
+
+      return {
+        data,
+        dataLength,
+        refetchAll,
+        refetchSelected,
+        vepSamplerCount,
+        vepInstanceCount,
+        nonVepSamplerCount,
+        /////////////////////////////////
+        selectedItem,
+        selectedItemIndex,
+        selectedItemRangeCount,
+        selectedItemArtTogCount,
+        selectedItemArtTapCount,
+        selectedItemArtCount,
+        selectedItemFadCount,
+        previousItemId,
+        nextItemId,
+        /////////////////////////////////
+        create,
+        update,
+        del,
+        clear,
+        renumber,
+        /////////////////////////////////
+        createSingleItemMutation,
+        createSingleFullRangeMutation,
+        createSingleArtListTapMutation,
+        createSingleArtListTogMutation,
+        createSingleArtLayerMutation,
+        createSingleFadListMutation,
+        /////////////////////////////////
+        updateSingleItemMutation,
+        updateSingleFullRangeMutation,
+        updateSingleArtListTapMutation,
+        updateSingleArtListTogMutation,
+        updateSingleArtLayerMutation,
+        updateSingleFadListMutation,
+        /////////////////////////////////
+        deleteSingleItemMutation,
+        deleteAllItemsMutation,
+        deleteSingleFullRangeMutation,
+        deleteSingleArtListTapMutation,
+        deleteSingleArtListTogMutation,
+        deleteSingleFadListMutation,
+        deleteSingleArtLayerMutation,
+        ///////////////////////////////
+        clearSingleItemMutation,
+        /////////////////////////////////
+        renumberArtListMutation,
+        renumberAllItemsMutation
+        /////////////////////////////////
+      }
 }
 
 export default useMutations

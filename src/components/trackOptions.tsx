@@ -42,24 +42,7 @@ const TrackOptions: FC<TrackOptionsProps> = ({
   selectedSubItemId,
   setSelectedSubItemId
 }) => {
-  const {
-    selectedItem,
-    updateSingleFullRangeMutation,
-    updateSingleArtListTapMutation,
-    updateSingleArtListTogMutation,
-    updateSingleFadListMutation,
-    createSingleFullRangeMutation,
-    createSingleArtListTapMutation,
-    createSingleArtListTogMutation,
-    createSingleFadListMutation,
-    deleteSingleFullRangeMutation,
-    deleteSingleArtListTapMutation,
-    deleteSingleArtListTogMutation,
-    deleteSingleFadListMutation,
-    updateSingleArtLayerMutation,
-    createSingleArtLayerMutation,
-    deleteSingleArtLayerMutation
-  } = useMutations({
+  const { selectedItem, update } = useMutations({
     selectedItemId,
     setSelectedItemId
   })
@@ -208,109 +191,50 @@ const TrackOptions: FC<TrackOptionsProps> = ({
   }: OnChangeHelperArgsType) => {
     if (label === 'fullRange') {
       if (key === 'whiteKeysOnly') {
-        updateSingleFullRangeMutation.mutate({
+        update.fullRange({
           rangeId: layoutDataSingleId ?? '',
           whiteKeysOnly: newValue === 'true'
         })
       } else {
-        updateSingleFullRangeMutation.mutate({
+        update.fullRange({
           rangeId: layoutDataSingleId ?? '',
           [key]: newValue
         })
       }
     }
     if (label === 'artListTog') {
-      updateSingleArtListTogMutation.mutate({
+      update.artListTog({
         artId: layoutDataSingleId ?? '',
         [key]: newValue
       })
     }
     if (label === 'artListTap') {
       if (key === 'default') {
-        updateSingleArtListTapMutation.mutate({
+        update.artListTap({
           artId: layoutDataSingleId ?? '',
           default: newValue === 'true'
         })
         return
       }
-      updateSingleArtListTapMutation.mutate({
+      update.artListTap({
         artId: layoutDataSingleId ?? '',
         [key]: newValue
       })
     }
     if (label === 'artLayers') {
-      updateSingleArtLayerMutation.mutate({
+      update.artLayer({
         layerId: layoutDataSingleId ?? '',
         [key]: newValue
       })
     }
     if (label === 'fadList') {
-      updateSingleFadListMutation.mutate({
+      update.fadList({
         fadId: layoutDataSingleId ?? '',
         [key]: newValue
       })
     }
   }
-  const createSingleSubItemMutationHelper = (label: string) => {
-    if (label === 'fullRange') {
-      createSingleFullRangeMutation.mutate({
-        itemId: selectedItemId ?? ''
-      })
-    }
-    if (label === 'artListTog') {
-      createSingleArtListTogMutation.mutate({
-        itemId: selectedItemId ?? ''
-      })
-    }
-    if (label === 'artListTap') {
-      createSingleArtListTapMutation.mutate({
-        itemId: selectedItemId ?? ''
-      })
-    }
 
-    if (label === 'artLayers') {
-      createSingleArtLayerMutation.mutate({
-        itemId: selectedItemId ?? ''
-      })
-    }
-    if (label === 'fadList') {
-      createSingleFadListMutation.mutate({
-        itemId: selectedItemId ?? ''
-      })
-    }
-  }
-  const deleteSingleSubItemMutationHelper = (id: string, label: string) => {
-    if (label === 'fullRange') {
-      deleteSingleFullRangeMutation.mutate({
-        fileItemsItemId: selectedItemId ?? '',
-        rangeId: id
-      })
-    }
-    if (label === 'artListTog') {
-      deleteSingleArtListTogMutation.mutate({
-        fileItemsItemId: selectedItemId ?? '',
-        artId: id
-      })
-    }
-    if (label === 'artListTap') {
-      deleteSingleArtListTapMutation.mutate({
-        fileItemsItemId: selectedItemId ?? '',
-        artId: id
-      })
-    }
-    if (label === 'artLayers') {
-      deleteSingleArtLayerMutation.mutate({
-        fileItemsItemId: selectedItemId ?? '',
-        layerId: id
-      })
-    }
-    if (label === 'fadList') {
-      deleteSingleFadListMutation.mutate({
-        fileItemsItemId: selectedItemId ?? '',
-        fadId: id
-      })
-    }
-  }
   //////////////////////////////////////////
   const trackTh = `border-[1.5px]
   border-b-transparent
