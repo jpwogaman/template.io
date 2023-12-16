@@ -83,7 +83,7 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
       className={tw(
         'w-full overflow-x-hidden bg-inherit p-[4.5px] outline-offset-4 outline-green-600 focus:bg-white focus:text-zinc-900 dark:outline-green-800',
         codeDisabled ? 'cursor-not-allowed text-gray-400' : 'cursor-pointer',
-        'flex gap-2'
+        'flex flex-wrap gap-2'
       )}>
       {inputSelectOptionElements}
     </ul>
