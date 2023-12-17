@@ -1,10 +1,13 @@
 import { useEffect, type Dispatch, type SetStateAction } from 'react'
+import useMutations from '@/hooks/useMutations'
 
 type useKeyboardProps = {
   previousItemId: string
   nextItemId: string
   selectedItemRangeCount: number
   selectedItemArtCount: number
+  selectedItemArtTogCount: number
+  selectedItemArtTapCount: number
   selectedItemLayerCount: number
   selectedItemFadCount: number
   selectedItemId: string | null
@@ -18,19 +21,28 @@ const useKeyboard = ({
   nextItemId,
   selectedItemRangeCount: rangeCount,
   selectedItemArtCount: artCount,
+  selectedItemArtTogCount: artTogCount,
+  selectedItemArtTapCount: artTapCount,
   selectedItemLayerCount: layerCount,
   selectedItemFadCount: fadCount,
   selectedItemId,
   setSelectedItemId,
   setSelectedSubItemId
 }: useKeyboardProps) => {
+  const { selectedItem, create, del, clear } = useMutations({
+    selectedItemId,
+    setSelectedItemId
+  })
+
   useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
+    const handleKeys = (e: KeyboardEvent) => {
       const selectedInput = window.document.activeElement as HTMLInputElement
 
       const isButton = selectedInput?.tagName === 'BUTTON'
       const isSelect = selectedInput?.tagName === 'SELECT'
 
+      ////////////////////////////////
+      // Find out if selectedInput is in Track Options
       const selectedInputIsInTrackOptions =
         selectedInput?.id.includes('_FR_') ||
         selectedInput?.id.includes('_AT_') ||
@@ -41,7 +53,17 @@ const useKeyboard = ({
       const optionNumber = selectedInput?.id.split('_')[3]
       const optionField = selectedInput?.id.split('_')[4]
 
-      if (e.key === 'ArrowUp') {
+      ////////////////////////////////
+      // Special case for Articulations
+      const artId = selectedItemId + '_AT_' + optionNumber
+      const isArtTog = (artId: string) => {
+        const art = selectedItem?.artListTog?.find((art) => art.id === artId)
+        if (art) return true
+      }
+
+      ////////////////////////////////
+      // NAVIGATE TRACKS or ARTS or LAYERS or FADS
+      if (!e.ctrlKey && !e.shiftKey && e.key === 'ArrowUp') {
         e.preventDefault()
 
         if (selectedInputIsInTrackOptions) {
@@ -98,8 +120,7 @@ const useKeyboard = ({
         setSelectedItemId(previousItemId)
         setSelectedSubItemId(previousItemId + '_FR_0')
       }
-
-      if (e.key === 'ArrowDown') {
+      if (!e.ctrlKey && !e.shiftKey && e.key === 'ArrowDown') {
         e.preventDefault()
 
         if (selectedInputIsInTrackOptions) {
@@ -152,11 +173,11 @@ const useKeyboard = ({
         setSelectedItemId(nextItemId)
         setSelectedSubItemId(nextItemId + '_FR_0')
       }
-
+      ////////////////////////////////
+      // NAVIGATE BETWEEN TRACKLIST AND TRACK OPTIONS
       if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
         if (isSelect) e.preventDefault()
       }
-
       if (e.ctrlKey && e.key === 'ArrowRight') {
         if (selectedInputIsInTrackOptions) return
         e.preventDefault()
@@ -174,11 +195,81 @@ const useKeyboard = ({
         )
         trackListNameInput?.focus()
       }
+      ////////////////////////////////
+      // ADD NEW TRACK or ART or LAYER or FAD
+      if (!e.altKey && e.ctrlKey && e.shiftKey && e.key === 'ArrowUp') {
+        e.preventDefault()
+        alert('Add new item above')
+        //create.track()
+      }
+      if (!e.altKey && e.ctrlKey && e.shiftKey && e.key === 'ArrowDown') {
+        e.preventDefault()
+        alert('Add new item below')
+      }
+      ////////////////////////////////
+      // DUPLICATE TRACK or ART or LAYER or FAD
+      if (e.ctrlKey && e.shiftKey && e.altKey && e.key === 'ArrowUp') {
+        e.preventDefault()
+        alert('Duplicate selected item above')
+      }
+      if (e.ctrlKey && e.shiftKey && e.altKey && e.key === 'ArrowDown') {
+        e.preventDefault()
+        alert('Duplicate selected item below')
+      }
+      ////////////////////////////////
+      // DELETE TRACK or ART or LAYER or FAD
+      if (e.ctrlKey && e.key === 'Delete') {
+        e.preventDefault()
+        if (selectedInputIsInTrackOptions) {
+          switch (optionType) {
+            case 'FR':
+              del.fullRange({
+                rangeId: optionNumber ?? '',
+                fileItemsItemId: selectedItemId ?? ''
+              })
+              break
+            case 'AT':
+              if (isArtTog(artId ?? '')) {
+                del.artListTog({
+                  artId: artId ?? '',
+                  fileItemsItemId: selectedItemId ?? ''
+                })
+              }
+              if (!isArtTog(artId ?? '')) {
+                del.artListTap({
+                  artId: artId ?? '',
+                  fileItemsItemId: selectedItemId ?? ''
+                })
+              }
+              break
+            case 'AL':
+              del.artLayer({
+                layerId: optionNumber ?? '',
+                fileItemsItemId: selectedItemId ?? ''
+              })
+              break
+            case 'FL':
+              del.fadList({
+                fadId: optionNumber ?? '',
+                fileItemsItemId: selectedItemId ?? ''
+              })
+              break
+            default:
+              break
+          }
+          return
+        }
+
+        del.track({
+          itemId: selectedItemId ?? ''
+        })
+      }
+      ////////////////////////////////
     }
 
-    window.addEventListener('keydown', handleEsc)
+    window.addEventListener('keydown', handleKeys)
     return () => {
-      window.removeEventListener('keydown', handleEsc)
+      window.removeEventListener('keydown', handleKeys)
     }
   }, [setSelectedItemId, selectedItemId])
 

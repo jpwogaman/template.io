@@ -205,7 +205,6 @@ const ContextMenu: FC<ContextMenuProps> = ({
           break
       }
     }
-
     if (newId.includes('Fader')) {
       switch (newId) {
         case 'moveFaderUp':

@@ -341,7 +341,6 @@ const useMutations = ({
     trpc.items.deleteSingleArtLayer.useMutation({
       onSuccess: () => {
         deleteSingleArtLayerMutation.reset()
-        //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
         refetchSelected()
       },
       onError: (error) => {

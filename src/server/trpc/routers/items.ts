@@ -406,7 +406,7 @@ export const ItemsRouter = createTRPCRouter({
               id: itemId
             }
           },
-          id: itemId + '_AL_' + nextArtNumber,
+          id: itemId + '_AT_' + nextArtNumber,
           ranges: JSON.stringify([itemId + '_FR_0']),
           artLayers: JSON.stringify([''])
         }
@@ -443,7 +443,7 @@ export const ItemsRouter = createTRPCRouter({
               id: itemId
             }
           },
-          id: itemId + '_AL_' + nextArtNumber,
+          id: itemId + '_AT_' + nextArtNumber,
           ranges: JSON.stringify([itemId + '_FR_0']),
           artLayers: JSON.stringify([''])
         }
@@ -997,13 +997,13 @@ export const ItemsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { artId, fileItemsItemId } = input
 
-      const mustHaveOneArtListTap = await ctx.prisma.itemsArtListTog.count({
+      const mustHaveOneArtListTog = await ctx.prisma.itemsArtListTog.count({
         where: {
           fileItemsItemId: fileItemsItemId
         }
       })
 
-      if (mustHaveOneArtListTap <= 1) {
+      if (mustHaveOneArtListTog <= 1) {
         throw new Error('Must have at least one toggle articulation')
       }
       await ctx.prisma.itemsArtListTog.delete({
@@ -1030,7 +1030,7 @@ export const ItemsRouter = createTRPCRouter({
       })
 
       if (mustHaveOneArtListTap <= 1) {
-        throw new Error('Must have at least one switch articulation')
+        throw new Error('Must have at least one tap articulation')
       }
       await ctx.prisma.itemsArtListTap.delete({
         where: {
@@ -1049,14 +1049,14 @@ export const ItemsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { layerId, fileItemsItemId } = input
 
-      const mustHaveOneRange = await ctx.prisma.itemArtLayers.count({
+      const mustHaveOneLayer = await ctx.prisma.itemArtLayers.count({
         where: {
           fileItemsItemId: fileItemsItemId
         }
       })
 
-      if (mustHaveOneRange <= 1) {
-        throw new Error('Must have at least one range')
+      if (mustHaveOneLayer <= 1) {
+        throw new Error('Must have at least one additional layer')
       }
 
       await ctx.prisma.itemArtLayers.delete({
@@ -1424,14 +1424,14 @@ export const ItemsRouter = createTRPCRouter({
       const newArtTogList = allArtListTog.map((art, index) => {
         return {
           ...art,
-          id: itemId + '_AL_' + index
+          id: itemId + '_AT_' + index
         }
       })
 
       const newArtTapList = allArtListTap.map((art, index) => {
         return {
           ...art,
-          id: itemId + '_AL_' + (index + allArtListTog.length)
+          id: itemId + '_AT_' + (index + allArtListTog.length)
         }
       })
 
