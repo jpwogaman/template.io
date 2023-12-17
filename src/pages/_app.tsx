@@ -54,7 +54,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   }
 
   mounted &&
-    listen('tauri://menu', (event) => {
+    listen('tauri://menu', (event: { payload: string }) => {
       if (event.payload === 'export') {
         exportMutation.mutate({
           event: 'tauri://menu',
