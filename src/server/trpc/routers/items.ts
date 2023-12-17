@@ -9,6 +9,7 @@ import {
   type ItemArtLayers,
   type ItemsFadList
 } from '@prisma/client'
+import { count } from 'console'
 
 type FileItemsExtended = {
   id: string
@@ -283,69 +284,80 @@ export const ItemsRouter = createTRPCRouter({
         })
       }
     }),
-  createSingleItem: publicProcedure.mutation(async ({ ctx }) => {
-    const itemsCount = await ctx.prisma.fileItems.count()
-    const allItems = await ctx.prisma.fileItems.findMany({
-      select: {
-        id: true
-      }
-    })
-    const highestNumber = allItems
-      .map((item) => {
-        return item.id.split('_')[1]
+  createSingleItem: publicProcedure
+    .input(
+      z.object({
+        count: z.number()
       })
-      .sort((a, b) => {
-        if (!a || !b) return 0
-        return parseInt(b) - parseInt(a)
-      })
-    const newId = 'T_' + (parseInt(highestNumber[0] as string) + 1)
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { count } = input
 
-    const newItemId = await ctx.prisma.fileItems
-      .create({
-        data: {
-          id: itemsCount === 0 ? 'T_0' : newId
+      const itemsCount = await ctx.prisma.fileItems.count()
+      const allItems = await ctx.prisma.fileItems.findMany({
+        select: {
+          id: true
         }
       })
-      .then((item) => {
-        return item.id
-      })
-    return await ctx.prisma.fileItems.update({
-      where: {
-        id: newItemId
-      },
-      data: {
-        fullRange: {
-          create: {
-            id: newItemId + '_FR_0'
+      const highestNumber = allItems
+        .map((item) => {
+          return item.id.split('_')[1]
+        })
+        .sort((a, b) => {
+          if (!a || !b) return 0
+          return parseInt(b) - parseInt(a)
+        })
+      for (let i = 0; i < count; i++) {
+        const newId = 'T_' + (parseInt(highestNumber[0] as string) + 1 + i)
+
+        const newItemId = await ctx.prisma.fileItems
+          .create({
+            data: {
+              id: itemsCount === 0 ? 'T_0' : newId
+            }
+          })
+          .then((item) => {
+            return item.id
+          })
+        await ctx.prisma.fileItems.update({
+          where: {
+            id: newItemId
+          },
+          data: {
+            fullRange: {
+              create: {
+                id: newItemId + '_FR_0'
+              }
+            },
+            artListTog: {
+              create: {
+                id: newItemId + '_AT_0',
+                ranges: JSON.stringify([newItemId + '_FR_0']),
+                artLayers: JSON.stringify([''])
+              }
+            },
+            artListTap: {
+              create: {
+                id: newItemId + '_AT_1',
+                ranges: JSON.stringify([newItemId + '_FR_0']),
+                artLayers: JSON.stringify([''])
+              }
+            },
+            artLayers: {
+              create: {
+                id: newItemId + '_AL_0'
+              }
+            },
+            fadList: {
+              create: {
+                id: newItemId + '_FL_0'
+              }
+            }
           }
-        },
-        artListTog: {
-          create: {
-            id: newItemId + '_AT_0',
-            ranges: JSON.stringify([newItemId + '_FR_0']),
-            artLayers: JSON.stringify([''])
-          }
-        },
-        artListTap: {
-          create: {
-            id: newItemId + '_AT_1',
-            ranges: JSON.stringify([newItemId + '_FR_0']),
-            artLayers: JSON.stringify([''])
-          }
-        },
-        artLayers: {
-          create: {
-            id: newItemId + '_AL_0'
-          }
-        },
-        fadList: {
-          create: {
-            id: newItemId + '_FL_0'
-          }
-        }
+        })
       }
-    })
-  }),
+      return true
+    }),
   createSingleFullRange: publicProcedure
     .input(
       z.object({

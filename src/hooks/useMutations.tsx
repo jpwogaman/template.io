@@ -290,7 +290,9 @@ const useMutations = ({
   })
   const deleteAllItemsMutation = trpc.items.deleteAllItems.useMutation({
     onSuccess: () => {
-      createSingleItemMutation.mutate()
+      createSingleItemMutation.mutate({
+        count: 1
+      })
     },
     onError: () => {
       alert('There was an error submitting your request. Please try again.')

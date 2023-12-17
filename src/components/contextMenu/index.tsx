@@ -66,7 +66,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
           console.log('addTrackAbove')
           break
         case 'addTrackBelow':
-          create.track()
+          create.track({ count: 1 })
           break
         case 'duplicateTrackAbove':
           console.log('duplicateTrackAbove')

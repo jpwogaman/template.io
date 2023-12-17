@@ -213,6 +213,7 @@ const useKeyboard = ({
       if (!e.altKey && e.ctrlKey && e.shiftKey && e.key === 'ArrowDown') {
         e.preventDefault()
         alert('Add new item below')
+        create.track({ count: 1 })
       }
       ////////////////////////////////
       // DUPLICATE TRACK or ART or LAYER or FAD
