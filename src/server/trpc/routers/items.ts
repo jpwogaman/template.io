@@ -1537,7 +1537,7 @@ export const ItemsRouter = createTRPCRouter({
         await ctx.prisma.itemsFullRanges.create({
           data: {
             ...range,
-            id: destinationItemId + '_FR_' + range.id.split('_')[3],
+            id: range.id.replace(copiedItemId, destinationItemId),
             fileItemsItemId: destinationItemId
           }
         })
@@ -1547,7 +1547,9 @@ export const ItemsRouter = createTRPCRouter({
         await ctx.prisma.itemsArtListTog.create({
           data: {
             ...art,
-            id: destinationItemId + '_AT_' + art.id.split('_')[3],
+            id: art.id.replace(copiedItemId, destinationItemId),
+            ranges: art.ranges?.replace(copiedItemId, destinationItemId),
+            artLayers: art.artLayers?.replace(copiedItemId, destinationItemId),
             fileItemsItemId: destinationItemId
           }
         })
@@ -1557,7 +1559,9 @@ export const ItemsRouter = createTRPCRouter({
         await ctx.prisma.itemsArtListTap.create({
           data: {
             ...art,
-            id: destinationItemId + '_AT_' + art.id.split('_')[3],
+            id: art.id.replace(copiedItemId, destinationItemId),
+            ranges: art.ranges?.replace(copiedItemId, destinationItemId),
+            artLayers: art.artLayers?.replace(copiedItemId, destinationItemId),
             fileItemsItemId: destinationItemId
           }
         })
@@ -1567,7 +1571,7 @@ export const ItemsRouter = createTRPCRouter({
         await ctx.prisma.itemArtLayers.create({
           data: {
             ...layer,
-            id: destinationItemId + '_AL_' + layer.id.split('_')[3],
+            id: layer.id.replace(copiedItemId, destinationItemId),
             fileItemsItemId: destinationItemId
           }
         })
@@ -1577,7 +1581,7 @@ export const ItemsRouter = createTRPCRouter({
         await ctx.prisma.itemsFadList.create({
           data: {
             ...fad,
-            id: destinationItemId + '_FL_' + fad.id.split('_')[3],
+            id: fad.id.replace(copiedItemId, destinationItemId),
             fileItemsItemId: destinationItemId
           }
         })
