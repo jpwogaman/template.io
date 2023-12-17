@@ -99,8 +99,10 @@ function trkUpdate() {
   send('midi', 'OSC4', '/control', 1, 127, 127)
 }
 
+const PRMUPDATE = false
 // send default articulation parameters to Cubase, this does not just update the template-io UI, it actually sends the MIDI command to Cubase
 function prmUpdate(x, typeJsn, codeJsn, deftJsn) {
+  if (!PRMUPDATE) return
   if (x === 3) {
     send('midi', 'OSC3', typeJsn, 1, codeJsn, deftJsn)
   }
