@@ -61,6 +61,12 @@ const ContextMenu: FC<ContextMenuProps> = ({
         case 'duplicateTrackBelow':
           console.log('duplicateTrackBelow')
           break
+        case 'copyTrack':
+          console.log('copyTrack')
+          break
+        case 'pasteTrack':
+          console.log('pasteTrack')
+          break
         case 'clearTrack':
           clear.track({
             itemId: selectedItemId ?? ''
@@ -97,6 +103,12 @@ const ContextMenu: FC<ContextMenuProps> = ({
           break
         case 'duplicateRangeBelow':
           console.log('duplicateRangeBelow')
+          break
+        case 'copyRange':
+          console.log('copyRange')
+          break
+        case 'pasteRange':
+          console.log('pasteRange')
           break
         case 'clearRange':
           console.log('clearRange')
@@ -135,6 +147,10 @@ const ContextMenu: FC<ContextMenuProps> = ({
           break
         case 'duplicateArticulationBelow':
           break
+        case 'copyArticulation':
+          break
+        case 'pasteArticulation':
+          break
         case 'clearArticulation':
           break
         case 'deleteArticulation':
@@ -172,6 +188,10 @@ const ContextMenu: FC<ContextMenuProps> = ({
           break
         case 'duplicateLayerBelow':
           break
+        case 'copyLayer':
+          break
+        case 'pasteLayer':
+          break
         case 'clearLayer':
           break
         case 'deleteLayer':
@@ -202,6 +222,10 @@ const ContextMenu: FC<ContextMenuProps> = ({
         case 'duplicateFaderAbove':
           break
         case 'duplicateFaderBelow':
+          break
+        case 'copyFader':
+          break
+        case 'pasteFader':
           break
         case 'clearFader':
           break

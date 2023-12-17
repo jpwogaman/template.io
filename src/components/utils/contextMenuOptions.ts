@@ -55,6 +55,21 @@ export const ContextMenuOptions = [
     icon2: 'fa-arrow-down'
   },
   {
+    id: 'break4'
+  },
+  {
+    id: 'copyItem',
+    label: 'Copy Item Settings',
+    icon1: 'fa-copy',
+    icon2: null
+  },
+  {
+    id: 'pasteItem',
+    label: 'Paste Item Settings',
+    icon1: 'fa-paste',
+    icon2: null
+  },
+  {
     id: 'break3'
   },
   {
