@@ -410,6 +410,7 @@ const useMutations = ({
       alert('There was an error submitting your request. Please try again.')
     }
   })
+  //////////////////////////////////////////
 
   const create = {
     track: createSingleItemMutation.mutate,
@@ -419,7 +420,6 @@ const useMutations = ({
     artLayer: createSingleArtLayerMutation.mutate,
     fadList: createSingleFadListMutation.mutate
   }
-
   const update = {
     track: updateSingleItemMutation.mutate,
     fullRange: updateSingleFullRangeMutation.mutate,
@@ -428,7 +428,6 @@ const useMutations = ({
     artLayer: updateSingleArtLayerMutation.mutate,
     fadList: updateSingleFadListMutation.mutate
   }
-
   const del = {
     track: deleteSingleItemMutation.mutate,
     allTracks: deleteAllItemsMutation.mutate,
@@ -438,16 +437,13 @@ const useMutations = ({
     artLayer: deleteSingleArtLayerMutation.mutate,
     fadList: deleteSingleFadListMutation.mutate
   }
-
   const clear = {
     track: clearSingleItemMutation.mutate
   }
-
   const renumber = {
     allTracks: renumberAllItemsMutation.mutate,
     artList: renumberArtListMutation.mutate
   }
-
   const paste = {
     track: pasteSingleItemMutation.mutate
   }

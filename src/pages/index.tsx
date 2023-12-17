@@ -114,7 +114,7 @@ const Index: NextPage = () => {
             </span>
             <span> standalone in DAW)</span>
           </li>
-          <li className='block flex gap-2 p-2 pl-5 text-left text-zinc-200'>
+          <li className='block flex gap-2 p-2 pl-5 text-left text-xs text-zinc-200'>
             <button
               className='border px-2'
               onClick={() => del.allTracks()}>
@@ -132,7 +132,8 @@ const Index: NextPage = () => {
               onClick={() => renumber.allTracks()}>
               Renumber Tracks
             </button>
-            <button className='border px-2'>{copiedItemId}</button>
+            <button className='border px-2'>{`Copied Item: ${copiedItemId}`}</button>
+            <button className='border px-2'>{`Copied SubItem: ${copiedSubItemId}`}</button>
           </li>
           <li className='block w-60 cursor-pointer p-2 text-right text-zinc-200'>
             <IconBtnToggle
