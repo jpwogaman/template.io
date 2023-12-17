@@ -1462,5 +1462,186 @@ export const ItemsRouter = createTRPCRouter({
           }
         })
       }
+    }),
+  ////////////////////////////
+  pasteSingleItem: publicProcedure
+    .input(
+      z.object({
+        destinationItemId: z.string(),
+        copiedItemId: z.string()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const {  destinationItemId, copiedItemId } = input
+
+      const copiedItem = await ctx.prisma.fileItems.findUnique({
+        where: {
+          id: copiedItemId
+        }
+      })
+
+      const copiedFullRanges = await ctx.prisma.itemsFullRanges.findMany({
+        where: {
+          fileItemsItemId: copiedItemId
+        }
+      })
+
+      const copiedArtListTog = await ctx.prisma.itemsArtListTog.findMany({
+        where: {
+          fileItemsItemId: copiedItemId
+        }
+      })
+
+      const copiedArtListTap = await ctx.prisma.itemsArtListTap.findMany({
+        where: {
+          fileItemsItemId: copiedItemId
+        }
+      })
+
+      const copiedArtLayers = await ctx.prisma.itemArtLayers.findMany({
+        where: {
+          fileItemsItemId: copiedItemId
+        }
+      })
+
+      const copiedFadList = await ctx.prisma.itemsFadList.findMany({
+        where: {
+          fileItemsItemId: copiedItemId
+        }
+      })
+
+        await ctx.prisma.itemsFullRanges.deleteMany({
+          where: {
+            fileItemsItemId: destinationItemId
+          }
+        })
+        await ctx.prisma.itemsArtListTog.deleteMany({
+          where: {
+            fileItemsItemId: destinationItemId
+          }
+        })
+        await ctx.prisma.itemsArtListTap.deleteMany({
+          where: {
+            fileItemsItemId: destinationItemId
+          }
+        })
+        await ctx.prisma.itemArtLayers.deleteMany({
+          where: {
+            fileItemsItemId: destinationItemId
+          }
+        })
+        await ctx.prisma.itemsFadList.deleteMany({
+          where: {
+            fileItemsItemId: destinationItemId
+          }
+        })
+
+        for (const range of copiedFullRanges) {
+          await ctx.prisma.itemsFullRanges.create({
+            data: {
+              ...range,
+              id: destinationItemId + '_FR_' + range.id.split('_')[3],
+              fileItemsItemId: destinationItemId
+            }
+          })
+        }
+
+        for (const art of copiedArtListTog) {
+          await ctx.prisma.itemsArtListTog.create({
+            data: {
+              ...art,
+              id: destinationItemId + '_AT_' + art.id.split('_')[3],
+              fileItemsItemId: destinationItemId
+            }
+          })
+        }
+
+        for (const art of copiedArtListTap) {
+          await ctx.prisma.itemsArtListTap.create({
+            data: {
+              ...art,
+              id: destinationItemId + '_AT_' + art.id.split('_')[3],
+              fileItemsItemId: destinationItemId
+            }
+          })
+        }
+
+        for (const layer of copiedArtLayers) {
+          await ctx.prisma.itemArtLayers.create({
+            data: {
+              ...layer,
+              id: destinationItemId + '_AL_' + layer.id.split('_')[3],
+              fileItemsItemId: destinationItemId
+            }
+          })
+        }
+
+        for (const fad of copiedFadList) {
+          await ctx.prisma.itemsFadList.create({
+            data: {
+              ...fad,
+              id: destinationItemId + '_FL_' + fad.id.split('_')[3],
+              fileItemsItemId: destinationItemId
+            }
+          })
+        }
+
+      await ctx.prisma.fileItems.update({
+        where: {
+          id: destinationItemId
+        },
+        data: {
+          locked: copiedItem?.locked,
+          name: copiedItem?.name,
+          channel: copiedItem?.channel,
+          baseDelay: copiedItem?.baseDelay,
+          avgDelay: copiedItem?.avgDelay,
+          vepOut: copiedItem?.vepOut,
+          vepInstance: copiedItem?.vepInstance,
+          smpNumber: copiedItem?.smpNumber,
+          smpOut: copiedItem?.smpOut,
+          color: copiedItem?.color,
+            fullRange:{
+              connect: copiedFullRanges.map((range) => {
+                return {
+                  id: destinationItemId + '_FR_' + range.id.split('_')[3]
+                }
+              })
+            },
+            artListTog:{
+              connect: copiedArtListTog.map((art) => {
+                return {
+                  id: destinationItemId + '_AT_' + art.id.split('_')[3]
+                }
+              })
+            },
+            artListTap:{
+              connect: copiedArtListTap.map((art) => {
+                return {
+                  id: destinationItemId + '_AT_' + art.id.split('_')[3]
+                }
+              })
+            },
+            artLayers:{
+              connect: copiedArtLayers.map((layer) => {
+                return {
+                  id: destinationItemId + '_AL_' + layer.id.split('_')[3]
+                }
+              })
+            },
+            fadList:{
+              connect: copiedFadList.map((fad) => {
+                return {
+                  id: destinationItemId + '_FL_' + fad.id.split('_')[3]
+                }
+              })
+            }
+         
+
+        }
+      })
+
+    
+      
     })
 })

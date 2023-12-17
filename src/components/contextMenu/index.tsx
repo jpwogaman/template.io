@@ -2,6 +2,7 @@ import tw from '@/utils/tw'
 import { type Dispatch, type FC, type SetStateAction } from 'react'
 import { ContextMenuOptions } from '../utils/contextMenuOptions'
 import useMutations from '@/hooks/useMutations'
+import { set } from 'zod'
 
 type ContextMenuProps = {
   contextMenuId: string
@@ -13,6 +14,10 @@ type ContextMenuProps = {
   setSelectedItemId: Dispatch<SetStateAction<string | null>>
   selectedSubItemId: string | null
   setSelectedSubItemId: Dispatch<SetStateAction<string | null>>
+  copiedItemId: string | null
+  setCopiedItemId: Dispatch<SetStateAction<string | null>>
+  copiedSubItemId: string | null
+  setCopiedSubItemId: Dispatch<SetStateAction<string | null>>
   setIsContextMenuOpen: Dispatch<SetStateAction<boolean>>
 }
 
@@ -23,9 +28,13 @@ const ContextMenu: FC<ContextMenuProps> = ({
   selectedItemId,
   setSelectedItemId,
   selectedSubItemId,
-  setSelectedSubItemId
+  setSelectedSubItemId,
+  copiedItemId,
+  setCopiedItemId,
+  copiedSubItemId,
+  setCopiedSubItemId
 }) => {
-  const { selectedItem, create, del, clear } = useMutations({
+  const { selectedItem, create, del, clear, paste } = useMutations({
     selectedItemId,
     setSelectedItemId
   })
@@ -66,10 +75,14 @@ const ContextMenu: FC<ContextMenuProps> = ({
           console.log('duplicateTrackBelow')
           break
         case 'copyTrack':
-          console.log('copyTrack')
+          setCopiedItemId(selectedItemId ?? '')
           break
         case 'pasteTrack':
-          console.log('pasteTrack')
+          if (!copiedItemId) return
+          paste.track({
+            destinationItemId: selectedItemId ?? '',
+            copiedItemId: copiedItemId ?? ''
+          })
           break
         case 'clearTrack':
           clear.track({
@@ -109,7 +122,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
           console.log('duplicateRangeBelow')
           break
         case 'copyRange':
-          console.log('copyRange')
+          setCopiedSubItemId(contextMenuId ?? '')
           break
         case 'pasteRange':
           console.log('pasteRange')
@@ -152,6 +165,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
         case 'duplicateArticulationBelow':
           break
         case 'copyArticulation':
+          setCopiedSubItemId(contextMenuId ?? '')
           break
         case 'pasteArticulation':
           break
@@ -193,6 +207,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
         case 'duplicateLayerBelow':
           break
         case 'copyLayer':
+          setCopiedSubItemId(contextMenuId ?? '')
           break
         case 'pasteLayer':
           break
@@ -227,6 +242,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
         case 'duplicateFaderBelow':
           break
         case 'copyFader':
+          setCopiedSubItemId(contextMenuId ?? '')
           break
         case 'pasteFader':
           break

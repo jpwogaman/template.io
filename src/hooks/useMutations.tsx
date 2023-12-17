@@ -399,6 +399,17 @@ const useMutations = ({
     }
   })
   //////////////////////////////////////////
+  // PASTE mutations
+  const pasteSingleItemMutation = trpc.items.pasteSingleItem.useMutation({
+    onSuccess: () => {
+      pasteSingleItemMutation.reset()
+      refetchAll()
+      refetchSelected()
+    },
+    onError: () => {
+      alert('There was an error submitting your request. Please try again.')
+    }
+  })
 
   const create = {
     track: createSingleItemMutation.mutate,
@@ -437,6 +448,10 @@ const useMutations = ({
     artList: renumberArtListMutation.mutate
   }
 
+  const paste = {
+    track: pasteSingleItemMutation.mutate
+  }
+
   return {
     data,
     dataLength,
@@ -461,7 +476,8 @@ const useMutations = ({
     update,
     del,
     clear,
-    renumber
+    renumber,
+    paste
   }
 }
 

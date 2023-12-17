@@ -15,6 +15,8 @@ const Index: NextPage = () => {
   const [selectedSubItemId, setSelectedSubItemId] = useState<null | string>(
     'T_0_FR_0'
   )
+  const [copiedItemId, setCopiedItemId] = useState<string | null>(null)
+  const [copiedSubItemId, setCopiedSubItemId] = useState<string | null>(null)
 
   const {
     dataLength,
@@ -48,7 +50,11 @@ const Index: NextPage = () => {
     selectedItemLayerCount,
     selectedItemFadCount,
     selectedSubItemId,
-    setSelectedSubItemId
+    setSelectedSubItemId,
+    copiedItemId,
+    setCopiedItemId,
+    copiedSubItemId,
+    setCopiedSubItemId
   })
   const { setTheme, resolvedTheme } = useTheme()
   const {
@@ -72,6 +78,10 @@ const Index: NextPage = () => {
             setSelectedItemId={setSelectedItemId}
             selectedSubItemId={selectedSubItemId}
             setSelectedSubItemId={setSelectedSubItemId}
+            copiedItemId={copiedItemId}
+            setCopiedItemId={setCopiedItemId}
+            copiedSubItemId={copiedSubItemId}
+            setCopiedSubItemId={setCopiedSubItemId}
           />
         )}
       </div>
@@ -122,6 +132,7 @@ const Index: NextPage = () => {
               onClick={() => renumber.allTracks()}>
               Renumber Tracks
             </button>
+            <button className='border px-2'>{copiedItemId}</button>
           </li>
           <li className='block w-60 cursor-pointer p-2 text-right text-zinc-200'>
             <IconBtnToggle

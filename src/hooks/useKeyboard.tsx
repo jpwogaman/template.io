@@ -14,6 +14,10 @@ type useKeyboardProps = {
   setSelectedItemId: Dispatch<SetStateAction<string | null>>
   selectedSubItemId: string | null
   setSelectedSubItemId: Dispatch<SetStateAction<string | null>>
+  copiedItemId: string | null
+  setCopiedItemId: Dispatch<SetStateAction<string | null>>
+  copiedSubItemId: string | null
+  setCopiedSubItemId: Dispatch<SetStateAction<string | null>>
 }
 
 const useKeyboard = ({
@@ -27,9 +31,13 @@ const useKeyboard = ({
   selectedItemFadCount: fadCount,
   selectedItemId,
   setSelectedItemId,
-  setSelectedSubItemId
+  setSelectedSubItemId,
+  copiedItemId,
+  setCopiedItemId,
+  copiedSubItemId,
+  setCopiedSubItemId
 }: useKeyboardProps) => {
-  const { selectedItem, create, del, clear } = useMutations({
+  const { selectedItem, create, del, clear, paste } = useMutations({
     selectedItemId,
     setSelectedItemId
   })
