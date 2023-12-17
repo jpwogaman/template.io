@@ -70,6 +70,8 @@ const Index: NextPage = () => {
             setIsContextMenuOpen={setIsContextMenuOpen}
             selectedItemId={selectedItemId}
             setSelectedItemId={setSelectedItemId}
+            selectedSubItemId={selectedSubItemId}
+            setSelectedSubItemId={setSelectedSubItemId}
           />
         )}
       </div>

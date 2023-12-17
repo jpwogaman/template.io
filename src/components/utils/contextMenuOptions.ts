@@ -17,13 +17,13 @@ export const ContextMenuOptions = [
   },
   {
     id: 'addItemAbove',
-    label: 'Add Item Above',
+    label: 'Add Item Above (ctrl+shift+ArrowUp)',
     icon1: 'fa-plus',
     icon2: 'fa-arrow-up'
   },
   {
     id: 'addItemBelow',
-    label: 'Add Item Below',
+    label: 'Add Item Below (ctrl+shift+ArrowDown)',
     icon1: 'fa-plus',
     icon2: 'fa-arrow-down'
   },
@@ -38,13 +38,13 @@ export const ContextMenuOptions = [
   },
   {
     id: 'duplicateItemAbove',
-    label: 'Duplicate Item Above',
+    label: 'Duplicate Item Above (ctrl+shift+alt+ArrowUp)',
     icon1: 'fa-copy',
     icon2: 'fa-arrow-up'
   },
   {
     id: 'duplicateItemBelow',
-    label: 'Duplicate Item Below',
+    label: 'Duplicate Item Below (ctrl+shift+alt+ArrowDown)',
     icon1: 'fa-copy',
     icon2: 'fa-arrow-down'
   },
@@ -80,7 +80,7 @@ export const ContextMenuOptions = [
   },
   {
     id: 'deleteItem',
-    label: 'Delete Item',
+    label: 'Delete Item (ctrl+del)',
     icon1: 'fa-xmark',
     icon2: null
   }

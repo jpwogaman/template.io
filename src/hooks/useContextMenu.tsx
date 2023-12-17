@@ -16,25 +16,25 @@ const useContextMenu = () => {
       })
     }
 
-    if (e.pageY - 15 > window.innerHeight - 300) {
+    if (e.pageY - 15 > window.innerHeight - 375) {
       setContextMenuPosition({
         left: e.pageX + 15,
-        top: e.pageY - 300
+        top: e.pageY - 375
       })
     }
 
     if (
       e.pageX + 15 > window.innerWidth - 250 &&
-      e.pageY - 15 > window.innerHeight - 300
+      e.pageY - 15 > window.innerHeight - 375
     )
       setContextMenuPosition({
         left: e.pageX - 250,
-        top: e.pageY - 300
+        top: e.pageY - 375
       })
 
     if (
       e.pageX + 15 < window.innerWidth - 250 &&
-      e.pageY - 15 < window.innerHeight - 300
+      e.pageY - 15 < window.innerHeight - 375
     ) {
       setContextMenuPosition({
         left: e.pageX + 15,

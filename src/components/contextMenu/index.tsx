@@ -11,6 +11,8 @@ type ContextMenuProps = {
   }
   selectedItemId: string | null
   setSelectedItemId: Dispatch<SetStateAction<string | null>>
+  selectedSubItemId: string | null
+  setSelectedSubItemId: Dispatch<SetStateAction<string | null>>
   setIsContextMenuOpen: Dispatch<SetStateAction<boolean>>
 }
 
@@ -19,7 +21,9 @@ const ContextMenu: FC<ContextMenuProps> = ({
   contextMenuPosition,
   setIsContextMenuOpen,
   selectedItemId,
-  setSelectedItemId
+  setSelectedItemId,
+  selectedSubItemId,
+  setSelectedSubItemId
 }) => {
   const { selectedItem, create, del, clear } = useMutations({
     selectedItemId,
@@ -31,7 +35,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
     if (art) return true
   }
 
-  const handleClick = (newId: string) => {
+  const handleClick = (newMenuId: string) => {
     setIsContextMenuOpen(false)
 
     if (!contextMenuId?.includes(selectedItemId ?? '')) {
@@ -39,10 +43,10 @@ const ContextMenu: FC<ContextMenuProps> = ({
       return
     }
 
-    if (newId.includes('break')) return //should be redundant
+    if (newMenuId.includes('break')) return //should be redundant
 
-    if (newId.includes('Track')) {
-      switch (newId) {
+    if (newMenuId.includes('Track')) {
+      switch (newMenuId) {
         case 'moveTrackUp':
           console.log('moveTrackUp')
           break
@@ -82,8 +86,8 @@ const ContextMenu: FC<ContextMenuProps> = ({
           break
       }
     }
-    if (newId.includes('Range')) {
-      switch (newId) {
+    if (newMenuId.includes('Range')) {
+      switch (newMenuId) {
         case 'moveRangeUp':
           console.log('moveRangeUp')
           break
@@ -124,8 +128,8 @@ const ContextMenu: FC<ContextMenuProps> = ({
           break
       }
     }
-    if (newId.includes('Articulation')) {
-      switch (newId) {
+    if (newMenuId.includes('Articulation')) {
+      switch (newMenuId) {
         case 'moveArticulationUp':
           break
         case 'moveArticulationDown':
@@ -171,8 +175,8 @@ const ContextMenu: FC<ContextMenuProps> = ({
           break
       }
     }
-    if (newId.includes('Layer')) {
-      switch (newId) {
+    if (newMenuId.includes('Layer')) {
+      switch (newMenuId) {
         case 'moveLayerUp':
           break
         case 'moveLayerDown':
@@ -205,8 +209,8 @@ const ContextMenu: FC<ContextMenuProps> = ({
           break
       }
     }
-    if (newId.includes('Fader')) {
-      switch (newId) {
+    if (newMenuId.includes('Fader')) {
+      switch (newMenuId) {
         case 'moveFaderUp':
           break
         case 'moveFaderDown':
@@ -252,12 +256,25 @@ const ContextMenu: FC<ContextMenuProps> = ({
         top: contextMenuPosition.top,
         left: contextMenuPosition.left
       }}>
-      <h3 className='mx-auto'>{`Selected: ${contextMenuId}`}</h3>
       <h3
         className={tw(
           !contextMenuId?.includes(selectedItemId ?? '') ? 'text-red-400' : '',
           'mx-auto'
         )}>{`Current Track: ${selectedItemId}`}</h3>
+
+      {(contextMenuId?.includes('FR_') ||
+        contextMenuId?.includes('AT_') ||
+        contextMenuId?.includes('AL_') ||
+        contextMenuId?.includes('FL_')) && (
+        <h3
+          className={tw(
+            !contextMenuId?.includes(selectedSubItemId ?? '')
+              ? 'text-red-400'
+              : '',
+            'mx-auto'
+          )}>{`Current SubItem: ${selectedSubItemId}`}</h3>
+      )}
+      <h3 className='mx-auto'>{`Selected: ${contextMenuId}`}</h3>
       <hr className='my-2' />
 
       {ContextMenuOptions.map((item) => {
@@ -297,7 +314,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
             onClick={() => {
               handleClick(newId)
             }}
-            className='flex items-center gap-2 whitespace-nowrap px-1 py-0.5 hover:bg-zinc-600'>
+            className='flex items-end gap-2 whitespace-nowrap px-1 py-0.5 hover:bg-zinc-600'>
             <p>{newLabel}</p>
             <i className={`fa-solid ${icon1}`} />
             {icon2 && <i className={`fa-solid ${icon2}`} />}
