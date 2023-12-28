@@ -50,38 +50,37 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
     }
   }
 
-  inputSelectOptionElements = (
-    <>
-      {JSON.parse(options as string).map((name: string) => (
-        <li
-          key={name}
-          title={
-            id + '_' + name + '_currentlySelected: ' + value.includes(name)
-          }
-          className={tw(
-            value.includes(name) && !codeDisabled
-              ? 'font-bold text-red-700'
-              : '',
-            value.includes(name) && codeDisabled ? 'font-bold text-red-800' : ''
-          )}
-          onKeyDown={() => console.log('keydown')}
-          onClick={(event) =>
-            valChange({
-              ...event,
-              target: { ...event.target, value: name }
-            } as unknown as ChangeEvent<HTMLSelectElement>)
-          }>
-          {shortenedSubComponentId(name)}
-        </li>
-      ))}
-    </>
+  inputSelectOptionElements = JSON.parse(options as string).map(
+    (name: string) => (
+      // this should be a <li> element, but SONARLINT doesn't like it
+      <button
+        key={name}
+        title={id + '_' + name + '_currentlySelected: ' + value.includes(name)}
+        className={tw(
+          value.includes(name) && !codeDisabled ? 'font-bold text-red-700' : '',
+          value.includes(name) && codeDisabled ? 'font-bold text-red-800' : ''
+        )}
+        onKeyDown={(e) => {
+          e.preventDefault()
+          console.log('keydown')
+        }}
+        onClick={(event) => {
+          event.preventDefault()
+          valChange({
+            ...event,
+            target: { ...event.target, value: name }
+          } as unknown as ChangeEvent<HTMLSelectElement>)
+        }}>
+        {shortenedSubComponentId(name)}
+      </button>
+    )
   )
 
   return (
     <ul
       id={id}
       className={tw(
-        'w-full overflow-x-hidden bg-inherit p-[4.5px] outline-offset-4 outline-green-600 focus:bg-white focus:text-zinc-900 dark:outline-green-800',
+        'max-h-[32px] w-full overflow-x-hidden overflow-y-scroll bg-inherit p-[4.5px] outline-offset-4 outline-green-600 focus:bg-white focus:text-zinc-900 dark:outline-green-800',
         codeDisabled ? 'cursor-not-allowed text-gray-400' : 'cursor-pointer',
         'flex flex-wrap gap-2'
       )}>

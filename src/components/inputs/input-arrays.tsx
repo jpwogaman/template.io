@@ -1,7 +1,7 @@
 import React, { type FC } from 'react'
 
 const smpOutSettings = 32
-const vepOutSettings = 64
+const vepOutSettings = 128
 
 const MiddleC = {
   bottom: -2,

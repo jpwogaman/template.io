@@ -1,4 +1,4 @@
-const allTrack_jsn = loadJSON('tracks-11.27.2023-v7.json')
+const allTrack_jsn = loadJSON('tracks-11.27.2023-v10.json')
 
 const items = allTrack_jsn.items
 // full schema for an item in the JSON file
@@ -375,7 +375,7 @@ module.exports = {
           nameOsc,
           `${nameJsn}\n(${codeDsp}${codeJsn}/${on__Jsn}${
             off_Jsn ? '/' + off_Jsn : ''
-          })\n(${sign3}${delyJsn}ms)\n(Layers: ${layersJsn.length})`
+          })\n(${sign3}${delyJsn}ms)\n(Layers: ${layersJsn.length - 1})`
         )
       } else {
         receive(nameOsc, nameJsn)
