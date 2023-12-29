@@ -29,37 +29,6 @@ type FileItemsExtended = {
   fadList: ItemsFadList[]
 }
 
-//needed
-
-// create new item above/below/end
-// create new full range above/below/end
-// create new art tog above/below/end
-// create new art tap above/below/end
-// create new art layer above/below/end
-// create new fad list above/below/end
-// move track up/down/drag
-// move full range up/down/drag
-// move art tog up/down/drag
-// move art tap up/down/drag
-// move art layer up/down/drag
-// move fad list up/down/drag
-// duplicate item above/below
-// duplicate full range above/below/end
-// duplicate art tog above/below/end
-// duplicate art tap above/below/end
-// duplicate art layer above/below/end
-// duplicate fad list above/below/end
-// clear full range
-// clear art tog
-// clear art tap
-// clear art layer
-// clear fad list
-// renumber full ranges
-// renumber art layers
-// renumber faders
-// undo
-// redo
-
 export const ItemsRouter = createTRPCRouter({
   ////////////////////////////
   // READ Routers
@@ -107,6 +76,12 @@ export const ItemsRouter = createTRPCRouter({
   }),
   ////////////////////////////
   // CREATE Routers
+  // create new item above/below/end
+  // create new full range above/below/end
+  // create new art tog above/below/end
+  // create new art tap above/below/end
+  // create new art layer above/below/end
+  // create new fad list above/below/end
   createAllItemsFromJSON: publicProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
@@ -1102,6 +1077,11 @@ export const ItemsRouter = createTRPCRouter({
     }),
   ////////////////////////////
   // CLEAR Routers
+  // clear full range
+  // clear art tog
+  // clear art tap
+  // clear art layer
+  // clear fad list
   clearSingleItem: publicProcedure
     .input(
       z.object({
@@ -1193,7 +1173,16 @@ export const ItemsRouter = createTRPCRouter({
       })
     }),
   ////////////////////////////
-  // RENUMBER Routers
+  // RENUMBER/REORDER Routers
+  // move track up/down/drag
+  // move full range up/down/drag
+  // move art tog up/down/drag
+  // move art tap up/down/drag
+  // move art layer up/down/drag
+  // move fad list up/down/drag
+  // renumber full ranges
+  // renumber art layers
+  // renumber faders
   renumberAllItems: publicProcedure.mutation(async ({ ctx }) => {
     const allItems = await ctx.prisma.fileItems.findMany()
     const allFullRanges = await ctx.prisma.itemsFullRanges.findMany()
@@ -1472,7 +1461,13 @@ export const ItemsRouter = createTRPCRouter({
       }
     }),
   ////////////////////////////
-  // COPY Routers
+  // PASTE/DUPLICATE Routers
+  // duplicate item above/below
+  // duplicate full range above/below/end
+  // duplicate art tog above/below/end
+  // duplicate art tap above/below/end
+  // duplicate art layer above/below/end
+  // duplicate fad list above/below/end
   pasteSingleItem: publicProcedure
     .input(
       z.object({
@@ -1664,4 +1659,9 @@ export const ItemsRouter = createTRPCRouter({
         }
       })
     })
+
+  ////////////////////////////
+  // UNDO/REDO Routers
+  // undo
+  // redo
 })

@@ -378,7 +378,7 @@ const useMutations = ({
     }
   })
   //////////////////////////////////////////
-  // RENUMBER mutations
+  // RENUMBER/REORDER mutations
   const renumberAllItemsMutation = trpc.items.renumberAllItems.useMutation({
     onSuccess: () => {
       renumberAllItemsMutation.reset()
@@ -401,7 +401,7 @@ const useMutations = ({
     }
   })
   //////////////////////////////////////////
-  // PASTE mutations
+  // PASTE/DUPLICATE mutations
   const pasteSingleItemMutation = trpc.items.pasteSingleItem.useMutation({
     onSuccess: () => {
       pasteSingleItemMutation.reset()
