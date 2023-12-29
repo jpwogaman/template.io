@@ -9,7 +9,6 @@ import {
   type ItemArtLayers,
   type ItemsFadList
 } from '@prisma/client'
-import { count } from 'console'
 
 type FileItemsExtended = {
   id: string
