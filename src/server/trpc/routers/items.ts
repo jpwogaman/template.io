@@ -1473,6 +1473,7 @@ export const ItemsRouter = createTRPCRouter({
       }
     }),
   ////////////////////////////
+  // COPY Routers
   pasteSingleItem: publicProcedure
     .input(
       z.object({
@@ -1560,8 +1561,14 @@ export const ItemsRouter = createTRPCRouter({
           data: {
             ...art,
             id: art.id.replace(copiedItemId, destinationItemId),
-            ranges: art.ranges?.replace(copiedItemId, destinationItemId),
-            artLayers: art.artLayers?.replace(copiedItemId, destinationItemId),
+            ranges: art.ranges?.replace(
+              new RegExp(copiedItemId, 'g'),
+              destinationItemId
+            ),
+            artLayers: art.artLayers?.replace(
+              new RegExp(copiedItemId, 'g'),
+              destinationItemId
+            ),
             fileItemsItemId: destinationItemId
           }
         })
@@ -1572,8 +1579,14 @@ export const ItemsRouter = createTRPCRouter({
           data: {
             ...art,
             id: art.id.replace(copiedItemId, destinationItemId),
-            ranges: art.ranges?.replace(copiedItemId, destinationItemId),
-            artLayers: art.artLayers?.replace(copiedItemId, destinationItemId),
+            ranges: art.ranges?.replace(
+              new RegExp(copiedItemId, 'g'),
+              destinationItemId
+            ),
+            artLayers: art.artLayers?.replace(
+              new RegExp(copiedItemId, 'g'),
+              destinationItemId
+            ),
             fileItemsItemId: destinationItemId
           }
         })
