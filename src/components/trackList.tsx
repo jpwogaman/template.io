@@ -127,26 +127,21 @@ const TrackList: FC<TrackListProps> = ({
                 {/* COLOR PICKER CELL */}
                 <td
                   id={id + '_color_' + 'cell'}
-                  style={{ backgroundColor: color }}
-                  className='border-y border-black'>
-                  <input
-                    type='color'
-                    title={selectedItemId + '_color_currentValue: ' + color}
-                    disabled={locked}
-                    defaultValue={color}
-                    className={tw(
-                      locked ? 'cursor-not-allowed' : 'cursor-pointer',
-                      'w-1/2 opacity-0'
-                    )}
-                    onChange={(event) =>
-                      onChangeHelper({
-                        newValue: event.target.value,
-                        layoutDataSingleId: id,
-                        key: 'color'
-                      })
+                  className='h-[30px]'>
+                  <InputTypeSelector
+                    keySingle={
+                      {
+                        className: 'w-[00%]',
+                        show: false,
+                        key: 'color',
+                        input: 'color-picker',
+                        selectArray: undefined,
+                        label: undefined
+                      } as unknown as (typeof TrackListTableKeys)['keys'][number]
                     }
+                    onChangeHelper={onChangeHelper}
+                    selectedItem={item as unknown as SelectedItemType}
                   />
-                  {/*<div className='rounded-sm border-none p-1 transition-all duration-200 peer-focus-visible:border-none peer-focus-visible:ring-4 peer-focus-visible:ring-indigo-600' />*/}
                 </td>
                 {/* LOCK CELL */}
                 <td

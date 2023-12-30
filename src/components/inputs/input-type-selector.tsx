@@ -20,6 +20,7 @@ import TrackOptionsTableKeys from '../utils/trackOptionsTableKeys'
 import TrackListTableKeys from '../utils/trackListTableKeys'
 import SettingsTableKeys from '../utils/settingsTableKeys'
 import tw from '@/utils/tw'
+import { InputColorPicker } from './input-color-picker'
 
 export type OnChangeHelperArgsType = {
   newValue?: string | number | boolean
@@ -110,6 +111,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
   const inputSelectSingle = input === 'select'
   const inputCheckBoxSwitch = input === 'checkbox-switch'
   const inputCheckBox = input === 'checkbox'
+  const inputColorPicker = input === 'color-picker'
   const inputText = input === 'text'
 
   const MainComponentLevel =
@@ -187,6 +189,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
         {inputText && <InputText {...inputPropsHelper} />}
         {inputCheckBox && <InputCheckBox {...inputPropsHelper} />}
         {inputCheckBoxSwitch && <InputCheckBoxSwitch {...inputPropsHelper} />}
+        {inputColorPicker && <InputColorPicker {...inputPropsHelper} />}
       </>
     )
     return inputComponent

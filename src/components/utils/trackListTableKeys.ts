@@ -86,7 +86,7 @@ const TrackListTableKeys = {
       className: 'w-[00%]',
       show: false,
       key: 'color',
-      input: 'checkbox',
+      input: 'color-picker',
       selectArray: undefined,
       label: undefined
     }
