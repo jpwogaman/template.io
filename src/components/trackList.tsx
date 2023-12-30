@@ -63,7 +63,7 @@ const TrackList: FC<TrackListProps> = ({
             {/* COLOR PICKER HEAD */}
             <td className={tw(trackTh, 'sticky z-50 w-[20px]')} />
             {/* LOCK HEAD */}
-            <td className={tw(trackTh, 'sticky z-50 w-[5%]')} />
+            <td className={tw(trackTh, 'sticky z-50 w-[25px]')} />
             {/* OTHER HEADS */}
             {TrackListTableKeys.keys.map((keyActual) => {
               const { key, show, className, label } = keyActual
@@ -146,7 +146,7 @@ const TrackList: FC<TrackListProps> = ({
                 {/* LOCK CELL */}
                 <td
                   id={id + '_lock_' + 'cell'}
-                  className='p-0.5 text-center'>
+                  className='px-1 py-0.5 text-center'>
                   <IconBtnToggle
                     classes={''}
                     titleA={id + '_locked_currentValue: ' + locked}
