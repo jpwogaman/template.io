@@ -31,9 +31,9 @@ export const InputColorPicker: FC<InputComponentProps> = ({
   const handleOpen = () => {
     setOpen(!open)
     if (!open) {
-      alert('close')
+      console.log('close')
     } else {
-      alert('open')
+      console.log('open')
     }
   }
 
@@ -46,11 +46,7 @@ export const InputColorPicker: FC<InputComponentProps> = ({
             ? defaultValueToRgb(defaultValue as string)
             : (defaultValue as string)
       }}
-      className='relative h-full w-full items-center'
-      onClick={() => {
-        handleOpen()
-        //setIsFocused(true)
-      }}>
+      className='relative h-full w-full items-center'>
       <label
         htmlFor={id}
         title={id + '_currentValue: ' + `${defaultValue}`}
@@ -65,6 +61,7 @@ export const InputColorPicker: FC<InputComponentProps> = ({
           )}
         />
         <input
+          id={id}
           type='color'
           disabled={codeDisabled}
           defaultValue={defaultValue as string}
@@ -77,7 +74,12 @@ export const InputColorPicker: FC<InputComponentProps> = ({
               handleOpen()
             }
           }}
-          className={tw('sr-only')}
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            handleOpen()
+          }}
+          className={tw('sr-only h-full w-full')}
           onChange={valChange}
         />
       </label>

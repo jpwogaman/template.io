@@ -114,7 +114,6 @@ const useKeyboard = ({
           nextInput?.focus()
           return
         }
-
         if (previousItemId === '') return
 
         const newInput = selectedInput?.id.replace(

@@ -94,7 +94,7 @@ const TrackList: FC<TrackListProps> = ({
         </thead>
         <tbody>
           {data?.map((item) => {
-            const { id, color, locked, _count } = item
+            const { id, locked, _count } = item
 
             const selectedLocked = locked && selectedItemId === id
             const selectedUnlocked = !locked && selectedItemId === id
