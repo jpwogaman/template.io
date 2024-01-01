@@ -268,9 +268,9 @@ const useKeyboard = ({
           return
         }
 
-        del.track({
-          itemId: selectedItemId ?? ''
-        })
+        //del.track({
+        //  itemId: selectedItemId ?? ''
+        //})
       }
       ////////////////////////////////
     }
