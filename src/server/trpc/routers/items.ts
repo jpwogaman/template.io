@@ -1611,15 +1611,15 @@ export const ItemsRouter = createTRPCRouter({
           id: destinationItemId
         },
         data: {
-          locked: copiedItem?.locked,
-          name: copiedItem?.name,
-          channel: copiedItem?.channel,
-          baseDelay: copiedItem?.baseDelay,
-          avgDelay: copiedItem?.avgDelay,
-          vepOut: copiedItem?.vepOut,
-          vepInstance: copiedItem?.vepInstance,
-          smpNumber: copiedItem?.smpNumber,
-          smpOut: copiedItem?.smpOut,
+          //locked: copiedItem?.locked,
+          //name: copiedItem?.name,
+          //channel: copiedItem?.channel,
+          //baseDelay: copiedItem?.baseDelay,
+          //avgDelay: copiedItem?.avgDelay,
+          //vepOut: copiedItem?.vepOut,
+          //vepInstance: copiedItem?.vepInstance,
+          //smpNumber: copiedItem?.smpNumber,
+          //smpOut: copiedItem?.smpOut,
           color: copiedItem?.color,
           fullRange: {
             connect: copiedFullRanges.map((range) => {
