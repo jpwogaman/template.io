@@ -42,6 +42,12 @@ const TrackList: FC<TrackListProps> = ({
     })
   }
 
+  const sortedData = data?.toSorted((a, b) => {
+    return (
+      parseInt(a.id.split('_')[1] || '0') - parseInt(b.id.split('_')[1] || '0')
+    )
+  })
+
   const trackTh = `border-[1.5px]
   border-b-transparent
   border-zinc-100
@@ -93,7 +99,7 @@ const TrackList: FC<TrackListProps> = ({
           </tr>
         </thead>
         <tbody>
-          {data?.map((item) => {
+          {sortedData?.map((item) => {
             const { id, locked, _count } = item
 
             const selectedLocked = locked && selectedItemId === id
