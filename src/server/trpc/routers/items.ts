@@ -10,24 +10,17 @@ import {
   type ItemsFadList
 } from '@prisma/client'
 
-type FileItemsExtended = {
-  id: string
-  locked: boolean
-  name: string
-  channel: number | null
-  baseDelay: number | null
-  avgDelay: number | null
-  vepOut: string
-  vepInstance: string
-  smpNumber: string
-  smpOut: string
-  color: string
-  fullRange: ItemsFullRanges[]
-  artListTog: ItemsArtListTog[]
-  artListTap: ItemsArtListTap[]
-  artLayers: ItemArtLayers[]
-  fadList: ItemsFadList[]
-}
+type Prettify<T> = { [K in keyof T]: T[K] } & object
+
+export type FileItemsExtended = Prettify<
+  FileItems & {
+    fullRange: ItemsFullRanges[]
+    artListTog: ItemsArtListTog[]
+    artListTap: ItemsArtListTap[]
+    artLayers: ItemArtLayers[]
+    fadList: ItemsFadList[]
+  }
+>
 
 export const ItemsRouter = createTRPCRouter({
   ////////////////////////////
