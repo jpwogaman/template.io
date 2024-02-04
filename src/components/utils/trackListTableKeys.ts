@@ -10,7 +10,7 @@ const TrackListTableKeys = {
       label: 'ID'
     },
     {
-      className: 'w-[00%]',
+      className: null,
       show: false,
       key: 'locked',
       input: undefined,
@@ -57,7 +57,6 @@ const TrackListTableKeys = {
       selectArray: undefined,
       label: 'Sampler No.'
     },
-
     {
       className: 'w-[8%]',
       show: true,
@@ -83,10 +82,18 @@ const TrackListTableKeys = {
       label: 'Avg. Delay'
     },
     {
-      className: 'w-[00%]',
+      className: null,
       show: false,
       key: 'color',
       input: 'color-picker',
+      selectArray: undefined,
+      label: undefined
+    },
+    {
+      className: null,
+      show: false,
+      key: 'notes',
+      input: 'text-rich',
       selectArray: undefined,
       label: undefined
     }

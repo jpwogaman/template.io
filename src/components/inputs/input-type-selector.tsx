@@ -21,6 +21,7 @@ import TrackListTableKeys from '../utils/trackListTableKeys'
 import SettingsTableKeys from '../utils/settingsTableKeys'
 import tw from '@/utils/tw'
 import { InputColorPicker } from './input-color-picker'
+import { InputTextRich } from './input-text-rich'
 
 export type OnChangeHelperArgsType = {
   newValue?: string | number | boolean
@@ -77,6 +78,9 @@ type InputTypeSelectorProps = {
   settingsModal?: boolean
 }
 
+type ChangeEventHelper = 
+  ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>
+
 export type InputComponentProps = {
   id: string
   toggle?: boolean
@@ -87,9 +91,7 @@ export type InputComponentProps = {
   options?: string
   children?: ReactNode
   textTypeValidator?: string
-  onChangeFunction: (
-    event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
-  ) => void | undefined
+  onChangeFunction: (event: ChangeEventHelper) => void | undefined
 }
 
 export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
@@ -113,6 +115,8 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
   const inputCheckBox = input === 'checkbox'
   const inputColorPicker = input === 'color-picker'
   const inputText = input === 'text'
+  const inputTextRich = input === 'text-rich'
+
 
   const MainComponentLevel =
     typeof layoutDataSingle === 'undefined' &&
@@ -127,9 +131,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
     const inputPropsHelper = {
       id: `${key}`,
       defaultValue: localStorage.getItem(key) ?? '',
-      onChangeFunction: (
-        event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
-      ) =>
+      onChangeFunction: (event: ChangeEventHelper) =>
         onChangeHelper({
           newValue: event.target.value,
           key
@@ -142,6 +144,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
         {inputText && <InputText {...inputPropsHelper} />}
         {inputCheckBox && <InputCheckBox {...inputPropsHelper} />}
         {inputCheckBoxSwitch && <InputCheckBoxSwitch {...inputPropsHelper} />}
+        {inputTextRich && <InputTextRich {...inputPropsHelper} />}
       </>
     )
     return inputComponent
@@ -154,9 +157,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
       defaultValue: selectedItem[key as 'id'],
       options: selectArray ?? '',
       textTypeValidator: typeof selectedItem[key as 'id'],
-      onChangeFunction: (
-        event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
-      ) =>
+      onChangeFunction: (event: ChangeEventHelper) =>
         onChangeHelper({
           newValue: event.target.value,
           layoutDataSingleId: selectedItem.id,
@@ -190,6 +191,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
         {inputCheckBox && <InputCheckBox {...inputPropsHelper} />}
         {inputCheckBoxSwitch && <InputCheckBoxSwitch {...inputPropsHelper} />}
         {inputColorPicker && <InputColorPicker {...inputPropsHelper} />}
+        {inputTextRich && <InputTextRich {...inputPropsHelper} />}
       </>
     )
     return inputComponent
@@ -291,9 +293,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
           ? stringListFullArtLayerIds
           : selectArray ?? '',
       textTypeValidator: typeof layoutDataSingle[key as 'id'],
-      onChangeFunction: (
-        event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
-      ) =>
+      onChangeFunction: (event: ChangeEventHelper) =>
         onChangeHelper({
           newValue: event.target.value,
           layoutDataSingleId: layoutDataSingle.id,

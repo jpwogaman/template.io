@@ -4,7 +4,7 @@ import {
   useState,
   useEffect,
   type Dispatch,
-  type SetStateAction
+  type SetStateAction,
 } from 'react'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
@@ -24,6 +24,7 @@ import {
 } from '@prisma/client'
 
 import useMutations from '@/hooks/useMutations'
+import TrackListTableKeys from './utils/trackListTableKeys'
 
 type TrackOptionsProps = {
   selectedItemId: string | null
@@ -183,12 +184,25 @@ const TrackOptions: FC<TrackOptionsProps> = ({
     }))
   }
   //////////////////////////////////////////
+    const onChangeHelperTrack = ({
+    newValue,
+    layoutDataSingleId: id,
+    key
+  }: OnChangeHelperArgsType) => {
+    //I need to throttle this so it doesn't fire on every keypress, only when the user stops typing for a second or so.
+
+    update.track({
+      itemId: id,
+      [key]: newValue
+    })
+  }
+  //////////////////////////////////////////
   const onChangeHelper = ({
     newValue,
     layoutDataSingleId,
     key,
     label
-  }: OnChangeHelperArgsType) => {
+  }: OnChangeHelperArgsType) => {  
     if (label === 'fullRange') {
       if (key === 'whiteKeysOnly') {
         update.fullRange({
@@ -254,6 +268,23 @@ const TrackOptions: FC<TrackOptionsProps> = ({
         title={`Track Id: ${selectedItem?.id} - Track Name: ${selectedItem?.name}`}
         className='pb-2 pt-4 text-3xl'>{`Track Name: ${selectedItem?.name}`}</h1>
 
+        <h2>Notes:</h2>        
+        <div className='m-1'>
+        <InputTypeSelector
+          keySingle={
+            {
+              className: null,
+              show: false,
+              key: 'notes',
+              input: 'text-rich',
+              selectArray: undefined,
+              label: undefined
+            } as unknown as (typeof TrackListTableKeys)['keys'][number]
+          }
+          onChangeHelper={onChangeHelperTrack}
+          selectedItem={selectedItem as unknown as SelectedItemType}
+        />
+        </div>
       {TrackOptionsTableKeys.map((layoutConfig) => {
         let layoutDataArray:
           | ItemsFullRanges[]

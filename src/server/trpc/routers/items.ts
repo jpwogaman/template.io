@@ -488,6 +488,7 @@ export const ItemsRouter = createTRPCRouter({
         itemId: z.string().optional(),
         locked: z.boolean().optional(),
         name: z.string().optional(),
+        notes: z.string().optional(),
         channel: z.string().optional(),
         baseDelay: z.string().optional(),
         avgDelay: z.string().optional(),
@@ -503,6 +504,7 @@ export const ItemsRouter = createTRPCRouter({
         itemId,
         locked,
         name,
+        notes,
         channel,
         baseDelay,
         avgDelay,
@@ -526,6 +528,7 @@ export const ItemsRouter = createTRPCRouter({
         data: {
           locked: locked ?? currentItem?.locked,
           name: name ?? currentItem?.name,
+          notes: notes ?? currentItem?.notes,
           channel: channel ? parseInt(channel) : currentItem?.channel,
           baseDelay: baseDelay ? parseInt(baseDelay) : currentItem?.baseDelay,
           avgDelay: avgDelay ? parseInt(avgDelay) : currentItem?.avgDelay,
@@ -1091,6 +1094,7 @@ export const ItemsRouter = createTRPCRouter({
         data: {
           locked: false,
           name: '',
+          notes: '',
           channel: 1,
           baseDelay: 0,
           avgDelay: 0,
@@ -1606,6 +1610,7 @@ export const ItemsRouter = createTRPCRouter({
         data: {
           //locked: copiedItem?.locked,
           //name: copiedItem?.name,
+          //notes: copiedItem?.notes,
           //channel: copiedItem?.channel,
           //baseDelay: copiedItem?.baseDelay,
           //avgDelay: copiedItem?.avgDelay,

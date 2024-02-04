@@ -18,6 +18,7 @@ model FileItems {
   id          String            @id @map("itemId")
   locked      Boolean           @default(false)
   name        String            @default("")
+  notes       String            @default("")
   channel     Float?            @default(1)
   baseDelay   Float?            @default(0)
   avgDelay    Float?            @default(0)
