@@ -13,7 +13,7 @@ const ContextMenu = dynamic(() => import('@/components/contextMenu'))
 const Index: NextPage = () => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>('T_0')
   const [selectedSubItemId, setSelectedSubItemId] = useState<null | string>(
-    'T_0_FR_0'
+    'T_0_notes'
   )
   const [copiedItemId, setCopiedItemId] = useState<string | null>(null)
   const [copiedSubItemId, setCopiedSubItemId] = useState<string | null>(null)

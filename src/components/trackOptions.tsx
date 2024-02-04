@@ -43,6 +43,8 @@ const TrackOptions: FC<TrackOptionsProps> = ({
   selectedSubItemId,
   setSelectedSubItemId
 }) => {
+
+
   const { selectedItem, update } = useMutations({
     selectedItemId,
     setSelectedItemId
@@ -261,6 +263,18 @@ const TrackOptions: FC<TrackOptionsProps> = ({
   dark:font-normal
   p-1
    `
+
+  const locked = selectedItem?.locked ?? false
+  const notesId = selectedItem?.id + '_notes'
+  const notesSelectedLocked =
+    locked && selectedSubItemId === notesId
+  const notesSelectedUnlocked =
+    !locked && selectedSubItemId === notesId
+  const notesUnselectedLocked =
+    locked && selectedSubItemId !== notesId
+  const notesUnselectedUnlocked =
+    !locked && selectedSubItemId !== notesId
+
   //////////////////////////////////////////
   return (
     <div className='h-full w-1/2 overflow-y-scroll'>
@@ -268,8 +282,21 @@ const TrackOptions: FC<TrackOptionsProps> = ({
         title={`Track Id: ${selectedItem?.id} - Track Name: ${selectedItem?.name}`}
         className='pb-2 pt-4 text-3xl'>{`Track Name: ${selectedItem?.name}`}</h1>
 
-        <h2>Notes:</h2>        
-        <div className='m-1'>
+        <h2>Notes:</h2>      
+        <div
+          className={
+            tw(
+              'm-1 p-1 flex items-center',
+              //notesSelectedUnlocked
+              //  ? 'bg-red-300 hover:bg-red-400 hover:text-zinc-50 dark:bg-red-600 dark:hover:bg-red-400 dark:hover:text-zinc-50'
+              //  : notesSelectedLocked
+              //    ? 'bg-red-500 hover:bg-red-600 hover:text-zinc-50 dark:bg-red-800 dark:hover:bg-red-500 dark:hover:text-zinc-50'
+              //    : notesUnselectedLocked
+              //      ? 'hover:bg-zinc-500 hover:text-zinc-50  dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
+              //      : notesUnselectedUnlocked
+              //        ? 'hover:bg-zinc-500 hover:text-zinc-50 dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
+              //        : ''
+        )}>
         <InputTypeSelector
           keySingle={
             {
@@ -356,7 +383,6 @@ const TrackOptions: FC<TrackOptionsProps> = ({
                 <tbody>
                   {layoutDataArray?.map((layoutDataSingle) => {
                     const layoutDataSingleId = layoutDataSingle.id
-                    const locked = selectedItem?.locked ?? false
 
                     const selectedLocked =
                       locked && selectedSubItemId === layoutDataSingleId

@@ -72,6 +72,8 @@ const useKeyboard = ({
       ////////////////////////////////
       // NAVIGATE TRACKS or ARTS or LAYERS or FADS
       if (!e.ctrlKey && !e.shiftKey && e.key === 'ArrowUp') {
+        
+        if (selectedInput?.id.includes('notes')) return      
         e.preventDefault()
 
         if (selectedInputIsInTrackOptions) {
@@ -125,9 +127,11 @@ const useKeyboard = ({
         selectedInput?.blur()
         previousInput?.focus()
         setSelectedItemId(previousItemId)
-        setSelectedSubItemId(previousItemId + '_FR_0')
+        setSelectedSubItemId(previousItemId + '_notes')      
       }
       if (!e.ctrlKey && !e.shiftKey && e.key === 'ArrowDown') {
+
+        if (selectedInput?.id.includes('notes')) return
         e.preventDefault()
 
         if (selectedInputIsInTrackOptions) {
@@ -159,7 +163,6 @@ const useKeyboard = ({
           if (optionType === 'FL' && nextNumber > fadCount - 1) {
             return
           }
-
           setSelectedSubItemId(nextSubItemId)
 
           const nextInput = window.document.getElementById(newInput ?? '')
@@ -178,24 +181,44 @@ const useKeyboard = ({
 
         nextInput?.focus()
         setSelectedItemId(nextItemId)
-        setSelectedSubItemId(nextItemId + '_FR_0')
+        setSelectedSubItemId(nextItemId + '_notes')
       }
+      if (e.shiftKey && e.key === 'ArrowUp') {
+        if (!selectedInput?.id.includes('_FR_0')) return
+        e.preventDefault()
+        const nextInput = window.document.getElementById(selectedItemId + '_notes')
+        setSelectedSubItemId(selectedItemId + '_notes')
+        nextInput?.focus()
+      }
+      if (e.shiftKey && e.key === 'ArrowDown') {
+        if (!selectedInput?.id.includes('_notes')) return
+        e.preventDefault()
+
+        const nextInput = window.document.getElementById(selectedItemId + '_FR_0_name')
+        setSelectedSubItemId(selectedItemId + '_FR_0')
+        nextInput?.focus()
+      }
+
+
       ////////////////////////////////
       // NAVIGATE BETWEEN TRACKLIST AND TRACK OPTIONS
       if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
         if (isSelect) e.preventDefault()
       }
       if (e.ctrlKey && e.key === 'ArrowRight') {
+        if (selectedInput?.id.includes('notes')) return 
         if (selectedInputIsInTrackOptions) return
+
         e.preventDefault()
         const trackOptionsNameInput = window.document.getElementById(
-          selectedItemId + '_FR_0_name'
+          selectedItemId + '_notes'
         )
-        setSelectedSubItemId(selectedItemId + '_FR_0')
+        setSelectedSubItemId(selectedItemId + '_notes')
         trackOptionsNameInput?.focus()
       }
-      if (e.ctrlKey && e.key === 'ArrowLeft') {
-        if (!selectedInputIsInTrackOptions) return
+      if (e.ctrlKey && e.key === 'ArrowLeft') {        
+        if (!selectedInput?.id.includes('notes') && !selectedInputIsInTrackOptions) return
+        
         e.preventDefault()
         const trackListNameInput = window.document.getElementById(
           selectedItemId + '_name'
@@ -205,11 +228,13 @@ const useKeyboard = ({
       ////////////////////////////////
       // ADD NEW TRACK or ART or LAYER or FAD
       if (!e.altKey && e.ctrlKey && e.shiftKey && e.key === 'ArrowUp') {
+        if (selectedInput?.id.includes('notes')) return 
         e.preventDefault()
         alert('Add new item above')
         //create.track()
       }
       if (!e.altKey && e.ctrlKey && e.shiftKey && e.key === 'ArrowDown') {
+        if (selectedInput?.id.includes('notes')) return 
         e.preventDefault()
         alert('Add new item below')
         create.track({ count: 1 })
@@ -217,10 +242,12 @@ const useKeyboard = ({
       ////////////////////////////////
       // DUPLICATE TRACK or ART or LAYER or FAD
       if (e.ctrlKey && e.shiftKey && e.altKey && e.key === 'ArrowUp') {
+        if (selectedInput?.id.includes('notes')) return 
         e.preventDefault()
         alert('Duplicate selected item above')
       }
       if (e.ctrlKey && e.shiftKey && e.altKey && e.key === 'ArrowDown') {
+        if (selectedInput?.id.includes('notes')) return 
         e.preventDefault()
         alert('Duplicate selected item below')
       }
