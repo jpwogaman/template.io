@@ -1,4 +1,4 @@
-const allTrack_jsn = loadJSON('tracks-11.27.2023-v20.json')
+const allTrack_jsn = loadJSON('tracks-11.27.2023-v21.json')
 
 const items = allTrack_jsn.items
 // full schema for an item in the JSON file
@@ -6,6 +6,7 @@ const items = allTrack_jsn.items
 //  id: string
 //  locked: boolean
 //  name: string
+//  notes: string
 //  channel: number | null
 //  baseDelay: number | null
 //  avgDelay: number | null
@@ -273,6 +274,7 @@ module.exports = {
     receive('/selectedTrackKeyRanges', trkNumb)
 
     const trkName = items[trkNumb].name // string
+    const trkNotes = items[trkNumb].notes // string
     const trkRang = items[trkNumb].fullRange // {}[]
     const baseDely = items[trkNumb].baseDelay // number | null
     const avgDely = items[trkNumb].avgDelay // number | null
@@ -288,7 +290,9 @@ module.exports = {
     }
 
     receive('/selectedTrackName', trkName)
+    receive('/selectedTrackNotes', trkNotes)
     receive('/template-io_selectedTrackName', trkName)
+    receive('/template-io_selectedTrackNotes', trkNotes)
     receive(
       '/selectedTrackDelays',
       `Base Delay: ${sign1}${baseDely}ms\nAvg Delay: ${sign2}${avgDely}ms`
