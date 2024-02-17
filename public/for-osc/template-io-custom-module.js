@@ -384,7 +384,7 @@ module.exports = {
       // this sends the articulation OFF parameters to Cubase for ALL articulations
       sendParameters('OSC4', artAddress, artCode, artOffValue)
 
-      //const allLayersThisTrack = []
+      const allLayersThisTrack = []
 
       if (artLayersList !== "['']") {
         for (const index in trkAllArtLayersJsn) {
