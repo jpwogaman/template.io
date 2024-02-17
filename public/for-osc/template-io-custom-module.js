@@ -1,4 +1,4 @@
-const allTrack_jsn = loadJSON('tracks-11.27.2023-v21.json')
+const allTrack_jsn = loadJSON('tracks-11.27.2023-v22.json')
 
 const items = allTrack_jsn.items
 // full schema for an item in the JSON file
@@ -78,9 +78,9 @@ const items = allTrack_jsn.items
 //}
 
 //array of all notes (Middle C == C3 == MIDI Code 60)
-const allNotes_loc = []
+const globalAllNotesList = []
 for (let i = -2; i < 9; i++) {
-  allNotes_loc.push(
+  globalAllNotesList.push(
     'C' + i,
     'C#' + i,
     'D' + i,
@@ -96,55 +96,97 @@ for (let i = -2; i < 9; i++) {
   )
 }
 // update current MIDI track, when a track in Cubase receives this code, it will in turn send a Key Pressure message to this module
-function trkUpdate() {
+function sendUpdateCode() {
   send('midi', 'OSC4', '/control', 1, 127, 127)
 }
 
-const PRMUPDATE = false
+const SENDPARAMS = false
 // send default articulation parameters to Cubase, this does not just update the template-io UI, it actually sends the MIDI command to Cubase
-function prmUpdate(x, typeJsn, codeJsn, deftJsn) {
-  if (!PRMUPDATE) return
-  if (x === 3) {
-    send('midi', 'OSC3', typeJsn, 1, codeJsn, deftJsn)
-  }
-  if (x === 4) {
-    send('midi', 'OSC4', typeJsn, 1, codeJsn, deftJsn)
-  }
+function sendParameters(
+  artOrFadPort,
+  artOrFadAddress,
+  artOrFadCode,
+  artOrFadDefaultValue
+) {
+  if (!SENDPARAMS) return
+  send(
+    'midi',
+    artOrFadPort,
+    artOrFadAddress,
+    1,
+    artOrFadCode,
+    artOrFadDefaultValue
+  )
 }
 
 // toggles
-let togUpdat_loc = false
-let togCodes_loc = true
-let togClkTr_loc = false
+let toggleAutoUpdate = false
+let toggleShowCodes = true
+let toggleSendUpdate = false
 
-function toggles(arg1, arg2) {
+function toggles_OSC2(arg1_OSC2, arg2_OSC2) {
   // auto-update on track selection
-  if (arg1 === 127 && arg2 === 1) {
-    togUpdat_loc = true
+  if (arg1_OSC2 === 127 && arg2_OSC2 === 1) {
+    toggleAutoUpdate = true
   }
-  if (arg1 === 127 && arg2 === 0) {
-    togUpdat_loc = false
+  if (arg1_OSC2 === 127 && arg2_OSC2 === 0) {
+    toggleAutoUpdate = false
   }
 
   // show codes in UI
-  if (arg1 === 119 && arg2 === 1) {
-    trkUpdate()
-    togCodes_loc = true
+  if (arg1_OSC2 === 119 && arg2_OSC2 === 1) {
+    sendUpdateCode()
+    toggleShowCodes = true
   }
-  if (arg1 === 119 && arg2 === 0) {
-    trkUpdate()
-    togCodes_loc = false
+  if (arg1_OSC2 === 119 && arg2_OSC2 === 0) {
+    sendUpdateCode()
+    toggleShowCodes = false
   }
 }
 
-function clickTrk(arg1, arg2) {
-  if (arg1 === 126 && arg2 === 1) {
-    togClkTr_loc = true
+function toggles_OSC3(arg1_OSC3, arg2_OSC3) {
+  if (arg1_OSC3 === 126 && arg2_OSC3 === 1) {
+    toggleSendUpdate = true
   }
-  if (arg1 === 126 && arg2 === 0) {
-    togClkTr_loc = false
+  if (arg1_OSC3 === 126 && arg2_OSC3 === 0) {
+    toggleSendUpdate = false
   }
 }
+
+function oscReset() {
+  // might not need to hardcode the number of faders and articulations, but it's fine for now. in OSC we can use a matrix widget and dynamically create the number of faders and articulations based on the JSON file
+  const fadCount = 8
+  const artCount = 18
+  // reset all fader info in OSC
+  for (let i = 0; i < fadCount; i++) {
+    const fadNameAddress = '/CC_disp_' + parseInt(i + 1)
+    const fadCodeAddress = '/CC_incr_' + parseInt(i + 1)
+    const fadDefaultValueAddress = '/CC_fad__' + parseInt(i + 1)
+    receive(fadNameAddress, ' ')
+    receive(fadDefaultValueAddress, 0)
+    receive(fadCodeAddress, 0)
+  }
+  // reset all articulation info in OSC
+  for (let i = 0; i < artCount; i++) {
+    const artNameAddress = '/artname_' + parseInt(i + 1)
+    const artInputBypassAddress = '/artinpt_' + parseInt(i + 1)
+    const artColorAddress = '/artcolr_' + parseInt(i + 1)
+    const artAlphaFillOnAddress = '/artmodA_' + parseInt(i + 1)
+    const artAlphaFillOffAddress = '/artmodB_' + parseInt(i + 1)
+    receive(artNameAddress, ' ')
+    receive(artInputBypassAddress, 'true')
+    receive(artColorAddress, '#A9A9A9')
+    receive(artAlphaFillOnAddress, 0.15)
+    receive(artAlphaFillOffAddress, 0.15)
+  }
+  // reset the range information in OSC
+  receive('/template-io_keyRangeVar1', [])
+  receive('/template-io_keyRangeVar2', [])
+  receive('/template-io_keyRangeScript', 1)
+  receive('/selectedTrackNumber', ' ')
+  receive('/selectedTrackDelays', ' ')
+}
+
 //
 module.exports = {
   init: function () {
@@ -161,141 +203,79 @@ module.exports = {
   oscInFilter: function (data) {
     const { address, args, host, port } = data
 
-    // this borrows from the MCU protocol to find the selected track name
-    //if (address === '/sysex') {
-    //  // FILTER OUT UNWANTED SYSEX
-
-    //  if (args[0].value.includes('f0 00 00 66 14 12')) {
-    //    // CUBASE TRACKS HEX TO ASCII STRING
-    //    let input = args[0].value.split(' ').splice(7, 35)
-    //    input.pop()
-    //    input = input.join('')
-    //    let sysexTrackName = ''
-    //    for (let n = 0; n < input.length; n += 2) {
-    //      sysexTrackName += String.fromCharCode(
-    //        parseInt(input.substr(n, 2), 16)
-    //      )
-    //    }
-
-    //    console.log(sysexTrackName)
-    //    let debugItem
-
-    //    for (const item of items) {
-    //      if (item.name.includes(sysexTrackName)) {
-    //        debugItem = 'item'
-    //      } else {
-    //        debugItem = 'no item'
-    //      }
-    //    }
-
-    //    console.log(debugItem)
-    //  }
-    //}
-
+    // GATE CHECK - OSC2 AND OSC3 ONLY
     // these are the only two ports that should affect this module
-    // for some reason the && is the only way to get this to work, but sometimes it breaks the MCU module? I don't know why, I feel like ?? should work but it doesn't
+    // for some reason the && is the only way to get this to work for ports, but sometimes it breaks the MCU module? I don't know why, I feel like ?? should work but it doesn't
 
     if (port !== 'OSC2' && port !== 'OSC3') return data
-    if (!args[1]) return data
-    if (!args[2]) return data
+    if (!args[1] || !args[2]) return data
 
+    // TOGGLE CHECK - OSC2 ONLY
+    // these codes are sent from OSC to itself for toggling UI elements and functions
     const arg1 = args[1].value
     const arg2 = args[2].value
-    // these codes are sent from OSC to itself for toggling UI elements and functions
+
     if (port === 'OSC2' && address === '/control') {
-      toggles(arg1, arg2)
+      toggles_OSC2(arg1, arg2)
+      if (toggleAutoUpdate) {
+        receive('/trackNameColor', '#70b7ff')
+        receive('/template-io_trackNameColor', '#70b7ff')
+      } else {
+        receive('/trackNameColor', 'red')
+        receive('/template-io_trackNameColor', 'red')
+      }
+      return data
     }
 
+    // TRACK SELECTION - OSC3 ONLY
     // these codes are sent from Cubase upon track selection
     // Here we could say something like if sysex gives us trackname, find the track in the json file and then send the data to the template-io module
-    if (port === 'OSC3' && address === '/control') {
-      clickTrk(arg1, arg2)
-    }
-
-    // if we are auto-updating the track, then we set the UI in OSC to blue, otherwise red
-    if (togUpdat_loc) {
-      receive('/trackNameColor', '#70b7ff')
-      receive('/template-io_trackNameColor', '#70b7ff')
-    } else {
-      receive('/trackNameColor', 'red')
-      receive('/template-io_trackNameColor', 'red')
-    }
-
-    // if we are auto-updating the track, then this actually send the command to Cubase to update the track
-    if (togUpdat_loc && togClkTr_loc) {
-      trkUpdate()
-      togClkTr_loc = false // need this to avoid infinite loop
-    }
-
     // TODO: if I receive more than 4 in less than, maybe a half-second, then halt. this should help prevent issues when selecting all tracks, etc.
+    if (port === 'OSC3' && address === '/control') {
+      toggles_OSC3(arg1, arg2)
+      if (toggleAutoUpdate && toggleSendUpdate) {
+        sendUpdateCode()
+        toggleSendUpdate = false // need this to avoid infinite loop
+      }
+    }
+
+    // MAIN FUNCTION - OSC3 KEY PRESSURE ONLY
+
     // this is the main function of this module, it receives the track number from Cubase and then sends the appropriate data to the UI
     if (address !== '/key_pressure') return data
+    oscReset()
 
     const trkNumb = arg1 * 128 + arg2
-
-    // might not need to hardcode the number of faders and articulations, but it's fine for now. in OSC we can use a matrix widget and dynamically create the number of faders and articulations based on the JSON file
-
-    // reset all fader info in OSC
-    for (let i = 0; i < 8; i++) {
-      const nameOsc = '/CC_disp_' + parseInt(i + 1)
-      const addrOsc = '/CC_fad__' + parseInt(i + 1)
-      const codeOsc = '/CC_incr_' + parseInt(i + 1)
-      receive(nameOsc, ' ')
-      receive(addrOsc, 0)
-      receive(codeOsc, 0)
-    }
-    // reset all articulation info in OSC
-    for (let i = 0; i < 18; i++) {
-      const nameOsc = '/artname_' + parseInt(i + 1)
-      const inptOsc = '/artinpt_' + parseInt(i + 1)
-      const colrOsc = '/artcolr_' + parseInt(i + 1)
-      const modAOsc = '/artmodA_' + parseInt(i + 1)
-      const modBOsc = '/artmodB_' + parseInt(i + 1)
-      receive(nameOsc, ' ')
-      receive(inptOsc, 'true')
-      receive(colrOsc, '#A9A9A9')
-      receive(modAOsc, 0.15)
-      receive(modBOsc, 0.15)
-    }
-
-    // reset the range information in OSC
-    receive('/template-io_keyRangeVar1', [])
-    receive('/template-io_keyRangeVar2', [])
-    receive('/template-io_keyRangeScript', 1)
-    receive('/selectedTrackKeyRanges', ' ')
-    receive('/selectedTrackDelays', ' ')
+    receive('/selectedTrackNumber', trkNumb)
 
     if (!items[trkNumb]) {
       receive('/selectedTrackName', 'No Track Data!')
       return data
     }
 
-    // need to rename this OSC address to something more generic, currently just using to show track number
-    receive('/selectedTrackKeyRanges', trkNumb)
-
     const trkName = items[trkNumb].name // string
     const trkNotes = items[trkNumb].notes // string
-    const trkRang = items[trkNumb].fullRange // {}[]
-    const baseDely = items[trkNumb].baseDelay // number | null
-    const avgDely = items[trkNumb].avgDelay // number | null
-
-    // hack to get the base delay to show positive or negative
-    let sign1 = ''
-    let sign2 = ''
-    if (Math.sign(baseDely) === 1) {
-      sign1 = '+'
-    }
-    if (Math.sign(avgDely) === 1) {
-      sign2 = '+'
-    }
 
     receive('/selectedTrackName', trkName)
     receive('/selectedTrackNotes', trkNotes)
     receive('/template-io_selectedTrackName', trkName)
     receive('/template-io_selectedTrackNotes', trkNotes)
+
+    const trkBaseDelay = items[trkNumb].baseDelay // number | null
+    const trkAvgDelay = items[trkNumb].avgDelay // number | null
+    // hack to get the base delay to show positive or negative
+    let trkBaseDelaySign = ''
+    let trkAvgDelaySign = ''
+    if (Math.sign(trkBaseDelay) === 1) {
+      trkBaseDelaySign = '+'
+    }
+    if (Math.sign(trkAvgDelay) === 1) {
+      trkAvgDelaySign = '+'
+    }
+
     receive(
       '/selectedTrackDelays',
-      `Base Delay: ${sign1}${baseDely}ms\nAvg Delay: ${sign2}${avgDely}ms`
+      `Base Delay: ${trkBaseDelaySign}${trkBaseDelay}ms\nAvg Delay: ${trkAvgDelaySign}${trkAvgDelay}ms`
     )
 
     // if there are more than 4 faders in the JSON file, then we show a red border around the fader panel so that the user knows to paginate
@@ -307,105 +287,110 @@ module.exports = {
 
     const fadListJsn = items[trkNumb].fadList
     for (let i = 0; i < fadListJsn.length; i++) {
-      const nameOsc = '/CC_disp_' + parseInt(i + 1)
-      const addrOsc = '/CC_fad__' + parseInt(i + 1)
-      const codeOsc = '/CC_incr_' + parseInt(i + 1)
-      const nameJsn = fadListJsn[i].name // string | null
-      const typeJsn = fadListJsn[i].codeType // string | null
-      const codeJsn = parseInt(fadListJsn[i].code) // number | null
-      const deftJsn = parseInt(fadListJsn[i].default) // number | null
-      receive(nameOsc, nameJsn) // string | null
-      receive(addrOsc, deftJsn) // number | null
-      receive(codeOsc, codeJsn) // number | null
-      prmUpdate(4, typeJsn, codeJsn, deftJsn)
+      const fadNameAddress = '/CC_disp_' + parseInt(i + 1)
+      const fadCodeAddress = '/CC_incr_' + parseInt(i + 1)
+      const fadDefaultValueAddress = '/CC_fad__' + parseInt(i + 1)
+      const fadName = fadListJsn[i].name // string | null
+      const fadAddress = fadListJsn[i].codeType // string | null
+      const fadCode = parseInt(fadListJsn[i].code) // number | null
+      const fadDefaultValue = parseInt(fadListJsn[i].default) // number | null
+
+      // this populates the fader button with the appropriate data
+      receive(fadNameAddress, fadName) // string | null
+      receive(fadCodeAddress, fadCode) // number | null
+      receive(fadDefaultValueAddress, fadDefaultValue) // number | null
+
+      // this sends the default fader parameters to Cubase
+      sendParameters('OSC4', fadAddress, fadCode, fadDefaultValue)
     }
     const artListJsn = [
       ...items[trkNumb].artListTap,
       ...items[trkNumb].artListTog
     ]
 
-    const allArtLayersJsn = items[trkNumb].artLayers
+    const trkAllArtLayersJsn = items[trkNumb].artLayers // {}[]
+    const trkAllRanges = items[trkNumb].fullRange // {}[]
 
     for (let i = 0; i < artListJsn.length; i++) {
-      const nameOsc = '/artname_' + parseInt(i + 1)
-      const typeOsc = '/arttype_' + parseInt(i + 1)
-      const codeOsc = '/artcode_' + parseInt(i + 1)
-      const inptOsc = '/artinpt_' + parseInt(i + 1)
-      const deftOsc = '/artdeft_' + parseInt(i + 1)
-      const on__Osc = '/arton___' + parseInt(i + 1)
-      const off_Osc = '/artoff__' + parseInt(i + 1)
-      const colrOsc = '/artcolr_' + parseInt(i + 1)
-      const modAOsc = '/artmodA_' + parseInt(i + 1)
-      const modBOsc = '/artmodB_' + parseInt(i + 1)
-      const modeOsc = '/artMode_' + parseInt(i + 1)
-      const rangOsc = '/artrang_' + parseInt(i + 1)
-      const layersOsc = '/artLayers_' + parseInt(i + 1)
-      const idJsn = artListJsn[i].id // string
-      const nameJsn = artListJsn[i].name // string
-      const typeJsn = artListJsn[i].codeType // string
-      const deftJsn = artListJsn[i].default // string | number | boolean | null
-      const codeJsn = parseInt(artListJsn[i].code) // number | null
-      const on__Jsn = parseInt(artListJsn[i].on) // number | null
-      const off_Jsn = parseInt(artListJsn[i].off) // number | null
-      const rangJsn = artListJsn[i].ranges // string[]
-      const delyJsn = artListJsn[i].delay // number | null
-      const layersJsn = JSON.parse(artListJsn[i].artLayers) // string[]
+      const artNameAddress = '/artname_' + parseInt(i + 1)
+      const artAddressAddress = '/arttype_' + parseInt(i + 1)
+      const artCodeAddress = '/artcode_' + parseInt(i + 1)
+      const artInputBypassAddress = '/artinpt_' + parseInt(i + 1)
+      const artDefaultValueAddress = '/artdeft_' + parseInt(i + 1)
+      const artOnValueAddress = '/arton___' + parseInt(i + 1)
+      const artOffValueAddress = '/artoff__' + parseInt(i + 1)
+      const artColorAddress = '/artcolr_' + parseInt(i + 1)
+      const artAlphaFillOnAddress = '/artmodA_' + parseInt(i + 1)
+      const artAlphaFillOffAddress = '/artmodB_' + parseInt(i + 1)
+      const artModeAddress = '/artMode_' + parseInt(i + 1)
+      const artRangeAddress = '/artrang_' + parseInt(i + 1)
+      const artLayersAddress = '/artLayers_' + parseInt(i + 1)
+      const artId = artListJsn[i].id // string
+      const artName = artListJsn[i].name // string
+      const artAddress = artListJsn[i].codeType // string
+      const artMode = artListJsn[i].toggle // boolean
+      const artDefaultValue = artListJsn[i].default // string | number | boolean | null
+      const artCode = parseInt(artListJsn[i].code) // number | null
+      const artOnValue = parseInt(artListJsn[i].on) // number | null
+      const artOffValue = parseInt(artListJsn[i].off) // number | null
+      const artDelayValue = artListJsn[i].delay // number | null
+      const artRangeList = artListJsn[i].ranges // string[]
+      const artLayersList = JSON.parse(artListJsn[i].artLayers) // string[]
 
-      if (!artListJsn[i].name) {
-        receive('/template-io_keyRangeVar1', trkRang) // {}[]
-        receive('/template-io_keyRangeVar2', rangJsn) // string[]
+      if (!artName) {
+        receive('/template-io_keyRangeVar1', trkAllRanges) // {}[]
+        receive('/template-io_keyRangeVar2', artRangeList) // string[]
         receive('/template-io_keyRangeScript', 1)
         continue
       }
 
       // this will display the note name or CC number, as well as it's value under the articulation button in the UI, e.g. (CC32/1), (C3/20)
-      let codeDsp
+      if (toggleShowCodes) {
+        let codeDisplay = ''
+        if (artAddress === '/control') {
+          codeDisplay = 'CC'
+        }
+        if (artAddress === '/note') {
+          codeDisplay = `${globalAllNotesList[artCode]}/`
+        }
 
-      if (typeJsn === '/control') {
-        codeDsp = 'CC'
-      } else if (typeJsn === '/note') {
-        codeDsp = `${allNotes_loc[codeJsn]}/`
-      } else {
-        codeDsp = ''
-      }
+        let artDelaySign = ''
+        if (Math.sign(artDelayValue) === 1) {
+          artDelaySign = '+'
+        }
 
-      let sign3 = ''
-      if (Math.sign(delyJsn) === 1) {
-        sign3 = '+'
-      }
-
-      if (togCodes_loc && nameJsn !== '') {
         receive(
-          nameOsc,
-          `${nameJsn}\n(${codeDsp}${codeJsn}/${on__Jsn}${
-            off_Jsn ? '/' + off_Jsn : ''
-          })\n(${sign3}${delyJsn}ms)\n(Layers: ${layersJsn.length - 1})`
+          artNameAddress,
+          `${artName}\n(${codeDisplay}${artCode}/${artOnValue}${
+            artOffValue ? '/' + artOffValue : ''
+          })\n(${artDelaySign}${artDelayValue}ms)\n(Layers: ${artLayersList.length - 1})`
         )
       } else {
-        receive(nameOsc, nameJsn)
+        receive(artNameAddress, artName)
       }
 
       //NEED TO ADD LOGIC FOR CHANGETYPE VALUE 1 VS 2
 
       // this populates the articulation button with the appropriate data
-      receive(typeOsc, typeJsn) // string
-      receive(codeOsc, codeJsn) // number | null
-      receive(deftOsc, off_Jsn) // number | null
-      receive(on__Osc, on__Jsn) // number | null
-      receive(off_Osc, off_Jsn) // number | null
-      receive(rangOsc, rangJsn) // string[]
-      receive(inptOsc, 'false')
-      receive(colrOsc, '#6dfdbb')
+      receive(artAddressAddress, artAddress) // string
+      receive(artCodeAddress, artCode) // number | null
+      receive(artDefaultValueAddress, artOffValue) // number | null
+      receive(artOnValueAddress, artOnValue) // number | null
+      receive(artOffValueAddress, artOffValue) // number | null
+      receive(artRangeAddress, artRangeList) // string[]
+      receive(artInputBypassAddress, 'false')
+      receive(artColorAddress, '#6dfdbb')
 
-      prmUpdate(4, typeJsn, codeJsn, off_Jsn)
+      // this sends the articulation OFF parameters to Cubase for ALL articulations
+      sendParameters('OSC4', artAddress, artCode, artOffValue)
 
-      const allLayersThisTrack = []
+      //const allLayersThisTrack = []
 
-      if (layersJsn !== "['']") {
-        for (const index in allArtLayersJsn) {
-          const layer = allArtLayersJsn[index]
+      if (artLayersList !== "['']") {
+        for (const index in trkAllArtLayersJsn) {
+          const layer = trkAllArtLayersJsn[index]
 
-          if (layersJsn.includes(layer.id)) {
+          if (artLayersList.includes(layer.id)) {
             allLayersThisTrack.push(layer)
             const layersFiltered = artListJsn[i].artLayers.replace('"",', '')
             const obj = JSON.parse(layersFiltered)
@@ -414,12 +399,12 @@ module.exports = {
             })
 
             const newObj = {
-              id: idJsn,
-              name: nameJsn,
+              id: artId,
+              name: artName,
               layers: layersFilteredObj
             }
 
-            receive(layersOsc, newObj)
+            receive(artLayersAddress, newObj)
 
             //if (layer.default === 'On') {
             //  prmUpdate(4, layer.codeType, layer.code, layer.on)
@@ -433,28 +418,33 @@ module.exports = {
 
       receive('/template-io_artLayersVar1', allLayersThisTrack) // {}[]
 
-      if (artListJsn[i].toggle) {
-        receive(modeOsc, 'toggle')
-        receive(colrOsc, '#a86739')
-        receive(modBOsc, 0.75)
+      if (artMode === true) {
+        receive(artModeAddress, 'toggle') // toggle, push, momentary, tap
+        receive(artColorAddress, '#a86739')
+        receive(artAlphaFillOffAddress, 0.75)
 
-        if (deftJsn !== 'On') continue
+        if (artDefaultValue !== 'On') continue
 
-        //prmUpdate(4, typeJsn, codeJsn, on__Jsn)
-        receive(deftOsc, on__Jsn) // number | null
-        receive('/template-io_keyRangeVar1', trkRang) // {}[]
-        receive('/template-io_keyRangeVar2', rangJsn) // string[]
+        receive(artDefaultValueAddress, artOnValue) // number | null
+        receive('/template-io_keyRangeVar1', trkAllRanges) // {}[]
+        receive('/template-io_keyRangeVar2', artRangeList) // string[]
         receive('/template-io_keyRangeScript', 1)
+
+        // this sends the articulation ON parameters to Cubase for ALL toggle articulations with a default of 'On'
+        sendParameters('OSC4', artAddress, artCode, artOnValue)
       } else {
-        receive(modeOsc, 'tap')
+        receive(artModeAddress, 'tap') // toggle, push, momentary, tap
 
-        if (!deftJsn) continue
+        if (!artDefaultValue) continue
 
-        receive(modAOsc, 0.75)
-        receive(deftOsc, on__Jsn) // number | null
-        receive('/template-io_keyRangeVar1', trkRang) // {}[]
-        receive('/template-io_keyRangeVar2', rangJsn) // string[]
+        receive(artAlphaFillOnAddress, 0.75)
+        receive(artDefaultValueAddress, artOnValue) // number | null
+        receive('/template-io_keyRangeVar1', trkAllRanges) // {}[]
+        receive('/template-io_keyRangeVar2', artRangeList) // string[]
         receive('/template-io_keyRangeScript', 1)
+
+        // this sends the articulation ON parameters to Cubase for ONLY the default tap articulation
+        sendParameters('OSC4', artAddress, artCode, artOnValue)
       }
     }
 
