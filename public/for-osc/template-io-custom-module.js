@@ -159,20 +159,20 @@ function oscReset() {
   const artCount = 18
   // reset all fader info in OSC
   for (let i = 0; i < fadCount; i++) {
-    const fadNameAddress = '/CC_disp_' + parseInt(i + 1)
-    const fadCodeAddress = '/CC_incr_' + parseInt(i + 1)
-    const fadDefaultValueAddress = '/CC_fad__' + parseInt(i + 1)
+    const fadNameAddress = '/cc_' + parseInt(i + 1) + '_text_display'
+    const fadCodeAddress = '/cc_' + parseInt(i + 1) + '_increment'
+    const fadDefaultValueAddress = '/cc_' + parseInt(i + 1) + '_fad'
     receive(fadNameAddress, ' ')
     receive(fadDefaultValueAddress, 0)
     receive(fadCodeAddress, 0)
   }
   // reset all articulation info in OSC
   for (let i = 0; i < artCount; i++) {
-    const artNameAddress = '/artname_' + parseInt(i + 1)
-    const artInputBypassAddress = '/artinpt_' + parseInt(i + 1)
-    const artColorAddress = '/artcolr_' + parseInt(i + 1)
-    const artAlphaFillOnAddress = '/artmodA_' + parseInt(i + 1)
-    const artAlphaFillOffAddress = '/artmodB_' + parseInt(i + 1)
+    const artNameAddress = '/art_name_' + parseInt(i + 1)
+    const artInputBypassAddress = '/art_inpt_' + parseInt(i + 1)
+    const artColorAddress = '/art_colr_' + parseInt(i + 1)
+    const artAlphaFillOnAddress = '/art_mod_a_' + parseInt(i + 1)
+    const artAlphaFillOffAddress = '/art_mod_b_' + parseInt(i + 1)
     receive(artNameAddress, ' ')
     receive(artInputBypassAddress, 'true')
     receive(artColorAddress, '#A9A9A9')
@@ -180,11 +180,11 @@ function oscReset() {
     receive(artAlphaFillOffAddress, 0.15)
   }
   // reset the range information in OSC
-  receive('/template-io_keyRangeVar1', [])
-  receive('/template-io_keyRangeVar2', [])
-  receive('/template-io_keyRangeScript', 1)
-  receive('/selectedTrackNumber', ' ')
-  receive('/selectedTrackDelays', ' ')
+  receive('/template_io_key_range_var_1', [])
+  receive('/template_io_key_range_var_2', [])
+  receive('/template_io_key_range_script', 1)
+  receive('/selected_track_number', ' ')
+  receive('/selected_track_delays', ' ')
 }
 
 //
@@ -218,11 +218,11 @@ module.exports = {
     if (port === 'OSC2' && address === '/control') {
       toggles_OSC2(arg1, arg2)
       if (toggleAutoUpdate) {
-        receive('/trackNameColor', '#70b7ff')
-        receive('/template-io_trackNameColor', '#70b7ff')
+        receive('/track_name_color', '#70b7ff')
+        receive('/template_io_track_name_color', '#70b7ff')
       } else {
-        receive('/trackNameColor', 'red')
-        receive('/template-io_trackNameColor', 'red')
+        receive('/track_name_color', 'red')
+        receive('/template_io_track_name_color', 'red')
       }
       return data
     }
@@ -246,20 +246,20 @@ module.exports = {
     oscReset()
 
     const trkNumb = arg1 * 128 + arg2
-    receive('/selectedTrackNumber', trkNumb)
+    receive('/selected_track_number', trkNumb)
 
     if (!items[trkNumb]) {
-      receive('/selectedTrackName', 'No Track Data!')
+      receive('/selected_track_name', 'No Track Data!')
       return data
     }
 
     const trkName = items[trkNumb].name // string
     const trkNotes = items[trkNumb].notes // string
 
-    receive('/selectedTrackName', trkName)
-    receive('/selectedTrackNotes', trkNotes)
-    receive('/template-io_selectedTrackName', trkName)
-    receive('/template-io_selectedTrackNotes', trkNotes)
+    receive('/selected_track_name', trkName)
+    receive('/selected_track_notes', trkNotes)
+    receive('/template_io_selected_track_name', trkName)
+    receive('/template_io_selected_track_notes', trkNotes)
 
     const trkBaseDelay = items[trkNumb].baseDelay // number | null
     const trkAvgDelay = items[trkNumb].avgDelay // number | null
@@ -274,22 +274,22 @@ module.exports = {
     }
 
     receive(
-      '/selectedTrackDelays',
+      '/selected_track_delays',
       `Base Delay: ${trkBaseDelaySign}${trkBaseDelay}ms\nAvg Delay: ${trkAvgDelaySign}${trkAvgDelay}ms`
     )
 
     // if there are more than 4 faders in the JSON file, then we show a red border around the fader panel so that the user knows to paginate
     if (items[trkNumb].fadList.length > 4) {
-      receive('/faderPanel-color-2', '1px solid red')
+      receive('/fader_panel_color_2', '1px solid red')
     } else {
-      receive('/faderPanel-color-2', '')
+      receive('/fader_panel_color_2', '')
     }
 
     const fadListJsn = items[trkNumb].fadList
     for (let i = 0; i < fadListJsn.length; i++) {
-      const fadNameAddress = '/CC_disp_' + parseInt(i + 1)
-      const fadCodeAddress = '/CC_incr_' + parseInt(i + 1)
-      const fadDefaultValueAddress = '/CC_fad__' + parseInt(i + 1)
+      const fadNameAddress = '/cc_' + parseInt(i + 1) + '_text_display'
+      const fadCodeAddress = '/cc_' + parseInt(i + 1) + '_increment'
+      const fadDefaultValueAddress = '/cc_' + parseInt(i + 1) + '_fad'
       const fadName = fadListJsn[i].name // string | null
       const fadAddress = fadListJsn[i].codeType // string | null
       const fadCode = parseInt(fadListJsn[i].code) // number | null
@@ -312,19 +312,19 @@ module.exports = {
     const trkAllRanges = items[trkNumb].fullRange // {}[]
 
     for (let i = 0; i < artListJsn.length; i++) {
-      const artNameAddress = '/artname_' + parseInt(i + 1)
-      const artAddressAddress = '/arttype_' + parseInt(i + 1)
-      const artCodeAddress = '/artcode_' + parseInt(i + 1)
-      const artInputBypassAddress = '/artinpt_' + parseInt(i + 1)
-      const artDefaultValueAddress = '/artdeft_' + parseInt(i + 1)
-      const artOnValueAddress = '/arton___' + parseInt(i + 1)
-      const artOffValueAddress = '/artoff__' + parseInt(i + 1)
-      const artColorAddress = '/artcolr_' + parseInt(i + 1)
-      const artAlphaFillOnAddress = '/artmodA_' + parseInt(i + 1)
-      const artAlphaFillOffAddress = '/artmodB_' + parseInt(i + 1)
-      const artModeAddress = '/artMode_' + parseInt(i + 1)
-      const artRangeAddress = '/artrang_' + parseInt(i + 1)
-      const artLayersAddress = '/artLayers_' + parseInt(i + 1)
+      const artNameAddress = '/art_name_' + parseInt(i + 1)
+      const artAddressAddress = '/art_type_' + parseInt(i + 1)
+      const artCodeAddress = '/art_code_' + parseInt(i + 1)
+      const artInputBypassAddress = '/art_inpt_' + parseInt(i + 1)
+      const artDefaultValueAddress = '/art_deft_' + parseInt(i + 1)
+      const artOnValueAddress = '/art_on___' + parseInt(i + 1)
+      const artOffValueAddress = '/art_off__' + parseInt(i + 1)
+      const artColorAddress = '/art_colr_' + parseInt(i + 1)
+      const artAlphaFillOnAddress = '/art_mod_a_' + parseInt(i + 1)
+      const artAlphaFillOffAddress = '/art_mod_b_' + parseInt(i + 1)
+      const artModeAddress = '/art_mode_' + parseInt(i + 1)
+      const artRangeAddress = '/art_rang_' + parseInt(i + 1)
+      const artLayersAddress = '/art_layers_' + parseInt(i + 1)
       const artId = artListJsn[i].id // string
       const artName = artListJsn[i].name // string
       const artAddress = artListJsn[i].codeType // string
@@ -338,9 +338,9 @@ module.exports = {
       const artLayersList = JSON.parse(artListJsn[i].artLayers) // string[]
 
       if (!artName) {
-        receive('/template-io_keyRangeVar1', trkAllRanges) // {}[]
-        receive('/template-io_keyRangeVar2', artRangeList) // string[]
-        receive('/template-io_keyRangeScript', 1)
+        receive('/template_io_key_range_var_1', trkAllRanges) // {}[]
+        receive('/template_io_key_range_var_2', artRangeList) // string[]
+        receive('/template_io_key_range_script', 1)
         continue
       }
 
@@ -416,7 +416,7 @@ module.exports = {
         }
       }
 
-      receive('/template-io_artLayersVar1', allLayersThisTrack) // {}[]
+      receive('/template_io_art_layers_var_1', allLayersThisTrack) // {}[]
 
       if (artMode === true) {
         receive(artModeAddress, 'toggle') // toggle, push, momentary, tap
@@ -426,9 +426,9 @@ module.exports = {
         if (artDefaultValue !== 'On') continue
 
         receive(artDefaultValueAddress, artOnValue) // number | null
-        receive('/template-io_keyRangeVar1', trkAllRanges) // {}[]
-        receive('/template-io_keyRangeVar2', artRangeList) // string[]
-        receive('/template-io_keyRangeScript', 1)
+        receive('/template_io_key_range_var_1', trkAllRanges) // {}[]
+        receive('/template_io_key_range_var_2', artRangeList) // string[]
+        receive('/template_io_key_range_script', 1)
 
         // this sends the articulation ON parameters to Cubase for ALL toggle articulations with a default of 'On'
         sendParameters('OSC4', artAddress, artCode, artOnValue)
@@ -439,9 +439,9 @@ module.exports = {
 
         receive(artAlphaFillOnAddress, 0.75)
         receive(artDefaultValueAddress, artOnValue) // number | null
-        receive('/template-io_keyRangeVar1', trkAllRanges) // {}[]
-        receive('/template-io_keyRangeVar2', artRangeList) // string[]
-        receive('/template-io_keyRangeScript', 1)
+        receive('/template_io_key_range_var_1', trkAllRanges) // {}[]
+        receive('/template_io_key_range_var_2', artRangeList) // string[]
+        receive('/template_io_key_range_script', 1)
 
         // this sends the articulation ON parameters to Cubase for ONLY the default tap articulation
         sendParameters('OSC4', artAddress, artCode, artOnValue)

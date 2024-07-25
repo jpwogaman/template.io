@@ -1,37 +1,37 @@
 # "Scratch paper" for scripts found in template-io-workfile.json 
 
 ```js
-const allArtRanges = JSON.parse(get('template-io_keyRangeVar1'))
-const indArtRanges = JSON.parse(get('template-io_keyRangeVar2'))
-var id = get('template-io_articulationVarID')
-const allNotes = get('template-io_allNotes')
-const keyRangeColors = get('template-io_keyRangeColors')
+const allart_Ranges = JSON.parse(get('template_io_key_range_var_1'))
+const indart_Ranges = JSON.parse(get('template_io_key_range_var_2'))
+var id = get('template_io_articulation_var_id')
+const all_notes = get('template_io_all_notes')
+const key_range_colors = get('template_io_key_range_colors')
 
 var modes = []
 for (var i = 1; i < 19; i++) {
-    var mode = get(`artMode_${i}`)
+    var mode = get(`art_mode_${i}`)
     modes.push(mode)
 }
 for (let j = 0; j < 6; j++){
-  set('keyRangeName_' + j, '')
+  set('key_range_name_' + j, '')
 }
 
 var thisMode = modes[parseInt(id - 1)]
 if (thisMode === 'toggle') return
 
-for (let i = 0; i < allNotes.length; i++) {
-    set('myKey-' + i, 0)
-    set('template-io_myKey-' + i, 0)
+for (let i = 0; i < all_notes.length; i++) {
+    set('my_key_' + i, 0)
+    set('template_io_my_key_' + i, 0)
 }
 
 let selectedRanges = []
  
-indArtRanges.forEach((indRange, i)=> {
+indart_Ranges.forEach((indRange, i)=> {
 
-  const indSelectedRange = allArtRanges.filter((range) => range.id === indArtRanges[i])[0]
+  const indSelectedRange = allart_Ranges.filter((range) => range.id === indart_Ranges[i])[0]
   selectedRanges.push(indSelectedRange)
   const selectedName = !indSelectedRange.name ? '' : indSelectedRange.name
-  set('keyRangeName_' + Number(i+1), selectedName)
+  set('key_range_name_' + Number(i+1), selectedName)
 
 })
 
@@ -45,30 +45,30 @@ Object.keys(selectedRanges).forEach((range, index)=> {
     var low = selectedRanges[range].low
     var whiteKeysOnly = selectedRanges[range].whiteKeysOnly
 
-    var indexA = allNotes.indexOf(low)
-    var indexB = allNotes.indexOf(high)
+    var indexA = all_notes.indexOf(low)
+    var indexB = all_notes.indexOf(high)
     
-    const rangeLeft = getProp('myKey-' + indexA, 'left')
-    const rangeRight = getProp('myKey-' + indexB, 'left') + 24
+    const rangeLeft = getProp('my_key_' + indexA, 'left')
+    const rangeRight = getProp('my_key_' + indexB, 'left') + 24
     const rangeWidth = rangeRight - rangeLeft
     
-    set('keyRangeLeft_' + Number(index + 1), rangeLeft)
-    set('keyRangeWidth_' + Number(index + 1), rangeWidth)
+    set('key_range_left_' + Number(index + 1), rangeLeft)
+    set('key_range_width_' + Number(index + 1), rangeWidth)
     
-    for (let i = 0; i < allNotes.length; i++) {
+    for (let i = 0; i < all_notes.length; i++) {
         if (i >= indexA && i <= indexB) {
-            set('myKey-' + i, 1)
-            set('keyColor-' + i, keyRangeColors[range])
-            set('template-io_myKey-' + i, 1)
-            set('template-io_keyColor-' + i, keyRangeColors[range])
+            set('my_key_' + i, 1)
+            set('key_color_' + i, key_range_colors[range])
+            set('template_io_my_key_' + i, 1)
+            set('template_io_key_color_' + i, key_range_colors[range])
         }
     }
 
     if (whiteKeysOnly) {
         for (let i = 0; i < blackKeys.length; i++) {
-            const index = allNotes.indexOf(blackKeys[i])
-            set('myKey-' + index, 0)
-            set('template-io_myKey-' + index, 0)
+            const index = all_notes.indexOf(blackKeys[i])
+            set('my_key_' + index, 0)
+            set('template_io_my_key_' + index, 0)
         }
     }
 })
