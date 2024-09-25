@@ -15,6 +15,9 @@
       "all": true
     },
     "bundle": {
+      "externalBin": [
+        "bin/server"
+      ],
       "active": true,
       "category": "Productivity",
       "copyright": "Copyright ©2022 JP Wogaman II",

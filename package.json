@@ -19,9 +19,13 @@
     "lint": "next lint",
     "start": "next start",
     "deps": "ncu --interactive --format group",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "tauriDev": "concurrently --kill-others \"pnpm tauri dev\" \"npx tsx ./server/server.ts\"",
+    "build:server": "npx tsx ./build-server.ts",
+    "package:server": "npm run build:server && pkg dist/server/server.js -o ./src-tauri/bin/server-x86_64-pc-windows-msvc.exe"
   },
   "dependencies": {
+    "@fastify/cors": "^8.2.1",
     "@fortawesome/fontawesome-free": "^6.6.0",
     "@prisma/client": "^5.20.0",
     "@react-spring/web": "^9.7.4",
@@ -32,6 +36,8 @@
     "@trpc/react-query": "^10.45.2",
     "@trpc/server": "^10.45.2",
     "@use-gesture/react": "^10.3.1",
+    "fastify": "^4.15.0",
+    "fastify-cors": "^6.1.0",
     "framer-motion": "^11.5.6",
     "next": "14.2.13",
     "next-themes": "^0.3.0",
@@ -53,8 +59,11 @@
     "@typescript-eslint/eslint-plugin": "^8.7.0",
     "@typescript-eslint/parser": "^8.7.0",
     "autoprefixer": "^10.4.20",
+    "esbuild": "^0.24.0",
     "eslint": "^9.11.1",
+        "concurrently": "^9.0.1",
     "eslint-config-next": "14.2.13",
+    "pkg": "^5.8.1",
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.7",
@@ -64,5 +73,10 @@
   },
   "ct3aMetadata": {
     "initVersion": "6.11.2"
+  },
+  "pkg": {
+    "targets": [
+      "node18"
+    ]
   }
 }

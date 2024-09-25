@@ -1,5 +1,5 @@
 import { type NextPage } from 'next'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import TrackList from '@/components/trackList'
 import TrackOptions from '@/components/trackOptions'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
@@ -64,6 +64,29 @@ const Index: NextPage = () => {
     contextMenuId,
     setContextMenuId
   } = useContextMenu()
+
+  const [result, setResult] = useState('');
+  const apiURL = useRef('');
+
+  function getResult() {
+    fetch(apiURL.current)
+      .then((res) => res.json())
+      .then((res) => {
+        setResult(res.data)
+      });
+  }
+
+    useEffect(() => {
+    const isTauri = (window as any).__TAURI__;
+    apiURL.current = isTauri ? 'http://localhost:5661/add' : '/api/add';
+    
+    if (isTauri) {
+      import('@tauri-apps/api/shell').then((mod) => {
+        const command = mod.Command.sidecar('bin/server');
+        command.execute();
+      });
+    }
+    }, []);
 
   return (
     <div className='h-screen'>
@@ -134,6 +157,9 @@ const Index: NextPage = () => {
             </button>
             <button className='border px-2'>{`Copied Item: ${copiedItemId}`}</button>
             <button className='border px-2'>{`Copied SubItem: ${copiedSubItemId}`}</button>
+            <button className='border px-2'
+            onClick={() => getResult()}
+            >{`${result} - TEST`}</button>
           </li>
           <li className='block w-60 cursor-pointer p-2 text-right text-zinc-200'>
             <IconBtnToggle

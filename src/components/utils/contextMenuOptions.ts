@@ -84,4 +84,4 @@ export const ContextMenuOptions = [
     icon1: 'fa-xmark',
     icon2: null
   }
-]
+] 
