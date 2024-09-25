@@ -14,8 +14,8 @@ const config = {
 
   //⨯ API Routes cannot be used with "output: export".
   // export for building binaries, standalone for dev server
-  //output: 'export',
-  output: 'standalone',
+  output: 'export',
+  //output: 'standalone',
   distDir: 'dist',
   images: {
     unoptimized: true
