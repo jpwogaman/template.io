@@ -76,7 +76,7 @@ const Index: NextPage = () => {
       });
   }
 
-    useEffect(() => {
+  useEffect(() => {
     const isTauri = (window as any).__TAURI__;
     apiURL.current = isTauri ? 'http://localhost:5661/add' : '/api/add';
     
@@ -86,7 +86,7 @@ const Index: NextPage = () => {
         command.execute();
       });
     }
-    }, []);
+  }, []);
 
   return (
     <div className='h-screen'>

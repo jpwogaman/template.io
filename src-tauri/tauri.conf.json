@@ -11,9 +11,27 @@
     "version": "0.1.0"
   },
   "tauri": {
-    "allowlist": {
-      "all": true
-    },
+        "allowlist": {
+          "all": true,
+          "http": {
+            "all": true,
+            "scope": [
+              "https://**"
+            ]
+          },
+          "shell": {
+            "all": true,
+            "execute": true,
+            "sidecar": true,
+            "open": true,
+            "scope": [
+              {
+                "name": "bin/server",
+                "sidecar": true
+              }
+            ]
+          }
+        },
     "bundle": {
       "externalBin": [
         "bin/server"
