@@ -82,7 +82,7 @@ const Index: NextPage = () => {
     
     if (isTauri) {
       import('@tauri-apps/api/shell').then((mod) => {
-        const command = mod.Command.sidecar('bin/server');
+        const command = mod.Command.sidecar('bin/template-io-server');
         command.execute();
       });
     }

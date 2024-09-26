@@ -22,7 +22,7 @@
     "tauri": "tauri",
     "tauriDev": "concurrently --kill-others \"pnpm tauri dev\" \"npx tsx ./server/server.ts\"",
     "build:server": "npx tsx ./build-server.ts",
-    "package:server": "npm run build:server && pkg dist/server/server.js -o ./src-tauri/bin/server-x86_64-pc-windows-msvc.exe"
+    "package:server": "npm run build:server && pkg dist/server/template-io-server.js -o ./src-tauri/bin/template-io-server-x86_64-pc-windows-msvc.exe"
   },
   "dependencies": {
     "@fastify/cors": "^8.2.1",
