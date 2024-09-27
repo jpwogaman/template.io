@@ -78,5 +78,8 @@
     "targets": [
       "node18"
     ]
-  }
+  },
+  "engines": {
+    "node": "18.20.4"
+    }
 }
