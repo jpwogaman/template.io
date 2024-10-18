@@ -8,22 +8,19 @@ type ContextMenuProps = {
   contextMenuPosition: {
     top: number
     left: number
-  }  
+  }
   setIsContextMenuOpen: Dispatch<SetStateAction<boolean>>
 }
 
 const ContextMenu: FC<ContextMenuProps> = ({
   contextMenuId,
   contextMenuPosition,
-  setIsContextMenuOpen  
+  setIsContextMenuOpen
 }) => {
   //const { } = useMutations()
 
   const handleClick = (newMenuId: string) => {
     setIsContextMenuOpen(false)
-
-    
-    
   }
 
   return (
@@ -37,8 +34,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
         top: contextMenuPosition.top,
         left: contextMenuPosition.left
       }}>
-        <h1>hello</h1>
-      
+      <h1>hello</h1>
     </div>
   )
 }

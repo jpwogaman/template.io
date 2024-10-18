@@ -1,9 +1,9 @@
 import { open } from '@tauri-apps/api/dialog'
 import { readTextFile } from '@tauri-apps/api/fs'
 
-export const importJSON = async () => {
+export const importJSON = async (title: string) => {
   const result = await open({
-    title: 'Open Track Data',
+    title: title,
     filters: [
       {
         name: 'JSON',

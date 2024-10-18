@@ -29,15 +29,13 @@ const MyApp: AppType = ({ Component, pageProps }) => {
 
   mounted &&
     listen('tauri://menu', (event: { payload: string }) => {
-      //if (event.payload === 'export') {
-        
-      //}
+      if (event.payload === 'export') {
+        exportJSON(exportMutation, 'Window Title')
+      }
 
-      //if (event.payload === 'import') {
-      //  importJSON().then((data) => {
-          
-      //  })
-      //}
+      if (event.payload === 'import') {
+        importJSON('Window Title').then((data) => {})
+      }
 
       if (event.payload === 'about') {
         if (modalOpen) {

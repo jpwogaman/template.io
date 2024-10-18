@@ -1,11 +1,11 @@
 import { writeFile } from '@tauri-apps/api/fs'
 import { save } from '@tauri-apps/api/dialog'
 
-export const exportJSON = async (data: any) => {
+export const exportJSON = async (data: any, title: string) => {
   const json = JSON.stringify(data)
 
   const result = await save({
-    title: 'Save Track Data',
+    title: title,
     filters: [
       {
         name: 'JSON',
