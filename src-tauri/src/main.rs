@@ -16,17 +16,24 @@ use tauri::{
   SystemTrayMenu, 
   //SystemTrayMenuItem, 
   SystemTray, 
-  SystemTrayEvent
+  SystemTrayEvent,
 };  
 //use tauri::Manager;
 
+#[tauri::command(rename_all = "snake_case")]
+fn open_file_explorer(path: String) {
+  std::process::Command::new("explorer.exe")
+    .arg(path)
+    .spawn()
+    .expect("failed to open notepad");
+}
+
 fn main() {
   let context = tauri::generate_context!();  
-
+  
   let import = CustomMenuItem::new("import".to_string(), "Import");    
   let export = CustomMenuItem::new("export".to_string(), "Export");  
   let quit = CustomMenuItem::new("quit".to_string(), "Quit");
-
   let about = CustomMenuItem::new("about".to_string(), "About (v0.1.0)");  
   let settings = CustomMenuItem::new("settings".to_string(), "Settings");
 
@@ -58,6 +65,7 @@ fn main() {
   
   tauri::Builder::default()
     .menu(menu)
+    .invoke_handler(tauri::generate_handler![open_file_explorer])
     .on_menu_event(|event| {
       match event.menu_item_id() {          
         "import" => {

@@ -1,5 +1,5 @@
 import { type NextPage } from 'next'
-import { useEffect, useRef, useState } from 'react'
+import { use, useEffect, useRef, useState } from 'react'
 import TrackList from '@/components/trackList'
 import TrackOptions from '@/components/trackOptions'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
@@ -18,6 +18,7 @@ const Index: NextPage = () => {
   const [copiedItemId, setCopiedItemId] = useState<string | null>(null)
   const [copiedSubItemId, setCopiedSubItemId] = useState<string | null>(null)
 
+  const [isTauri, setIsTauri] = useState(false)
   const {
     dataLength,
     vepSamplerCount,
@@ -72,17 +73,29 @@ const Index: NextPage = () => {
     fetch(apiURL.current)
       .then((res) => res.json())
       .then((res) => {
-        setResult(res.data)
+        setResult(res.data);
       });
   }
 
+  const openFileExplorer = () => {
+    if (!isTauri) return
+    import('@tauri-apps/api/tauri').then((mod) =>{
+      const invoke = mod.invoke
+      invoke('open_file_explorer', {path: ''})
+    })
+  }
+
+
   useEffect(() => {
-    const isTauri = (window as any).__TAURI__;
+    if (typeof window !== 'undefined') {
+      setIsTauri((window as any).__TAURI__);
+    }
+
     apiURL.current = isTauri ? 'http://localhost:5661/add' : '/api/add';
-    
+
     if (isTauri) {
       import('@tauri-apps/api/shell').then((mod) => {
-        const command = mod.Command.sidecar('bin/template-io-server');
+        const command = mod.Command.sidecar('bin/template-io-server')        
         command.execute();
       });
     }
@@ -158,8 +171,12 @@ const Index: NextPage = () => {
             <button className='border px-2'>{`Copied Item: ${copiedItemId}`}</button>
             <button className='border px-2'>{`Copied SubItem: ${copiedSubItemId}`}</button>
             <button className='border px-2'
-            onClick={() => getResult()}
+              onClick={() => getResult()}
             >{`${result} - TEST`}</button>
+            <button className='border px-2'
+              onClick={() => openFileExplorer()}
+            >{`Open File Explorer`}</button>
+
           </li>
           <li className='block w-60 cursor-pointer p-2 text-right text-zinc-200'>
             <IconBtnToggle
