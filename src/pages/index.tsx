@@ -3,43 +3,19 @@ import { useEffect, useRef, useState } from 'react'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import { useTheme } from 'next-themes'
 import useKeyboard from '@/hooks/useKeyboard'
-import dynamic from 'next/dynamic'
 import useContextMenu from '@/hooks/useContextMenu'
-import useMutations from '@/hooks/useMutations'
-const ContextMenu = dynamic(() => import('@/components/contextMenu'))
+import ContextMenu from '@/components/contextMenu'
+import { invoke } from '@tauri-apps/api/tauri'
 
 const Index: NextPage = () => {
-  const [isTauri, setIsTauri] = useState(false)
-  //const {} = useMutations()
   //useKeyboard()
   const { setTheme, resolvedTheme } = useTheme()
-  const {
-    contextMenuPosition,
-    isContextMenuOpen,
-    setIsContextMenuOpen,
-    contextMenuId
-  } = useContextMenu()
+  const { contextMenuPosition, isContextMenuOpen, setIsContextMenuOpen } =
+    useContextMenu()
 
-  const openFileExplorer = () => {
-    if (!isTauri) return
-    import('@tauri-apps/api/tauri').then((mod) => {
-      const invoke = mod.invoke
-      invoke('open_file_explorer', { path: '' })
-    })
+  const openFileExplorer = (path: string) => {
+    invoke('open_file_explorer', { path: path ?? '' })
   }
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setIsTauri((window as any).__TAURI__)
-    }
-
-    if (isTauri) {
-      import('@tauri-apps/api/shell').then((mod) => {
-        const command = mod.Command.sidecar('bin/template-io-server')
-        command.execute()
-      })
-    }
-  }, [])
 
   return (
     <div className='h-screen'>
@@ -47,7 +23,6 @@ const Index: NextPage = () => {
       <div className='absolute left-0 top-0 z-[100]'>
         {isContextMenuOpen && (
           <ContextMenu
-            contextMenuId={contextMenuId}
             contextMenuPosition={contextMenuPosition}
             setIsContextMenuOpen={setIsContextMenuOpen}
           />
@@ -59,7 +34,9 @@ const Index: NextPage = () => {
           <li className='block flex gap-2 p-2 pl-5 text-left text-xs text-zinc-200'>
             <button
               className='border px-2'
-              onClick={() => openFileExplorer()}>{`Open File Explorer`}</button>
+              onClick={() =>
+                openFileExplorer('')
+              }>{`Open File Explorer`}</button>
           </li>
           <li className='block w-60 cursor-pointer p-2 text-right text-zinc-200'>
             <IconBtnToggle

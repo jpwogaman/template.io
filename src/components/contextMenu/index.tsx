@@ -1,10 +1,7 @@
 import tw from '@/utils/tw'
 import { type Dispatch, type FC, type SetStateAction } from 'react'
-import { ContextMenuOptions } from '../utils/contextMenuOptions'
-import useMutations from '@/hooks/useMutations'
 
 type ContextMenuProps = {
-  contextMenuId: string
   contextMenuPosition: {
     top: number
     left: number
@@ -13,16 +10,9 @@ type ContextMenuProps = {
 }
 
 const ContextMenu: FC<ContextMenuProps> = ({
-  contextMenuId,
   contextMenuPosition,
   setIsContextMenuOpen
 }) => {
-  //const { } = useMutations()
-
-  const handleClick = (newMenuId: string) => {
-    setIsContextMenuOpen(false)
-  }
-
   return (
     <div
       className={tw(
@@ -34,7 +24,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
         top: contextMenuPosition.top,
         left: contextMenuPosition.left
       }}>
-      <h1>hello</h1>
+      <h1>Test</h1>
     </div>
   )
 }

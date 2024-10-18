@@ -25,7 +25,7 @@ fn open_file_explorer(path: String) {
   std::process::Command::new("explorer.exe")
     .arg(path)
     .spawn()
-    .expect("failed to open notepad");
+    .expect("Failed to open file explorer");
 }
 
 fn main() {
