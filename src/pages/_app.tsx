@@ -3,7 +3,6 @@ import { ThemeProvider } from 'next-themes'
 import { listen } from '@tauri-apps/api/event'
 import { exportJSON } from '@/utils/exportJSON'
 import { importJSON } from '@/utils/importJSON'
-import { trpc } from '@/utils/trpc'
 import { useState, useEffect } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import dynamic from 'next/dynamic'
@@ -16,35 +15,10 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   const [mounted, setMounted] = useState(false)
   const { modalOpen, close, open, setModalText, modalText } = useModal()
 
-  const exportMutation = trpc.tauriMenuEvents.export.useMutation({
-    onSuccess: (data) => {
-      exportJSON(data)
-      exportMutation.reset()
-    },
-    onError: () => {
-      alert('There was an error submitting your request. Please try again.')
-    }
-  })
-
-  const createAllItemsFromJSONMutation =
-    trpc.items.createAllItemsFromJSON.useMutation({
-      onSuccess: () => {
-        createAllItemsFromJSONMutation.reset()
-      },
-      onError: (error) => {
-        alert(error.message)
-      }
-    })
-
-  const deleteAllItemsMutation = trpc.items.deleteAllItems.useMutation({
-    onSuccess: () => {
-      deleteAllItemsMutation.reset()
-    },
-    onError: () => {
-      alert('There was an error submitting your request. Please try again.')
-    }
-  })
-
+  const exportMutation = ''
+  const createAllItemsFromJSONMutation = ''
+    
+    
   useEffect(() => {
     setMounted(true)
   }, [])
@@ -55,18 +29,15 @@ const MyApp: AppType = ({ Component, pageProps }) => {
 
   mounted &&
     listen('tauri://menu', (event: { payload: string }) => {
-      if (event.payload === 'export') {
-        exportMutation.mutate({
-          event: 'tauri://menu',
-          payload: 'export'
-        })
-      }
+      //if (event.payload === 'export') {
+        
+      //}
 
-      if (event.payload === 'import') {
-        importJSON().then((data) => {
-          createAllItemsFromJSONMutation.mutate(data ?? '')
-        })
-      }
+      //if (event.payload === 'import') {
+      //  importJSON().then((data) => {
+          
+      //  })
+      //}
 
       if (event.payload === 'about') {
         if (modalOpen) {
@@ -107,4 +78,4 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   )
 }
 
-export default trpc.withTRPC(MyApp)
+export default MyApp
