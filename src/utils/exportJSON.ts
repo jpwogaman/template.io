@@ -1,5 +1,5 @@
-import { writeFile } from '@tauri-apps/api/fs'
-import { save } from '@tauri-apps/api/dialog'
+import { writeFile } from '@tauri-apps/plugin-fs'
+import { save } from '@tauri-apps/plugin-dialog'
 
 export const exportJSON = async (data: any) => {
   const json = JSON.stringify(data)

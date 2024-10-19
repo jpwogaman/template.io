@@ -3,36 +3,27 @@
   "build": {
     "beforeBuildCommand": "pnpm build",
     "beforeDevCommand": "pnpm dev",
-    "devPath": "http://localhost:3000",
-    "distDir": "../dist"
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:3000"
   },
-  "package": {
-    "productName": "template-io",
-    "version": "0.1.0"
+  "bundle": {
+    "active": true,
+    "category": "Productivity",
+    "copyright": "Copyright ©2022 JP Wogaman II",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
   },
-  "tauri": {
-    "allowlist": {
-      "all": true
-    },
-    "bundle": {
-      "active": true,
-      "category": "Productivity",
-      "copyright": "Copyright ©2022 JP Wogaman II",
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ],
-      "identifier": "template-io"
-    },
-    "security": {
-      "csp": null
-    },
-    "updater": {
-      "active": false
-    },
+  "productName": "template-io",
+  "mainBinaryName": "template-io",
+  "version": "0.1.0",
+  "identifier": "template-io",
+  "plugins": {},
+  "app": {
     "windows": [
       {
         "title": "Template.io",
@@ -46,9 +37,8 @@
         "minWidth": 1000
       }
     ],
-    "systemTray": {
-      "iconPath": "icons/32x32.png",
-      "iconAsTemplate": true
+    "security": {
+      "csp": null
     }
   }
 }
