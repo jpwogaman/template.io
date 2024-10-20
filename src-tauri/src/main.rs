@@ -35,6 +35,7 @@ fn main() {
         .text("import", "Import")
         .text("export", "Export")
         .separator()
+        .text("delete_all", "Flush DB / Clear All")
         .text("quit", "Quit")
         .build()?;
       let help_submenu = SubmenuBuilder::new(app, "Help")
@@ -51,6 +52,9 @@ fn main() {
           }
           "export" => {
             app.emit("export", "export").unwrap();
+          }
+          "delete_all" => {
+            app.emit("delete_all", "delete_all").unwrap();
           }
           "quit" => {
             std::process::exit(0);

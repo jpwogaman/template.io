@@ -95,36 +95,22 @@ const Index: NextPage = () => {
             <span> across </span>
             <span className='underline underline-offset-4'>
               {vepSamplerCount + nonVepSamplerCount}{' '}
-              {vepSamplerCount + nonVepSamplerCount > 1
-                ? 'Samplers'
-                : 'Sampler'}
+              {vepSamplerCount + nonVepSamplerCount > 1 ? 'Samplers' : 'Sampler'}
             </span>
             <span> (</span>
-            <span className='underline underline-offset-4'>
-              {vepSamplerCount}
-            </span>
+            <span className='underline underline-offset-4'>{vepSamplerCount}</span>
             <span> across </span>
             <span className='underline underline-offset-4'>
-              {vepInstanceCount}{' '}
-              {vepInstanceCount > 1 ? 'VEP Instances' : 'VEP Instance'}
+              {vepInstanceCount} {vepInstanceCount > 1 ? 'VEP Instances' : 'VEP Instance'}
             </span>
             <span> and </span>
-            <span className='underline underline-offset-4'>
-              {nonVepSamplerCount}
-            </span>
+            <span className='underline underline-offset-4'>{nonVepSamplerCount}</span>
             <span> standalone in DAW)</span>
           </li>
           <li className='block flex gap-2 p-2 pl-5 text-left text-xs text-zinc-200'>
             <button
               className='border px-2'
-              onClick={() => del.allTracks()}>
-              Flush DB / Clear All
-            </button>
-            <button
-              className='border px-2'
-              onClick={() =>
-                renumber.artList({ itemId: selectedItemId ?? '' })
-              }>
+              onClick={() => renumber.artList({ itemId: selectedItemId ?? '' })}>
               Renumber Arts
             </button>
             <button

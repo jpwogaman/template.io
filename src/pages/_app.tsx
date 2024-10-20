@@ -61,6 +61,9 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       createAllItemsFromJSONMutation.mutate(data ?? '')
     })
   })
+  listen('delete_all', () => {
+    deleteAllItemsMutation.mutate()
+  })
   listen('about', () => {
     if (modalOpen) {
       close()
