@@ -1,10 +1,10 @@
-import { writeFile } from '@tauri-apps/plugin-fs'
 import { save } from '@tauri-apps/plugin-dialog'
+import { writeTextFile } from '@tauri-apps/plugin-fs'
 
 export const exportJSON = async (data: any) => {
   const json = JSON.stringify(data)
 
-  const result = await save({
+  const filePath = await save({
     title: 'Save Track Data',
     filters: [
       {
@@ -14,6 +14,6 @@ export const exportJSON = async (data: any) => {
     ]
   })
 
-  if (!result) return
-  await writeFile(result, json)
+  if (!filePath) return
+  await writeTextFile(filePath, json)
 }

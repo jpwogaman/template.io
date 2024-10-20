@@ -1,0 +1,10 @@
+{
+  "identifier": "fs",
+  "local": true,
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "fs:allow-write-text-file"
+  ]
+}

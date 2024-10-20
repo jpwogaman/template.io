@@ -53,18 +53,15 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     return null
   }
 
-  listen('export', (event) => {
-    exportMutation.mutate({
-      event: 'tauri://menu',
-      payload: 'export'
-    })
+  listen('export', () => {
+    exportMutation.mutate()
   })
-  listen('import', (event) => {
+  listen('import', () => {
     importJSON().then((data) => {
       createAllItemsFromJSONMutation.mutate(data ?? '')
     })
   })
-  listen('about', (event) => {
+  listen('about', () => {
     if (modalOpen) {
       close()
     } else {
@@ -72,7 +69,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       setModalText('about')
     }
   })
-  listen('settings', (event) => {
+  listen('settings', () => {
     if (modalOpen) {
       close()
     } else {

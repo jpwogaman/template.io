@@ -2,7 +2,8 @@ import { open } from '@tauri-apps/plugin-dialog'
 import { readTextFile } from '@tauri-apps/plugin-fs'
 
 export const importJSON = async () => {
-  const result = await open({
+
+  const filePath = await open({
     title: 'Open Track Data',
     filters: [
       {
@@ -12,9 +13,7 @@ export const importJSON = async () => {
     ]
   })
 
-  if (!result) return
-
-  const json = await readTextFile(result as string)
-
+  if (!filePath) return
+  const json = await readTextFile(filePath)
   return json
 }
