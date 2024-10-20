@@ -5,6 +5,7 @@
     "main"
   ],
   "permissions": [
-    "fs:allow-write-text-file"
+    "fs:allow-write-text-file",
+    "fs:allow-read-text-file"
   ]
 }
