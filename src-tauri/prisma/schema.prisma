@@ -10,7 +10,11 @@ generator client {
 }
 
 model Post {
-    id      Int    @id @default(autoincrement())
-    title   String
-    content String
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    published Boolean
+    title     String
+    content   String?
+    desc      String?
 }

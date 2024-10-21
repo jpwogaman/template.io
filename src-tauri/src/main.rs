@@ -4,6 +4,7 @@
 mod db;
 
 use db::*;
+use prisma_client_rust::NewClientError;
 use serde::Deserialize;
 use specta::{ Type };
 use specta_typescript::Typescript;
@@ -18,63 +19,20 @@ use tauri::{
   tray::{ MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent },
 };
 
-type DbState<'a> = State<'a, Arc<PrismaClient>>;
-
-#[tauri::command]
-#[specta::specta]
-async fn get_posts(db: DbState<'_>) -> Result<Vec<post::Data>, ()> {
-  db.post()
-    .find_many(vec![])
-    .exec().await
-    .map_err(|_| ())
-}
-
-#[derive(Deserialize, Type)]
-struct CreatePostData {
-  title: String,
-  content: String,
-}
-
-#[tauri::command]
-#[specta::specta]
-async fn create_post(db: DbState<'_>, data: CreatePostData) -> Result<post::Data, ()> {
-  db.post()
-    .create(data.title, data.content, vec![])
-    .exec().await
-    .map_err(|_| ())
-}
-
-#[tauri::command]
-#[specta::specta] // < You must annotate your commands
-fn hello_world(my_name: String) -> String {
-  format!("Hello, {my_name}! You've been greeted from Rust!")
-}
-
 #[tokio::main]
 async fn main() {
-  let db = PrismaClient::_builder().build().await.unwrap();
+   let db = PrismaClient::_builder().build().await.unwrap();
 
-  //let invoke_handler = {
-  let mut builder = Builder::<tauri::Wry>
-    ::new()
-    .commands(collect_commands![hello_world, get_posts, create_post]);
-
-  #[cfg(debug_assertions)]
-  builder
-    .export(Typescript::default(), "../src/bindings.ts")
-    .expect("Failed to export typescript bindings");
-
-  //builder.build().unwrap()
-  //};
-
-  #[cfg(debug_assertions)]
-  db._db_push().await.unwrap();
+  let posts: Vec<post::Data> = db.post()
+    .find_many(vec![post::title::equals("Title".to_string())])
+    .exec().await
+    .unwrap();
 
   let context = tauri::generate_context!();
 
   tauri::Builder
     ::default()
-    .invoke_handler(builder.invoke_handler())
+    //.invoke_handler(builder.invoke_handler())
     .plugin(tauri_plugin_http::init())
     .plugin(tauri_plugin_clipboard_manager::init())
     .plugin(tauri_plugin_process::init())
@@ -85,8 +43,6 @@ async fn main() {
     .plugin(tauri_plugin_global_shortcut::Builder::new().build())
     .plugin(tauri_plugin_shell::init())
     .setup(move |app| {
-      builder.mount_events(app);
-
       let file_submenu = SubmenuBuilder::new(app, "File")
         .text("import", "Import")
         .text("export", "Export")
