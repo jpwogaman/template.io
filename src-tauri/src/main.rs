@@ -21,9 +21,13 @@ use tauri::{
 
 #[tokio::main]
 async fn main() {
-   let db = PrismaClient::_builder().build().await.unwrap();
+  let db = PrismaClient::_builder().build().await.unwrap();
 
-  let posts: Vec<post::Data> = db.post()
+  #[cfg(debug_assertions)]
+  db._db_push().await.unwrap();
+
+  let posts: Vec<post::Data> = db
+    .post()
     .find_many(vec![post::title::equals("Title".to_string())])
     .exec().await
     .unwrap();
