@@ -5,75 +5,76 @@ mod db;
 
 use db::*;
 use serde::Deserialize;
-use specta::{collect_types, Type};
+use specta::{ Type };
+use specta_typescript::Typescript;
 use std::sync::Arc;
-use tauri::State;
-use tauri_specta::ts;
-
+use tauri_specta::{ collect_commands, Builder };
+use tauri::{
+  Manager,
+  Emitter,
+  State,
+  image::Image,
+  menu::{ MenuBuilder, SubmenuBuilder },
+  tray::{ MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent },
+};
 
 type DbState<'a> = State<'a, Arc<PrismaClient>>;
 
 #[tauri::command]
 #[specta::specta]
 async fn get_posts(db: DbState<'_>) -> Result<Vec<post::Data>, ()> {
-    db.post().find_many(vec![]).exec().await.map_err(|_| ())
+  db.post()
+    .find_many(vec![])
+    .exec().await
+    .map_err(|_| ())
 }
 
 #[derive(Deserialize, Type)]
 struct CreatePostData {
-    title: String,
-    content: String,
+  title: String,
+  content: String,
 }
 
 #[tauri::command]
 #[specta::specta]
 async fn create_post(db: DbState<'_>, data: CreatePostData) -> Result<post::Data, ()> {
-    db.post()
-        .create(data.title, data.content, vec![])
-        .exec()
-        .await
-        .map_err(|_| ())
+  db.post()
+    .create(data.title, data.content, vec![])
+    .exec().await
+    .map_err(|_| ())
 }
 
-use tauri::{
-<<<<<<< HEAD
-  CustomMenuItem, 
-  Menu, 
-  MenuItem,
-  Submenu, 
-  SystemTrayMenu, 
-  SystemTray, 
-  SystemTrayEvent
-};  
+#[tauri::command]
+#[specta::specta] // < You must annotate your commands
+fn hello_world(my_name: String) -> String {
+  format!("Hello, {my_name}! You've been greeted from Rust!")
+}
 
 #[tokio::main]
 async fn main() {
-    let db = PrismaClient::_builder().build().await.unwrap();
+  let db = PrismaClient::_builder().build().await.unwrap();
 
-    #[cfg(debug_assertions)]
-    ts::export(collect_types![get_posts, create_post], "../src/bindings.ts").unwrap();
+  //let invoke_handler = {
+  let mut builder = Builder::<tauri::Wry>
+    ::new()
+    .commands(collect_commands![hello_world, get_posts, create_post]);
 
-    #[cfg(debug_assertions)]
-    db._db_push().await.unwrap();
+  #[cfg(debug_assertions)]
+  builder
+    .export(Typescript::default(), "../src/bindings.ts")
+    .expect("Failed to export typescript bindings");
 
-  let context = tauri::generate_context!();  
-=======
-  Manager,
-  Emitter,
-  image::Image,
-  menu::{
-    MenuBuilder,
-    SubmenuBuilder
-  },
-  tray::{ MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent },
-};
+  //builder.build().unwrap()
+  //};
 
-fn main() {
+  #[cfg(debug_assertions)]
+  db._db_push().await.unwrap();
+
   let context = tauri::generate_context!();
->>>>>>> main
 
   tauri::Builder
     ::default()
+    .invoke_handler(builder.invoke_handler())
     .plugin(tauri_plugin_http::init())
     .plugin(tauri_plugin_clipboard_manager::init())
     .plugin(tauri_plugin_process::init())
@@ -83,7 +84,9 @@ fn main() {
     .plugin(tauri_plugin_fs::init())
     .plugin(tauri_plugin_global_shortcut::Builder::new().build())
     .plugin(tauri_plugin_shell::init())
-    .setup(|app| {
+    .setup(move |app| {
+      builder.mount_events(app);
+
       let file_submenu = SubmenuBuilder::new(app, "File")
         .text("import", "Import")
         .text("export", "Export")
@@ -96,75 +99,12 @@ fn main() {
         .text("settings", "Settings")
         .build()?;
 
-<<<<<<< HEAD
-  let file_submenu = Submenu::new(
-    "File", 
-    Menu::new()    
-    .add_item(new)
-    .add_item(open)
-    .add_item(save)
-    .add_item(save_as)
-    .add_native_item(MenuItem::Separator)
-    .add_item(quit.clone())
-    .add_item(close)
-  );
-
-  let help_submenu = Submenu::new(
-    "Help", 
-    Menu::new()
-    .add_item(about)
-  );
-
-  let menu = Menu::new()
-  .add_submenu(file_submenu)
-  .add_submenu(help_submenu);
-
-  let tray_menu = SystemTrayMenu::new()
-  .add_item(quit);
-
-  let system_tray = SystemTray::new()
-  .with_menu(tray_menu);
-  
-  tauri::Builder::default()
-  .invoke_handler(tauri::generate_handler![get_posts, create_post])
-  .manage(Arc::new(db))
-    .menu(menu)
-    .on_menu_event(|event| {
-      match event.menu_item_id() {
-        "quit" => {
-          std::process::exit(0);
-        }
-        "close" => {
-          event.window().close().unwrap();
-        }
-        "open" => {
-          event.window().emit("open", Some("open")).unwrap();
-        }
-        "save" => {
-          event.window().emit("save", Some("save")).unwrap();
-        }
-        "save_as" => {
-          event.window().emit("save_as", Some("save_as")).unwrap();
-        }
-        _ => {}
-      }})
-    .system_tray(system_tray)
-    .on_system_tray_event(|_app, event| {
-      match event {
-        SystemTrayEvent::MenuItemClick { id, .. } => {
-          match id.as_str() {
-            "quit" => {
-              std::process::exit(0);
-            }
-            _ => {}
-=======
       let menu = MenuBuilder::new(app).items(&[&file_submenu, &help_submenu]).build()?;
       app.set_menu(menu)?;
       app.on_menu_event(move |app, event| {
         match event.id().as_ref() {
           "import" => {
             app.emit("import", "import").unwrap();
->>>>>>> main
           }
           "export" => {
             app.emit("export", "export").unwrap();
@@ -210,7 +150,7 @@ fn main() {
         .build(app)?;
 
       Ok(())
-    })    
+    })
     .run(context)
     .expect("Error while running the application!");
 }
