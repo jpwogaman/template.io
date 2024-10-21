@@ -95,7 +95,7 @@ You can now use Template.io to add information about your tracks and when you sa
 1) [**Tauri Prerequisites**](https://tauri.app/v1/guides/getting-started/prerequisites) - this includes downloading Rust, as well as configuring your PATH. 
 
 2)  ```
-    git clone https://github.com/jpwogaman/template.io
+    git clone https://github.com/jpwogaman/template.io.git
     ```
 3)  ```
     cd template.io
@@ -107,9 +107,6 @@ You can now use Template.io to add information about your tracks and when you sa
     npx prisma generate
     ```
 6)  ```
-    npx prisma db push
-    ```
-7)  ```
     pnpm tauri dev
     ```
 

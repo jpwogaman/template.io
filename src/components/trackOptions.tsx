@@ -1,8 +1,14 @@
-import { type FC, Fragment, useState, type ChangeEvent } from 'react'
-import { trpc } from '@/utils/trpc'
+import {
+  type FC,
+  Fragment,
+  useState,
+  useEffect,
+  type Dispatch,
+  type SetStateAction,
+} from 'react'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
-import TrackOptionsTableKeys from './trackOptionsTableKeys'
+import TrackOptionsTableKeys from './utils/trackOptionsTableKeys'
 import {
   type OnChangeHelperArgsType,
   type SelectedItemType,
@@ -10,172 +16,166 @@ import {
 } from './inputs'
 
 import {
-  type ItemsArtListSwitch,
+  type ItemsFullRanges,
   type ItemsArtListTog,
-  type ItemsFadList,
-  type ItemsFullRanges
+  type ItemsArtListTap,
+  type ItemArtLayers,
+  type ItemsFadList
 } from '@prisma/client'
+
+import useMutations from '@/hooks/useMutations'
+import TrackListTableKeys from './utils/trackListTableKeys'
 
 type TrackOptionsProps = {
   selectedItemId: string | null
+  setIsContextMenuOpen: Dispatch<SetStateAction<boolean>>
+  setContextMenuId: Dispatch<SetStateAction<string>>
+  setSelectedItemId: Dispatch<SetStateAction<string | null>>
+  selectedSubItemId: string | null
+  setSelectedSubItemId: Dispatch<SetStateAction<string | null>>
 }
 
-const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
-  const { data: selectedItem, refetch } = trpc.items.getSingleItem.useQuery({
-    itemId: selectedItemId ?? ''
+const TrackOptions: FC<TrackOptionsProps> = ({
+  selectedItemId,
+  setIsContextMenuOpen,
+  setContextMenuId,
+  setSelectedItemId,
+  selectedSubItemId,
+  setSelectedSubItemId
+}) => {
+
+
+  const { selectedItem, update } = useMutations({
+    selectedItemId,
+    setSelectedItemId
   })
+
   //////////////////////////////////////////
-  const renumberArtListMutation = trpc.items.renumberArtList.useMutation({
-    onSuccess: () => {
-      renumberArtListMutation.reset()
-      refetch()
-    },
-    onError: () => {
-      alert('There was an error submitting your request. Please try again.')
+  // This logic is used to disable individual components in the artTap, artTog, and fadList tables.
+  const allArtTogs = selectedItem?.artListTog ?? []
+  const allArtTaps = selectedItem?.artListTap ?? []
+  const allArtLayers = selectedItem?.artLayers ?? []
+  const allFads = selectedItem?.fadList ?? []
+
+  const [artTogIndividualComponentLocked, setArtTogIndividualComponentLocked] =
+    useState([
+      {
+        id: selectedItemId + 'AT_0',
+        code: false
+      }
+    ])
+
+  const [artTapIndividualComponentLocked, setArtTapIndividualComponentLocked] =
+    useState([
+      {
+        id: selectedItemId + 'AT_1',
+        on: false
+      }
+    ])
+
+  const [fadIndividualComponentLocked, setFadIndividualComponentLocked] =
+    useState([
+      {
+        id: selectedItemId + 'FL_0',
+        code: false
+      }
+    ])
+
+  const [artTapOneDefaultOnly, setArtTapOneDefaultOnly] = useState([
+    {
+      id: selectedItemId + 'AL_1',
+      default: true
     }
-  })
+  ])
+
+  const [
+    artLayerIndividualComponentLocked,
+    setArtLayerIndividualComponentLocked
+  ] = useState([
+    {
+      id: selectedItemId + 'AL_0',
+      code: false
+    }
+  ])
+
+  useEffect(() => {
+    setArtTogIndividualComponentLocked(
+      allArtTogs?.map((artTog) => {
+        const V1 = artTog.changeType === 'Value 1'
+        return {
+          id: artTog.id,
+          code: V1
+        }
+      })
+    )
+  }, [allArtTogs])
+
+  useEffect(() => {
+    setArtTapIndividualComponentLocked(
+      allArtTaps?.map((artTap) => {
+        const V1 = artTap.changeType === 'Value 1'
+        return {
+          id: artTap.id,
+          code: false,
+          on: V1
+        }
+      })
+    )
+    setArtTapOneDefaultOnly(
+      allArtTaps?.map((artTap) => {
+        return {
+          id: artTap.id,
+          default: artTap.default ?? false
+        }
+      })
+    )
+  }, [allArtTaps])
+
+  useEffect(
+    () =>
+      setArtLayerIndividualComponentLocked(
+        allArtLayers?.map((artLayer) => {
+          return {
+            id: artLayer.id,
+            code: false
+          }
+        })
+      ),
+    [allArtLayers]
+  )
+
+  useEffect(() => {
+    setFadIndividualComponentLocked(
+      allFads?.map((fad) => {
+        const V1 = fad.changeType === 'Value 1'
+        return {
+          id: fad.id,
+          code: V1
+        }
+      })
+    )
+  }, [allFads])
+
+  //if (artTap) {
+  //  V1 = 'the ON value relates to the CODE itself (i.e. ON = CC18)'
+  //  V2 = 'the ON value relates to the CODE's second Value (i.e. CODE = C#3, ON = Velocity 20)'
+  //}
+  //if (artTog) {
+  //  V1 = 'the ON and OFF values relate to the CODE itself (i.e. ON = CC18, OFF = CC35)'
+  //  V2 = 'the ON and OFF values relate to the CODE's second Value (i.e. CODE = C#3, ON = Velocity 20, OFF = Velocity 21)'
+  //}
+  // if (fad) {
+  //  V1 = 'the DEFAULT value relates to the CODE itself (i.e. DEFAULT = CC11)'
+  //  V2 = 'the DEFAULT value relates to the CODE's second Value (i.e. CODE = C#3, DEFAULT = Velocity 20)'
+  //}
+
   //////////////////////////////////////////
-  const updateSingleFullRangeMutation =
-    trpc.items.updateSingleFullRange.useMutation({
-      onSuccess: () => {
-        updateSingleFullRangeMutation.reset()
-        refetch()
-      },
-      onError: () => {
-        alert('There was an error submitting your request. Please try again.')
-      }
-    })
-  const updateSingleArtListSwitchMutation =
-    trpc.items.updateSingleArtListSwitch.useMutation({
-      onSuccess: () => {
-        updateSingleArtListSwitchMutation.reset()
-        refetch()
-      },
-      onError: () => {
-        alert('There was an error submitting your request. Please try again.')
-      }
-    })
-  const updateSingleArtListTogMutation =
-    trpc.items.updateSingleArtListTog.useMutation({
-      onSuccess: () => {
-        updateSingleArtListTogMutation.reset()
-        refetch()
-      },
-      onError: () => {
-        alert('There was an error submitting your request. Please try again.')
-      }
-    })
-  const updateSingleFadListMutation =
-    trpc.items.updateSingleFadList.useMutation({
-      onSuccess: () => {
-        updateSingleFadListMutation.reset()
-        refetch()
-      },
-      onError: () => {
-        alert('There was an error submitting your request. Please try again.')
-      }
-    })
-  //////////////////////////////////////////
-  const createSingleFullRangeMutation =
-    trpc.items.createSingleFullRange.useMutation({
-      onSuccess: () => {
-        createSingleFullRangeMutation.reset()
-        refetch()
-      },
-      onError: () => {
-        alert('There was an error submitting your request. Please try again.')
-      }
-    })
-  const createSingleArtListSwitchMutation =
-    trpc.items.createSingleArtListSwitch.useMutation({
-      onSuccess: () => {
-        createSingleArtListSwitchMutation.reset()
-        renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-        refetch()
-      },
-      onError: () => {
-        alert('There was an error submitting your request. Please try again.')
-      }
-    })
-  const createSingleArtListTogMutation =
-    trpc.items.createSingleArtListTog.useMutation({
-      onSuccess: () => {
-        createSingleArtListTogMutation.reset()
-        renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-        refetch()
-      },
-      onError: () => {
-        alert('There was an error submitting your request. Please try again.')
-      }
-    })
-  const createSingleFadListMutation =
-    trpc.items.createSingleFadList.useMutation({
-      onSuccess: () => {
-        createSingleFadListMutation.reset()
-        refetch()
-      },
-      onError: () => {
-        alert('There was an error submitting your request. Please try again.')
-      }
-    })
-  //////////////////////////////////////////
-  const deleteSingleFullRangeMutation =
-    trpc.items.deleteSingleFullRange.useMutation({
-      onSuccess: () => {
-        deleteSingleFullRangeMutation.reset()
-        refetch()
-      },
-      onError: (error) => {
-        alert(
-          error ??
-            'There was an error submitting your request. Please try again.'
-        )
-      }
-    })
-  const deleteSingleArtListSwitchMutation =
-    trpc.items.deleteSingleArtListSwitch.useMutation({
-      onSuccess: () => {
-        deleteSingleArtListSwitchMutation.reset()
-        refetch()
-      },
-      onError: (error) => {
-        alert(
-          error ??
-            'There was an error submitting your request. Please try again.'
-        )
-      }
-    })
-  const deleteSingleArtListTogMutation =
-    trpc.items.deleteSingleArtListTog.useMutation({
-      onSuccess: () => {
-        deleteSingleArtListTogMutation.reset()
-        refetch()
-      },
-      onError: (error) => {
-        alert(
-          error ??
-            'There was an error submitting your request. Please try again.'
-        )
-      }
-    })
-  const deleteSingleFadListMutation =
-    trpc.items.deleteSingleFadList.useMutation({
-      onSuccess: () => {
-        deleteSingleFadListMutation.reset()
-        refetch()
-      },
-      onError: (error) => {
-        alert(
-          error ??
-            'There was an error submitting your request. Please try again.'
-        )
-      }
-    })
-  //////////////////////////////////////////
+  //This could be a user-setting in local storage, but for now, it's hard-coded.
   const [trackOptionsLayouts, setTrackOptionsLayouts] = useState({
     fullRange: 'table',
-    artListSwitch: 'table',
     artListTog: 'table',
+    artListTap: 'table',
+    artLayers: 'table',
     fadList: 'table'
   })
 
@@ -186,99 +186,71 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
     }))
   }
   //////////////////////////////////////////
+    const onChangeHelperTrack = ({
+    newValue,
+    layoutDataSingleId: id,
+    key
+  }: OnChangeHelperArgsType) => {
+    //I need to throttle this so it doesn't fire on every keypress, only when the user stops typing for a second or so.
+
+    update.track({
+      itemId: id,
+      [key]: newValue
+    })
+  }
+  //////////////////////////////////////////
   const onChangeHelper = ({
     newValue,
     layoutDataSingleId,
     key,
     label
-  }: OnChangeHelperArgsType) => {
+  }: OnChangeHelperArgsType) => {  
     if (label === 'fullRange') {
       if (key === 'whiteKeysOnly') {
-        updateSingleFullRangeMutation.mutate({
+        update.fullRange({
           rangeId: layoutDataSingleId ?? '',
           whiteKeysOnly: newValue === 'true'
         })
       } else {
-        updateSingleFullRangeMutation.mutate({
+        update.fullRange({
           rangeId: layoutDataSingleId ?? '',
-          [key]: newValue
-        })
-      }
-    }
-    if (label === 'artListSwitch') {
-      if (key === 'default') {
-        updateSingleArtListSwitchMutation.mutate({
-          artId: layoutDataSingleId ?? '',
-          default: newValue === 'true'
-        })
-      } else {
-        updateSingleArtListSwitchMutation.mutate({
-          artId: layoutDataSingleId ?? '',
           [key]: newValue
         })
       }
     }
     if (label === 'artListTog') {
-      updateSingleArtListTogMutation.mutate({
+      update.artListTog({
         artId: layoutDataSingleId ?? '',
         [key]: newValue
       })
     }
+    if (label === 'artListTap') {
+      if (key === 'default') {
+        update.artListTap({
+          artId: layoutDataSingleId ?? '',
+          default: newValue === 'true'
+        })
+        return
+      }
+      update.artListTap({
+        artId: layoutDataSingleId ?? '',
+        [key]: newValue
+      })
+    }
+    if (label === 'artLayers') {
+      update.artLayer({
+        layerId: layoutDataSingleId ?? '',
+        [key]: newValue
+      })
+    }
     if (label === 'fadList') {
-      updateSingleFadListMutation.mutate({
+      update.fadList({
         fadId: layoutDataSingleId ?? '',
         [key]: newValue
       })
     }
   }
-  const createSingleSubItemMutationHelper = (label: string) => {
-    if (label === 'fullRange') {
-      createSingleFullRangeMutation.mutate({
-        itemId: selectedItemId ?? ''
-      })
-    }
-    if (label === 'artListSwitch') {
-      createSingleArtListSwitchMutation.mutate({
-        itemId: selectedItemId ?? ''
-      })
-    }
-    if (label === 'artListTog') {
-      createSingleArtListTogMutation.mutate({
-        itemId: selectedItemId ?? ''
-      })
-    }
-    if (label === 'fadList') {
-      createSingleFadListMutation.mutate({
-        itemId: selectedItemId ?? ''
-      })
-    }
-  }
-  const deleteSingleSubItemMutationHelper = (id: string, label: string) => {
-    if (label === 'fullRange') {
-      deleteSingleFullRangeMutation.mutate({
-        fileItemsItemId: selectedItemId ?? '',
-        rangeId: id
-      })
-    }
-    if (label === 'artListSwitch') {
-      deleteSingleArtListSwitchMutation.mutate({
-        fileItemsItemId: selectedItemId ?? '',
-        artId: id
-      })
-    }
-    if (label === 'artListTog') {
-      deleteSingleArtListTogMutation.mutate({
-        fileItemsItemId: selectedItemId ?? '',
-        artId: id
-      })
-    }
-    if (label === 'fadList') {
-      deleteSingleFadListMutation.mutate({
-        fileItemsItemId: selectedItemId ?? '',
-        fadId: id
-      })
-    }
-  }
+
   //////////////////////////////////////////
   const trackTh = `border-[1.5px]
   border-b-transparent
@@ -291,6 +263,18 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
   dark:font-normal
   p-1
    `
+
+  const locked = selectedItem?.locked ?? false
+  const notesId = selectedItem?.id + '_notes'
+  const notesSelectedLocked =
+    locked && selectedSubItemId === notesId
+  const notesSelectedUnlocked =
+    !locked && selectedSubItemId === notesId
+  const notesUnselectedLocked =
+    locked && selectedSubItemId !== notesId
+  const notesUnselectedUnlocked =
+    !locked && selectedSubItemId !== notesId
+
   //////////////////////////////////////////
   return (
     <div className='h-full w-1/2 overflow-y-scroll'>
@@ -298,22 +282,56 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
         title={`Track Id: ${selectedItem?.id} - Track Name: ${selectedItem?.name}`}
         className='pb-2 pt-4 text-3xl'>{`Track Name: ${selectedItem?.name}`}</h1>
 
+        <h2>Notes:</h2>      
+        <div
+          className={
+            tw(
+              'm-1 p-1 flex items-center',
+              //notesSelectedUnlocked
+              //  ? 'bg-red-300 hover:bg-red-400 hover:text-zinc-50 dark:bg-red-600 dark:hover:bg-red-400 dark:hover:text-zinc-50'
+              //  : notesSelectedLocked
+              //    ? 'bg-red-500 hover:bg-red-600 hover:text-zinc-50 dark:bg-red-800 dark:hover:bg-red-500 dark:hover:text-zinc-50'
+              //    : notesUnselectedLocked
+              //      ? 'hover:bg-zinc-500 hover:text-zinc-50  dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
+              //      : notesUnselectedUnlocked
+              //        ? 'hover:bg-zinc-500 hover:text-zinc-50 dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
+              //        : ''
+        )}>
+        <InputTypeSelector
+          keySingle={
+            {
+              className: null,
+              show: false,
+              key: 'notes',
+              input: 'text-rich',
+              selectArray: undefined,
+              label: undefined
+            } as unknown as (typeof TrackListTableKeys)['keys'][number]
+          }
+          onChangeHelper={onChangeHelperTrack}
+          selectedItem={selectedItem as unknown as SelectedItemType}
+        />
+        </div>
       {TrackOptionsTableKeys.map((layoutConfig) => {
         let layoutDataArray:
-          | ItemsArtListSwitch[]
-          | ItemsArtListTog[]
-          | ItemsFadList[]
           | ItemsFullRanges[]
+          | ItemsArtListTog[]
+          | ItemsArtListTap[]
+          | ItemArtLayers[]
+          | ItemsFadList[]
           | undefined = []
 
         if (layoutConfig.label === 'fullRange') {
           layoutDataArray = selectedItem?.fullRange
         }
-        if (layoutConfig.label === 'artListSwitch') {
-          layoutDataArray = selectedItem?.artListSwitch
-        }
         if (layoutConfig.label === 'artListTog') {
           layoutDataArray = selectedItem?.artListTog
+        }
+        if (layoutConfig.label === 'artListTap') {
+          layoutDataArray = selectedItem?.artListTap
+        }
+        if (layoutConfig.label === 'artLayers') {
+          layoutDataArray = selectedItem?.artLayers
         }
         if (layoutConfig.label === 'fadList') {
           layoutDataArray = selectedItem?.fadList
@@ -344,7 +362,9 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
               />
             </div>
             {table && (
-              <table className='w-full table-fixed border-separate border-spacing-0 text-left text-xs '>
+              <table
+                id={'table_' + layoutConfig.label}
+                className='w-full table-fixed border-separate border-spacing-0 text-left text-xs '>
                 <thead>
                   <tr>
                     {layoutConfig.keys.map((key) => {
@@ -358,24 +378,40 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                         </td>
                       )
                     })}
-                    <td className={tw(trackTh, 'w-[5%] text-center')}>
-                      <button
-                        onClick={() =>
-                          createSingleSubItemMutationHelper(layoutConfig.label)
-                        }>
-                        <i className='fa-solid fa-plus' />
-                      </button>
-                    </td>
                   </tr>
                 </thead>
                 <tbody>
                   {layoutDataArray?.map((layoutDataSingle) => {
                     const layoutDataSingleId = layoutDataSingle.id
 
+                    const selectedLocked =
+                      locked && selectedSubItemId === layoutDataSingleId
+                    const selectedUnlocked =
+                      !locked && selectedSubItemId === layoutDataSingleId
+                    const unselectedLocked =
+                      locked && selectedSubItemId !== layoutDataSingleId
+                    const unselectedUnlocked =
+                      !locked && selectedSubItemId !== layoutDataSingleId
+
                     return (
                       <tr
+                        onClick={() => setSelectedSubItemId(layoutDataSingleId)}
+                        onContextMenu={() => {
+                          setIsContextMenuOpen(true)
+                          setContextMenuId(layoutDataSingleId)
+                        }}
                         key={layoutDataSingleId}
-                        className='bg-zinc-300 dark:bg-zinc-600 '>
+                        className={tw(
+                          selectedUnlocked
+                            ? 'bg-red-300 hover:bg-red-400 hover:text-zinc-50 dark:bg-red-600 dark:hover:bg-red-400 dark:hover:text-zinc-50'
+                            : selectedLocked
+                              ? 'bg-red-500 hover:bg-red-600 hover:text-zinc-50 dark:bg-red-800 dark:hover:bg-red-500 dark:hover:text-zinc-50'
+                              : unselectedLocked
+                                ? 'bg-zinc-200 hover:bg-zinc-500 hover:text-zinc-50 dark:bg-zinc-600 dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
+                                : unselectedUnlocked
+                                  ? 'bg-zinc-200 hover:bg-zinc-500 hover:text-zinc-50 dark:bg-zinc-600 dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
+                                  : ''
+                        )}>
                         {layoutConfig.keys.map((key) => {
                           if (!key.show) return
                           return (
@@ -385,6 +421,19 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                               className={'p-0.5'}>
                               <InputTypeSelector
                                 keySingle={key}
+                                artTogIndividualComponentLocked={
+                                  artTogIndividualComponentLocked
+                                }
+                                artTapIndividualComponentLocked={
+                                  artTapIndividualComponentLocked
+                                }
+                                artLayerIndividualComponentLocked={
+                                  artLayerIndividualComponentLocked
+                                }
+                                fadIndividualComponentLocked={
+                                  fadIndividualComponentLocked
+                                }
+                                artTapOneDefaultOnly={artTapOneDefaultOnly}
                                 layoutConfigLabel={layoutConfig.label}
                                 layoutDataSingle={layoutDataSingle}
                                 onChangeHelper={onChangeHelper}
@@ -393,17 +442,6 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                             </td>
                           )
                         })}
-                        <td className='text-center'>
-                          <button
-                            onClick={() =>
-                              deleteSingleSubItemMutationHelper(
-                                layoutDataSingleId,
-                                layoutConfig.label
-                              )
-                            }>
-                            <i className='fa-solid fa-minus' />
-                          </button>
-                        </td>
                       </tr>
                     )
                   })}
@@ -411,37 +449,27 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
               </table>
             )}
             {!table && (
-              <div className='flex gap-1 overflow-x-scroll'>
+              <div
+                id={'card_' + layoutConfig.label}
+                className='flex gap-1 overflow-x-scroll'>
                 {layoutDataArray?.map((layoutDataSingle) => {
                   const layoutDataSingleId = layoutDataSingle.id
                   return (
                     <table
+                      onClick={() => setSelectedSubItemId(layoutDataSingleId)}
+                      onKeyDown={() => {}}
+                      onContextMenu={() => {
+                        setIsContextMenuOpen(true)
+                        setContextMenuId(layoutDataSingleId)
+                      }}
                       key={layoutDataSingleId}
                       className='w-max table-auto border-separate border-spacing-0 text-left text-xs'>
                       <thead>
                         <tr>
-                          <td className={tw(trackTh, 'w-1/2')}>
+                          <td className={tw(trackTh, 'w-1/2 border-r-0')}>
                             {layoutDataSingleId}
                           </td>
-                          <td className={tw(trackTh, 'flex justify-between')}>
-                            <button
-                              onClick={() =>
-                                deleteSingleSubItemMutationHelper(
-                                  layoutDataSingleId,
-                                  layoutConfig.label
-                                )
-                              }>
-                              <i className='fa-solid fa-minus' />
-                            </button>
-                            <button
-                              onClick={() =>
-                                createSingleSubItemMutationHelper(
-                                  layoutConfig.label
-                                )
-                              }>
-                              <i className='fa-solid fa-plus' />
-                            </button>
-                          </td>
+                          <td className={tw(trackTh, ' w-1/2 border-l-0')} />
                         </tr>
                       </thead>
                       <tbody>
@@ -457,6 +485,16 @@ const TrackOptions: FC<TrackOptionsProps> = ({ selectedItemId }) => {
                               <td className={'p-0.5'}>
                                 <InputTypeSelector
                                   keySingle={key}
+                                  artTapIndividualComponentLocked={
+                                    artTapIndividualComponentLocked
+                                  }
+                                  artTogIndividualComponentLocked={
+                                    artTogIndividualComponentLocked
+                                  }
+                                  fadIndividualComponentLocked={
+                                    fadIndividualComponentLocked
+                                  }
+                                  artTapOneDefaultOnly={artTapOneDefaultOnly}
                                   layoutConfigLabel={layoutConfig.label}
                                   layoutDataSingle={layoutDataSingle}
                                   onChangeHelper={onChangeHelper}

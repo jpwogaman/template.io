@@ -2,7 +2,7 @@ const TrackListTableKeys = {
   label: 'Tracks',
   keys: [
     {
-      className: 'w-[10%]',
+      className: 'w-[5%]',
       show: true,
       key: 'id',
       input: undefined,
@@ -10,7 +10,7 @@ const TrackListTableKeys = {
       label: 'ID'
     },
     {
-      className: 'w-[00%]',
+      className: null,
       show: false,
       key: 'locked',
       input: undefined,
@@ -26,12 +26,44 @@ const TrackListTableKeys = {
       label: 'Name'
     },
     {
-      className: 'w-[12%]',
+      className: 'w-[6%]',
       show: true,
       key: 'channel',
       input: 'select',
       selectArray: 'chnMidiList',
-      label: 'Channel'
+      label: 'Ch.'
+    },
+    {
+      className: 'w-[8%]',
+      show: true,
+      key: 'vepInstance',
+      input: 'select',
+      selectArray: 'vepInstList',
+      label: 'VEP Instance'
+    },
+    {
+      className: 'w-[8%]',
+      show: true,
+      key: 'vepOut',
+      input: 'select',
+      selectArray: 'vepOutsList',
+      label: 'VEP Outs'
+    },
+    {
+      className: 'w-[4%]',
+      show: true,
+      key: 'smpNumber',
+      input: 'text',
+      selectArray: undefined,
+      label: 'Sampler No.'
+    },
+    {
+      className: 'w-[8%]',
+      show: true,
+      key: 'smpOut',
+      input: 'select',
+      selectArray: 'smpOutsList',
+      label: 'Sampler Outs'
     },
     {
       className: 'w-[10%]',
@@ -50,10 +82,18 @@ const TrackListTableKeys = {
       label: 'Avg. Delay'
     },
     {
-      className: 'w-[00%]',
+      className: null,
       show: false,
       key: 'color',
-      input: 'checkbox',
+      input: 'color-picker',
+      selectArray: undefined,
+      label: undefined
+    },
+    {
+      className: null,
+      show: false,
+      key: 'notes',
+      input: 'text-rich',
       selectArray: undefined,
       label: undefined
     }

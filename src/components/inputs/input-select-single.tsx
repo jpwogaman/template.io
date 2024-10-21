@@ -1,26 +1,18 @@
-import { type FC, type ChangeEvent, type ReactNode, useState } from 'react'
-import { selectArrays } from './index'
+import { type FC, type ChangeEvent, useState } from 'react'
+import { selectArrays, type InputComponentProps } from './index'
 import tw from '@/utils/tw'
 
-interface InputSelectProps {
-  id: string | undefined
-  options: string | number
-  codeDisabled?: boolean
-  onChangeFunction?: (
-    event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
-  ) => void | undefined
-  children?: ReactNode
-  defaultValue?: string
-}
-
-export const InputSelectSingle: FC<InputSelectProps> = ({
-  onChangeFunction,
-  codeDisabled,
+export const InputSelectSingle: FC<InputComponentProps> = ({
   id,
+  codeDisabled,
+  codeFullLocked,
+  defaultValue,
   options,
-  defaultValue
+  onChangeFunction
 }) => {
-  const [value, setVal] = useState<string | number>(defaultValue ?? '')
+  const [value, setValue] = useState<string | number>(
+    (defaultValue as unknown as string | number) ?? ''
+  )
 
   let inputSelectOptionElements:
     | React.JSX.Element
@@ -28,18 +20,18 @@ export const InputSelectSingle: FC<InputSelectProps> = ({
     | number[]
     | undefined = selectArrays.valNoneList?.array
 
-  if (!codeDisabled) {
-    for (const array in selectArrays) {
-      if (options === selectArrays[array]?.name) {
-        inputSelectOptionElements = selectArrays[array]?.array
-      }
+  //if (!codeDisabled) {
+  for (const array in selectArrays) {
+    if (options === selectArrays[array]?.name) {
+      inputSelectOptionElements = selectArrays[array]?.array
     }
   }
+  //}
 
   const valChange = (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
-    setVal(event.target.value)
+    setValue(event.target.value)
 
     if (onChangeFunction) {
       onChangeFunction(event)
@@ -49,13 +41,16 @@ export const InputSelectSingle: FC<InputSelectProps> = ({
   return (
     <select
       id={id}
-      disabled={codeDisabled}
+      disabled={codeFullLocked ?? codeDisabled}
       title={id + '_currentValue: ' + value}
-      value={!codeDisabled ? value : undefined}
+      value={codeFullLocked ?? codeDisabled ? undefined : value}
       onChange={valChange}
       className={tw(
-        'w-full overflow-scroll bg-inherit outline-offset-4 outline-green-600 focus:bg-white focus:text-zinc-900 dark:outline-green-800',
-        codeDisabled ? 'cursor-not-allowed' : 'cursor-pointer'
+        'w-full overflow-scroll rounded-sm bg-inherit p-1',
+        'focus-visible:cursor-text focus-visible:bg-white focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-600',
+        codeFullLocked || codeDisabled //NOSONAR
+          ? 'cursor-not-allowed text-gray-400'
+          : 'cursor-pointer'
       )}>
       {inputSelectOptionElements}
     </select>

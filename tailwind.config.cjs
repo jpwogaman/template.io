@@ -13,7 +13,6 @@ module.exports = {
         caviarBold: ['caviar_dreamsbold'],
         caviarItalic: ['caviar_dreamsitalic'],
         caviarBoldItalic: ['caviar_dreamsbold_italic'],
-
         mono: ['camingocoderegular']
       }
     }

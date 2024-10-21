@@ -1,39 +1,22 @@
-import { type FC, type ChangeEvent, type ReactNode, useState } from 'react'
+import { type FC, type ChangeEvent } from 'react'
+import { type InputComponentProps } from './index'
 import tw from '@/utils/tw'
 
-interface InputCheckBoxProps {
-  id: string | undefined
-  title?: string
-  defaultValue?: string
-  artFad?: boolean
-  toggle?: boolean
-  showVals?: boolean
-  codeDisabled?: boolean
-  children?: ReactNode
-  onChangeFunction?: (
-    event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
-  ) => void | undefined
-}
-
-export const InputCheckBox: FC<InputCheckBoxProps> = ({
-  onChangeFunction,
-  title,
-  defaultValue,
+export const InputCheckBox: FC<InputComponentProps> = ({
   id,
-  codeDisabled
+  codeFullLocked,
+  defaultValue,
+  onChangeFunction
 }) => {
-  const [isChecked, setChecked] = useState<boolean>(defaultValue === 'false')
+  const isChecked =
+    typeof defaultValue === 'boolean' ? defaultValue : defaultValue === 'true'
 
   const valChange = (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
-    if (!codeDisabled) {
-      if (onChangeFunction) {
-        onChangeFunction(event)
-      }
-
-      setChecked(!isChecked)
-    }
+    if (codeFullLocked) return
+    if (!onChangeFunction) return
+    onChangeFunction(event)
   }
   return (
     <label
@@ -43,12 +26,13 @@ export const InputCheckBox: FC<InputCheckBoxProps> = ({
       <input
         id={id}
         type='checkbox'
-        disabled={codeDisabled}
+        checked={isChecked}
+        disabled={codeFullLocked}
         value={isChecked ? 'false' : 'true'}
         onChange={(event) => valChange(event)}
         className={tw(
           'w-full p-1 text-zinc-900',
-          codeDisabled ? 'cursor-not-allowed bg-zinc-300' : 'cursor-pointer'
+          codeFullLocked ? 'cursor-not-allowed bg-zinc-300' : 'cursor-pointer'
         )}
       />
     </label>
