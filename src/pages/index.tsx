@@ -1,5 +1,5 @@
 import { type NextPage } from 'next'
-import { use, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import TrackList from '@/components/trackList'
 import TrackOptions from '@/components/trackOptions'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
@@ -12,9 +12,7 @@ const ContextMenu = dynamic(() => import('@/components/contextMenu'))
 
 const Index: NextPage = () => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>('T_0')
-  const [selectedSubItemId, setSelectedSubItemId] = useState<null | string>(
-    'T_0_notes'
-  )
+  const [selectedSubItemId, setSelectedSubItemId] = useState<null | string>('T_0_notes')
   const [copiedItemId, setCopiedItemId] = useState<string | null>(null)
   const [copiedSubItemId, setCopiedSubItemId] = useState<string | null>(null)
 
@@ -66,40 +64,39 @@ const Index: NextPage = () => {
     setContextMenuId
   } = useContextMenu()
 
-  const [result, setResult] = useState('');
-  const apiURL = useRef('');
+  const [result, setResult] = useState('')
+  const apiURL = useRef('')
 
-  function getResult() {
+  const getResult = () => {
     fetch(apiURL.current)
       .then((res) => res.json())
       .then((res) => {
-        setResult(res.data);
-      });
+        setResult(res.data)
+      })
   }
 
   const openFileExplorer = () => {
     if (!isTauri) return
-    import('@tauri-apps/api/tauri').then((mod) =>{
+    import('@tauri-apps/api/tauri').then((mod) => {
       const invoke = mod.invoke
-      invoke('open_file_explorer', {path: ''})
+      invoke('open_file_explorer', { path: '' })
     })
   }
 
-
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setIsTauri((window as any).__TAURI__);
+      setIsTauri((window as any).__TAURI__)
     }
 
-    apiURL.current = isTauri ? 'http://localhost:5661/add' : '/api/add';
+    apiURL.current = isTauri ? 'http://localhost:5661/trpc/test' : '/api/trpc/test'
 
-    if (isTauri) {
-      import('@tauri-apps/api/shell').then((mod) => {
-        const command = mod.Command.sidecar('bin/template-io-server')        
-        command.execute();
-      });
-    }
-  }, []);
+    //if (isTauri) {
+    //  import('@tauri-apps/api/shell').then((mod) => {
+    //    const command = mod.Command.sidecar('bin/template-io-server')
+    //    command.execute();
+    //  });
+    //}
+  }, [])
 
   return (
     <div className='h-screen'>
@@ -131,23 +128,16 @@ const Index: NextPage = () => {
             <span> across </span>
             <span className='underline underline-offset-4'>
               {vepSamplerCount + nonVepSamplerCount}{' '}
-              {vepSamplerCount + nonVepSamplerCount > 1
-                ? 'Samplers'
-                : 'Sampler'}
+              {vepSamplerCount + nonVepSamplerCount > 1 ? 'Samplers' : 'Sampler'}
             </span>
             <span> (</span>
-            <span className='underline underline-offset-4'>
-              {vepSamplerCount}
-            </span>
+            <span className='underline underline-offset-4'>{vepSamplerCount}</span>
             <span> across </span>
             <span className='underline underline-offset-4'>
-              {vepInstanceCount}{' '}
-              {vepInstanceCount > 1 ? 'VEP Instances' : 'VEP Instance'}
+              {vepInstanceCount} {vepInstanceCount > 1 ? 'VEP Instances' : 'VEP Instance'}
             </span>
             <span> and </span>
-            <span className='underline underline-offset-4'>
-              {nonVepSamplerCount}
-            </span>
+            <span className='underline underline-offset-4'>{nonVepSamplerCount}</span>
             <span> standalone in DAW)</span>
           </li>
           <li className='block flex gap-2 p-2 pl-5 text-left text-xs text-zinc-200'>
@@ -158,9 +148,7 @@ const Index: NextPage = () => {
             </button>
             <button
               className='border px-2'
-              onClick={() =>
-                renumber.artList({ itemId: selectedItemId ?? '' })
-              }>
+              onClick={() => renumber.artList({ itemId: selectedItemId ?? '' })}>
               Renumber Arts
             </button>
             <button
@@ -170,13 +158,12 @@ const Index: NextPage = () => {
             </button>
             <button className='border px-2'>{`Copied Item: ${copiedItemId}`}</button>
             <button className='border px-2'>{`Copied SubItem: ${copiedSubItemId}`}</button>
-            <button className='border px-2'
-              onClick={() => getResult()}
-            >{`${result} - TEST`}</button>
-            <button className='border px-2'
-              onClick={() => openFileExplorer()}
-            >{`Open File Explorer`}</button>
-
+            <button
+              className='border px-2'
+              onClick={() => getResult()}>{`${result} - TEST`}</button>
+            <button
+              className='border px-2'
+              onClick={() => openFileExplorer()}>{`Open File Explorer`}</button>
           </li>
           <li className='block w-60 cursor-pointer p-2 text-right text-zinc-200'>
             <IconBtnToggle

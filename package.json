@@ -20,7 +20,7 @@
     "start": "next start",
     "deps": "ncu --interactive --format group",
     "tauri": "tauri",
-    "tauriDev": "concurrently --kill-others \"pnpm tauri dev\" \"npx tsx ./server/template-io-server.ts\"",
+    "tauriDev": "concurrently --kill-others \"pnpm tauri dev\" \"npx tsx watch ./server/template-io-server.ts\"",
     "build:server": "npx tsx ./build-server.ts",
     "package:server": "pnpm build:server && pkg dist/server/template-io-server.js -o ./src-tauri/bin/template-io-server-x86_64-pc-windows-msvc.exe"
   },
