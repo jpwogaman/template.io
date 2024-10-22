@@ -11,12 +11,26 @@ fastify.register(cors)
 
 const PORT = { port: 5661 }
 
-fastify.get('/trpc/test', async (req, res) => {
+fastify.get('/api/trpc/items', async (req, res) => {
   console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-  //console.log(req.headers)
+  console.log(req.headers)
 
   //const { data } = trpc.test.export.useQuery()
 
+  const items = await prisma.fileItems.findMany({
+    include: {
+      fullRange: true,
+      artListTog: true,
+      artListTap: true,
+      artLayers: true,
+      fadList: true
+    }
+  })
+
+  res.type('application/json').status(200).send(items)
+})
+
+fastify.get('/trpc/test', async (req, res) => {
   const items = await prisma.fileItems.findMany({
     include: {
       fullRange: true,
