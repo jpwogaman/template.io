@@ -53,39 +53,39 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     return null
   }
 
-  mounted &&
-    listen('tauri://menu', (event: { payload: string }) => {
-      if (event.payload === 'export') {
-        exportMutation.mutate({
-          event: 'tauri://menu',
-          payload: 'export'
-        })
-      }
+  //mounted &&
+  //  listen('tauri://menu', (event: { payload: string }) => {
+  //    if (event.payload === 'export') {
+  //      exportMutation.mutate({
+  //        event: 'tauri://menu',
+  //        payload: 'export'
+  //      })
+  //    }
 
-      if (event.payload === 'import') {
-        importJSON().then((data) => {
-          createAllItemsFromJSONMutation.mutate(data ?? '')
-        })
-      }
+  //    if (event.payload === 'import') {
+  //      importJSON().then((data) => {
+  //        createAllItemsFromJSONMutation.mutate(data ?? '')
+  //      })
+  //    }
 
-      if (event.payload === 'about') {
-        if (modalOpen) {
-          close()
-        } else {
-          open()
-          setModalText('about')
-        }
-      }
+  //    if (event.payload === 'about') {
+  //      if (modalOpen) {
+  //        close()
+  //      } else {
+  //        open()
+  //        setModalText('about')
+  //      }
+  //    }
 
-      if (event.payload === 'settings') {
-        if (modalOpen) {
-          close()
-        } else {
-          open()
-          setModalText('settings')
-        }
-      }
-    })
+  //    if (event.payload === 'settings') {
+  //      if (modalOpen) {
+  //        close()
+  //      } else {
+  //        open()
+  //        setModalText('settings')
+  //      }
+  //    }
+  //  })
 
   return (
     <ThemeProvider

@@ -9,10 +9,13 @@ import dynamic from 'next/dynamic'
 import useContextMenu from '@/hooks/useContextMenu'
 import useMutations from '@/hooks/useMutations'
 const ContextMenu = dynamic(() => import('@/components/contextMenu'))
+import { trpc } from '@/utils/trpc'
 
 const Index: NextPage = () => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>('T_0')
-  const [selectedSubItemId, setSelectedSubItemId] = useState<null | string>('T_0_notes')
+  const [selectedSubItemId, setSelectedSubItemId] = useState<null | string>(
+    'T_0_notes'
+  )
   const [copiedItemId, setCopiedItemId] = useState<string | null>(null)
   const [copiedSubItemId, setCopiedSubItemId] = useState<string | null>(null)
 
@@ -64,14 +67,17 @@ const Index: NextPage = () => {
     setContextMenuId
   } = useContextMenu()
 
-  const [result, setResult] = useState('')
+  const [result, setResult] = useState<string | undefined>('')
   const apiURL = useRef('')
+
+  //const { data: testData, refetch: refetchAll } = trpc.test.export.useQuery()
 
   const getResult = () => {
     fetch(apiURL.current)
       .then((res) => res.json())
       .then((res) => {
         setResult(res.data)
+        //setResult(testData?.message)
       })
   }
 
@@ -85,10 +91,12 @@ const Index: NextPage = () => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setIsTauri((window as any).__TAURI__)
+      //setIsTauri((window as any).__TAURI__)
+      setIsTauri(true)
     }
 
-    apiURL.current = isTauri ? 'http://localhost:5661/trpc/test' : '/api/trpc/test'
+    //apiURL.current = isTauri ? 'http://localhost:5661/trpc/test' : '/api/trpc/test'
+    apiURL.current = 'http://localhost:5661/trpc/test'
 
     //if (isTauri) {
     //  import('@tauri-apps/api/shell').then((mod) => {
@@ -128,16 +136,23 @@ const Index: NextPage = () => {
             <span> across </span>
             <span className='underline underline-offset-4'>
               {vepSamplerCount + nonVepSamplerCount}{' '}
-              {vepSamplerCount + nonVepSamplerCount > 1 ? 'Samplers' : 'Sampler'}
+              {vepSamplerCount + nonVepSamplerCount > 1
+                ? 'Samplers'
+                : 'Sampler'}
             </span>
             <span> (</span>
-            <span className='underline underline-offset-4'>{vepSamplerCount}</span>
+            <span className='underline underline-offset-4'>
+              {vepSamplerCount}
+            </span>
             <span> across </span>
             <span className='underline underline-offset-4'>
-              {vepInstanceCount} {vepInstanceCount > 1 ? 'VEP Instances' : 'VEP Instance'}
+              {vepInstanceCount}{' '}
+              {vepInstanceCount > 1 ? 'VEP Instances' : 'VEP Instance'}
             </span>
             <span> and </span>
-            <span className='underline underline-offset-4'>{nonVepSamplerCount}</span>
+            <span className='underline underline-offset-4'>
+              {nonVepSamplerCount}
+            </span>
             <span> standalone in DAW)</span>
           </li>
           <li className='block flex gap-2 p-2 pl-5 text-left text-xs text-zinc-200'>
@@ -148,7 +163,9 @@ const Index: NextPage = () => {
             </button>
             <button
               className='border px-2'
-              onClick={() => renumber.artList({ itemId: selectedItemId ?? '' })}>
+              onClick={() =>
+                renumber.artList({ itemId: selectedItemId ?? '' })
+              }>
               Renumber Arts
             </button>
             <button
