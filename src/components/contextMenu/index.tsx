@@ -1,8 +1,9 @@
+'use client'
+
 import tw from '@/utils/tw'
 import { type Dispatch, type FC, type SetStateAction } from 'react'
-import { ContextMenuOptions } from '../utils/contextMenuOptions'
+import { ContextMenuOptions } from './contextMenuOptions'
 import useMutations from '@/hooks/useMutations'
-import { set } from 'zod'
 
 type ContextMenuProps = {
   contextMenuId: string

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "private": true,
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/jpwogaman/template.io"
@@ -21,11 +22,25 @@
     "deps": "ncu --interactive --format group",
     "tauri": "tauri"
   },
+  "ct3aMetadata": {
+    "initVersion": "6.11.2"
+  },
+  "engines": {
+    "node": "18.20.x",
+    "pnpm": "9.13.x"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "eslint": "9"
+      }
+    }
+  },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.6.0",
     "@prisma/client": "^5.21.1",
     "@react-spring/web": "^9.7.5",
-    "@tanstack/react-query": "^4.36.1",
+    "@tanstack/react-query": "^5.61.4",
     "@tauri-apps/api": "^2.0.2",
     "@tauri-apps/plugin-clipboard-manager": "^2.0.0",
     "@tauri-apps/plugin-dialog": "~2",
@@ -36,46 +51,48 @@
     "@tauri-apps/plugin-os": "~2",
     "@tauri-apps/plugin-process": "~2",
     "@tauri-apps/plugin-shell": "~2",
-    "@trpc/client": "^10.45.2",
-    "@trpc/next": "^10.45.2",
-    "@trpc/react-query": "^10.45.2",
-    "@trpc/server": "^10.45.2",
+    "@t3-oss/env-nextjs": "^0.11.1",
+    "@trpc/client": "^11.0.0-rc.446",
+    "@trpc/next": "^11.0.0-rc.446",
+    "@trpc/react-query": "^11.0.0-rc.446",
+    "@trpc/server": "^11.0.0-rc.446",
     "@use-gesture/react": "^10.3.1",
-    "framer-motion": "^11.11.9",
-    "next": "14.2.15",
-    "next-themes": "^0.3.0",
+    "framer-motion": "^11.11.17",
+    "next": "15.0.3",
+    "@next/bundle-analyzer": "^15.0.3",
+    "@next/env": "^15.0.3",
+    "next-themes": "^0.4.3",
     "react": "18.3.1",
     "react-color": "^2.19.3",
     "react-colorful": "^5.6.1",
     "react-dom": "18.3.1",
     "reactcss": "^1.2.3",
+    "server-only": "^0.0.1",
     "superjson": "2.2.1",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.0.3",
-    "@types/node": "^22.7.6",
-    "@types/react": "^18.3.11",
+    "@types/node": "^22.10.0",
+    "@types/react": "^18.3.12",
     "@types/react-color": "^3.0.12",
     "@types/react-dom": "^18.3.1",
     "@types/reactcss": "^1.2.12",
-    "@typescript-eslint/eslint-plugin": "^8.10.0",
-    "@typescript-eslint/parser": "^8.10.0",
+    "@types/eslint": "^9.6.1",
+    "@types/eslint__eslintrc": "^2.1.2",
+    "@typescript-eslint/eslint-plugin": "^8.16.0",
+    "@typescript-eslint/parser": "^8.16.0",
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.15.0",
     "autoprefixer": "^10.4.20",
-    "eslint": "^9.13.0",
-    "eslint-config-next": "14.2.15",
-    "postcss": "^8.4.47",
-    "prettier": "^3.3.3",
+    "eslint": "^9.15.0",
+    "eslint-config-next": "15.0.3",
+    "postcss": "^8.4.49",
+    "prettier": "^3.4.1",
+    "prettier-plugin-tailwindcss": "^0.6.9",
     "prettier-plugin-rust": "^0.1.9",
-    "prettier-plugin-tailwindcss": "^0.6.8",
     "prisma": "^5.21.1",
-    "tailwindcss": "^3.4.14",
-    "typescript": "^5.6.3"
-  },
-  "ct3aMetadata": {
-    "initVersion": "6.11.2"
-  },
-  "engines": {
-    "node": "18.20.4"
+    "tailwindcss": "^3.4.15",
+    "typescript": "^5.7.2"
   }
 }

@@ -18,7 +18,7 @@ import {
 
 import TrackOptionsTableKeys from '../utils/trackOptionsTableKeys'
 import TrackListTableKeys from '../utils/trackListTableKeys'
-import SettingsTableKeys from '../utils/settingsTableKeys'
+import SettingsTableKeys from '../modal/settingsTableKeys'
 import tw from '@/utils/tw'
 import { InputColorPicker } from './input-color-picker'
 import { InputTextRich } from './input-text-rich'

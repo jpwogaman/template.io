@@ -1,3 +1,5 @@
+'use'
+
 import {
   type FC,
   Fragment,

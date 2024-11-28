@@ -1,5 +1,5 @@
 import { type Dispatch, type SetStateAction } from 'react'
-import { trpc } from '@/utils/trpc'
+import {api as trpc } from '@/utils/trpc/react'
 //import { vepInstanceArray } from '@/components/inputs/input-arrays'
 
 type UseMutationsProps = {

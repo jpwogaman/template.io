@@ -1,7 +1,7 @@
+@import '@fortawesome/fontawesome-free/css/all.min.css';
 @tailwind base;
 @tailwind components;
-@import 'fonts';
-@import '@fortawesome/fontawesome-free/css/all.min.css';
+@tailwind utilities;
 
 *,
 *::after,
@@ -104,5 +104,3 @@ details[open] summary ~ * {
   width: 100%;
   min-width: 100%;
 }
-
-@tailwind utilities;

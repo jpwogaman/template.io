@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, type Dispatch, type SetStateAction } from 'react'
 import useMutations from '@/hooks/useMutations'
 

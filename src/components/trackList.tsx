@@ -1,3 +1,4 @@
+'use client'
 import React, { type FC, type Dispatch, type SetStateAction } from 'react'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
@@ -41,7 +42,7 @@ const TrackList: FC<TrackListProps> = ({
       [key]: newValue
     })
   }
-
+  
   const sortedData = data?.toSorted((a, b) => {
     return (
       parseInt(a.id.split('_')[1] || '0') - parseInt(b.id.split('_')[1] || '0')
