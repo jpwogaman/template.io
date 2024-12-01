@@ -42,7 +42,8 @@
       "capabilities": [
         "migrated",
         "desktop-capability",
-        "fs"
+        "fs",
+        "log"
       ]
     }
   }

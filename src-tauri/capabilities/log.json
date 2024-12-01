@@ -1,0 +1,10 @@
+{
+  "identifier": "log",
+  "local": true,
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "log:default"
+  ]
+}

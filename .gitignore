@@ -12,6 +12,10 @@
 /prisma/db.postgresql
 /prisma/db.postgresql-journal
 /prisma/db.sqlite
+/db.sqlite
+/diesel.toml
+/migrations
+/src-tauri/diesel.toml
 
 # next.js
 /.next/

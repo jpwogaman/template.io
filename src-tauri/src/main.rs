@@ -1,9 +1,17 @@
 #![cfg_attr(all(not(debug_assertions), target_os = "windows"), windows_subsystem = "windows")]
 
-//#[derive(Clone, serde::Serialize)]
-//struct Payload {
-//  message: String,
-//}
+mod db;
+mod commands;
+mod models;
+mod services;
+mod schema;
+use tauri_plugin_log;
+use log::info;
+mod settings;
+
+use commands::fileitem_commands::*;
+use commands::settings_commands::*;
+use services::fileitem_service;
 
 use tauri::{
   Manager,
@@ -16,11 +24,15 @@ use tauri::{
   tray::{ MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent },
 };
 
-fn main() {
+#[tokio::main]
+async fn main() {
+  info!("init");
+  tauri::async_runtime::set(tokio::runtime::Handle::current());
   let context = tauri::generate_context!();
 
   tauri::Builder
     ::default()
+    .plugin(tauri_plugin_log::Builder::new().build())
     .plugin(tauri_plugin_http::init())
     .plugin(tauri_plugin_clipboard_manager::init())
     .plugin(tauri_plugin_process::init())
@@ -31,6 +43,11 @@ fn main() {
     .plugin(tauri_plugin_global_shortcut::Builder::new().build())
     .plugin(tauri_plugin_shell::init())
     .setup(|app| {
+      tokio::spawn(async move {
+        db::init();
+        settings::Settings::init();
+        fileitem_service::init();
+      });
       let file_submenu = SubmenuBuilder::new(app, "File")
         .text("import", "Import")
         .text("export", "Export")
@@ -95,6 +112,14 @@ fn main() {
 
       Ok(())
     })    
+    .invoke_handler(tauri::generate_handler![
+      list_fileitems,
+      get_fileitem,
+      create_fileitem,
+      delete_fileitem,
+      get_settings,
+      set_settings
+    ])
     .run(context)
     .expect("Error while running the application!");
 }

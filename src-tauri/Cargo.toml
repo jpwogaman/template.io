@@ -12,21 +12,34 @@ rust-version = "1.73.0"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "2", features = [] }
+tauri-build = { version = "2.0.3", features = [] }
 
 [dependencies]
-serde_json = "1.0.131"
-serde = { version = "1.0.210", features = ["derive"] }
-tauri = { version = "2", features = ["tray-icon", "image-png"] }
+serde_json = "1.0.133"
+serde = { version = "1.0.215", features = ["derive"] }
+tauri = { version = "2.1.1", features = ["tray-icon", "image-png"] }
 palette = "0.7.6"
-tauri-plugin-shell = "2"
-tauri-plugin-fs = "2"
-tauri-plugin-notification = "2"
-tauri-plugin-os = "2"
-tauri-plugin-dialog = "2"
-tauri-plugin-process = "2"
-tauri-plugin-clipboard-manager = "2.0.0-beta.0"
-tauri-plugin-http = "2"
+log = "0.4.22"
+tokio = { version = "1.41.1", features = ["macros", "rt-multi-thread", "full"] }
+tracing = "0.1.41"
+tracing-subscriber = "0.3.19"
+dirs = "5.0.1"
+diesel = { version = "2.2.5", features = ["sqlite", "chrono"] }
+diesel_migrations = "2.2.0"
+libsqlite3-sys = { version = "0.30.1", features = ["bundled"] }
+reqwest = { version = "0.12.9", features = ["json"] }
+chrono = { version = "0.4.38", features = ["serde"] }
+uuid = "1.11.0"
+
+tauri-plugin-shell = "2.0.2"
+tauri-plugin-fs = "2.0.3"
+tauri-plugin-notification = "2.0.1"
+tauri-plugin-os = "2.0.1"
+tauri-plugin-log = "2.0.2"
+tauri-plugin-dialog = "2.0.3"
+tauri-plugin-process = "2.0.1"
+tauri-plugin-clipboard-manager = "2.1.0-beta.7"
+tauri-plugin-http = "2.0.3"
 
 [features]
 # by default Tauri runs in production mode
@@ -39,4 +52,4 @@ png = []
 
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
-tauri-plugin-global-shortcut = "2"
+tauri-plugin-global-shortcut = "2.0.1"

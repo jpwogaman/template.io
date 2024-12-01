@@ -4,6 +4,7 @@ import { type NextPage } from 'next'
 import { useTheme } from 'next-themes'
 import { useState, useEffect } from 'react'
 import { listen } from '@tauri-apps/api/event'
+import { invoke } from '@tauri-apps/api/core';
 
 import { exportJSON } from '@/utils/exportJSON'
 import { importJSON } from '@/utils/importJSON'
@@ -140,9 +141,15 @@ const Index: NextPage = () => {
       setModalType('settings')
     }
   })
+
+ const listItems = ()=>{
+  invoke('list_fileitems').then((response) => {
+    console.log(response);
+  });
+ }
+
+
   
-
-
   return (
     <div className='h-screen'>
       {/* CONTEXT MENU */}
@@ -198,6 +205,7 @@ const Index: NextPage = () => {
             </button>
             <button className='border px-2'>{`Copied Item: ${copiedItemId}`}</button>
             <button className='border px-2'>{`Copied SubItem: ${copiedSubItemId}`}</button>
+            <button className='border px-2' onClick={listItems}>SQL Test</button>
           </li>
           <li className='block w-60 cursor-pointer p-2 text-right text-zinc-200'>
             <IconBtnToggle
@@ -212,6 +220,7 @@ const Index: NextPage = () => {
               onToggleB={() => setTheme('light')}
             />
           </li>
+          
         </ul>
       </nav>
       {/* MAIN */}
