@@ -1,5 +1,6 @@
 import { type Dispatch, type SetStateAction } from 'react'
 import {api as trpc } from '@/utils/trpc/react'
+import { exportJSON } from '@/components/tauriListenersContext/exportJSON'
 //import { vepInstanceArray } from '@/components/inputs/input-arrays'
 
 type UseMutationsProps = {
@@ -118,7 +119,28 @@ const useMutations = ({
   const selectedItemFadCount = data?.[selectedItemIndex]?._count?.fadList ?? 0
 
   //////////////////////////////////////////
+  // EXPORT mutations
+  const exportMutation = trpc.tauriMenuEvents.export.useMutation({
+    onSuccess: (data) => {
+      exportJSON(data)
+      exportMutation.reset()
+    },
+    onError: () => {
+      alert('There was an error submitting your request. Please try again.')
+    }
+  })
+
+  //////////////////////////////////////////
   // CREATE mutations
+  const createAllItemsFromJSONMutation =
+    trpc.items.createAllItemsFromJSON.useMutation({
+      onSuccess: () => {
+        createAllItemsFromJSONMutation.reset()
+      },
+      onError: (error) => {
+        alert(error.message)
+      }
+    })
   const createSingleItemMutation = trpc.items.createSingleItem.useMutation({
     onSuccess: () => {
       createSingleItemMutation.reset()
@@ -277,22 +299,23 @@ const useMutations = ({
     })
   //////////////////////////////////////////
   // DELETE mutations
+  const deleteAllItemsMutation = trpc.items.deleteAllItems.useMutation({
+    onSuccess: () => {
+      deleteAllItemsMutation.reset()
+      createSingleItemMutation.mutate({
+        count: 1
+      })
+    },
+    onError: () => {
+      alert('There was an error submitting your request. Please try again.')
+    }
+  })
   const deleteSingleItemMutation = trpc.items.deleteSingleItem.useMutation({
     onSuccess: () => {
       deleteSingleItemMutation.reset()
       refetchAll()
       refetchSelected()
       setSelectedItemId(previousItemId)
-    },
-    onError: () => {
-      alert('There was an error submitting your request. Please try again.')
-    }
-  })
-  const deleteAllItemsMutation = trpc.items.deleteAllItems.useMutation({
-    onSuccess: () => {
-      createSingleItemMutation.mutate({
-        count: 1
-      })
     },
     onError: () => {
       alert('There was an error submitting your request. Please try again.')
@@ -413,8 +436,11 @@ const useMutations = ({
     }
   })
   //////////////////////////////////////////
-
+  const exportItems = {
+    export: exportMutation.mutate
+  }
   const create = {
+    allItemsFromJSON: createAllItemsFromJSONMutation.mutate,
     track: createSingleItemMutation.mutate,
     fullRange: createSingleFullRangeMutation.mutate,
     artListTog: createSingleArtListTogMutation.mutate,
@@ -470,6 +496,7 @@ const useMutations = ({
     previousItemId,
     nextItemId,
     /////////////////////////////////
+    exportItems,
     create,
     update,
     del,
