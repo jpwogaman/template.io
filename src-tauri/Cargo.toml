@@ -32,14 +32,14 @@ chrono = { version = "0.4.38", features = ["serde"] }
 uuid = "1.11.0"
 
 tauri-plugin-shell = "2.0.2"
-tauri-plugin-fs = "2.0.3"
+tauri-plugin-fs = "2.1.0"
 tauri-plugin-notification = "2.0.1"
 tauri-plugin-os = "2.0.1"
-tauri-plugin-log = "2.0.2"
-tauri-plugin-dialog = "2.0.3"
+tauri-plugin-log = "2.0.3"
+tauri-plugin-dialog = "2.0.4"
 tauri-plugin-process = "2.0.1"
 tauri-plugin-clipboard-manager = "2.1.0-beta.7"
-tauri-plugin-http = "2.0.3"
+tauri-plugin-http = "2.0.4"
 
 [features]
 # by default Tauri runs in production mode
