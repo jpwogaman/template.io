@@ -14,7 +14,6 @@
 /prisma/db.sqlite
 /db.sqlite
 /diesel.toml
-/migrations
 /src-tauri/diesel.toml
 
 # next.js

@@ -11,16 +11,16 @@ pub fn init() {
     let default_fileitem =  FileItem {
         id: "1".to_string(),
         locked: false,
-        name: "Default FileItem".to_string(),
-        notes: "Default FileItem Notes".to_string(),
-        channel: Some(1),
-        base_delay: Some(1.0),
-        avg_delay: Some(1.0),
-        vep_out: "Default VEP Out".to_string(),
-        vep_instance: "Default VEP Instance".to_string(),
-        smp_number: "Default SMP Number".to_string(),
-        smp_out: "Default SMP Out".to_string(),
-        color: "Default Color".to_string(),    
+        name: "".to_string(),
+        notes: "".to_string(),
+        channel: 1,
+        base_delay: 0.0,
+        avg_delay: 0.0,
+        vep_out: "N/A".to_string(),
+        vep_instance: "N/A".to_string(),
+        smp_number: "N/A".to_string(),
+        smp_out: "N/A".to_string(),
+        color: "#71717A".to_string(),    
     };
 
     store_new_item(&default_fileitem);
