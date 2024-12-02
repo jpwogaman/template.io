@@ -9,7 +9,7 @@ import {
   ModalProvider,
   ContextMenuProvider,
   KeyboardProvider
-} from '@/context'
+} from '@/components/context'
 import { ThemeProvider } from 'next-themes'
 
 import { NavBar } from '@/components/layout/navbar'

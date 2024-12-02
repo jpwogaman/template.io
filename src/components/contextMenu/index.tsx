@@ -3,7 +3,11 @@
 import tw from '@/utils/tw'
 import { type FC } from 'react'
 import { ContextMenuOptions } from './contextMenuOptions'
-import { useMutations, useSelectedItem, useContextMenu } from '@/context'
+import {
+  useMutations,
+  useSelectedItem,
+  useContextMenu
+} from '@/components/context'
 
 type ContextMenuProps = {}
 

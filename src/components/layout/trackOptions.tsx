@@ -10,18 +10,22 @@ import {
   type ItemsFadList
 } from '@prisma/client'
 
-import { IconBtnToggle } from '@/components/icon-btn-toggle'
+import { IconBtnToggle } from '@/components/layout/icon-btn-toggle'
 import tw from '@/utils/tw'
 import {
   type OnChangeHelperArgsType,
   type SelectedItemType,
   InputTypeSelector
-} from './inputs'
+} from '../inputs'
 
-import TrackListTableKeys from './utils/trackListTableKeys'
-import TrackOptionsTableKeys from './utils/trackOptionsTableKeys'
+import TrackListTableKeys from '../utils/trackListTableKeys'
+import TrackOptionsTableKeys from '../utils/trackOptionsTableKeys'
 
-import { useMutations, useSelectedItem, useContextMenu } from '@/context'
+import {
+  useMutations,
+  useSelectedItem,
+  useContextMenu
+} from '@/components/context'
 
 export const TrackOptions: FC = () => {
   const { selectedItemId, selectedSubItemId, setSelectedSubItemId } =

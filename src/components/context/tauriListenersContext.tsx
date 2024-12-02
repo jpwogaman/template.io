@@ -12,8 +12,7 @@ import {
 
 import { listen } from '@tauri-apps/api/event'
 import { importJSON } from '@/utils/importJSON'
-import { useModal, useSelectedItem } from '@/context'
-import { useMutations } from '@/context/mutationContext'
+import { useModal, useSelectedItem, useMutations } from '@/components/context'
 
 interface TauriListenersContextType {
   exportItems: {

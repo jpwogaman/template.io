@@ -1,15 +1,19 @@
 'use client'
 import React, { type FC } from 'react'
-import { IconBtnToggle } from '@/components/icon-btn-toggle'
+import { IconBtnToggle } from '@/components/layout/icon-btn-toggle'
 import tw from '@/utils/tw'
-import TrackListTableKeys from './utils/trackListTableKeys'
+import TrackListTableKeys from '../utils/trackListTableKeys'
 import {
   type OnChangeHelperArgsType,
   type SelectedItemType,
   InputTypeSelector
-} from './inputs'
+} from '../inputs'
 
-import { useMutations, useSelectedItem, useContextMenu } from '@/context'
+import {
+  useMutations,
+  useSelectedItem,
+  useContextMenu
+} from '@/components/context'
 
 export const TrackList: FC = () => {
   const { selectedItemId, setSelectedItemId, setSelectedSubItemId } =

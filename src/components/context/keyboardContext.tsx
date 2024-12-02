@@ -10,8 +10,7 @@ import {
   type Dispatch,
   type SetStateAction
 } from 'react'
-import { useMutations } from '@/context/mutationContext'
-import { useSelectedItem } from './selectedItemContext'
+import { useMutations, useSelectedItem } from '@/components/context'
 
 interface KeyboardType {
   previousItemId: string

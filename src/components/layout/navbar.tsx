@@ -4,8 +4,12 @@ import { type FC } from 'react'
 import { useTheme } from 'next-themes'
 import { useState, useEffect } from 'react'
 import { invoke } from '@tauri-apps/api/core'
-import { IconBtnToggle } from '@/components/icon-btn-toggle'
-import { useMutations, useSelectedItem, useContextMenu } from '@/context'
+import { IconBtnToggle } from '@/components/layout/icon-btn-toggle'
+import {
+  useMutations,
+  useSelectedItem,
+  useContextMenu
+} from '@/components/context'
 
 export const NavBar: FC = () => {
   const { selectedItemId, setSelectedItemId, copiedItemId, copiedSubItemId } =
