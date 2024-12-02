@@ -1,5 +1,5 @@
 'use client'
-import React, { type FC, type Dispatch, type SetStateAction } from 'react'
+import React, { type FC } from 'react'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
 import TrackListTableKeys from './utils/trackListTableKeys'
@@ -9,22 +9,18 @@ import {
   InputTypeSelector
 } from './inputs'
 import useMutations from '@/hooks/useMutations'
+import { useSelectedItem } from './selectedItemContext'
+import { useContextMenu } from './contextMenu/contextMenuContext'
 
-type TrackListProps = {
-  selectedItemId: string | null
-  setSelectedItemId: Dispatch<SetStateAction<string | null>>
-  setIsContextMenuOpen: Dispatch<SetStateAction<boolean>>
-  setContextMenuId: Dispatch<SetStateAction<string>>
-  setSelectedSubItemId: Dispatch<SetStateAction<string | null>>
-}
+const TrackList: FC = () => {
+  const {
+    selectedItemId,
+    setSelectedItemId,  
+    setSelectedSubItemId,
+  } = useSelectedItem()
 
-const TrackList: FC<TrackListProps> = ({
-  selectedItemId,
-  setSelectedItemId,
-  setIsContextMenuOpen,
-  setContextMenuId,
-  setSelectedSubItemId
-}) => {
+  const { setIsContextMenuOpen, setContextMenuId } = useContextMenu()
+
   const { data, update } = useMutations({
     selectedItemId,
     setSelectedItemId

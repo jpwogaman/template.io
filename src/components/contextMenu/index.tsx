@@ -4,41 +4,27 @@ import tw from '@/utils/tw'
 import { type Dispatch, type FC, type SetStateAction } from 'react'
 import { ContextMenuOptions } from './contextMenuOptions'
 import useMutations from '@/hooks/useMutations'
+import { useContextMenu } from './contextMenuContext'
+import { useSelectedItem } from '../selectedItemContext'
 
-type ContextMenuProps = {
-  contextMenuId: string
-  contextMenuPosition: {
-    top: number
-    left: number
-  }
-  selectedItemId: string | null
-  setSelectedItemId: Dispatch<SetStateAction<string | null>>
-  selectedSubItemId: string | null
-  setSelectedSubItemId: Dispatch<SetStateAction<string | null>>
-  copiedItemId: string | null
-  setCopiedItemId: Dispatch<SetStateAction<string | null>>
-  copiedSubItemId: string | null
-  setCopiedSubItemId: Dispatch<SetStateAction<string | null>>
-  setIsContextMenuOpen: Dispatch<SetStateAction<boolean>>
-}
+type ContextMenuProps = {}
 
-const ContextMenu: FC<ContextMenuProps> = ({
-  contextMenuId,
-  contextMenuPosition,
-  setIsContextMenuOpen,
-  selectedItemId,
+export const ContextMenu: FC<ContextMenuProps> = () => {
+    const {selectedItemId,
   setSelectedItemId,
   selectedSubItemId,
   setSelectedSubItemId,
   copiedItemId,
   setCopiedItemId,
   copiedSubItemId,
-  setCopiedSubItemId
-}) => {
+  setCopiedSubItemId} = useSelectedItem()
+
   const { selectedItem, create, del, clear, paste } = useMutations({
     selectedItemId,
     setSelectedItemId
   })
+
+  const { contextMenuId, isContextMenuOpen, contextMenuPosition, close } = useContextMenu()
 
   const isArtTog = (artId: string) => {
     const art = selectedItem?.artListTog?.find((art) => art.id === artId)
@@ -46,7 +32,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
   }
 
   const handleClick = (newMenuId: string) => {
-    setIsContextMenuOpen(false)
+    close()
 
     if (!contextMenuId?.includes(selectedItemId ?? '')) {
       setSelectedItemId(contextMenuId)
@@ -262,7 +248,11 @@ const ContextMenu: FC<ContextMenuProps> = ({
     }
   }
 
+  if (!isContextMenuOpen) return null  
+
   return (
+    <div className='absolute left-0 top-0 z-[100]'>        
+      
     <div
       className={tw(
         'absolute z-[100] rounded-sm border border-zinc-200 bg-white shadow-md dark:bg-zinc-900',
@@ -338,6 +328,7 @@ const ContextMenu: FC<ContextMenuProps> = ({
           </button>
         )
       })}
+    </div>
     </div>
   )
 }

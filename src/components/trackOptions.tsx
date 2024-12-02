@@ -16,6 +16,8 @@ import {
   type SelectedItemType,
   InputTypeSelector
 } from './inputs'
+import { useSelectedItem } from './selectedItemContext'
+import { useContextMenu } from './contextMenu/contextMenuContext'
 
 import {
   type ItemsFullRanges,
@@ -28,25 +30,18 @@ import {
 import useMutations from '@/hooks/useMutations'
 import TrackListTableKeys from './utils/trackListTableKeys'
 
-type TrackOptionsProps = {
-  selectedItemId: string | null
-  setIsContextMenuOpen: Dispatch<SetStateAction<boolean>>
-  setContextMenuId: Dispatch<SetStateAction<string>>
-  setSelectedItemId: Dispatch<SetStateAction<string | null>>
-  selectedSubItemId: string | null
-  setSelectedSubItemId: Dispatch<SetStateAction<string | null>>
-}
 
-const TrackOptions: FC<TrackOptionsProps> = ({
+const TrackOptions: FC = () => {
+
+  const {
   selectedItemId,
-  setIsContextMenuOpen,
-  setContextMenuId,
   setSelectedItemId,
   selectedSubItemId,
-  setSelectedSubItemId
-}) => {
+  setSelectedSubItemId,
+  } = useSelectedItem()
 
 
+  const { setIsContextMenuOpen, setContextMenuId } = useContextMenu()
   const { selectedItem, update } = useMutations({
     selectedItemId,
     setSelectedItemId

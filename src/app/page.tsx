@@ -11,26 +11,27 @@ import { importJSON } from '@/utils/importJSON'
 import {api as trpc } from '@/utils/trpc/react'
 
 import useKeyboard from '@/hooks/useKeyboard'
-import useContextMenu from '@/hooks/useContextMenu'
+
 import useMutations from '@/hooks/useMutations'
 
 import { useModal } from '@/components/modal/modalContext'
-import ContextMenu from '@/components/contextMenu'
 import TrackList from '@/components/trackList'
 import TrackOptions from '@/components/trackOptions'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 
-const Index: NextPage = () => {
-  const [selectedItemId, setSelectedItemId] = useState<string | null>('T_0')
-  const [selectedSubItemId, setSelectedSubItemId] = useState<null | string>(
-    'T_0_notes'
-  )
-  const [copiedItemId, setCopiedItemId] = useState<string | null>(null)
-  const [copiedSubItemId, setCopiedSubItemId] = useState<string | null>(null)
+import { useSelectedItem } from '@/components/selectedItemContext'
 
+const Index: NextPage = () => {
+    const {selectedItemId,
+  setSelectedItemId,
+  selectedSubItemId,
+  setSelectedSubItemId,
+  copiedItemId,
+  setCopiedItemId,
+  copiedSubItemId,
+  setCopiedSubItemId} = useSelectedItem()
   const [mounted, setMounted] = useState(false)
   const { modalOpen, close, open, setModalType } = useModal()
-
   const {
     dataLength,
     vepSamplerCount,
@@ -50,7 +51,6 @@ const Index: NextPage = () => {
     selectedItemId,
     setSelectedItemId
   })
-
   useKeyboard({
     selectedItemId,
     setSelectedItemId,
@@ -70,13 +70,7 @@ const Index: NextPage = () => {
     setCopiedSubItemId
   })
   const { setTheme, resolvedTheme } = useTheme()
-  const {
-    contextMenuPosition,
-    isContextMenuOpen,
-    setIsContextMenuOpen,
-    contextMenuId,
-    setContextMenuId
-  } = useContextMenu()
+  
   const exportMutation = trpc.tauriMenuEvents.export.useMutation({
     onSuccess: (data) => {
       exportJSON(data)
@@ -86,7 +80,6 @@ const Index: NextPage = () => {
       alert('There was an error submitting your request. Please try again.')
     }
   })
-
   const createAllItemsFromJSONMutation =
     trpc.items.createAllItemsFromJSON.useMutation({
       onSuccess: () => {
@@ -96,7 +89,6 @@ const Index: NextPage = () => {
         alert(error.message)
       }
     })
-
   const deleteAllItemsMutation = trpc.items.deleteAllItems.useMutation({
     onSuccess: () => {
       deleteAllItemsMutation.reset()
@@ -105,15 +97,12 @@ const Index: NextPage = () => {
       alert('There was an error submitting your request. Please try again.')
     }
   })
-
   useEffect(() => {
     setMounted(true)
   }, [])
-
   if (!mounted) {
     return null
   }
-
   listen('export', () => {
     exportMutation.mutate()
   })
@@ -141,46 +130,23 @@ const Index: NextPage = () => {
       setModalType('settings')
     }
   })
-
- const listItems = ()=>{
-  invoke('list_fileitems').then((response) => {
-    console.log(response);
-  });
- }
-
- 
- const createItem = ()=>{
-  invoke('create_fileitem').then((response) => {
-    console.log(response);
-  });
- }
-
-  
+  const listItems = ()=>{
+    invoke('list_fileitems').then((response) => {
+      console.log(response);
+    });
+  } 
+  const createItem = ()=>{
+    invoke('create_fileitem').then((response) => {
+      console.log(response);
+    });
+  }  
   return (
     <div className='h-screen'>
-      {/* CONTEXT MENU */}
-      <div className='absolute left-0 top-0 z-[100]'>
-        {isContextMenuOpen && (
-          <ContextMenu
-            contextMenuId={contextMenuId}
-            contextMenuPosition={contextMenuPosition}
-            setIsContextMenuOpen={setIsContextMenuOpen}
-            selectedItemId={selectedItemId}
-            setSelectedItemId={setSelectedItemId}
-            selectedSubItemId={selectedSubItemId}
-            setSelectedSubItemId={setSelectedSubItemId}
-            copiedItemId={copiedItemId}
-            setCopiedItemId={setCopiedItemId}
-            copiedSubItemId={copiedSubItemId}
-            setCopiedSubItemId={setCopiedSubItemId}
-          />
-        )}
-      </div>
       {/* NAVBAR */}
       <nav className='container sticky top-0 z-50 max-h-[40px] min-w-full items-center bg-zinc-900'>
         <ul className='flex justify-between'>
           <li className='block whitespace-nowrap p-2 pl-5 text-left text-zinc-200'>
-            {/*<span className='underline underline-offset-4'>
+            <span className='underline underline-offset-4'>
               {dataLength} {dataLength > 1 ? 'Tracks' : 'Track'}
             </span>
             <span> across </span>
@@ -210,7 +176,7 @@ const Index: NextPage = () => {
               Renumber Tracks
             </button>
             <button className='border px-2'>{`Copied Item: ${copiedItemId}`}</button>
-            <button className='border px-2'>{`Copied SubItem: ${copiedSubItemId}`}</button>*/}
+            <button className='border px-2'>{`Copied SubItem: ${copiedSubItemId}`}</button>
             <button className='border px-2' onClick={listItems}>SQL Test</button>
             <button className='border px-2' onClick={createItem}>SQL Create</button>
           </li>
@@ -231,23 +197,10 @@ const Index: NextPage = () => {
         </ul>
       </nav>
       {/* MAIN */}
-      {/*<main className='flex h-[calc(100%-40px)]'>
-        <TrackList
-          selectedItemId={selectedItemId}
-          setSelectedItemId={setSelectedItemId}
-          setIsContextMenuOpen={setIsContextMenuOpen}
-          setContextMenuId={setContextMenuId}
-          setSelectedSubItemId={setSelectedSubItemId}
-        />
-        <TrackOptions
-          selectedItemId={selectedItemId}
-          setIsContextMenuOpen={setIsContextMenuOpen}
-          setContextMenuId={setContextMenuId}
-          setSelectedItemId={setSelectedItemId}
-          selectedSubItemId={selectedSubItemId}
-          setSelectedSubItemId={setSelectedSubItemId}
-        />
-      </main>*/}
+      <main className='flex h-[calc(100%-40px)]'>
+        <TrackList />
+        <TrackOptions />
+      </main>
     </div>
   )
 }
