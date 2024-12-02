@@ -3,9 +3,7 @@
 import tw from '@/utils/tw'
 import { type FC } from 'react'
 import { ContextMenuOptions } from './contextMenuOptions'
-import { useContextMenu } from './contextMenuContext'
-import { useSelectedItem } from '../selectedItemContext'
-import useMutations from '@/hooks/useMutations'
+import { useMutations, useSelectedItem, useContextMenu } from '@/context'
 
 type ContextMenuProps = {}
 
@@ -19,10 +17,7 @@ export const ContextMenu: FC<ContextMenuProps> = () => {
     setCopiedSubItemId
   } = useSelectedItem()
 
-  const { selectedItem, create, del, clear, paste } = useMutations({
-    selectedItemId,
-    setSelectedItemId
-  })
+  const { selectedItem, create, del, clear, paste } = useMutations()
 
   const { contextMenuId, isContextMenuOpen, contextMenuPosition, close } =
     useContextMenu()

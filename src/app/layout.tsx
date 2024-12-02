@@ -2,11 +2,14 @@ import '@/styles/globals.css'
 import { allFontsClassName } from '@/styles/fonts'
 
 import { TRPCReactProvider } from '@/utils/trpc/react'
-import { TauriListenersProvider } from '@/components/tauriListenersContext'
-import { SelectedItemProvider } from '@/components/selectedItemContext'
-import { ModalProvider } from '@/components/modal/modalContext'
-import { ContextMenuProvider } from '@/components/contextMenu/contextMenuContext'
-import { KeyboardProvider } from '@/components/keyboardContext'
+import {
+  TauriListenersProvider,
+  SelectedItemProvider,
+  MutationProvider,
+  ModalProvider,
+  ContextMenuProvider,
+  KeyboardProvider
+} from '@/context'
 import { ThemeProvider } from 'next-themes'
 
 import { NavBar } from '@/components/layout/navbar'
@@ -25,22 +28,24 @@ export default function RootLayout({
         <TRPCReactProvider>
           <TauriListenersProvider>
             <SelectedItemProvider>
-              <ModalProvider>
-                <ContextMenuProvider>
-                  <KeyboardProvider>
-                    <ThemeProvider
-                      storageKey='theme'
-                      attribute='class'
-                      defaultTheme='light'
-                      enableColorScheme>
-                      <NavBar />
-                      <Modal />
-                      <ContextMenu />
-                      {children}
-                    </ThemeProvider>
-                  </KeyboardProvider>
-                </ContextMenuProvider>
-              </ModalProvider>
+              <MutationProvider>
+                <ModalProvider>
+                  <ContextMenuProvider>
+                    <KeyboardProvider>
+                      <ThemeProvider
+                        storageKey='theme'
+                        attribute='class'
+                        defaultTheme='light'
+                        enableColorScheme>
+                        <NavBar />
+                        <Modal />
+                        <ContextMenu />
+                        {children}
+                      </ThemeProvider>
+                    </KeyboardProvider>
+                  </ContextMenuProvider>
+                </ModalProvider>
+              </MutationProvider>
             </SelectedItemProvider>
           </TauriListenersProvider>
         </TRPCReactProvider>

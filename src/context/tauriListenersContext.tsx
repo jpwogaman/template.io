@@ -11,10 +11,9 @@ import {
 } from 'react'
 
 import { listen } from '@tauri-apps/api/event'
-import { importJSON } from '@/components/tauriListenersContext/importJSON'
-import { useModal } from '@/components/modal/modalContext'
-import { useSelectedItem } from '../selectedItemContext'
-import useMutations from '@/hooks/useMutations'
+import { importJSON } from '@/utils/importJSON'
+import { useModal, useSelectedItem } from '@/context'
+import { useMutations } from '@/context/mutationContext'
 
 interface TauriListenersContextType {
   exportItems: {
@@ -54,10 +53,7 @@ export const TauriListenersProvider: FC<TauriListenersProviderProps> = ({
   const [mounted, setMounted] = useState(false)
   const { modalOpen, close, open, setModalType } = useModal()
   const { selectedItemId, setSelectedItemId } = useSelectedItem()
-  const { exportItems, create, del } = useMutations({
-    selectedItemId,
-    setSelectedItemId
-  })
+  const { exportItems, create, del } = useMutations()
 
   listen('export', () => {
     exportItems.export()

@@ -4,7 +4,7 @@
 import { type ReactNode } from 'react'
 import { LazyMotion } from 'framer-motion'
 import * as m from 'framer-motion/m'
-import { useModal } from '@/components/modal/modalContext'
+import { useModal } from '@/context'
 import SettingsTableKeys from './settingsTableKeys'
 import { InputTypeSelector, OnChangeHelperArgsType } from '../inputs'
 import Link from 'next/link'

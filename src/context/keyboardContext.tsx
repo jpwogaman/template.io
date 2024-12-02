@@ -10,8 +10,8 @@ import {
   type Dispatch,
   type SetStateAction
 } from 'react'
-import useMutations from '@/hooks/useMutations'
-import { useSelectedItem } from '../selectedItemContext'
+import { useMutations } from '@/context/mutationContext'
+import { useSelectedItem } from './selectedItemContext'
 
 interface KeyboardType {
   previousItemId: string
@@ -82,10 +82,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
     selectedItemFadCount: fadCount,
     previousItemId,
     nextItemId
-  } = useMutations({
-    selectedItemId,
-    setSelectedItemId
-  })
+  } = useMutations()
   useEffect(() => {
     const handleKeys = (e: KeyboardEvent) => {
       const selectedInput = window.document.activeElement as HTMLInputElement

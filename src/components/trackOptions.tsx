@@ -1,23 +1,6 @@
 'use client'
 
-import {
-  type FC,
-  Fragment,
-  useState,
-  useEffect,
-  type Dispatch,
-  type SetStateAction
-} from 'react'
-import { IconBtnToggle } from '@/components/icon-btn-toggle'
-import tw from '@/utils/tw'
-import TrackOptionsTableKeys from './utils/trackOptionsTableKeys'
-import {
-  type OnChangeHelperArgsType,
-  type SelectedItemType,
-  InputTypeSelector
-} from './inputs'
-import { useSelectedItem } from './selectedItemContext'
-import { useContextMenu } from './contextMenu/contextMenuContext'
+import { type FC, Fragment, useState, useEffect } from 'react'
 
 import {
   type ItemsFullRanges,
@@ -27,22 +10,25 @@ import {
   type ItemsFadList
 } from '@prisma/client'
 
-import useMutations from '@/hooks/useMutations'
+import { IconBtnToggle } from '@/components/icon-btn-toggle'
+import tw from '@/utils/tw'
+import {
+  type OnChangeHelperArgsType,
+  type SelectedItemType,
+  InputTypeSelector
+} from './inputs'
+
 import TrackListTableKeys from './utils/trackListTableKeys'
+import TrackOptionsTableKeys from './utils/trackOptionsTableKeys'
+
+import { useMutations, useSelectedItem, useContextMenu } from '@/context'
 
 export const TrackOptions: FC = () => {
-  const {
-    selectedItemId,
-    setSelectedItemId,
-    selectedSubItemId,
-    setSelectedSubItemId
-  } = useSelectedItem()
+  const { selectedItemId, selectedSubItemId, setSelectedSubItemId } =
+    useSelectedItem()
 
   const { setIsContextMenuOpen, setContextMenuId } = useContextMenu()
-  const { selectedItem, update } = useMutations({
-    selectedItemId,
-    setSelectedItemId
-  })
+  const { selectedItem, update } = useMutations()
 
   //////////////////////////////////////////
   // This logic is used to disable individual components in the artTap, artTog, and fadList tables.

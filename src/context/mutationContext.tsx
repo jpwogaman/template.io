@@ -1,17 +1,158 @@
-import { type Dispatch, type SetStateAction } from 'react'
-import {api as trpc } from '@/utils/trpc/react'
-import { exportJSON } from '@/components/tauriListenersContext/exportJSON'
-//import { vepInstanceArray } from '@/components/inputs/input-arrays'
+'use client'
 
-type UseMutationsProps = {
-  selectedItemId: string | null
-  setSelectedItemId: Dispatch<SetStateAction<string | null>>
+import {
+  createContext,
+  useContext,
+  useMemo,
+  type ReactNode,
+  type FC
+} from 'react'
+
+import { api as trpc } from '@/utils/trpc/react'
+import { exportJSON } from '@/utils/exportJSON'
+import { useSelectedItem } from './selectedItemContext'
+import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server'
+import { type AppRouter } from '@/server/trpc/root'
+
+type RouterInput = inferRouterInputs<AppRouter>
+type RouterOutput = inferRouterOutputs<AppRouter>
+
+type ItemsInput = RouterInput['items']
+type ItemsOutput = RouterOutput['items']
+
+interface MutationContextType {
+  data: ItemsOutput['getAllItems'] | undefined
+  dataLength: number
+  refetchAll: () => void
+  refetchSelected: () => void
+  vepSamplerCount: number
+  vepInstanceCount: number
+  nonVepSamplerCount: number
+  //////////////////////////////////////////
+  selectedItem: ItemsOutput['getSingleItem'] | undefined
+  selectedItemIndex: number
+  selectedItemRangeCount: number
+  selectedItemArtTogCount: number
+  selectedItemArtTapCount: number
+  selectedItemArtCount: number
+  selectedItemLayerCount: number
+  selectedItemFadCount: number
+  previousItemId: string
+  nextItemId: string
+  //////////////////////////////////////////
+  exportItems: {
+    export: () => void
+  }
+  create: {
+    allItemsFromJSON: (data: ItemsInput['createAllItemsFromJSON']) => void
+    track: (data: ItemsInput['createSingleItem']) => void
+    fullRange: (data: ItemsInput['createSingleFullRange']) => void
+    artListTog: (data: ItemsInput['createSingleArtListTog']) => void
+    artListTap: (data: ItemsInput['createSingleArtListTap']) => void
+    artLayer: (data: ItemsInput['createSingleArtLayer']) => void
+    fadList: (data: ItemsInput['createSingleFadList']) => void
+  }
+  update: {
+    track: (data: ItemsInput['updateSingleItem']) => void
+    fullRange: (data: ItemsInput['updateSingleFullRange']) => void
+    artListTog: (data: ItemsInput['updateSingleArtListTog']) => void
+    artListTap: (data: ItemsInput['updateSingleArtListTap']) => void
+    artLayer: (data: ItemsInput['updateSingleArtLayer']) => void
+    fadList: (data: ItemsInput['updateSingleFadList']) => void
+  }
+  del: {
+    track: (data: { itemId: string }) => void
+    allTracks: () => void
+    fullRange: (data: ItemsInput['deleteSingleFullRange']) => void
+    artListTog: (data: ItemsInput['deleteSingleArtListTog']) => void
+    artListTap: (data: ItemsInput['deleteSingleArtListTap']) => void
+    artLayer: (data: ItemsInput['deleteSingleArtLayer']) => void
+    fadList: (data: ItemsInput['deleteSingleFadList']) => void
+  }
+  clear: {
+    track: (data: ItemsInput['clearSingleItem']) => void
+  }
+  renumber: {
+    allTracks: () => void
+    artList: (data: ItemsInput['renumberArtList']) => void
+  }
+  paste: {
+    track: (data: ItemsInput['pasteSingleItem']) => void
+  }
 }
 
-const useMutations = ({
-  selectedItemId,
-  setSelectedItemId
-}: UseMutationsProps) => {
+const mutationContextDefaultValues: MutationContextType = {
+  data: [],
+  dataLength: 0,
+  refetchAll: () => {},
+  refetchSelected: () => {},
+  vepSamplerCount: 0,
+  vepInstanceCount: 0,
+  nonVepSamplerCount: 0,
+  //////////////////////////////////////////
+  selectedItem: undefined,
+  selectedItemIndex: 0,
+  selectedItemRangeCount: 0,
+  selectedItemArtTogCount: 0,
+  selectedItemArtTapCount: 0,
+  selectedItemArtCount: 0,
+  selectedItemLayerCount: 0,
+  selectedItemFadCount: 0,
+  previousItemId: '',
+  nextItemId: '',
+  //////////////////////////////////////////
+  exportItems: {
+    export: () => {}
+  },
+  create: {
+    allItemsFromJSON: () => {},
+    track: () => {},
+    fullRange: () => {},
+    artListTog: () => {},
+    artListTap: () => {},
+    artLayer: () => {},
+    fadList: () => {}
+  },
+  update: {
+    track: () => {},
+    fullRange: () => {},
+    artListTog: () => {},
+    artListTap: () => {},
+    artLayer: () => {},
+    fadList: () => {}
+  },
+  del: {
+    track: () => {},
+    allTracks: () => {},
+    fullRange: () => {},
+    artListTog: () => {},
+    artListTap: () => {},
+    artLayer: () => {},
+    fadList: () => {}
+  },
+  clear: {
+    track: () => {}
+  },
+  renumber: {
+    allTracks: () => {},
+    artList: () => {}
+  },
+  paste: {
+    track: () => {}
+  }
+}
+
+export const mutationContext = createContext<MutationContextType>(
+  mutationContextDefaultValues
+)
+
+interface MutationProviderProps {
+  children: ReactNode
+}
+
+export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
+  const { selectedItemId, setSelectedItemId } = useSelectedItem()
+
   //////////////////////////////////////////
   // initial queries
   const { data, refetch: refetchAll } = trpc.items.getAllItems.useQuery()
@@ -475,35 +616,72 @@ const useMutations = ({
   const paste = {
     track: pasteSingleItemMutation.mutate
   }
+  const value = useMemo(
+    () => ({
+      data,
+      dataLength,
+      refetchAll,
+      refetchSelected,
+      vepSamplerCount,
+      vepInstanceCount,
+      nonVepSamplerCount,
+      /////////////////////////////////
+      selectedItem,
+      selectedItemIndex,
+      selectedItemRangeCount,
+      selectedItemArtTogCount,
+      selectedItemArtTapCount,
+      selectedItemArtCount,
+      selectedItemLayerCount,
+      selectedItemFadCount,
+      previousItemId,
+      nextItemId,
+      /////////////////////////////////
+      exportItems,
+      create,
+      update,
+      del,
+      clear,
+      renumber,
+      paste
+    }),
+    [
+      data,
+      dataLength,
+      refetchAll,
+      refetchSelected,
+      vepSamplerCount,
+      vepInstanceCount,
+      nonVepSamplerCount,
+      /////////////////////////////////
+      selectedItem,
+      selectedItemIndex,
+      selectedItemRangeCount,
+      selectedItemArtTogCount,
+      selectedItemArtTapCount,
+      selectedItemArtCount,
+      selectedItemLayerCount,
+      selectedItemFadCount,
+      previousItemId,
+      nextItemId,
+      /////////////////////////////////
+      exportItems,
+      create,
+      update,
+      del,
+      clear,
+      renumber,
+      paste
+    ]
+  )
 
-  return {
-    data,
-    dataLength,
-    refetchAll,
-    refetchSelected,
-    vepSamplerCount,
-    vepInstanceCount,
-    nonVepSamplerCount,
-    /////////////////////////////////
-    selectedItem,
-    selectedItemIndex,
-    selectedItemRangeCount,
-    selectedItemArtTogCount,
-    selectedItemArtTapCount,
-    selectedItemArtCount,
-    selectedItemLayerCount,
-    selectedItemFadCount,
-    previousItemId,
-    nextItemId,
-    /////////////////////////////////
-    exportItems,
-    create,
-    update,
-    del,
-    clear,
-    renumber,
-    paste
-  }
+  return (
+    <mutationContext.Provider value={value}>
+      {children}
+    </mutationContext.Provider>
+  )
 }
 
-export default useMutations
+export const useMutations = () => {
+  return useContext(mutationContext)
+}

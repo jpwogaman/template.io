@@ -12,14 +12,14 @@ import {
 } from 'react'
 
 interface SelectedItemContextType {
-   selectedItemId: string | null
-    selectedSubItemId: string | null
-    copiedItemId: string | null
-    copiedSubItemId: string | null
-    setSelectedItemId: Dispatch<SetStateAction<string | null>>
-    setSelectedSubItemId: Dispatch<SetStateAction<string | null>>
-    setCopiedItemId: Dispatch<SetStateAction<string | null>>
-    setCopiedSubItemId: Dispatch<SetStateAction<string | null>>
+  selectedItemId: string | null
+  selectedSubItemId: string | null
+  copiedItemId: string | null
+  copiedSubItemId: string | null
+  setSelectedItemId: Dispatch<SetStateAction<string | null>>
+  setSelectedSubItemId: Dispatch<SetStateAction<string | null>>
+  setCopiedItemId: Dispatch<SetStateAction<string | null>>
+  setCopiedSubItemId: Dispatch<SetStateAction<string | null>>
 }
 
 const selectedItemContextDefaultValues: SelectedItemContextType = {
@@ -31,7 +31,7 @@ const selectedItemContextDefaultValues: SelectedItemContextType = {
   setSelectedItemId: () => {},
   setSelectedSubItemId: () => {},
   setCopiedItemId: () => {},
-  setCopiedSubItemId: () => {},  
+  setCopiedSubItemId: () => {}
 }
 
 export const SelectedItemContext = createContext<SelectedItemContextType>(
@@ -43,7 +43,7 @@ interface SelectedItemProviderProps {
 }
 
 export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
-  children,
+  children
 }) => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>('T_0')
   const [selectedSubItemId, setSelectedSubItemId] = useState<null | string>(
@@ -71,11 +71,15 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
       setSelectedItemId,
       setSelectedSubItemId,
       setCopiedItemId,
-      setCopiedSubItemId      
+      setCopiedSubItemId
     ]
   )
 
-  return <SelectedItemContext.Provider value={value}>{children}</SelectedItemContext.Provider>
+  return (
+    <SelectedItemContext.Provider value={value}>
+      {children}
+    </SelectedItemContext.Provider>
+  )
 }
 
 export const useSelectedItem = () => {

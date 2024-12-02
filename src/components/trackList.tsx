@@ -8,9 +8,8 @@ import {
   type SelectedItemType,
   InputTypeSelector
 } from './inputs'
-import useMutations from '@/hooks/useMutations'
-import { useSelectedItem } from './selectedItemContext'
-import { useContextMenu } from './contextMenu/contextMenuContext'
+
+import { useMutations, useSelectedItem, useContextMenu } from '@/context'
 
 export const TrackList: FC = () => {
   const { selectedItemId, setSelectedItemId, setSelectedSubItemId } =
@@ -18,10 +17,7 @@ export const TrackList: FC = () => {
 
   const { setIsContextMenuOpen, setContextMenuId } = useContextMenu()
 
-  const { data, update } = useMutations({
-    selectedItemId,
-    setSelectedItemId
-  })
+  const { data, update } = useMutations()
 
   const onChangeHelper = ({
     newValue,
