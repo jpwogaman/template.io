@@ -41,16 +41,17 @@
     "**/*.js",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
     "eslint.config.js",
     "next-env.d.ts",
-    "dist/types/**/*.ts"
+    "dist/types/**/*.ts",
+    ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist",
+    ".next",
+    "src-tauri/target"
   ],
   "forceConsistentCasingInFileNames": true,
-  "types": [
-    "vitest/globals"
-  ]
+  
 }
