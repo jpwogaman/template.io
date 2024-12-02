@@ -59,14 +59,15 @@ const dropIn = {
   }
 }
 
-const Modal = () => {
-  const { close, loading, status, modalOpen, modalMessage, modalType } = useModal()
+export const Modal = () => {
+  const { close, loading, status, modalOpen, modalMessage, modalType } =
+    useModal()
   const { loadingMessage, successMessage, errorMessage } = modalMessage
 
   const onChangeHelper = ({ newValue, key }: OnChangeHelperArgsType) => {
     localStorage.setItem(key, newValue as string)
   }
-  
+
   if (!modalOpen) return null
   return (
     <Backdrop onClick={close}>
@@ -84,69 +85,66 @@ const Modal = () => {
           initial='hidden'
           animate='visible'
           exit='exit'>
-
-
-
-            {modalType === 'about' && (
-          <div className='text-main relative top-12 w-full'>
-            <h3 className='text-center text-2xl'>Template.io</h3>
-            <div className='text-main mt-4 text-left font-mono text-base'>
-              <p>
-                Version: 0.1.0{' '}
-                <Link
-                  className='text-blue-600 dark:text-blue-400'
-                  href=''>
-                  (check for updates)
-                </Link>
-              </p>
-              <p>Written by: JP Wogaman II</p>
-              <p>
-                Source code & Tutorials:{' '}
-                <a
-                  className='text-blue-600 dark:text-blue-400'
-                  href='https://www.github.com/jpwogaman/template.io'
-                  target='_blank'>
-                  https://www.github.com/jpwogaman/template.io
-                </a>
-              </p>
+          {modalType === 'about' && (
+            <div className='text-main relative top-12 w-full'>
+              <h3 className='text-center text-2xl'>Template.io</h3>
+              <div className='text-main mt-4 text-left font-mono text-base'>
+                <p>
+                  Version: 0.1.0{' '}
+                  <Link
+                    className='text-blue-600 dark:text-blue-400'
+                    href=''>
+                    (check for updates)
+                  </Link>
+                </p>
+                <p>Written by: JP Wogaman II</p>
+                <p>
+                  Source code & Tutorials:{' '}
+                  <a
+                    className='text-blue-600 dark:text-blue-400'
+                    href='https://www.github.com/jpwogaman/template.io'
+                    target='_blank'>
+                    https://www.github.com/jpwogaman/template.io
+                  </a>
+                </p>
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {modalType === 'settings' && (
-          <div className='text-main relative top-12 w-full'>
-            <h3 className='text-center text-2xl'>Settings</h3>
-            <div className='text-main mt-4 text-left font-mono text-base'>
-              {SettingsTableKeys.keys.map((keyActual) => {
-                const { key, label } = keyActual
+          {modalType === 'settings' && (
+            <div className='text-main relative top-12 w-full'>
+              <h3 className='text-center text-2xl'>Settings</h3>
+              <div className='text-main mt-4 text-left font-mono text-base'>
+                {SettingsTableKeys.keys.map((keyActual) => {
+                  const { key, label } = keyActual
 
-                if (key.includes('break')) {
-                  return (
-                    <hr
-                      key={key}
-                      className='my-2'
-                    />
-                  )
-                }
-
-                return (
-                  <div
-                    key={key}
-                    className='flex items-center'>
-                    <label className='mr-4'>{`${label}:`}</label>
-                    <div>
-                      <InputTypeSelector
-                        keySingle={keyActual}
-                        onChangeHelper={onChangeHelper}
-                        settingsModal
+                  if (key.includes('break')) {
+                    return (
+                      <hr
+                        key={key}
+                        className='my-2'
                       />
+                    )
+                  }
+
+                  return (
+                    <div
+                      key={key}
+                      className='flex items-center'>
+                      <label className='mr-4'>{`${label}:`}</label>
+                      <div>
+                        <InputTypeSelector
+                          keySingle={keyActual}
+                          onChangeHelper={onChangeHelper}
+                          settingsModal
+                        />
+                      </div>
                     </div>
-                  </div>
-                )
-              })}
+                  )
+                })}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
           <button
             onClick={close}
@@ -167,5 +165,3 @@ const Modal = () => {
     </Backdrop>
   )
 }
-
-export default Modal

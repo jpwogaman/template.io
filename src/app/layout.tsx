@@ -1,17 +1,17 @@
 import '@/styles/globals.css'
 import { allFontsClassName } from '@/styles/fonts'
 
-import { ThemeProvider } from 'next-themes'
 import { TRPCReactProvider } from '@/utils/trpc/react'
-
+import { TauriListenersProvider } from '@/components/tauriListenersContext'
+import { SelectedItemProvider } from '@/components/selectedItemContext'
 import { ModalProvider } from '@/components/modal/modalContext'
 import { ContextMenuProvider } from '@/components/contextMenu/contextMenuContext'
-import Modal from '@/components/modal'
-import { ContextMenu } from '@/components/contextMenu'
-import { SelectedItemProvider } from '@/components/selectedItemContext'
-import { NavBar } from '@/components/layout/navbar'
-import { TauriListenersProvider } from '@/components/tauriListenersContext'
 import { KeyboardProvider } from '@/components/keyboardContext'
+import { ThemeProvider } from 'next-themes'
+
+import { NavBar } from '@/components/layout/navbar'
+import { Modal } from '@/components/modal'
+import { ContextMenu } from '@/components/contextMenu'
 
 export default function RootLayout({
   children
