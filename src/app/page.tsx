@@ -148,6 +148,12 @@ const Index: NextPage = () => {
   });
  }
 
+ 
+ const createItem = ()=>{
+  invoke('create_fileitem').then((response) => {
+    console.log(response);
+  });
+ }
 
   
   return (
@@ -174,7 +180,7 @@ const Index: NextPage = () => {
       <nav className='container sticky top-0 z-50 max-h-[40px] min-w-full items-center bg-zinc-900'>
         <ul className='flex justify-between'>
           <li className='block whitespace-nowrap p-2 pl-5 text-left text-zinc-200'>
-            <span className='underline underline-offset-4'>
+            {/*<span className='underline underline-offset-4'>
               {dataLength} {dataLength > 1 ? 'Tracks' : 'Track'}
             </span>
             <span> across </span>
@@ -204,8 +210,9 @@ const Index: NextPage = () => {
               Renumber Tracks
             </button>
             <button className='border px-2'>{`Copied Item: ${copiedItemId}`}</button>
-            <button className='border px-2'>{`Copied SubItem: ${copiedSubItemId}`}</button>
+            <button className='border px-2'>{`Copied SubItem: ${copiedSubItemId}`}</button>*/}
             <button className='border px-2' onClick={listItems}>SQL Test</button>
+            <button className='border px-2' onClick={createItem}>SQL Create</button>
           </li>
           <li className='block w-60 cursor-pointer p-2 text-right text-zinc-200'>
             <IconBtnToggle
@@ -224,7 +231,7 @@ const Index: NextPage = () => {
         </ul>
       </nav>
       {/* MAIN */}
-      <main className='flex h-[calc(100%-40px)]'>
+      {/*<main className='flex h-[calc(100%-40px)]'>
         <TrackList
           selectedItemId={selectedItemId}
           setSelectedItemId={setSelectedItemId}
@@ -240,7 +247,7 @@ const Index: NextPage = () => {
           selectedSubItemId={selectedSubItemId}
           setSelectedSubItemId={setSelectedSubItemId}
         />
-      </main>
+      </main>*/}
     </div>
   )
 }

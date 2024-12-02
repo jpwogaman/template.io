@@ -9,7 +9,7 @@ pub fn init() {
     }
 
     let default_fileitem =  FileItem {
-        id: "1".to_string(),
+        id: "T_0".to_string(),
         locked: false,
         name: "".to_string(),
         notes: "".to_string(),

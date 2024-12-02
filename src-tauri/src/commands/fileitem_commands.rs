@@ -12,8 +12,25 @@ pub fn get_fileitem(id: String) -> Option<FileItem> {
 
 #[tauri::command]
 pub fn create_fileitem() {
+
+    // id's are T_0, T_1, T_2, etc. so we need to find the highest id and increment it
+    let fileitems = fileitem_service::list_fileitems();
+
+    fn find_highest_id(fileitems: &Vec<FileItem>) -> i32 {
+        let mut highest_id = 0;
+        for fileitem in fileitems {
+            let id = fileitem.id.split("_").nth(1).unwrap().parse::<i32>().unwrap();
+            if id > highest_id {
+                highest_id = id;
+            }
+        }
+        highest_id
+    }
+    
+    let new_id = find_highest_id(&fileitems) + 1;
+
     let fileitem = FileItem {
-        id: "1".to_string(),
+        id: format!("T_{}", new_id),
         locked: false,
         name: "".to_string(),
         notes: "".to_string(),
