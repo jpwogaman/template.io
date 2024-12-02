@@ -1,4 +1,4 @@
-'use'
+'use client'
 
 import {
   type FC,
@@ -6,7 +6,7 @@ import {
   useState,
   useEffect,
   type Dispatch,
-  type SetStateAction,
+  type SetStateAction
 } from 'react'
 import { IconBtnToggle } from '@/components/icon-btn-toggle'
 import tw from '@/utils/tw'
@@ -30,16 +30,13 @@ import {
 import useMutations from '@/hooks/useMutations'
 import TrackListTableKeys from './utils/trackListTableKeys'
 
-
 const TrackOptions: FC = () => {
-
   const {
-  selectedItemId,
-  setSelectedItemId,
-  selectedSubItemId,
-  setSelectedSubItemId,
+    selectedItemId,
+    setSelectedItemId,
+    selectedSubItemId,
+    setSelectedSubItemId
   } = useSelectedItem()
-
 
   const { setIsContextMenuOpen, setContextMenuId } = useContextMenu()
   const { selectedItem, update } = useMutations({
@@ -183,7 +180,7 @@ const TrackOptions: FC = () => {
     }))
   }
   //////////////////////////////////////////
-    const onChangeHelperTrack = ({
+  const onChangeHelperTrack = ({
     newValue,
     layoutDataSingleId: id,
     key
@@ -201,7 +198,7 @@ const TrackOptions: FC = () => {
     layoutDataSingleId,
     key,
     label
-  }: OnChangeHelperArgsType) => {  
+  }: OnChangeHelperArgsType) => {
     if (label === 'fullRange') {
       if (key === 'whiteKeysOnly') {
         update.fullRange({
@@ -263,14 +260,10 @@ const TrackOptions: FC = () => {
 
   const locked = selectedItem?.locked ?? false
   const notesId = selectedItem?.id + '_notes'
-  const notesSelectedLocked =
-    locked && selectedSubItemId === notesId
-  const notesSelectedUnlocked =
-    !locked && selectedSubItemId === notesId
-  const notesUnselectedLocked =
-    locked && selectedSubItemId !== notesId
-  const notesUnselectedUnlocked =
-    !locked && selectedSubItemId !== notesId
+  const notesSelectedLocked = locked && selectedSubItemId === notesId
+  const notesSelectedUnlocked = !locked && selectedSubItemId === notesId
+  const notesUnselectedLocked = locked && selectedSubItemId !== notesId
+  const notesUnselectedUnlocked = !locked && selectedSubItemId !== notesId
 
   //////////////////////////////////////////
   return (
@@ -279,20 +272,19 @@ const TrackOptions: FC = () => {
         title={`Track Id: ${selectedItem?.id} - Track Name: ${selectedItem?.name}`}
         className='pb-2 pt-4 text-3xl'>{`Track Name: ${selectedItem?.name}`}</h1>
 
-        <h2>Notes:</h2>      
-        <div
-          className={
-            tw(
-              'm-1 p-1 flex items-center',
-              //notesSelectedUnlocked
-              //  ? 'bg-red-300 hover:bg-red-400 hover:text-zinc-50 dark:bg-red-600 dark:hover:bg-red-400 dark:hover:text-zinc-50'
-              //  : notesSelectedLocked
-              //    ? 'bg-red-500 hover:bg-red-600 hover:text-zinc-50 dark:bg-red-800 dark:hover:bg-red-500 dark:hover:text-zinc-50'
-              //    : notesUnselectedLocked
-              //      ? 'hover:bg-zinc-500 hover:text-zinc-50  dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
-              //      : notesUnselectedUnlocked
-              //        ? 'hover:bg-zinc-500 hover:text-zinc-50 dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
-              //        : ''
+      <h2>Notes:</h2>
+      <div
+        className={tw(
+          'm-1 flex items-center p-1'
+          //notesSelectedUnlocked
+          //  ? 'bg-red-300 hover:bg-red-400 hover:text-zinc-50 dark:bg-red-600 dark:hover:bg-red-400 dark:hover:text-zinc-50'
+          //  : notesSelectedLocked
+          //    ? 'bg-red-500 hover:bg-red-600 hover:text-zinc-50 dark:bg-red-800 dark:hover:bg-red-500 dark:hover:text-zinc-50'
+          //    : notesUnselectedLocked
+          //      ? 'hover:bg-zinc-500 hover:text-zinc-50  dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
+          //      : notesUnselectedUnlocked
+          //        ? 'hover:bg-zinc-500 hover:text-zinc-50 dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
+          //        : ''
         )}>
         <InputTypeSelector
           keySingle={
@@ -308,7 +300,7 @@ const TrackOptions: FC = () => {
           onChangeHelper={onChangeHelperTrack}
           selectedItem={selectedItem as unknown as SelectedItemType}
         />
-        </div>
+      </div>
       {TrackOptionsTableKeys.map((layoutConfig) => {
         let layoutDataArray:
           | ItemsFullRanges[]
@@ -361,7 +353,7 @@ const TrackOptions: FC = () => {
             {table && (
               <table
                 id={'table_' + layoutConfig.label}
-                className='w-full table-fixed border-separate border-spacing-0 text-left text-xs '>
+                className='w-full table-fixed border-separate border-spacing-0 text-left text-xs'>
                 <thead>
                   <tr>
                     {layoutConfig.keys.map((key) => {
@@ -466,7 +458,7 @@ const TrackOptions: FC = () => {
                           <td className={tw(trackTh, 'w-1/2 border-r-0')}>
                             {layoutDataSingleId}
                           </td>
-                          <td className={tw(trackTh, ' w-1/2 border-l-0')} />
+                          <td className={tw(trackTh, 'w-1/2 border-l-0')} />
                         </tr>
                       </thead>
                       <tbody>
@@ -476,8 +468,7 @@ const TrackOptions: FC = () => {
                           return (
                             <tr
                               key={key.key}
-                              className='bg-zinc-300 
-                              dark:bg-zinc-600'>
+                              className='bg-zinc-300 dark:bg-zinc-600'>
                               <td className={'p-0.5'}>{key.label}</td>
                               <td className={'p-0.5'}>
                                 <InputTypeSelector

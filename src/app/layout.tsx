@@ -11,6 +11,7 @@ import { ContextMenu } from '@/components/contextMenu'
 import { SelectedItemProvider } from '@/components/selectedItemContext'
 import { NavBar } from '@/components/layout/navbar'
 import { TauriListenersProvider } from '@/components/tauriListenersContext'
+import { KeyboardProvider } from '@/components/keyboardContext'
 
 export default function RootLayout({
   children
@@ -23,22 +24,24 @@ export default function RootLayout({
       <body className='h-screen overflow-x-hidden'>
         <TRPCReactProvider>
           <TauriListenersProvider>
-            <ModalProvider>
-              <ContextMenuProvider>
-                <SelectedItemProvider>
-                  <ThemeProvider
-                    storageKey='theme'
-                    attribute='class'
-                    defaultTheme='light'
-                    enableColorScheme>
-                    <NavBar />
-                    <Modal />
-                    <ContextMenu />
-                    {children}
-                  </ThemeProvider>
-                </SelectedItemProvider>
-              </ContextMenuProvider>
-            </ModalProvider>
+            <SelectedItemProvider>
+              <ModalProvider>
+                <ContextMenuProvider>
+                  <KeyboardProvider>
+                    <ThemeProvider
+                      storageKey='theme'
+                      attribute='class'
+                      defaultTheme='light'
+                      enableColorScheme>
+                      <NavBar />
+                      <Modal />
+                      <ContextMenu />
+                      {children}
+                    </ThemeProvider>
+                  </KeyboardProvider>
+                </ContextMenuProvider>
+              </ModalProvider>
+            </SelectedItemProvider>
           </TauriListenersProvider>
         </TRPCReactProvider>
       </body>
