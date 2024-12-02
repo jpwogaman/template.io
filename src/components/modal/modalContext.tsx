@@ -13,8 +13,6 @@ import {
   useState
 } from 'react'
 
-import { useRouter } from 'next/navigation'
-
 interface ModalMessage {
   loadingMessage: string
   successMessage: string
@@ -80,15 +78,9 @@ export const ModalProvider: FC<ModalProviderProps> = ({
   const [status, setStatus] = useState<status>(null)
 
   // eslint-disable-next-line @typescript-eslint/unbound-method
-  const { refresh } = useRouter()
-
   const close = useCallback(() => {
     setModalOpen(false)
-
-    if (refreshAfterClose) {
-      refresh()
-    }
-  }, [refresh, refreshAfterClose, setModalOpen])
+  }, [refreshAfterClose, setModalOpen])
 
   const open = useCallback(() => {
     setModalOpen(true)

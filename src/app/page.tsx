@@ -1,6 +1,6 @@
 import { type NextPage } from 'next'
-import TrackList from '@/components/trackList'
-import TrackOptions from '@/components/trackOptions'
+import { TrackList } from '@/components/trackList'
+import { TrackOptions } from '@/components/trackOptions'
 
 const Home: NextPage = () => {
   return (

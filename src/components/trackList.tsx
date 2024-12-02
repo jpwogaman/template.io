@@ -12,12 +12,9 @@ import useMutations from '@/hooks/useMutations'
 import { useSelectedItem } from './selectedItemContext'
 import { useContextMenu } from './contextMenu/contextMenuContext'
 
-const TrackList: FC = () => {
-  const {
-    selectedItemId,
-    setSelectedItemId,  
-    setSelectedSubItemId,
-  } = useSelectedItem()
+export const TrackList: FC = () => {
+  const { selectedItemId, setSelectedItemId, setSelectedSubItemId } =
+    useSelectedItem()
 
   const { setIsContextMenuOpen, setContextMenuId } = useContextMenu()
 
@@ -38,7 +35,7 @@ const TrackList: FC = () => {
       [key]: newValue
     })
   }
-  
+
   const sortedData = data?.toSorted((a, b) => {
     return (
       parseInt(a.id.split('_')[1] || '0') - parseInt(b.id.split('_')[1] || '0')
@@ -203,5 +200,3 @@ const TrackList: FC = () => {
     </div>
   )
 }
-
-export default TrackList

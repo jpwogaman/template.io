@@ -1,30 +1,31 @@
 'use client'
 
 import tw from '@/utils/tw'
-import { type Dispatch, type FC, type SetStateAction } from 'react'
+import { type FC } from 'react'
 import { ContextMenuOptions } from './contextMenuOptions'
-import useMutations from '@/hooks/useMutations'
 import { useContextMenu } from './contextMenuContext'
 import { useSelectedItem } from '../selectedItemContext'
+import useMutations from '@/hooks/useMutations'
 
 type ContextMenuProps = {}
 
 export const ContextMenu: FC<ContextMenuProps> = () => {
-    const {selectedItemId,
-  setSelectedItemId,
-  selectedSubItemId,
-  setSelectedSubItemId,
-  copiedItemId,
-  setCopiedItemId,
-  copiedSubItemId,
-  setCopiedSubItemId} = useSelectedItem()
+  const {
+    selectedItemId,
+    setSelectedItemId,
+    selectedSubItemId,
+    copiedItemId,
+    setCopiedItemId,
+    setCopiedSubItemId
+  } = useSelectedItem()
 
   const { selectedItem, create, del, clear, paste } = useMutations({
     selectedItemId,
     setSelectedItemId
   })
 
-  const { contextMenuId, isContextMenuOpen, contextMenuPosition, close } = useContextMenu()
+  const { contextMenuId, isContextMenuOpen, contextMenuPosition, close } =
+    useContextMenu()
 
   const isArtTog = (artId: string) => {
     const art = selectedItem?.artListTog?.find((art) => art.id === artId)
@@ -248,87 +249,88 @@ export const ContextMenu: FC<ContextMenuProps> = () => {
     }
   }
 
-  if (!isContextMenuOpen) return null  
+  if (!isContextMenuOpen) return null
 
   return (
-    <div className='absolute left-0 top-0 z-[100]'>        
-      
-    <div
-      className={tw(
-        'absolute z-[100] rounded-sm border border-zinc-200 bg-white shadow-md dark:bg-zinc-900',
-        'min-h-[15rem] min-w-[10rem] p-4',
-        'border border-gray-200 text-xs dark:border-zinc-800'
-      )}
-      style={{
-        top: contextMenuPosition.top,
-        left: contextMenuPosition.left
-      }}>
-      <h3
+    <div className='absolute left-0 top-0 z-[100]'>
+      <div
         className={tw(
-          !contextMenuId?.includes(selectedItemId ?? '') ? 'text-red-400' : '',
-          'mx-auto'
-        )}>{`Current Track: ${selectedItemId}`}</h3>
-
-      {(contextMenuId?.includes('FR_') ||
-        contextMenuId?.includes('AT_') ||
-        contextMenuId?.includes('AL_') ||
-        contextMenuId?.includes('FL_')) && (
+          'absolute z-[100] rounded-sm border border-zinc-200 bg-white shadow-md dark:bg-zinc-900',
+          'min-h-[15rem] min-w-[10rem] p-4',
+          'border border-gray-200 text-xs dark:border-zinc-800'
+        )}
+        style={{
+          top: contextMenuPosition.top,
+          left: contextMenuPosition.left
+        }}>
         <h3
           className={tw(
-            !contextMenuId?.includes(selectedSubItemId ?? '')
+            !contextMenuId?.includes(selectedItemId ?? '')
               ? 'text-red-400'
               : '',
             'mx-auto'
-          )}>{`Current SubItem: ${selectedSubItemId}`}</h3>
-      )}
-      <h3 className='mx-auto'>{`Selected: ${contextMenuId}`}</h3>
-      <hr className='my-2' />
+          )}>{`Current Track: ${selectedItemId}`}</h3>
 
-      {ContextMenuOptions.map((item) => {
-        const { id: optionId, label, icon1, icon2 } = item
+        {(contextMenuId?.includes('FR_') ||
+          contextMenuId?.includes('AT_') ||
+          contextMenuId?.includes('AL_') ||
+          contextMenuId?.includes('FL_')) && (
+          <h3
+            className={tw(
+              !contextMenuId?.includes(selectedSubItemId ?? '')
+                ? 'text-red-400'
+                : '',
+              'mx-auto'
+            )}>{`Current SubItem: ${selectedSubItemId}`}</h3>
+        )}
+        <h3 className='mx-auto'>{`Selected: ${contextMenuId}`}</h3>
+        <hr className='my-2' />
 
-        let newId = optionId.replace('Item', 'Track')
-        let newLabel = label?.replace('Item', 'Track')
+        {ContextMenuOptions.map((item) => {
+          const { id: optionId, label, icon1, icon2 } = item
 
-        if (contextMenuId.includes('FR_')) {
-          newId = optionId.replace('Item', 'Range')
-          newLabel = label?.replace('Item', 'Range')
-        }
-        if (contextMenuId.includes('AT_')) {
-          newId = optionId.replace('Item', 'Articulation')
-          newLabel = label?.replace('Item', 'Articulation')
-        }
-        if (contextMenuId.includes('AL_')) {
-          newId = optionId.replace('Item', 'Layer')
-          newLabel = label?.replace('Item', 'Layer')
-        }
-        if (contextMenuId.includes('FL_')) {
-          newId = optionId.replace('Item', 'Fader')
-          newLabel = label?.replace('Item', 'Fader')
-        }
+          let newId = optionId.replace('Item', 'Track')
+          let newLabel = label?.replace('Item', 'Track')
 
-        if (optionId.includes('break'))
+          if (contextMenuId.includes('FR_')) {
+            newId = optionId.replace('Item', 'Range')
+            newLabel = label?.replace('Item', 'Range')
+          }
+          if (contextMenuId.includes('AT_')) {
+            newId = optionId.replace('Item', 'Articulation')
+            newLabel = label?.replace('Item', 'Articulation')
+          }
+          if (contextMenuId.includes('AL_')) {
+            newId = optionId.replace('Item', 'Layer')
+            newLabel = label?.replace('Item', 'Layer')
+          }
+          if (contextMenuId.includes('FL_')) {
+            newId = optionId.replace('Item', 'Fader')
+            newLabel = label?.replace('Item', 'Fader')
+          }
+
+          if (optionId.includes('break'))
+            return (
+              <hr
+                key={newId}
+                className='my-2'
+              />
+            )
+
           return (
-            <hr
+            <button
               key={newId}
-              className='my-2'
-            />
+              onClick={() => {
+                handleClick(newId)
+              }}
+              className='flex items-end gap-2 whitespace-nowrap px-1 py-0.5 hover:bg-zinc-600'>
+              <p>{newLabel}</p>
+              <i className={`fa-solid ${icon1}`} />
+              {icon2 && <i className={`fa-solid ${icon2}`} />}
+            </button>
           )
-
-        return (
-          <button
-            key={newId}
-            onClick={() => {
-              handleClick(newId)
-            }}
-            className='flex items-end gap-2 whitespace-nowrap px-1 py-0.5 hover:bg-zinc-600'>
-            <p>{newLabel}</p>
-            <i className={`fa-solid ${icon1}`} />
-            {icon2 && <i className={`fa-solid ${icon2}`} />}
-          </button>
-        )
-      })}
-    </div>
+        })}
+      </div>
     </div>
   )
 }

@@ -30,7 +30,7 @@ import {
 import useMutations from '@/hooks/useMutations'
 import TrackListTableKeys from './utils/trackListTableKeys'
 
-const TrackOptions: FC = () => {
+export const TrackOptions: FC = () => {
   const {
     selectedItemId,
     setSelectedItemId,
@@ -506,5 +506,3 @@ const TrackOptions: FC = () => {
     </div>
   )
 }
-
-export default TrackOptions
