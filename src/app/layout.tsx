@@ -26,10 +26,10 @@ export default function RootLayout({
       className={allFontsClassName}>
       <body className='h-screen overflow-x-hidden'>
         <TRPCReactProvider>
-          <TauriListenersProvider>
-            <SelectedItemProvider>
-              <MutationProvider>
-                <ModalProvider>
+          <SelectedItemProvider>
+            <MutationProvider>
+              <ModalProvider>
+                <TauriListenersProvider>
                   <ContextMenuProvider>
                     <KeyboardProvider>
                       <ThemeProvider
@@ -44,10 +44,10 @@ export default function RootLayout({
                       </ThemeProvider>
                     </KeyboardProvider>
                   </ContextMenuProvider>
-                </ModalProvider>
-              </MutationProvider>
-            </SelectedItemProvider>
-          </TauriListenersProvider>
+                </TauriListenersProvider>
+              </ModalProvider>
+            </MutationProvider>
+          </SelectedItemProvider>
         </TRPCReactProvider>
       </body>
     </html>
