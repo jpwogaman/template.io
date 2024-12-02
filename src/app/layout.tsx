@@ -9,6 +9,7 @@ import { ContextMenuProvider } from '@/components/contextMenu/contextMenuContext
 import Modal from '@/components/modal'
 import {ContextMenu} from '@/components/contextMenu'
 import { SelectedItemProvider } from '@/components/selectedItemContext'
+import { NavBar } from '@/components/layout/navbar'
 
 export default function RootLayout({
   children
@@ -18,7 +19,7 @@ export default function RootLayout({
       lang='en'
       suppressHydrationWarning
       className={allFontsClassName}>
-      <body className='overflow-x-hidden'>
+      <body className='overflow-x-hidden h-screen'>
         <TRPCReactProvider>
             <ModalProvider>
               <ContextMenuProvider>
@@ -28,6 +29,7 @@ export default function RootLayout({
                 attribute='class'
                 defaultTheme='light'
                 enableColorScheme>
+                <NavBar />
                 <Modal />
                 <ContextMenu />
                 {children}
