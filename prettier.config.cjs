@@ -1,9 +1,10 @@
-/** @type {import('prettier').Config & import('prettier-plugin-tailwindcss').PluginOptions} */
-const config = {
-  plugins: ['prettier-plugin-tailwindcss'],
+/** @type {import("prettier").Config} */
+//https://prettier.io/docs/en/options.html
+module.exports = {
   jsxSingleQuote: true,
   singleQuote: true,
   semi: false,
+  useTabs: false,
   tabWidth: 2,
   trailingComma: 'none',
   bracketSameLine: true,
@@ -11,7 +12,13 @@ const config = {
   arrowParens: 'always',
   printWidth: 80,
   singleAttributePerLine: true,
-  overrides: [    
+  overrides: [
+    {
+      files: ['*.html', '*.jsx', '*.tsx'],
+      options: {
+        plugins: ['prettier-plugin-tailwindcss']
+      }
+    },
     {
       files: '*.rs',
       options: {
@@ -21,5 +28,3 @@ const config = {
     }
   ]
 }
-
-export default config
