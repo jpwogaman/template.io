@@ -1,4 +1,7 @@
-#![cfg_attr(all(not(debug_assertions), target_os = "windows"), windows_subsystem = "windows")]
+#![cfg_attr(
+  all(not(debug_assertions), target_os = "windows"),
+  windows_subsystem = "windows"
+)]
 
 mod db;
 mod commands;
@@ -17,10 +20,7 @@ use tauri::{
   Manager,
   Emitter,
   image::Image,
-  menu::{
-    MenuBuilder,
-    SubmenuBuilder
-  },
+  menu::{ MenuBuilder, SubmenuBuilder },
   tray::{ MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent },
 };
 
@@ -60,7 +60,9 @@ async fn main() {
         .text("settings", "Settings")
         .build()?;
 
-      let menu = MenuBuilder::new(app).items(&[&file_submenu, &help_submenu]).build()?;
+      let menu = MenuBuilder::new(app)
+        .items(&[&file_submenu, &help_submenu])
+        .build()?;
       app.set_menu(menu)?;
       app.on_menu_event(move |app, event| {
         match event.id().as_ref() {
@@ -86,7 +88,9 @@ async fn main() {
         }
       });
 
-      let tray_icon = Image::from_path("icons/32x32.png").expect("failed to load icon");
+      let tray_icon = Image::from_path("icons/32x32.png").expect(
+        "failed to load icon"
+      );
 
       let tray_menu = MenuBuilder::new(app).text("quit", "Quit").build()?;
       let _tray = TrayIconBuilder::new()
@@ -111,15 +115,17 @@ async fn main() {
         .build(app)?;
 
       Ok(())
-    })    
-    .invoke_handler(tauri::generate_handler![
-      list_fileitems,
-      get_fileitem,
-      create_fileitem,
-      delete_fileitem,
-      get_settings,
-      set_settings
-    ])
+    })
+    .invoke_handler(
+      tauri::generate_handler![
+        list_fileitems,
+        get_fileitem,
+        create_fileitem,
+        delete_fileitem,
+        get_settings,
+        set_settings
+      ]
+    )
     .run(context)
     .expect("Error while running the application!");
 }
