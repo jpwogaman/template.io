@@ -122,6 +122,7 @@ async fn main() {
         get_fileitem,
         create_fileitem,
         delete_fileitem,
+        update_fileitem,
         get_settings,
         set_settings
       ]

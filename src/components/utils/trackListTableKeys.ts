@@ -36,7 +36,7 @@ const TrackListTableKeys = {
     {
       className: 'w-[8%]',
       show: true,
-      key: 'vepInstance',
+      key: 'vep_instance',
       input: 'select',
       selectArray: 'vepInstList',
       label: 'VEP Instance'
@@ -44,7 +44,7 @@ const TrackListTableKeys = {
     {
       className: 'w-[8%]',
       show: true,
-      key: 'vepOut',
+      key: 'vep_out',
       input: 'select',
       selectArray: 'vepOutsList',
       label: 'VEP Outs'
@@ -52,7 +52,7 @@ const TrackListTableKeys = {
     {
       className: 'w-[4%]',
       show: true,
-      key: 'smpNumber',
+      key: 'smp_number',
       input: 'text',
       selectArray: undefined,
       label: 'Sampler No.'
@@ -60,7 +60,7 @@ const TrackListTableKeys = {
     {
       className: 'w-[8%]',
       show: true,
-      key: 'smpOut',
+      key: 'smp_out',
       input: 'select',
       selectArray: 'smpOutsList',
       label: 'Sampler Outs'
@@ -68,7 +68,7 @@ const TrackListTableKeys = {
     {
       className: 'w-[10%]',
       show: true,
-      key: 'baseDelay',
+      key: 'base_delay',
       input: 'text',
       selectArray: undefined,
       label: 'Base Delay'
@@ -76,7 +76,7 @@ const TrackListTableKeys = {
     {
       className: 'w-[10%]',
       show: true,
-      key: 'avgDelay',
+      key: 'avg_delay',
       input: undefined,
       selectArray: undefined,
       label: 'Avg. Delay'

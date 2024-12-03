@@ -415,7 +415,16 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //  })
   ////////////////////////////////////////////
   //// UPDATE mutations
-  const updateSingleItemMutation = (data: any) => {
+
+  const updateSingleItemMutation = (data: Partial<FileItem>) => {
+    void invoke('update_fileitem', { data: data })
+      .then(() => {
+        refetchAll()
+        refetchSelected()
+      })
+      .catch((error) => {
+        console.log('update_fileitem error', error)
+      })
     console.log('updateSingleItemMutation')
   }
   //const updateSingleItemMutation = trpc.items.updateSingleItem.useMutation({

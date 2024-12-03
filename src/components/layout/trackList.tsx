@@ -31,7 +31,7 @@ export const TrackList: FC = () => {
     //I need to throttle this so it doesn't fire on every keypress, only when the user stops typing for a second or so.
 
     update.track({
-      itemId: id,
+      id,
       [key]: newValue
     })
   }
@@ -157,13 +157,13 @@ export const TrackList: FC = () => {
                     defaultIcon={locked ? 'b' : 'a'}
                     onToggleA={() =>
                       update.track({
-                        itemId: id,
+                        id: id,
                         locked: true
                       })
                     }
                     onToggleB={() =>
                       update.track({
-                        itemId: id,
+                        id: id,
                         locked: false
                       })
                     }

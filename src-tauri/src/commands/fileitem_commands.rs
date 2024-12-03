@@ -1,4 +1,4 @@
-use crate::{ models::fileitem::FileItem, services::fileitem_service };
+use crate::{ models::fileitem::{FileItem, FileItemRequest}, services::fileitem_service };
 
 #[tauri::command]
 pub fn list_fileitems() -> Vec<FileItem> {
@@ -53,4 +53,9 @@ pub fn create_fileitem(count: i32) {
 #[tauri::command]
 pub fn delete_fileitem(id: String) {
   fileitem_service::delete_fileitem(id)
+}
+
+#[tauri::command]
+pub fn update_fileitem(data: FileItemRequest) {
+  fileitem_service::update_fileitem(data);
 }
