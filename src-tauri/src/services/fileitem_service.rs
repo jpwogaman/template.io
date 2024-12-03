@@ -4,8 +4,7 @@ use crate::{
   schema::fileitems::dsl,
 };
 use diesel::prelude::*;
-use log::info;
-use serde_json::json;
+
 pub fn init() {
   let fileitems = list_fileitems();
 

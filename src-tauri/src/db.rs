@@ -1,6 +1,5 @@
 use std::fs;
 use std::path::Path;
-use log::info;
 
 use diesel::prelude::*;
 use diesel::sqlite::SqliteConnection;
