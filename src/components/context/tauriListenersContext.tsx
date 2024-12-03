@@ -53,7 +53,22 @@ export const TauriListenersProvider: FC<TauriListenersProviderProps> = ({
   const { modalOpen, close, open, setModalType } = useModal()
   const { selectedItemId, setSelectedItemId } = useSelectedItem()
   const { exportItems, create, del } = useMutations()
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
+  const value = useMemo(
+    () => ({
+      exportItems,
+      create,
+      del
+    }),
+    [exportItems, create, del]
+  )
+
+  if (!mounted) {
+    return null
+  }
   listen('export', () => {
     exportItems.export()
   })
@@ -81,23 +96,6 @@ export const TauriListenersProvider: FC<TauriListenersProviderProps> = ({
       setModalType('settings')
     }
   })
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  const value = useMemo(
-    () => ({
-      exportItems,
-      create,
-      del
-    }),
-    [exportItems, create, del]
-  )
-
-  if (!mounted) {
-    return null
-  }
 
   return (
     <TauriListenersContext.Provider value={value}>
