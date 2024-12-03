@@ -105,7 +105,9 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       // Special case for Articulations
       const artId = selectedItemId + '_AT_' + optionNumber
       const isArtTog = (artId: string) => {
-        const art = selectedItem?.artListTog?.find((art) => art.id === artId)
+        const art = selectedItem?.artListTog?.find(
+          (art: any) => art.id === artId
+        )
         if (art) return true
       }
 

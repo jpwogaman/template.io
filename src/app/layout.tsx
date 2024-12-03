@@ -25,30 +25,30 @@ export default function RootLayout({
       suppressHydrationWarning
       className={allFontsClassName}>
       <body className='h-screen overflow-x-hidden'>
-        <TRPCReactProvider>
-          <SelectedItemProvider>
-            <MutationProvider>
-              <ModalProvider>
-                <TauriListenersProvider>
-                  <ContextMenuProvider>
-                    <KeyboardProvider>
-                      <ThemeProvider
-                        storageKey='theme'
-                        attribute='class'
-                        defaultTheme='light'
-                        enableColorScheme>
-                        <NavBar />
-                        <Modal />
-                        <ContextMenu />
-                        {children}
-                      </ThemeProvider>
-                    </KeyboardProvider>
-                  </ContextMenuProvider>
-                </TauriListenersProvider>
-              </ModalProvider>
-            </MutationProvider>
-          </SelectedItemProvider>
-        </TRPCReactProvider>
+        {/*<TRPCReactProvider>*/}
+        <SelectedItemProvider>
+          <MutationProvider>
+            <ModalProvider>
+              <TauriListenersProvider>
+                <ContextMenuProvider>
+                  <KeyboardProvider>
+                    <ThemeProvider
+                      storageKey='theme'
+                      attribute='class'
+                      defaultTheme='light'
+                      enableColorScheme>
+                      <NavBar />
+                      <Modal />
+                      <ContextMenu />
+                      {children}
+                    </ThemeProvider>
+                  </KeyboardProvider>
+                </ContextMenuProvider>
+              </TauriListenersProvider>
+            </ModalProvider>
+          </MutationProvider>
+        </SelectedItemProvider>
+        {/*</TRPCReactProvider>*/}
       </body>
     </html>
   )

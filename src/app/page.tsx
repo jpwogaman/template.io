@@ -6,7 +6,7 @@ const Home: NextPage = () => {
   return (
     <main className='flex h-[calc(100%-40px)]'>
       <TrackList />
-      <TrackOptions />
+      {/*<TrackOptions />*/}
     </main>
   )
 }

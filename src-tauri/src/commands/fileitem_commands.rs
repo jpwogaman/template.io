@@ -11,7 +11,7 @@ pub fn get_fileitem(id: String) -> Option<FileItem> {
 }
 
 #[tauri::command]
-pub fn create_fileitem() {
+pub fn create_fileitem(count: i32) {
   // id's are T_0, T_1, T_2, etc. so we need to find the highest id and increment it
   let fileitems = fileitem_service::list_fileitems();
 
@@ -26,24 +26,28 @@ pub fn create_fileitem() {
     highest_id
   }
 
-  let new_id = find_highest_id(&fileitems) + 1;
+  let mut i = 0;
+  while i < count {
+    let new_id = find_highest_id(&fileitems) + 1 + i;
+    
+    let fileitem = FileItem {
+      id: format!("T_{}", new_id),
+      locked: false,
+      name: "".to_string(),
+      notes: "".to_string(),
+      channel: 1,
+      base_delay: 0.0,
+      avg_delay: 0.0,
+      vep_out: "N/A".to_string(),
+      vep_instance: "N/A".to_string(),
+      smp_number: "N/A".to_string(),
+      smp_out: "N/A".to_string(),
+      color: "#71717A".to_string(),
+    };
 
-  let fileitem = FileItem {
-    id: format!("T_{}", new_id),
-    locked: false,
-    name: "".to_string(),
-    notes: "".to_string(),
-    channel: 1,
-    base_delay: 0.0,
-    avg_delay: 0.0,
-    vep_out: "N/A".to_string(),
-    vep_instance: "N/A".to_string(),
-    smp_number: "N/A".to_string(),
-    smp_out: "N/A".to_string(),
-    color: "#71717A".to_string(),
-  };
-
-  fileitem_service::store_new_item(&fileitem);
+    fileitem_service::store_new_item(&fileitem);
+    i += 1;
+  }
 }
 
 #[tauri::command]
