@@ -11,5 +11,6 @@ CREATE TABLE items_artlist_tog (
     delay INT NOT NULL,
     change_type VARCHAR(50) NOT NULL,
     ranges VARCHAR(50) NOT NULL,
-    art_layers VARCHAR(50) NOT NULL
+    art_layers VARCHAR(50) NOT NULL,
+    fileItemsItemId VARCHAR(50) NOT NULL REFERENCES fileitems(id)
 );

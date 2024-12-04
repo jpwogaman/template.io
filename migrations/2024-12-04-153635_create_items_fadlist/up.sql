@@ -5,5 +5,6 @@ CREATE TABLE items_fadlist (
     code_type VARCHAR(50) NOT NULL,
     code INT NOT NULL,
     "default" INT NOT NULL,
-    change_type VARCHAR(50) NOT NULL
+    change_type VARCHAR(50) NOT NULL,
+    fileItemsItemId VARCHAR(50) NOT NULL REFERENCES fileitems(id)
 );
