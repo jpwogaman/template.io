@@ -3,11 +3,15 @@ use crate::{
     fileitem::{ FileItem, FileItemRequest },
     items_full_ranges::ItemsFullRanges,
     items_fadlist::ItemsFadList,
+    items_artlist_tog::ItemsArtListTog,
+    items_artlist_tap::ItemsArtListTap,
   },
   services::{
     fileitem_service,
     items_full_ranges_service,
     items_fadlist_service,
+    items_artlist_tog_service,
+    items_artlist_tap_service,
   },
 };
 
@@ -66,8 +70,8 @@ pub fn create_fileitem(count: i32) {
     let default_full_range = ItemsFullRanges {
       id: format!("T_{}_FR_0", new_id),
       name: "".to_string(),
-      low: "".to_string(),
-      high: "".to_string(),
+      low: "C-2".to_string(),
+      high: "B8".to_string(),
       white_keys_only: false,
       fileItemsItemId: format!("T_{}", new_id),
     };
@@ -85,6 +89,40 @@ pub fn create_fileitem(count: i32) {
     };
 
     items_fadlist_service::store_new_fad(&default_fad);
+
+    let default_art_tog = ItemsArtListTog {
+      id: format!("T_{}_AT_0", new_id),
+      name: "".to_string(),
+      toggle: true,
+      code_type: "/control".to_string(),
+      code: 0,
+      on: 127,
+      off: 0,
+      default: "On".to_string(),
+      delay: 0,
+      change_type: "Value 2".to_string(),
+      ranges: "".to_string(),
+      art_layers: "".to_string(),
+      fileItemsItemId: format!("T_{}", new_id),
+    };
+
+    items_artlist_tog_service::store_new_art_tog(&default_art_tog);
+
+    let default_art_tap = ItemsArtListTap {
+      id: format!("T_{}_AT_1", new_id),
+      name: "".to_string(),
+      toggle: false,
+      code_type: "/control".to_string(),
+      code: 0,
+      on: 127,
+      off: 0,
+      default: false,
+      delay: 0,
+      change_type: "Value 2".to_string(),
+      ranges: "".to_string(),
+      art_layers: "".to_string(),
+      fileItemsItemId: format!("T_{}", new_id),
+    };
 
     i += 1;
   }

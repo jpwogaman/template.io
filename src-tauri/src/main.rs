@@ -18,6 +18,7 @@ use commands::{
   items_full_ranges_commands::*,
   items_fadlist_commands::*,
   items_artlist_tog_commands::*,
+  items_artlist_tap_commands::*,
 };
 use services::fileitem_service;
 
@@ -148,6 +149,12 @@ async fn main() {
         create_art_tog,
         delete_art_tog,
         update_art_tog,
+        // items_artlist_tap_commands
+        list_items_artlist_tap,
+        get_art_tap,
+        create_art_tap,
+        delete_art_tap,
+        update_art_tap,
         // settings_commands
         get_settings,
         set_settings

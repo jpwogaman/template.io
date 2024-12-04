@@ -36,7 +36,7 @@ pub fn create_fad(fileItemsItemId: String, count: i32) {
     let new_id = find_highest_id(&items_fadlist) + 1 + i;
 
     let fad = ItemsFadList {
-      id: format!("{}_FR_{}", fileItemsItemId.clone(), new_id),
+      id: format!("{}_FL_{}", fileItemsItemId.clone(), new_id),
       name: "".to_string(),
       code_type: "/control".to_string(),
       code: 0,
