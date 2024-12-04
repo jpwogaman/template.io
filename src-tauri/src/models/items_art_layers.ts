@@ -7,4 +7,5 @@ type Items_Art_Layers = {
   off: number
   default: string
   change_type: string
+  fileItemsItemId: string
 }

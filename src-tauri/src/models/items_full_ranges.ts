@@ -4,4 +4,5 @@ type Items_Full_Ranges = {
   low: string
   high: number
   white_keys_only: boolean
+  fileItemsItemId: string
 }

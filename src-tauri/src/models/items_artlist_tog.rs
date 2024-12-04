@@ -1,8 +1,27 @@
-use crate::schema::items_artlist_tog;
-use diesel::{ Insertable, Queryable, AsChangeset, Identifiable };
+use crate::{ schema::items_artlist_tog, models::fileitem::FileItem };
+use diesel::{
+  Insertable,
+  Queryable,
+  AsChangeset,
+  Identifiable,
+  Associations,
+  Selectable,
+};
 use serde::{ Serialize, Deserialize };
 
-#[derive(Queryable, Serialize, Insertable, Identifiable, AsChangeset)]
+#[derive(
+  Queryable,
+  Serialize,
+  Insertable,
+  AsChangeset,
+  Selectable,
+  Identifiable,
+  Associations,
+  Debug,
+  PartialEq,
+  Clone
+)]
+#[diesel(belongs_to(FileItem, foreign_key = fileItemsItemId))]
 #[diesel(table_name = items_artlist_tog)]
 pub struct ItemsArtListTog {
   pub id: String,
@@ -17,6 +36,7 @@ pub struct ItemsArtListTog {
   pub change_type: String,
   pub ranges: String,
   pub art_layers: String,
+  pub fileItemsItemId: String,
 }
 
 #[derive(Deserialize, Serialize)]
@@ -33,4 +53,5 @@ pub struct ItemsArtListTogRequest {
   pub change_type: Option<String>,
   pub ranges: Option<String>,
   pub art_layers: Option<String>,
+  pub fileItemsItemId: String,
 }

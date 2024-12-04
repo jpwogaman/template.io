@@ -1,8 +1,27 @@
-use crate::schema::items_art_layers;
-use diesel::{ Insertable, Queryable, AsChangeset, Identifiable };
+use crate::{ schema::items_art_layers, models::fileitem::FileItem };
+use diesel::{
+  Insertable,
+  Queryable,
+  AsChangeset,
+  Identifiable,
+  Associations,
+  Selectable,
+};
 use serde::{ Serialize, Deserialize };
 
-#[derive(Queryable, Serialize, Insertable, Identifiable, AsChangeset)]
+#[derive(
+  Queryable,
+  Serialize,
+  Insertable,
+  AsChangeset,
+  Selectable,
+  Identifiable,
+  Associations,
+  Debug,
+  PartialEq,
+  Clone
+)]
+#[diesel(belongs_to(FileItem, foreign_key = fileItemsItemId))]
 #[diesel(table_name = items_art_layers)]
 pub struct ItemsArtLayers {
   pub id: String,
@@ -13,6 +32,7 @@ pub struct ItemsArtLayers {
   pub off: i32,
   pub default: String,
   pub change_type: String,
+  pub fileItemsItemId: String,
 }
 
 #[derive(Deserialize, Serialize)]
@@ -25,4 +45,5 @@ pub struct ItemsArtLayersRequest {
   pub off: Option<i32>,
   pub default: Option<String>,
   pub change_type: Option<String>,
+  pub fileItemsItemId: String,
 }

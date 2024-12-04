@@ -11,4 +11,5 @@ type Items_ArtList_Tap = {
   change_type: string
   ranges: string
   art_layers: string
+  fileItemsItemId: string
 }
