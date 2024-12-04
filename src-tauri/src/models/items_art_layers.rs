@@ -45,5 +45,5 @@ pub struct ItemsArtLayersRequest {
   pub off: Option<i32>,
   pub default: Option<String>,
   pub change_type: Option<String>,
-  pub fileItemsItemId: String,
+  pub fileItemsItemId: Option<String>,
 }

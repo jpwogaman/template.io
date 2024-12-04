@@ -39,5 +39,5 @@ pub struct ItemsFullRangesRequest {
   pub low: Option<String>,
   pub high: Option<String>,
   pub white_keys_only: Option<bool>,
-  pub fileItemsItemId: String,
+  pub fileItemsItemId: Option<String>,
 }

@@ -57,7 +57,7 @@ pub fn update_art_layer(data: ItemsArtLayersRequest) {
     off: data.off.unwrap_or(original_art_layer.off),
     default: data.default.unwrap_or(original_art_layer.default),
     change_type: data.change_type.unwrap_or(original_art_layer.change_type),
-    fileItemsItemId: data.fileItemsItemId.clone(),
+    fileItemsItemId: data.fileItemsItemId.unwrap_or(original_art_layer.fileItemsItemId),
   };
 
   diesel

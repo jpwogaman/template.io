@@ -41,5 +41,5 @@ pub struct ItemsFadListRequest {
   pub code: Option<i32>,
   pub default: Option<i32>,
   pub change_type: Option<String>,
-  pub fileItemsItemId: String,
+  pub fileItemsItemId: Option<String>,
 }

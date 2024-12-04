@@ -54,5 +54,5 @@ pub struct ItemsArtListTapRequest {
   pub change_type: Option<String>,
   pub ranges: Option<String>,
   pub art_layers: Option<String>,
-  pub fileItemsItemId: String,
+  pub fileItemsItemId: Option<String>,
 }

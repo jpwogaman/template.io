@@ -55,7 +55,7 @@ pub fn update_fad(data: ItemsFadListRequest) {
     code: data.code.unwrap_or(original_fad.code),
     default: data.default.unwrap_or(original_fad.default),
     change_type: data.change_type.unwrap_or(original_fad.change_type),
-    fileItemsItemId: data.fileItemsItemId.clone(),
+    fileItemsItemId: data.fileItemsItemId.unwrap_or(original_fad.fileItemsItemId),
   };
 
   diesel

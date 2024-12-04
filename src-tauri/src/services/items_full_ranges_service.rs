@@ -56,7 +56,9 @@ pub fn update_full_range(data: ItemsFullRangesRequest) {
     white_keys_only: data.white_keys_only.unwrap_or(
       original_full_range.white_keys_only
     ),
-    fileItemsItemId: data.fileItemsItemId.clone(),
+    fileItemsItemId: data.fileItemsItemId.unwrap_or(
+      original_full_range.fileItemsItemId
+    ),
   };
 
   diesel

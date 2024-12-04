@@ -61,7 +61,7 @@ pub fn update_art_tap(data: ItemsArtListTapRequest) {
     change_type: data.change_type.unwrap_or(original_art_tap.change_type),
     ranges: data.ranges.unwrap_or(original_art_tap.ranges),
     art_layers: data.art_layers.unwrap_or(original_art_tap.art_layers),
-    fileItemsItemId: data.fileItemsItemId.clone(),
+    fileItemsItemId: data.fileItemsItemId.unwrap_or(original_art_tap.fileItemsItemId),
   };
 
   diesel
