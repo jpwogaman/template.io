@@ -1,8 +1,16 @@
-use crate::{ models::fileitem::{FileItem, FileItemRequest}, services::fileitem_service };
+use crate::{
+  models::{ fileitem::{ FileItem, FileItemRequest }, items_full_ranges::ItemsFullRanges },
+  services::{ fileitem_service, items_full_ranges_service },
+};
 
 #[tauri::command]
 pub fn list_fileitems() -> Vec<FileItem> {
   fileitem_service::list_fileitems()
+}
+
+#[tauri::command]
+pub fn list_fileitems_and_relations() -> Vec<fileitem_service::NewFileItem> {
+  fileitem_service::list_fileitems_and_relations()
 }
 
 #[tauri::command]
@@ -29,7 +37,7 @@ pub fn create_fileitem(count: i32) {
   let mut i = 0;
   while i < count {
     let new_id = find_highest_id(&fileitems) + 1 + i;
-    
+
     let fileitem = FileItem {
       id: format!("T_{}", new_id),
       locked: false,
@@ -46,6 +54,18 @@ pub fn create_fileitem(count: i32) {
     };
 
     fileitem_service::store_new_item(&fileitem);
+
+    let default_full_range = ItemsFullRanges {
+      id: format!("T_{}_FR_0", new_id),
+      name: "".to_string(),
+      low: "".to_string(),
+      high: "".to_string(),
+      white_keys_only: false,
+      fileItemsItemId: format!("T_{}", new_id),
+    };
+
+    items_full_ranges_service::store_new_full_range(&default_full_range);
+
     i += 1;
   }
 }

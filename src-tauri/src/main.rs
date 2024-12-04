@@ -12,8 +12,11 @@ use tauri_plugin_log;
 use log::info;
 mod settings;
 
-use commands::fileitem_commands::*;
-use commands::settings_commands::*;
+use commands::{
+  fileitem_commands::*,
+  settings_commands::*,
+  items_full_ranges_commands::*,
+};
 use services::fileitem_service;
 
 use tauri::{
@@ -118,11 +121,20 @@ async fn main() {
     })
     .invoke_handler(
       tauri::generate_handler![
+        // fileitem_commands
         list_fileitems,
+        list_fileitems_and_relations,
         get_fileitem,
         create_fileitem,
         delete_fileitem,
         update_fileitem,
+        // items_full_ranges_commands
+        list_items_full_ranges,
+        get_full_range,
+        create_full_range,
+        delete_full_range,
+        update_full_range,
+        // settings_commands
         get_settings,
         set_settings
       ]

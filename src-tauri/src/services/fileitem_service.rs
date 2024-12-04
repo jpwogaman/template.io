@@ -1,9 +1,16 @@
 use crate::{
   db::establish_db_connection,
-  models::fileitem::{ FileItem, FileItemRequest },
+  models::{
+    fileitem::{ FileItem, FileItemRequest },
+    items_full_ranges::{ ItemsFullRanges },
+  },
   schema::fileitems::dsl,
+  services::{
+    items_full_ranges_service::{ store_new_full_range, list_items_full_ranges },
+  },
 };
 use diesel::prelude::*;
+use serde::{ Serialize };
 
 pub fn init() {
   let fileitems = list_fileitems();
@@ -11,6 +18,15 @@ pub fn init() {
   if fileitems.len() > 0 {
     return;
   }
+
+  let default_full_range = ItemsFullRanges {
+    id: "T_0_FR_0".to_string(),
+    name: "".to_string(),
+    low: "C-2".to_string(),
+    high: "B8".to_string(),
+    white_keys_only: false,
+    fileItemsItemId: "T_0".to_string(),
+  };
 
   let default_fileitem = FileItem {
     id: "T_0".to_string(),
@@ -28,7 +44,34 @@ pub fn init() {
   };
 
   store_new_item(&default_fileitem);
+  store_new_full_range(&default_full_range);
 }
+
+#[derive(Serialize)]
+pub struct NewFileItem {
+  #[serde(flatten)]
+  fileitem: FileItem,
+  full_ranges: Vec<ItemsFullRanges>,
+}
+
+pub fn list_fileitems_and_relations() -> Vec<NewFileItem> {
+  let fileitems = list_fileitems();
+
+  let mut fileitems_and_relations = Vec::new();
+
+  for fileitem in fileitems {
+    let full_ranges = list_items_full_ranges(fileitem.id.clone());
+
+    fileitems_and_relations.push(NewFileItem {
+      fileitem: fileitem,
+      full_ranges: full_ranges,
+    });  
+  }
+
+  fileitems_and_relations
+
+} 
+
 
 pub fn list_fileitems() -> Vec<FileItem> {
   let connection = &mut establish_db_connection();

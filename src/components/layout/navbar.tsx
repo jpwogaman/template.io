@@ -32,14 +32,21 @@ export const NavBar: FC = () => {
     return null
   }
   const listItems = () => {
-    invoke('list_fileitems').then((response) => {
+    invoke('list_fileitems_and_relations').then((response) => {
       console.log(response)
     })
   }
   const createItem = () => {
-    invoke('create_fileitem').then((response) => {
+    invoke('create_fileitem', { count: 1 }).then((response) => {
       console.log(response)
     })
+  }
+  const createRange = () => {
+    invoke('create_full_range', { fileItemsItemId: 'T_0', count: 1 }).then(
+      (response) => {
+        console.log(response)
+      }
+    )
   }
   return (
     <nav className='container sticky top-0 z-50 max-h-[40px] min-w-full items-center bg-zinc-900'>
@@ -90,6 +97,11 @@ export const NavBar: FC = () => {
             className='border px-2'
             onClick={createItem}>
             SQL Create
+          </button>
+          <button
+            className='border px-2'
+            onClick={createRange}>
+            SQL Create Range
           </button>
         </li>
         <li className='block w-60 cursor-pointer p-2 text-right text-zinc-200'>
