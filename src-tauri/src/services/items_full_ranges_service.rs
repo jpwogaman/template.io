@@ -5,7 +5,6 @@ use crate::{
 };
 use diesel::prelude::*;
 
-
 pub fn list_items_full_ranges(fileItemsItemId: String) -> Vec<ItemsFullRanges> {
   let connection = &mut establish_db_connection();
 
@@ -19,7 +18,10 @@ pub fn list_items_full_ranges(fileItemsItemId: String) -> Vec<ItemsFullRanges> {
 pub fn get_full_range(id: String) -> Option<ItemsFullRanges> {
   let connection = &mut establish_db_connection();
 
-  dsl::items_full_ranges.filter(dsl::id.eq(id)).first::<ItemsFullRanges>(connection).ok()
+  dsl::items_full_ranges
+    .filter(dsl::id.eq(id))
+    .first::<ItemsFullRanges>(connection)
+    .ok()
 }
 
 pub fn store_new_full_range(new_full_range: &ItemsFullRanges) {
@@ -51,7 +53,9 @@ pub fn update_full_range(data: ItemsFullRangesRequest) {
     name: data.name.unwrap_or(original_full_range.name),
     low: data.low.unwrap_or(original_full_range.low),
     high: data.high.unwrap_or(original_full_range.high),
-    white_keys_only: data.white_keys_only.unwrap_or(original_full_range.white_keys_only),
+    white_keys_only: data.white_keys_only.unwrap_or(
+      original_full_range.white_keys_only
+    ),
     fileItemsItemId: data.fileItemsItemId.clone(),
   };
 

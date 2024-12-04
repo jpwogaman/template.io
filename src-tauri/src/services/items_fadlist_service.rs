@@ -5,7 +5,6 @@ use crate::{
 };
 use diesel::prelude::*;
 
-
 pub fn list_items_fadlist(fileItemsItemId: String) -> Vec<ItemsFadList> {
   let connection = &mut establish_db_connection();
 
@@ -19,7 +18,10 @@ pub fn list_items_fadlist(fileItemsItemId: String) -> Vec<ItemsFadList> {
 pub fn get_fad(id: String) -> Option<ItemsFadList> {
   let connection = &mut establish_db_connection();
 
-  dsl::items_fadlist.filter(dsl::id.eq(id)).first::<ItemsFadList>(connection).ok()
+  dsl::items_fadlist
+    .filter(dsl::id.eq(id))
+    .first::<ItemsFadList>(connection)
+    .ok()
 }
 
 pub fn store_new_fad(new_fad: &ItemsFadList) {
@@ -52,7 +54,7 @@ pub fn update_fad(data: ItemsFadListRequest) {
     code_type: data.code_type.unwrap_or(original_fad.code_type),
     code: data.code.unwrap_or(original_fad.code),
     default: data.default.unwrap_or(original_fad.default),
-    change_type: data.change_type.unwrap_or(original_fad.change_type),    
+    change_type: data.change_type.unwrap_or(original_fad.change_type),
     fileItemsItemId: data.fileItemsItemId.clone(),
   };
 
