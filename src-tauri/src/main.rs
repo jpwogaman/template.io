@@ -19,6 +19,7 @@ use commands::{
   items_fadlist_commands::*,
   items_artlist_tog_commands::*,
   items_artlist_tap_commands::*,
+  items_art_layers_commands::*,
 };
 use services::fileitem_service;
 
@@ -155,6 +156,12 @@ async fn main() {
         create_art_tap,
         delete_art_tap,
         update_art_tap,
+        // items_art_layers_commands
+        list_items_art_layers,
+        get_art_layer,
+        create_art_layer,
+        delete_art_layer,
+        update_art_layer,
         // settings_commands
         get_settings,
         set_settings

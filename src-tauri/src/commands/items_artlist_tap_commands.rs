@@ -46,8 +46,8 @@ pub fn create_art_tap(fileItemsItemId: String, count: i32) {
       default: false,
       delay: 0,
       change_type: "Value 2".to_string(),
-      ranges: "".to_string(),
-      art_layers: "".to_string(),
+      ranges: format!("[\"{}_FR_0\"]", new_id),
+      art_layers: "[\"\"]".to_string(),
       fileItemsItemId: fileItemsItemId.clone(),
     };
 

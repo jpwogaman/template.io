@@ -34,7 +34,7 @@ pub fn create_art_tog(fileItemsItemId: String, count: i32) {
   let mut i = 0;
   while i < count {
     let new_id = find_highest_id(&items_artlist_tog) + 1 + i;
-    
+
     let art = ItemsArtListTog {
       id: format!("{}_AT_{}", fileItemsItemId.clone(), new_id),
       name: "".to_string(),
@@ -46,8 +46,8 @@ pub fn create_art_tog(fileItemsItemId: String, count: i32) {
       default: "On".to_string(),
       delay: 0,
       change_type: "Value 2".to_string(),
-      ranges: "".to_string(),
-      art_layers: "".to_string(),
+      ranges: format!("[\"{}_FR_0\"]", new_id),
+      art_layers: "[\"\"]".to_string(),
       fileItemsItemId: fileItemsItemId.clone(),
     };
 

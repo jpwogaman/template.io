@@ -5,6 +5,7 @@ use crate::{
     items_fadlist::ItemsFadList,
     items_artlist_tog::ItemsArtListTog,
     items_artlist_tap::ItemsArtListTap,
+    items_art_layers::ItemsArtLayers,
   },
   services::{
     fileitem_service,
@@ -12,6 +13,7 @@ use crate::{
     items_fadlist_service,
     items_artlist_tog_service,
     items_artlist_tap_service,
+    items_art_layers_service,
   },
 };
 
@@ -101,8 +103,8 @@ pub fn create_fileitem(count: i32) {
       default: "On".to_string(),
       delay: 0,
       change_type: "Value 2".to_string(),
-      ranges: "".to_string(),
-      art_layers: "".to_string(),
+      ranges: format!("[\"T_{}_FR_0\"]", new_id),
+      art_layers: "[\"\"]".to_string(),
       fileItemsItemId: format!("T_{}", new_id),
     };
 
@@ -119,10 +121,26 @@ pub fn create_fileitem(count: i32) {
       default: false,
       delay: 0,
       change_type: "Value 2".to_string(),
-      ranges: "".to_string(),
-      art_layers: "".to_string(),
+      ranges: format!("[\"T_{}_FR_0\"]", new_id),
+      art_layers: "[\"\"]".to_string(),
       fileItemsItemId: format!("T_{}", new_id),
     };
+
+    items_artlist_tap_service::store_new_art_tap(&default_art_tap);
+
+    let default_art_layer = ItemsArtLayers {
+      id: format!("T_{}_AL_0", new_id),
+      name: "".to_string(),
+      code_type: "/control".to_string(),
+      code: 0,
+      on: 127,
+      off: 0,
+      default: "Off".to_string(),
+      change_type: "Value 2".to_string(),
+      fileItemsItemId: format!("T_{}", new_id),
+    };
+
+    items_art_layers_service::store_new_art_layer(&default_art_layer);
 
     i += 1;
   }

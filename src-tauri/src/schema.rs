@@ -28,8 +28,6 @@ diesel::table! {
         default -> Text,
         change_type -> Text,
         fileItemsItemId -> Text,
-        itemsArtListTapId -> Text,
-        itemsArtListTogId -> Text,
     }
 }
 
@@ -93,8 +91,6 @@ diesel::table! {
 }
 
 diesel::joinable!(items_art_layers -> fileitems (fileItemsItemId));
-diesel::joinable!(items_art_layers -> items_artlist_tap (itemsArtListTapId));
-diesel::joinable!(items_art_layers -> items_artlist_tog (itemsArtListTogId));
 diesel::joinable!(items_artlist_tap -> fileitems (fileItemsItemId));
 diesel::joinable!(items_artlist_tog -> fileitems (fileItemsItemId));
 diesel::joinable!(items_fadlist -> fileitems (fileItemsItemId));

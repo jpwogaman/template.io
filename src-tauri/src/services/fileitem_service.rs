@@ -6,6 +6,7 @@ use crate::{
     items_fadlist::{ ItemsFadList },
     items_artlist_tog::{ ItemsArtListTog },
     items_artlist_tap::{ ItemsArtListTap },
+    items_art_layers::{ ItemsArtLayers },
   },
   schema::fileitems::dsl,
   services::{
@@ -13,6 +14,7 @@ use crate::{
     items_fadlist_service::{ store_new_fad, list_items_fadlist },
     items_artlist_tog_service::{ store_new_art_tog, list_items_artlist_tog },
     items_artlist_tap_service::{ store_new_art_tap, list_items_artlist_tap },
+    items_art_layers_service::{ store_new_art_layer, list_items_art_layers },
   },
 };
 use diesel::prelude::*;
@@ -70,8 +72,8 @@ pub fn init() {
     default: "On".to_string(),
     delay: 0,
     change_type: "Value 2".to_string(),
-    ranges: "".to_string(),
-    art_layers: "".to_string(),
+    ranges: "[\"T_0_FR_0\"]".to_string(),
+    art_layers: "[\"\"]".to_string(),
     fileItemsItemId: "T_0".to_string(),
   };
 
@@ -86,8 +88,20 @@ pub fn init() {
     default: false,
     delay: 0,
     change_type: "Value 2".to_string(),
-    ranges: "".to_string(),
-    art_layers: "".to_string(),
+    ranges: "[\"T_0_FR_0\"]".to_string(),
+    art_layers: "[\"\"]".to_string(),
+    fileItemsItemId: "T_0".to_string(),
+  };
+
+  let default_art_layer = ItemsArtLayers {
+    id: "T_0_AL_0".to_string(),
+    name: "".to_string(),
+    code_type: "/control".to_string(),
+    code: 0,
+    on: 127,
+    off: 0,
+    default: "Off".to_string(),
+    change_type: "Value 2".to_string(),
     fileItemsItemId: "T_0".to_string(),
   };
 
@@ -96,6 +110,7 @@ pub fn init() {
   store_new_fad(&default_fad);
   store_new_art_tog(&default_art_tog);
   store_new_art_tap(&default_art_tap);
+  store_new_art_layer(&default_art_layer);
 }
 
 #[derive(Serialize)]
@@ -106,6 +121,7 @@ pub struct FullTrackListForExport {
   fad_list: Vec<ItemsFadList>,
   art_tog: Vec<ItemsArtListTog>,
   art_tap: Vec<ItemsArtListTap>,
+  art_layers: Vec<ItemsArtLayers>,
 }
 
 pub fn list_fileitems_and_relations() -> Vec<FullTrackListForExport> {
@@ -118,6 +134,7 @@ pub fn list_fileitems_and_relations() -> Vec<FullTrackListForExport> {
     let fad_list = list_items_fadlist(fileitem.id.clone());
     let art_tog = list_items_artlist_tog(fileitem.id.clone());
     let art_tap = list_items_artlist_tap(fileitem.id.clone());
+    let art_layers = list_items_art_layers(fileitem.id.clone());
 
     fileitems_and_relations.push(FullTrackListForExport {
       fileitem: fileitem,
@@ -125,6 +142,7 @@ pub fn list_fileitems_and_relations() -> Vec<FullTrackListForExport> {
       fad_list: fad_list,
       art_tog: art_tog,
       art_tap: art_tap,
+      art_layers: art_layers,
     });
   }
 

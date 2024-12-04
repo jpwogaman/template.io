@@ -8,7 +8,5 @@ CREATE TABLE items_art_layers (
     off INT NOT NULL,
     "default" VARCHAR(50) NOT NULL,
     change_type VARCHAR(50) NOT NULL,
-    fileItemsItemId VARCHAR(50) NOT NULL REFERENCES fileitems(id),
-    itemsArtListTapId VARCHAR(50) NOT NULL REFERENCES items_artlist_tap(id),
-    itemsArtListTogId VARCHAR(50) NOT NULL REFERENCES items_artlist_tog(id)
+    fileItemsItemId VARCHAR(50) NOT NULL REFERENCES fileitems(id)
 );
