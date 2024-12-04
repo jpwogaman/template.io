@@ -4,11 +4,13 @@ use crate::{
     fileitem::{ FileItem, FileItemRequest },
     items_full_ranges::{ ItemsFullRanges },
     items_fadlist::{ ItemsFadList },
+    items_artlist_tog::{ ItemsArtListTog },
   },
   schema::fileitems::dsl,
   services::{
     items_full_ranges_service::{ store_new_full_range, list_items_full_ranges },
     items_fadlist_service::{ store_new_fad, list_items_fadlist },
+    items_artlist_tog_service::{ store_new_art_tog, list_items_artlist_tog },
   },
 };
 use diesel::prelude::*;
@@ -55,9 +57,26 @@ pub fn init() {
     fileItemsItemId: "T_0".to_string(),
   };
 
+  let default_art_tog = ItemsArtListTog {
+    id: "T_0_AT_0".to_string(),
+    name: "".to_string(),
+    toggle: false,
+    code_type: "/control".to_string(),
+    code: 0,
+    on: 0,
+    off: 0,
+    default: "".to_string(),
+    delay: 0,
+    change_type: "Value 2".to_string(),
+    ranges: "".to_string(),
+    art_layers: "".to_string(),
+    fileItemsItemId: "T_0".to_string(),
+  };
+
   store_new_item(&default_fileitem);
   store_new_full_range(&default_full_range);
   store_new_fad(&default_fad);
+  store_new_art_tog(&default_art_tog);
 }
 
 #[derive(Serialize)]
@@ -66,6 +85,7 @@ pub struct FullTrackListForExport {
   fileitem: FileItem,
   full_ranges: Vec<ItemsFullRanges>,
   fad_list: Vec<ItemsFadList>,
+  art_tog: Vec<ItemsArtListTog>,
 }
 
 pub fn list_fileitems_and_relations() -> Vec<FullTrackListForExport> {
@@ -76,11 +96,13 @@ pub fn list_fileitems_and_relations() -> Vec<FullTrackListForExport> {
   for fileitem in fileitems {
     let full_ranges = list_items_full_ranges(fileitem.id.clone());
     let fad_list = list_items_fadlist(fileitem.id.clone());
+    let art_tog = list_items_artlist_tog(fileitem.id.clone());
 
     fileitems_and_relations.push(FullTrackListForExport {
       fileitem: fileitem,
       full_ranges: full_ranges,
       fad_list: fad_list,
+      art_tog: art_tog,
     });
   }
 

@@ -17,6 +17,7 @@ use commands::{
   settings_commands::*,
   items_full_ranges_commands::*,
   items_fadlist_commands::*,
+  items_artlist_tog_commands::*,
 };
 use services::fileitem_service;
 
@@ -140,7 +141,13 @@ async fn main() {
         get_fad,
         create_fad,
         delete_fad,
-        update_fad,        
+        update_fad,
+        // items_artlist_tog_commands
+        list_items_artlist_tog,
+        get_art_tog,
+        create_art_tog,
+        delete_art_tog,
+        update_art_tog,
         // settings_commands
         get_settings,
         set_settings
