@@ -1,6 +1,14 @@
 use crate::{
-  models::{ fileitem::{ FileItem, FileItemRequest }, items_full_ranges::ItemsFullRanges },
-  services::{ fileitem_service, items_full_ranges_service },
+  models::{
+    fileitem::{ FileItem, FileItemRequest },
+    items_full_ranges::ItemsFullRanges,
+    items_fadlist::ItemsFadList,
+  },
+  services::{
+    fileitem_service,
+    items_full_ranges_service,
+    items_fadlist_service,
+  },
 };
 
 #[tauri::command]
@@ -9,7 +17,7 @@ pub fn list_fileitems() -> Vec<FileItem> {
 }
 
 #[tauri::command]
-pub fn list_fileitems_and_relations() -> Vec<fileitem_service::NewFileItem> {
+pub fn list_fileitems_and_relations() -> Vec<fileitem_service::FullTrackListForExport> {
   fileitem_service::list_fileitems_and_relations()
 }
 
@@ -65,6 +73,18 @@ pub fn create_fileitem(count: i32) {
     };
 
     items_full_ranges_service::store_new_full_range(&default_full_range);
+
+    let default_fad = ItemsFadList {
+      id: format!("T_{}_FL_0", new_id),
+      name: "".to_string(),
+      code_type: "/control".to_string(),
+      code: 0,
+      default: 0,
+      change_type: "Value 2".to_string(),
+      fileItemsItemId: format!("T_{}", new_id),
+    };
+
+    items_fadlist_service::store_new_fad(&default_fad);
 
     i += 1;
   }

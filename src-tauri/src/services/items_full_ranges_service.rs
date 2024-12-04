@@ -29,7 +29,7 @@ pub fn store_new_full_range(new_full_range: &ItemsFullRanges) {
     ::insert_into(dsl::items_full_ranges)
     .values(new_full_range)
     .execute(connection)
-    .expect("Error saving new fileitem");
+    .expect("Error saving new range");
 }
 
 pub fn delete_full_range(id: String) {
@@ -38,7 +38,7 @@ pub fn delete_full_range(id: String) {
   diesel
     ::delete(dsl::items_full_ranges.filter(dsl::id.eq(id)))
     .execute(connection)
-    .expect("Error deleting fileitem");
+    .expect("Error deleting range");
 }
 
 pub fn update_full_range(data: ItemsFullRangesRequest) {
@@ -59,5 +59,5 @@ pub fn update_full_range(data: ItemsFullRangesRequest) {
     ::update(dsl::items_full_ranges.filter(dsl::id.eq(data.id)))
     .set(&new_full_range)
     .execute(connection)
-    .expect("Error updating fileitem");
+    .expect("Error updating range");
 }

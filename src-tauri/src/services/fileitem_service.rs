@@ -3,10 +3,12 @@ use crate::{
   models::{
     fileitem::{ FileItem, FileItemRequest },
     items_full_ranges::{ ItemsFullRanges },
+    items_fadlist::{ ItemsFadList },
   },
   schema::fileitems::dsl,
   services::{
     items_full_ranges_service::{ store_new_full_range, list_items_full_ranges },
+    items_fadlist_service::{ store_new_fad, list_items_fadlist },
   },
 };
 use diesel::prelude::*;
@@ -18,15 +20,6 @@ pub fn init() {
   if fileitems.len() > 0 {
     return;
   }
-
-  let default_full_range = ItemsFullRanges {
-    id: "T_0_FR_0".to_string(),
-    name: "".to_string(),
-    low: "C-2".to_string(),
-    high: "B8".to_string(),
-    white_keys_only: false,
-    fileItemsItemId: "T_0".to_string(),
-  };
 
   let default_fileitem = FileItem {
     id: "T_0".to_string(),
@@ -43,35 +36,56 @@ pub fn init() {
     color: "#71717A".to_string(),
   };
 
+  let default_full_range = ItemsFullRanges {
+    id: "T_0_FR_0".to_string(),
+    name: "".to_string(),
+    low: "C-2".to_string(),
+    high: "B8".to_string(),
+    white_keys_only: false,
+    fileItemsItemId: "T_0".to_string(),
+  };
+
+  let default_fad = ItemsFadList {
+    id: "T_0_FL_0".to_string(),
+    name: "".to_string(),
+    code_type: "/control".to_string(),
+    code: 0,
+    default: 0,
+    change_type: "Value 2".to_string(),
+    fileItemsItemId: "T_0".to_string(),
+  };
+
   store_new_item(&default_fileitem);
   store_new_full_range(&default_full_range);
+  store_new_fad(&default_fad);
 }
 
 #[derive(Serialize)]
-pub struct NewFileItem {
+pub struct FullTrackListForExport {
   #[serde(flatten)]
   fileitem: FileItem,
   full_ranges: Vec<ItemsFullRanges>,
+  fad_list: Vec<ItemsFadList>,
 }
 
-pub fn list_fileitems_and_relations() -> Vec<NewFileItem> {
+pub fn list_fileitems_and_relations() -> Vec<FullTrackListForExport> {
   let fileitems = list_fileitems();
 
   let mut fileitems_and_relations = Vec::new();
 
   for fileitem in fileitems {
     let full_ranges = list_items_full_ranges(fileitem.id.clone());
+    let fad_list = list_items_fadlist(fileitem.id.clone());
 
-    fileitems_and_relations.push(NewFileItem {
+    fileitems_and_relations.push(FullTrackListForExport {
       fileitem: fileitem,
       full_ranges: full_ranges,
-    });  
+      fad_list: fad_list,
+    });
   }
 
   fileitems_and_relations
-
-} 
-
+}
 
 pub fn list_fileitems() -> Vec<FileItem> {
   let connection = &mut establish_db_connection();

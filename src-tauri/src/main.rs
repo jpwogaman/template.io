@@ -16,6 +16,7 @@ use commands::{
   fileitem_commands::*,
   settings_commands::*,
   items_full_ranges_commands::*,
+  items_fadlist_commands::*,
 };
 use services::fileitem_service;
 
@@ -134,6 +135,12 @@ async fn main() {
         create_full_range,
         delete_full_range,
         update_full_range,
+        // items_fadlist_commands
+        list_items_fadlist,
+        get_fad,
+        create_fad,
+        delete_fad,
+        update_fad,        
         // settings_commands
         get_settings,
         set_settings

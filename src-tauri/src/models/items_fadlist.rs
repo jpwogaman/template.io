@@ -1,8 +1,27 @@
-use crate::schema::items_fadlist;
-use diesel::{ Insertable, Queryable, AsChangeset, Identifiable };
+use crate::{ schema::items_fadlist, models::fileitem::FileItem };
+use diesel::{
+  Insertable,
+  Queryable,
+  AsChangeset,
+  Identifiable,
+  Associations,
+  Selectable,
+};
 use serde::{ Serialize, Deserialize };
 
-#[derive(Queryable, Serialize, Insertable, Identifiable, AsChangeset)]
+#[derive(
+  Queryable,
+  Serialize,
+  Insertable,
+  AsChangeset,
+  Selectable,
+  Identifiable,
+  Associations,
+  Debug,
+  PartialEq,
+  Clone
+)]
+#[diesel(belongs_to(FileItem, foreign_key = fileItemsItemId))]
 #[diesel(table_name = items_fadlist)]
 pub struct ItemsFadList {
   pub id: String,
@@ -11,6 +30,7 @@ pub struct ItemsFadList {
   pub code: i32,
   pub default: i32,
   pub change_type: String,
+  pub fileItemsItemId: String,
 }
 
 #[derive(Deserialize, Serialize)]
@@ -21,4 +41,5 @@ pub struct ItemsFadListRequest {
   pub code: Option<i32>,
   pub default: Option<i32>,
   pub change_type: Option<String>,
+  pub fileItemsItemId: String,
 }

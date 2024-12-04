@@ -1,5 +1,12 @@
-use crate::{schema::items_full_ranges, models::fileitem::FileItem};
-use diesel::{ Insertable, Queryable, AsChangeset, Identifiable, Associations, Selectable };
+use crate::{ schema::items_full_ranges, models::fileitem::FileItem };
+use diesel::{
+  Insertable,
+  Queryable,
+  AsChangeset,
+  Identifiable,
+  Associations,
+  Selectable,
+};
 use serde::{ Serialize, Deserialize };
 
 #[derive(
