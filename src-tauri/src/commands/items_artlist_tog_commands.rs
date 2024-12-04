@@ -1,6 +1,6 @@
 use crate::{
   models::items_artlist_tog::{ ItemsArtListTog, ItemsArtListTogRequest },
-  services::items_artlist_tog_service,
+  services::{items_artlist_tog_service, items_artlist_tap_service, items_artlist_service},
 };
 
 #[tauri::command]
@@ -16,24 +16,17 @@ pub fn get_art_tog(id: String) -> Option<ItemsArtListTog> {
 #[tauri::command]
 pub fn create_art_tog(fileItemsItemId: String, count: i32) {
   // id's are T_0_FR_0, T_0_FR_1, T_0_FR_2, etc. so we need to find the highest id and increment it
-  let items_artlist_tog = items_artlist_tog_service::list_items_artlist_tog(
+  let items_artlist_tog_len = items_artlist_tog_service::list_items_artlist_tog(
     fileItemsItemId.clone()
-  );
+  ).len();
 
-  fn find_highest_id(items_artlist_tog: &Vec<ItemsArtListTog>) -> i32 {
-    let mut highest_id = 0;
-    for items_art_tog in items_artlist_tog {
-      let id = items_art_tog.id.split("_").nth(3).unwrap().parse::<i32>().unwrap();
-      if id > highest_id {
-        highest_id = id;
-      }
-    }
-    highest_id
-  }
+  let items_artlist_tap_len = items_artlist_tap_service::list_items_artlist_tap(
+    fileItemsItemId.clone()
+  ).len();
 
   let mut i = 0;
   while i < count {
-    let new_id = find_highest_id(&items_artlist_tog) + 1 + i;
+    let new_id = items_artlist_tog_len + items_artlist_tap_len + i as usize;
 
     let art = ItemsArtListTog {
       id: format!("{}_AT_{}", fileItemsItemId.clone(), new_id),
@@ -54,6 +47,8 @@ pub fn create_art_tog(fileItemsItemId: String, count: i32) {
     items_artlist_tog_service::store_new_art_tog(&art);
     i += 1;
   }
+
+  items_artlist_service::renumber_all_arts(fileItemsItemId.clone());
 }
 
 #[tauri::command]

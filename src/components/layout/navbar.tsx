@@ -41,8 +41,15 @@ export const NavBar: FC = () => {
       console.log(response)
     })
   }
-  const createRange = () => {
-    invoke('create_full_range', { fileItemsItemId: 'T_0', count: 1 }).then(
+  const createArtTog = () => {
+    invoke('create_art_tog', { fileItemsItemId: 'T_0', count: 1 }).then(
+      (response) => {
+        console.log(response)
+      }
+    )
+  }
+  const createArtTap = () => {
+    invoke('create_art_tap', { fileItemsItemId: 'T_0', count: 1 }).then(
       (response) => {
         console.log(response)
       }
@@ -100,8 +107,13 @@ export const NavBar: FC = () => {
           </button>
           <button
             className='border px-2'
-            onClick={createRange}>
-            SQL Create Range
+            onClick={createArtTog}>
+            SQL Create Art Tog
+          </button>
+          <button
+            className='border px-2'
+            onClick={createArtTap}>
+            SQL Create Art Tap
           </button>
         </li>
         <li className='block w-60 cursor-pointer p-2 text-right text-zinc-200'>
