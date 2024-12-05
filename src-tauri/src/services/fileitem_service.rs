@@ -270,12 +270,14 @@ pub fn update_fileitem(data: FileItemRequest) {
 
 pub fn delete_all_fileitems_and_relations() {
   let connection = &mut establish_db_connection();
-  delete_all_fileitems();
   delete_all_art_layers();
   delete_all_art_tap();
   delete_all_art_tog();
   delete_all_fad();
   delete_all_full_ranges();
+  delete_all_fileitems();
+
+  create_fileitem(1);
 }
 
 pub fn delete_fileitem_and_relations(id: String) {

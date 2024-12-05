@@ -521,7 +521,14 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   ////////////////////////////////////////////
   //// DELETE mutations
   const deleteAllItemsMutation = () => {
-    console.log('deleteAllItemsMutation')
+    void invoke('delete_all_fileitems_and_relations')
+      .then(() => {
+        refetchAll()
+        refetchSelected()
+      })
+      .catch((error) => {
+        console.log('create_fileitem error', error)
+      })
   }
   //const deleteAllItemsMutation = trpc.items.deleteAllItems.useMutation({
   //  onSuccess: () => {
