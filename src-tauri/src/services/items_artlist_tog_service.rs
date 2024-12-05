@@ -49,7 +49,7 @@ pub fn delete_art_tog_by_fileitem(id: String, fileItemsItemId: String) {
   let must_have_one = dsl::items_artlist_tog
     .filter(dsl::fileItemsItemId.eq(fileItemsItemId.clone()))
     .load::<ItemsArtListTog>(connection)
-    .expect("Error loading art");
+    .expect("Error loading art_tog");
 
   if must_have_one.len() <= 1 {
     return;
@@ -58,7 +58,7 @@ pub fn delete_art_tog_by_fileitem(id: String, fileItemsItemId: String) {
   diesel
     ::delete(dsl::items_artlist_tog.filter(dsl::id.eq(id)))
     .execute(connection)
-    .expect("Error deleting art");
+    .expect("Error deleting art_tog");
 }
 
 pub fn delete_all_art_tog_for_fileitem(fileItemsItemId: String) {
@@ -69,7 +69,7 @@ pub fn delete_all_art_tog_for_fileitem(fileItemsItemId: String) {
       dsl::items_artlist_tog.filter(dsl::fileItemsItemId.eq(fileItemsItemId))
     )
     .execute(connection)
-    .expect("Error deleting fad");
+    .expect("Error deleting art_tog");
 }
 
 pub fn delete_all_art_tog() {
@@ -78,13 +78,20 @@ pub fn delete_all_art_tog() {
   diesel
     ::delete(dsl::items_artlist_tog)
     .execute(connection)
-    .expect("Error deleting fad");
+    .expect("Error deleting art_tog");
 }
 
 pub fn update_art_tog(data: ItemsArtListTogRequest) {
   let connection = &mut establish_db_connection();
 
   let original_art_tog = get_art_tog(data.id.clone()).unwrap();
+
+  let must_have_one_range = |ranges: String| -> String {
+    if ranges == "[]" {
+      return original_art_tog.ranges.clone();
+    }
+    ranges
+  };
 
   let new_art_tog = ItemsArtListTog {
     id: data.id.clone(),
@@ -97,7 +104,9 @@ pub fn update_art_tog(data: ItemsArtListTogRequest) {
     default: data.default.unwrap_or(original_art_tog.default),
     delay: data.delay.unwrap_or(original_art_tog.delay),
     change_type: data.change_type.unwrap_or(original_art_tog.change_type),
-    ranges: data.ranges.unwrap_or(original_art_tog.ranges),
+    ranges: must_have_one_range(
+      data.ranges.unwrap_or(original_art_tog.ranges.clone())
+    ),
     art_layers: data.art_layers.unwrap_or(original_art_tog.art_layers),
     fileItemsItemId: data.fileItemsItemId.unwrap_or(
       original_art_tog.fileItemsItemId
