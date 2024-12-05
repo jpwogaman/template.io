@@ -3,9 +3,7 @@ use crate::{
     FileItem,
     FileItemRequest,
     FullTrackForExport,
-    FullTrackListForExport,
     FullTrackWithCounts,
-    FullTrackCounts,
   },
   services::fileitem_service,
 };
@@ -36,9 +34,7 @@ pub fn get_fileitem(id: String) -> Option<FileItem> {
 }
 
 #[tauri::command]
-pub fn get_fileitem_and_relations(
-  id: String
-) -> Option<FullTrackForExport> {
+pub fn get_fileitem_and_relations(id: String) -> Option<FullTrackForExport> {
   fileitem_service::get_fileitem_and_relations(id)
 }
 

@@ -58,8 +58,6 @@ use crate::{
   },
 };
 use diesel::prelude::*;
-use serde::{ Serialize };
-use serde_json::{ from_str, Value };
 
 pub fn init() {
   let fileitems = list_fileitems();
@@ -292,7 +290,6 @@ pub fn update_fileitem(data: FileItemRequest) {
 }
 
 pub fn delete_all_fileitems_and_relations() {
-  let connection = &mut establish_db_connection();
   delete_all_art_layers();
   delete_all_art_tap();
   delete_all_art_tog();
@@ -302,8 +299,6 @@ pub fn delete_all_fileitems_and_relations() {
 }
 
 pub fn delete_fileitem_and_relations(id: String) {
-  let connection = &mut establish_db_connection();
-
   let must_have_one = list_fileitems();
 
   if must_have_one.len() <= 1 {
@@ -319,8 +314,6 @@ pub fn delete_fileitem_and_relations(id: String) {
 }
 
 pub fn clear_fileitem(id: String) {
-  let connection = &mut establish_db_connection();
-
   let fileitem = FileItemRequest {
     id: id.clone(),
     locked: Some(false),
