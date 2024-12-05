@@ -32,7 +32,7 @@ export const NavBar: FC = () => {
     return null
   }
   const listItems = () => {
-    invoke('list_fileitems_and_relations').then((response) => {
+    invoke('list_all_fileitems_and_relations').then((response) => {
       console.log(response)
     })
   }
