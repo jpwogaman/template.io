@@ -9,6 +9,11 @@ pub fn list_fileitems() -> Vec<FileItem> {
 }
 
 #[tauri::command]
+pub fn renumber_all_fileitems() -> Vec<FileItem> {
+  fileitem_service::renumber_all_fileitems()
+}
+
+#[tauri::command]
 pub fn list_fileitems_and_relations() -> Vec<fileitem_service::FullTrackListForExport> {
   fileitem_service::list_fileitems_and_relations()
 }

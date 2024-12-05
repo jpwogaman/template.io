@@ -134,6 +134,7 @@ async fn main() {
         create_fileitem,
         delete_fileitem,
         clear_fileitem,
+        renumber_all_fileitems,
         delete_fileitem_and_relations,
         delete_all_fileitems_and_relations,
         update_fileitem,

@@ -8,7 +8,14 @@ use crate::{
     items_artlist_tap::{ ItemsArtListTap, init_art_tap },
     items_art_layers::{ ItemsArtLayers, init_art_layer },
   },
-  schema::fileitems::dsl,
+  schema::{
+    fileitems::dsl as fileitems_dsl,
+    items_full_ranges::dsl as ranges_dsl,
+    items_fadlist::dsl as fadlist_dsl,
+    items_artlist_tog::dsl as artlist_tog_dsl,
+    items_artlist_tap::dsl as artlist_tap_dsl,
+    items_art_layers::dsl as art_layers_dsl,
+  },
   services::{
     items_full_ranges_service::{
       store_new_full_range,
@@ -174,8 +181,9 @@ pub fn list_fileitems_and_relation_counts() -> Vec<FullTrackListWithCounts> {
 pub fn list_fileitems() -> Vec<FileItem> {
   let connection = &mut establish_db_connection();
 
-  dsl::fileitems
-    .order_by(dsl::id.asc())
+  fileitems_dsl::fileitems
+    .order_by(fileitems_dsl::id.asc())
+
     .load::<FileItem>(connection)
     .expect("Error loading fileitems")
 }
@@ -208,14 +216,18 @@ pub fn get_fileitem_and_relations(
 pub fn get_fileitem(id: String) -> Option<FileItem> {
   let connection = &mut establish_db_connection();
 
-  dsl::fileitems.filter(dsl::id.eq(id)).first::<FileItem>(connection).ok()
+  fileitems_dsl::fileitems
+    .filter(fileitems_dsl::id.eq(id))
+    .first::<FileItem>(connection)
+    .ok()
 }
 
 pub fn store_new_item(new_item: &FileItem) {
   let connection = &mut establish_db_connection();
 
   diesel
-    ::insert_into(dsl::fileitems)
+    ::insert_into(fileitems_dsl::fileitems)
+
     .values(new_item)
     .execute(connection)
     .expect("Error saving new fileitem");
@@ -225,7 +237,8 @@ pub fn delete_fileitem(id: String) {
   let connection = &mut establish_db_connection();
 
   diesel
-    ::delete(dsl::fileitems.filter(dsl::id.eq(id)))
+    ::delete(fileitems_dsl::fileitems.filter(fileitems_dsl::id.eq(id)))
+
     .execute(connection)
     .expect("Error deleting fileitem");
 }
@@ -234,7 +247,8 @@ pub fn delete_all_fileitems() {
   let connection = &mut establish_db_connection();
 
   diesel
-    ::delete(dsl::fileitems)
+    ::delete(fileitems_dsl::fileitems)
+
     .execute(connection)
     .expect("Error deleting fileitems");
 }
@@ -262,7 +276,8 @@ pub fn update_fileitem(data: FileItemRequest) {
   };
 
   diesel
-    ::update(dsl::fileitems.filter(dsl::id.eq(data.id)))
+    ::update(fileitems_dsl::fileitems.filter(fileitems_dsl::id.eq(data.id)))
+
     .set(&new_fileitem)
     .execute(connection)
     .expect("Error updating fileitem");
@@ -334,4 +349,148 @@ pub fn clear_fileitem(id: String) {
   store_new_art_tog(&default_art_tog);
   store_new_art_tap(&default_art_tap);
   store_new_art_layer(&default_art_layer);
+}
+
+pub fn renumber_all_fileitems() -> Vec<FileItem> {
+  let connection = &mut establish_db_connection();
+
+  let mut fileitems = list_fileitems();
+
+  // id's are T_0, T_1, T_2, etc.
+  fn split_item_id(id: &str) -> i32 {
+    id.split("_").nth(1).unwrap().parse::<i32>().unwrap()
+  }
+
+  // sub id's are T_0_FR_0, T_0_FR_1, T_0_FR_2, etc.
+  fn split_sub_item_id(id: &str) -> i32 {
+    id.split("_").nth(3).unwrap().parse::<i32>().unwrap()
+  }
+
+  fn sort_by_id(a: &FileItem, b: &FileItem) -> std::cmp::Ordering {
+    split_item_id(&a.id).cmp(&split_item_id(&b.id))
+  }
+
+  fileitems.sort_by(sort_by_id);
+
+  let mut i = 0;
+  for fileitem in fileitems {
+    let full_ranges = list_items_full_ranges(fileitem.id.clone());
+    let fad_list = list_items_fadlist(fileitem.id.clone());
+    let art_tog = list_items_artlist_tog(fileitem.id.clone());
+    let art_tap = list_items_artlist_tap(fileitem.id.clone());
+    let art_layers = list_items_art_layers(fileitem.id.clone());
+
+    let new_fileitem = FileItem {
+      id: format!("T_{}", i),
+      ..fileitem
+    };
+
+    diesel
+      ::update(
+        fileitems_dsl::fileitems.filter(
+          fileitems_dsl::id.eq(fileitem.id.clone())
+        )
+      )
+
+      .set(&new_fileitem)
+      .execute(connection)
+      .expect("Error updating fileitem");
+
+    for full_range in full_ranges {
+      let range_id = split_sub_item_id(&full_range.id);
+      let new_full_range = ItemsFullRanges {
+        id: format!("T_{}_FR_{}", i, range_id),
+        fileItemsItemId: format!("T_{}", i),
+        ..full_range
+      };
+
+      diesel
+        ::update(
+          ranges_dsl::items_full_ranges.filter(
+            ranges_dsl::id.eq(full_range.id.clone())
+          )
+        )
+        .set(&new_full_range)
+        .execute(connection)
+        .expect("Error updating range");
+    }
+
+    for fad in fad_list {
+      let fad_id = split_sub_item_id(&fad.id);
+      let new_fad = ItemsFadList {
+        id: format!("T_{}_FL_{}", i, fad_id),
+        fileItemsItemId: format!("T_{}", i),
+        ..fad
+      };
+
+      diesel
+        ::update(
+          fadlist_dsl::items_fadlist.filter(fadlist_dsl::id.eq(fad.id.clone()))
+        )
+        .set(&new_fad)
+        .execute(connection)
+        .expect("Error updating fad");
+    }
+
+    for tog in &art_tog {
+      let tog_id = split_sub_item_id(&tog.id);
+      let new_tog = ItemsArtListTog {
+        id: format!("T_{}_AT_{}", i, tog_id),
+        fileItemsItemId: format!("T_{}", i),
+        ..tog.clone()
+      };
+
+      diesel
+        ::update(
+          artlist_tog_dsl::items_artlist_tog.filter(
+            artlist_tog_dsl::id.eq(tog.id.clone())
+          )
+        )
+        .set(&new_tog)
+        .execute(connection)
+        .expect("Error updating tog");
+    }
+
+    for tap in art_tap {
+      let tap_id = split_sub_item_id(&tap.id) + (art_tog.len() as i32);
+      let new_tap = ItemsArtListTap {
+        id: format!("T_{}_AT_{}", i, tap_id),
+        fileItemsItemId: format!("T_{}", i),
+        ..tap
+      };
+
+      diesel
+        ::update(
+          artlist_tap_dsl::items_artlist_tap.filter(
+            artlist_tap_dsl::id.eq(tap.id.clone())
+          )
+        )
+        .set(&new_tap)
+        .execute(connection)
+        .expect("Error updating tap");
+    }
+
+    for layer in art_layers {
+      let layer_id = split_sub_item_id(&layer.id);
+      let new_layer = ItemsArtLayers {
+        id: format!("T_{}_AL_{}", i, layer_id),
+        fileItemsItemId: format!("T_{}", i),
+        ..layer
+      };
+
+      diesel
+        ::update(
+          art_layers_dsl::items_art_layers.filter(
+            art_layers_dsl::id.eq(layer.id.clone())
+          )
+        )
+        .set(&new_layer)
+        .execute(connection)
+        .expect("Error updating layer");
+    }
+
+    i += 1;
+  }
+
+  list_fileitems()
 }
