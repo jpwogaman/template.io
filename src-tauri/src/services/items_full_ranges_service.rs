@@ -5,11 +5,11 @@ use crate::{
 };
 use diesel::prelude::*;
 
-pub fn list_items_full_ranges(fileItemsItemId: String) -> Vec<ItemsFullRanges> {
+pub fn list_items_full_ranges(fileitems_item_id: String) -> Vec<ItemsFullRanges> {
   let connection = &mut establish_db_connection();
 
   dsl::items_full_ranges
-    .filter(dsl::fileItemsItemId.eq(fileItemsItemId))
+    .filter(dsl::fileitems_item_id.eq(fileitems_item_id))
     .order_by(dsl::id.asc())
     .load::<ItemsFullRanges>(connection)
     .expect("Error loading items_full_ranges")
@@ -43,11 +43,11 @@ pub fn delete_full_range(id: String) {
     .expect("Error deleting range");
 }
 
-pub fn delete_full_range_by_fileitem(id: String, fileItemsItemId: String) {
+pub fn delete_full_range_by_fileitem(id: String, fileitems_item_id: String) {
   let connection = &mut establish_db_connection();
 
   let must_have_one = dsl::items_full_ranges
-    .filter(dsl::fileItemsItemId.eq(fileItemsItemId.clone()))
+    .filter(dsl::fileitems_item_id.eq(fileitems_item_id.clone()))
     .load::<ItemsFullRanges>(connection)
     .expect("Error loading range");
 
@@ -61,12 +61,12 @@ pub fn delete_full_range_by_fileitem(id: String, fileItemsItemId: String) {
     .expect("Error deleting range");
 }
 
-pub fn delete_all_full_ranges_for_fileitem(fileItemsItemId: String) {
+pub fn delete_all_full_ranges_for_fileitem(fileitems_item_id: String) {
   let connection = &mut establish_db_connection();
 
   diesel
     ::delete(
-      dsl::items_full_ranges.filter(dsl::fileItemsItemId.eq(fileItemsItemId))
+      dsl::items_full_ranges.filter(dsl::fileitems_item_id.eq(fileitems_item_id))
     )
     .execute(connection)
     .expect("Error deleting range");
@@ -94,8 +94,8 @@ pub fn update_full_range(data: ItemsFullRangesRequest) {
     white_keys_only: data.white_keys_only.unwrap_or(
       original_full_range.white_keys_only
     ),
-    fileItemsItemId: data.fileItemsItemId.unwrap_or(
-      original_full_range.fileItemsItemId
+    fileitems_item_id: data.fileitems_item_id.unwrap_or(
+      original_full_range.fileitems_item_id
     ),
   };
 

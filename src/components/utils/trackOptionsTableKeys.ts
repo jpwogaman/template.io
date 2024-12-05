@@ -1,7 +1,7 @@
 const TrackOptionsTableKeys = [
   {
     title: 'Instrument Ranges',
-    label: 'fullRange',
+    label: 'full_ranges',
     layout: 'table',
     keys: [
       {
@@ -48,7 +48,7 @@ const TrackOptionsTableKeys = [
   },
   {
     title: 'Articulations (Toggle)',
-    label: 'artListTog',
+    label: 'art_list_tog',
     layout: 'table',
     keys: [
       {
@@ -151,7 +151,7 @@ const TrackOptionsTableKeys = [
   },
   {
     title: 'Articulations (Tap)',
-    label: 'artListTap',
+    label: 'art_list_tap',
     layout: 'table',
     keys: [
       {
@@ -254,7 +254,7 @@ const TrackOptionsTableKeys = [
   },
   {
     title: 'Additional Layers',
-    label: 'artLayers',
+    label: 'art_layers',
     layout: 'table',
     keys: [
       {
@@ -325,7 +325,7 @@ const TrackOptionsTableKeys = [
   },
   {
     title: 'Faders',
-    label: 'fadList',
+    label: 'fad_list',
     layout: 'table',
     keys: [
       {

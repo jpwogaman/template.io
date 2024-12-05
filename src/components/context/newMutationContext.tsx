@@ -17,7 +17,7 @@ import { exportJSON } from '@/utils/exportJSON'
 import { useSelectedItem } from './selectedItemContext'
 
 interface MutationContextType {
-  data: FileItem[] | null
+  data: FullTrackWithCounts[] | null
   dataLength: number
   refetchAll: () => void
   refetchSelected: () => void
@@ -25,7 +25,7 @@ interface MutationContextType {
   vepInstanceCount: number
   nonVepSamplerCount: number
   //////////////////////////////////////////
-  selectedItem: FileItem | null
+  selectedItem: FullTrackForExport | null
   selectedItemIndex: number
   selectedItemRangeCount: number
   selectedItemArtTogCount: number
@@ -149,8 +149,10 @@ interface MutationProviderProps {
 export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   const { selectedItemId, setSelectedItemId } = useSelectedItem()
   const [mounted, setMounted] = useState(false)
-  const [data, setData] = useState<FileItem[] | null>(null)
-  const [selectedItem, setSelectedItem] = useState<FileItem | null>(null)
+  const [data, setData] = useState<FullTrackWithCounts[] | null>(null)
+  const [selectedItem, setSelectedItem] = useState<FullTrackForExport | null>(
+    null
+  )
 
   useEffect(() => {
     setMounted(true)
@@ -163,7 +165,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   const getData = useCallback(
     async () =>
       await invoke('list_fileitems').then((data) => {
-        setData(data as FileItem[])
+        setData(data as FullTrackWithCounts[])
       }),
     []
   )
@@ -173,7 +175,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   const getSelectedItem = useCallback(
     async () =>
       await invoke('get_fileitem', { id: selectedItemId }).then((data) => {
-        setSelectedItem(data as FileItem)
+        setSelectedItem(data as FullTrackForExport)
       }),
     []
   )

@@ -4,8 +4,8 @@ use crate::{
 };
 
 #[tauri::command]
-pub fn list_items_art_layers(fileItemsItemId: String) -> Vec<ItemsArtLayers> {
-  items_art_layers_service::list_items_art_layers(fileItemsItemId)
+pub fn list_items_art_layers(fileitems_item_id: String) -> Vec<ItemsArtLayers> {
+  items_art_layers_service::list_items_art_layers(fileitems_item_id)
 }
 
 #[tauri::command]
@@ -14,10 +14,10 @@ pub fn get_art_layer(id: String) -> Option<ItemsArtLayers> {
 }
 
 #[tauri::command]
-pub fn create_art_layer(fileItemsItemId: String, count: i32) {
+pub fn create_art_layer(fileitems_item_id: String, count: i32) {
   // id's are T_0_FR_0, T_0_FR_1, T_0_FR_2, etc. so we need to find the highest id and increment it
   let items_art_layers = items_art_layers_service::list_items_art_layers(
-    fileItemsItemId.clone()
+    fileitems_item_id.clone()
   );
 
   fn find_highest_id(items_art_layers: &Vec<ItemsArtLayers>) -> i32 {
@@ -41,7 +41,7 @@ pub fn create_art_layer(fileItemsItemId: String, count: i32) {
     let new_id = find_highest_id(&items_art_layers) + 1 + i;
 
     let layer = ItemsArtLayers {
-      id: format!("{}_AL_{}", fileItemsItemId.clone(), new_id),
+      id: format!("{}_AL_{}", fileitems_item_id.clone(), new_id),
       name: "".to_string(),
       code_type: "/control".to_string(),
       code: 0,
@@ -49,7 +49,7 @@ pub fn create_art_layer(fileItemsItemId: String, count: i32) {
       off: 0,
       default: "Off".to_string(),
       change_type: "Value 2".to_string(),
-      fileItemsItemId: fileItemsItemId.clone(),
+      fileitems_item_id: fileitems_item_id.clone(),
     };
 
     items_art_layers_service::store_new_art_layer(&layer);
@@ -63,8 +63,8 @@ pub fn delete_art_layer(id: String) {
 }
 
 #[tauri::command]
-pub fn delete_art_layer_by_fileitem(id: String, fileItemsItemId: String) {
-  items_art_layers_service::delete_art_layer_by_fileitem(id, fileItemsItemId)
+pub fn delete_art_layer_by_fileitem(id: String, fileitems_item_id: String) {
+  items_art_layers_service::delete_art_layer_by_fileitem(id, fileitems_item_id)
 }
 
 #[tauri::command]

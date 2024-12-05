@@ -406,7 +406,7 @@ pub fn renumber_all_fileitems() -> Vec<FileItem> {
       let range_id = split_sub_item_id(&full_range.id);
       let new_full_range = ItemsFullRanges {
         id: format!("T_{}_FR_{}", i, range_id),
-        fileItemsItemId: format!("T_{}", i),
+        fileitems_item_id: format!("T_{}", i),
         ..full_range
       };
 
@@ -425,7 +425,7 @@ pub fn renumber_all_fileitems() -> Vec<FileItem> {
       let fad_id = split_sub_item_id(&fad.id);
       let new_fad = ItemsFadList {
         id: format!("T_{}_FL_{}", i, fad_id),
-        fileItemsItemId: format!("T_{}", i),
+        fileitems_item_id: format!("T_{}", i),
         ..fad
       };
 
@@ -442,7 +442,7 @@ pub fn renumber_all_fileitems() -> Vec<FileItem> {
       let tog_id = split_sub_item_id(&tog.id);
       let new_tog = ItemsArtListTog {
         id: format!("T_{}_AT_{}", i, tog_id),
-        fileItemsItemId: format!("T_{}", i),
+        fileitems_item_id: format!("T_{}", i),
         ..tog.clone()
       };
 
@@ -461,7 +461,7 @@ pub fn renumber_all_fileitems() -> Vec<FileItem> {
       let tap_id = split_sub_item_id(&tap.id) + (art_tog.len() as i32);
       let new_tap = ItemsArtListTap {
         id: format!("T_{}_AT_{}", i, tap_id),
-        fileItemsItemId: format!("T_{}", i),
+        fileitems_item_id: format!("T_{}", i),
         ..tap
       };
 
@@ -480,7 +480,7 @@ pub fn renumber_all_fileitems() -> Vec<FileItem> {
       let layer_id = split_sub_item_id(&layer.id);
       let new_layer = ItemsArtLayers {
         id: format!("T_{}_AL_{}", i, layer_id),
-        fileItemsItemId: format!("T_{}", i),
+        fileitems_item_id: format!("T_{}", i),
         ..layer
       };
 

@@ -87,7 +87,7 @@ pub struct FullTrackForExport {
 #[derive(Serialize, Deserialize)]
 pub struct FullTrackListForExport {
   #[serde(flatten)]
-  pub fileMetaData: Value,
+  pub file_meta_data: Value,
   pub items: Vec<FullTrackForExport>,
 }
 

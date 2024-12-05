@@ -27,7 +27,7 @@ diesel::table! {
         off -> Integer,
         default -> Text,
         change_type -> Text,
-        fileItemsItemId -> Text,
+        fileitems_item_id -> Text,
     }
 }
 
@@ -45,7 +45,7 @@ diesel::table! {
         change_type -> Text,
         ranges -> Text,
         art_layers -> Text,
-        fileItemsItemId -> Text,
+        fileitems_item_id -> Text,
     }
 }
 
@@ -63,7 +63,7 @@ diesel::table! {
         change_type -> Text,
         ranges -> Text,
         art_layers -> Text,
-        fileItemsItemId -> Text,
+        fileitems_item_id -> Text,
     }
 }
 
@@ -75,7 +75,7 @@ diesel::table! {
         code -> Integer,
         default -> Integer,
         change_type -> Text,
-        fileItemsItemId -> Text,
+        fileitems_item_id -> Text,
     }
 }
 
@@ -86,15 +86,15 @@ diesel::table! {
         low -> Text,
         high -> Text,
         white_keys_only -> Bool,
-        fileItemsItemId -> Text,
+        fileitems_item_id -> Text,
     }
 }
 
-diesel::joinable!(items_art_layers -> fileitems (fileItemsItemId));
-diesel::joinable!(items_artlist_tap -> fileitems (fileItemsItemId));
-diesel::joinable!(items_artlist_tog -> fileitems (fileItemsItemId));
-diesel::joinable!(items_fadlist -> fileitems (fileItemsItemId));
-diesel::joinable!(items_full_ranges -> fileitems (fileItemsItemId));
+diesel::joinable!(items_art_layers -> fileitems (fileitems_item_id));
+diesel::joinable!(items_artlist_tap -> fileitems (fileitems_item_id));
+diesel::joinable!(items_artlist_tog -> fileitems (fileitems_item_id));
+diesel::joinable!(items_fadlist -> fileitems (fileitems_item_id));
+diesel::joinable!(items_full_ranges -> fileitems (fileitems_item_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
     fileitems,

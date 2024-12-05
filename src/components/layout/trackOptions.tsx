@@ -2,19 +2,19 @@
 
 import { type FC, Fragment, useState, useEffect } from 'react'
 
-import {
-  type ItemsFullRanges,
-  type ItemsArtListTog,
-  type ItemsArtListTap,
-  type ItemArtLayers,
-  type ItemsFadList
-} from '@prisma/client'
+//import {
+//  type ItemsFullRanges,
+//  type ItemsArtListTog,
+//  type ItemsArtListTap,
+//  type ItemArtLayers,
+//  type ItemsFadList
+//} from '@prisma/client'
 
 import { IconBtnToggle } from '@/components/layout/icon-btn-toggle'
 import tw from '@/utils/tw'
 import {
   type OnChangeHelperArgsType,
-  type SelectedItemType,
+  //type SelectedItemType,
   InputTypeSelector
 } from '../inputs'
 
@@ -36,10 +36,10 @@ export const TrackOptions: FC = () => {
 
   //////////////////////////////////////////
   // This logic is used to disable individual components in the artTap, artTog, and fadList tables.
-  const allArtTogs = selectedItem?.artListTog ?? []
-  const allArtTaps = selectedItem?.artListTap ?? []
-  const allArtLayers = selectedItem?.artLayers ?? []
-  const allFads = selectedItem?.fadList ?? []
+  const allArtTogs = selectedItem?.art_list_tog ?? []
+  const allArtTaps = selectedItem?.art_list_tap ?? []
+  const allArtLayers = selectedItem?.art_layers ?? []
+  const allFads = selectedItem?.fad_list ?? []
 
   const [artTogIndividualComponentLocked, setArtTogIndividualComponentLocked] =
     useState([
@@ -85,7 +85,7 @@ export const TrackOptions: FC = () => {
   useEffect(() => {
     setArtTogIndividualComponentLocked(
       allArtTogs?.map((artTog) => {
-        const V1 = artTog.changeType === 'Value 1'
+        const V1 = artTog.change_type === 'Value 1'
         return {
           id: artTog.id,
           code: V1
@@ -97,7 +97,7 @@ export const TrackOptions: FC = () => {
   useEffect(() => {
     setArtTapIndividualComponentLocked(
       allArtTaps?.map((artTap) => {
-        const V1 = artTap.changeType === 'Value 1'
+        const V1 = artTap.change_type === 'Value 1'
         return {
           id: artTap.id,
           code: false,
@@ -131,7 +131,7 @@ export const TrackOptions: FC = () => {
   useEffect(() => {
     setFadIndividualComponentLocked(
       allFads?.map((fad) => {
-        const V1 = fad.changeType === 'Value 1'
+        const V1 = fad.change_type === 'Value 1'
         return {
           id: fad.id,
           code: V1
@@ -156,11 +156,11 @@ export const TrackOptions: FC = () => {
   //////////////////////////////////////////
   //This could be a user-setting in local storage, but for now, it's hard-coded.
   const [trackOptionsLayouts, setTrackOptionsLayouts] = useState({
-    fullRange: 'table',
-    artListTog: 'table',
-    artListTap: 'table',
-    artLayers: 'table',
-    fadList: 'table'
+    full_ranges: 'table',
+    art_list_tog: 'table',
+    art_list_tap: 'table',
+    art_layers: 'table',
+    fad_list: 'table'
   })
 
   const cardTableLayoutsHelper = (layoutKey: string, layout: string) => {
@@ -202,13 +202,13 @@ export const TrackOptions: FC = () => {
         })
       }
     }
-    if (label === 'artListTog') {
+    if (label === 'art_list_tog') {
       update.artListTog({
         artId: layoutDataSingleId ?? '',
         [key]: newValue
       })
     }
-    if (label === 'artListTap') {
+    if (label === 'art_list_tap') {
       if (key === 'default') {
         update.artListTap({
           artId: layoutDataSingleId ?? '',
@@ -288,32 +288,32 @@ export const TrackOptions: FC = () => {
             } as unknown as (typeof TrackListTableKeys)['keys'][number]
           }
           onChangeHelper={onChangeHelperTrack}
-          selectedItem={selectedItem as unknown as SelectedItemType}
+          selectedItem={selectedItem as unknown as FullTrackForExport}
         />
       </div>
       {TrackOptionsTableKeys.map((layoutConfig) => {
         let layoutDataArray:
-          | ItemsFullRanges[]
-          | ItemsArtListTog[]
-          | ItemsArtListTap[]
-          | ItemArtLayers[]
-          | ItemsFadList[]
+          | Items_Full_Ranges[]
+          | Items_ArtList_Tog[]
+          | Items_ArtList_Tap[]
+          | Items_Art_Layers[]
+          | Items_FadList[]
           | undefined = []
 
-        if (layoutConfig.label === 'fullRange') {
-          layoutDataArray = selectedItem?.fullRange
+        if (layoutConfig.label === 'full_ranges') {
+          layoutDataArray = selectedItem?.full_ranges
         }
-        if (layoutConfig.label === 'artListTog') {
-          layoutDataArray = selectedItem?.artListTog
+        if (layoutConfig.label === 'art_list_tog') {
+          layoutDataArray = selectedItem?.art_list_tog
         }
-        if (layoutConfig.label === 'artListTap') {
-          layoutDataArray = selectedItem?.artListTap
+        if (layoutConfig.label === 'art_list_tap') {
+          layoutDataArray = selectedItem?.art_list_tap
         }
-        if (layoutConfig.label === 'artLayers') {
-          layoutDataArray = selectedItem?.artLayers
+        if (layoutConfig.label === 'art_layers') {
+          layoutDataArray = selectedItem?.art_layers
         }
-        if (layoutConfig.label === 'fadList') {
-          layoutDataArray = selectedItem?.fadList
+        if (layoutConfig.label === 'fad_list') {
+          layoutDataArray = selectedItem?.fad_list
         }
 
         const table = trackOptionsLayouts[layoutConfig.label] === 'table'
@@ -416,7 +416,9 @@ export const TrackOptions: FC = () => {
                                 layoutConfigLabel={layoutConfig.label}
                                 layoutDataSingle={layoutDataSingle}
                                 onChangeHelper={onChangeHelper}
-                                selectedItem={selectedItem as SelectedItemType}
+                                selectedItem={
+                                  selectedItem as FullTrackForExport
+                                }
                               />
                             </td>
                           )
@@ -477,7 +479,7 @@ export const TrackOptions: FC = () => {
                                   layoutDataSingle={layoutDataSingle}
                                   onChangeHelper={onChangeHelper}
                                   selectedItem={
-                                    selectedItem as SelectedItemType
+                                    selectedItem as FullTrackForExport
                                   }
                                 />
                               </td>

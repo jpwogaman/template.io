@@ -4,8 +4,8 @@ use crate::{
 };
 
 #[tauri::command]
-pub fn list_items_fadlist(fileItemsItemId: String) -> Vec<ItemsFadList> {
-  items_fadlist_service::list_items_fadlist(fileItemsItemId)
+pub fn list_items_fadlist(fileitems_item_id: String) -> Vec<ItemsFadList> {
+  items_fadlist_service::list_items_fadlist(fileitems_item_id)
 }
 
 #[tauri::command]
@@ -14,10 +14,10 @@ pub fn get_fad(id: String) -> Option<ItemsFadList> {
 }
 
 #[tauri::command]
-pub fn create_fad(fileItemsItemId: String, count: i32) {
+pub fn create_fad(fileitems_item_id: String, count: i32) {
   // id's are T_0_FR_0, T_0_FR_1, T_0_FR_2, etc. so we need to find the highest id and increment it
   let items_fadlist = items_fadlist_service::list_items_fadlist(
-    fileItemsItemId.clone()
+    fileitems_item_id.clone()
   );
 
   fn find_highest_id(items_fadlist: &Vec<ItemsFadList>) -> i32 {
@@ -36,13 +36,13 @@ pub fn create_fad(fileItemsItemId: String, count: i32) {
     let new_id = find_highest_id(&items_fadlist) + 1 + i;
 
     let fad = ItemsFadList {
-      id: format!("{}_FL_{}", fileItemsItemId.clone(), new_id),
+      id: format!("{}_FL_{}", fileitems_item_id.clone(), new_id),
       name: "".to_string(),
       code_type: "/control".to_string(),
       code: 0,
       default: 0,
       change_type: "Value 2".to_string(),
-      fileItemsItemId: fileItemsItemId.clone(),
+      fileitems_item_id: fileitems_item_id.clone(),
     };
 
     items_fadlist_service::store_new_fad(&fad);
@@ -56,8 +56,8 @@ pub fn delete_fad(id: String) {
 }
 
 #[tauri::command]
-pub fn delete_fad_by_fileitem(id: String, fileItemsItemId: String) {
-  items_fadlist_service::delete_fad_by_fileitem(id, fileItemsItemId)
+pub fn delete_fad_by_fileitem(id: String, fileitems_item_id: String) {
+  items_fadlist_service::delete_fad_by_fileitem(id, fileitems_item_id)
 }
 
 #[tauri::command]

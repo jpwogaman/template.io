@@ -12,15 +12,15 @@ use crate::{
 };
 use diesel::prelude::*;
 
-pub fn renumber_all_arts(fileItemsItemId: String) {
+pub fn renumber_all_arts(fileitems_item_id: String) {
   let connection = &mut establish_db_connection();
 
   let items_artlist_tog = items_artlist_tog_service::list_items_artlist_tog(
-    fileItemsItemId.clone()
+    fileitems_item_id.clone()
   );
 
   let items_artlist_tap = items_artlist_tap_service::list_items_artlist_tap(
-    fileItemsItemId.clone()
+    fileitems_item_id.clone()
   );
 
   let new_artlist_tog = items_artlist_tog
@@ -28,7 +28,7 @@ pub fn renumber_all_arts(fileItemsItemId: String) {
     .enumerate()
     .map(|(i, art)| {
       ItemsArtListTog {
-        id: format!("{}_AT_{}", fileItemsItemId.clone(), i),
+        id: format!("{}_AT_{}", fileitems_item_id.clone(), i),
         name: art.name.clone(),
         toggle: art.toggle,
         code_type: art.code_type.clone(),
@@ -40,7 +40,7 @@ pub fn renumber_all_arts(fileItemsItemId: String) {
         change_type: art.change_type.clone(),
         ranges: art.ranges.clone(),
         art_layers: art.art_layers.clone(),
-        fileItemsItemId: art.fileItemsItemId.clone(),
+        fileitems_item_id: art.fileitems_item_id.clone(),
       }
     })
     .collect::<Vec<ItemsArtListTog>>();
@@ -52,7 +52,7 @@ pub fn renumber_all_arts(fileItemsItemId: String) {
       ItemsArtListTap {
         id: format!(
           "{}_AT_{}",
-          fileItemsItemId.clone(),
+          fileitems_item_id.clone(),
           (i as usize) + items_artlist_tog.len()
         ),
         name: art.name.clone(),
@@ -66,7 +66,7 @@ pub fn renumber_all_arts(fileItemsItemId: String) {
         change_type: art.change_type.clone(),
         ranges: art.ranges.clone(),
         art_layers: art.art_layers.clone(),
-        fileItemsItemId: art.fileItemsItemId.clone(),
+        fileitems_item_id: art.fileitems_item_id.clone(),
       }
     })
     .collect::<Vec<ItemsArtListTap>>();
@@ -74,7 +74,7 @@ pub fn renumber_all_arts(fileItemsItemId: String) {
   diesel
     ::delete(
       tog_dsl::items_artlist_tog.filter(
-        tog_dsl::fileItemsItemId.eq(fileItemsItemId.clone())
+        tog_dsl::fileitems_item_id.eq(fileitems_item_id.clone())
       )
     )
     .execute(connection)
@@ -83,7 +83,7 @@ pub fn renumber_all_arts(fileItemsItemId: String) {
   diesel
     ::delete(
       tap_dsl::items_artlist_tap.filter(
-        tap_dsl::fileItemsItemId.eq(fileItemsItemId.clone())
+        tap_dsl::fileitems_item_id.eq(fileitems_item_id.clone())
       )
     )
 

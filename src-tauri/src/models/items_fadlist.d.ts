@@ -5,5 +5,5 @@ type Items_FadList = {
   code: number
   default: number
   change_type: string
-  fileItemsItemId: string
+  fileitems_item_id: string
 }

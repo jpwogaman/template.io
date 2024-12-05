@@ -22,7 +22,7 @@ use serde::{ Serialize, Deserialize };
   PartialEq,
   Clone
 )]
-#[diesel(belongs_to(FileItem, foreign_key = fileItemsItemId))]
+#[diesel(belongs_to(FileItem, foreign_key = fileitems_item_id))]
 #[diesel(table_name = items_artlist_tog)]
 pub struct ItemsArtListTog {
   pub id: String,
@@ -37,7 +37,7 @@ pub struct ItemsArtListTog {
   pub change_type: String,
   pub ranges: String,
   pub art_layers: String,
-  pub fileItemsItemId: String,
+  pub fileitems_item_id: String,
 }
 
 #[derive(Deserialize, Serialize)]
@@ -54,7 +54,7 @@ pub struct ItemsArtListTogRequest {
   pub change_type: Option<String>,
   pub ranges: Option<String>,
   pub art_layers: Option<String>,
-  pub fileItemsItemId: Option<String>,
+  pub fileitems_item_id: Option<String>,
 }
 
 pub fn init_art_tog(id: String) -> ItemsArtListTog {
@@ -72,6 +72,6 @@ pub fn init_art_tog(id: String) -> ItemsArtListTog {
     change_type: "Value 2".to_string(),
     ranges: format!("[\"T_{}_FR_0\"]", id),
     art_layers: "[\"\"]".to_string(),
-    fileItemsItemId: format!("T_{}", id),
+    fileitems_item_id: format!("T_{}", id),
   }
 }

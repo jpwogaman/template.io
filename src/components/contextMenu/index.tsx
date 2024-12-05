@@ -27,7 +27,7 @@ export const ContextMenu: FC<ContextMenuProps> = () => {
     useContextMenu()
 
   const isArtTog = (artId: string) => {
-    const art = selectedItem?.artListTog?.find((art: any) => art.id === artId)
+    const art = selectedItem?.art_list_tog?.find((art: any) => art.id === artId)
     if (art) return true
   }
 
@@ -120,7 +120,7 @@ export const ContextMenu: FC<ContextMenuProps> = () => {
         case 'deleteRange':
           del.fullRange({
             rangeId: contextMenuId ?? '',
-            fileItemsItemId: selectedItemId ?? ''
+            fileitems_item_id: selectedItemId ?? ''
           })
           break
 
@@ -162,12 +162,12 @@ export const ContextMenu: FC<ContextMenuProps> = () => {
           if (isArtTog(contextMenuId ?? '')) {
             del.artListTog({
               artId: contextMenuId ?? '',
-              fileItemsItemId: selectedItemId ?? ''
+              fileitems_item_id: selectedItemId ?? ''
             })
           } else {
             del.artListTap({
               artId: contextMenuId ?? '',
-              fileItemsItemId: selectedItemId ?? ''
+              fileitems_item_id: selectedItemId ?? ''
             })
           }
           break
@@ -203,7 +203,7 @@ export const ContextMenu: FC<ContextMenuProps> = () => {
         case 'deleteLayer':
           del.artLayer({
             layerId: contextMenuId ?? '',
-            fileItemsItemId: selectedItemId ?? ''
+            fileitems_item_id: selectedItemId ?? ''
           })
           break
 
@@ -238,7 +238,7 @@ export const ContextMenu: FC<ContextMenuProps> = () => {
         case 'deleteFader':
           del.fadList({
             fadId: contextMenuId ?? '',
-            fileItemsItemId: selectedItemId ?? ''
+            fileitems_item_id: selectedItemId ?? ''
           })
           break
 

@@ -5,11 +5,11 @@ use crate::{
 };
 use diesel::prelude::*;
 
-pub fn list_items_art_layers(fileItemsItemId: String) -> Vec<ItemsArtLayers> {
+pub fn list_items_art_layers(fileitems_item_id: String) -> Vec<ItemsArtLayers> {
   let connection = &mut establish_db_connection();
 
   dsl::items_art_layers
-    .filter(dsl::fileItemsItemId.eq(fileItemsItemId))
+    .filter(dsl::fileitems_item_id.eq(fileitems_item_id))
     .order_by(dsl::id.asc())
     .load::<ItemsArtLayers>(connection)
     .expect("Error loading items_art_layers")
@@ -43,11 +43,11 @@ pub fn delete_art_layer(id: String) {
     .expect("Error deleting fad");
 }
 
-pub fn delete_art_layer_by_fileitem(id: String, fileItemsItemId: String) {
+pub fn delete_art_layer_by_fileitem(id: String, fileitems_item_id: String) {
   let connection = &mut establish_db_connection();
 
   let must_have_one = dsl::items_art_layers
-    .filter(dsl::fileItemsItemId.eq(fileItemsItemId.clone()))
+    .filter(dsl::fileitems_item_id.eq(fileitems_item_id.clone()))
     .load::<ItemsArtLayers>(connection)
     .expect("Error loading layer");
 
@@ -61,12 +61,12 @@ pub fn delete_art_layer_by_fileitem(id: String, fileItemsItemId: String) {
     .expect("Error deleting layer");
 }
 
-pub fn delete_all_art_layers_for_fileitem(fileItemsItemId: String) {
+pub fn delete_all_art_layers_for_fileitem(fileitems_item_id: String) {
   let connection = &mut establish_db_connection();
 
   diesel
     ::delete(
-      dsl::items_art_layers.filter(dsl::fileItemsItemId.eq(fileItemsItemId))
+      dsl::items_art_layers.filter(dsl::fileitems_item_id.eq(fileitems_item_id))
     )
     .execute(connection)
     .expect("Error deleting fad");
@@ -95,8 +95,8 @@ pub fn update_art_layer(data: ItemsArtLayersRequest) {
     off: data.off.unwrap_or(original_art_layer.off),
     default: data.default.unwrap_or(original_art_layer.default),
     change_type: data.change_type.unwrap_or(original_art_layer.change_type),
-    fileItemsItemId: data.fileItemsItemId.unwrap_or(
-      original_art_layer.fileItemsItemId
+    fileitems_item_id: data.fileitems_item_id.unwrap_or(
+      original_art_layer.fileitems_item_id
     ),
   };
 

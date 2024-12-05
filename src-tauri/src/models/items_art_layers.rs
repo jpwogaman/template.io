@@ -22,7 +22,7 @@ use serde::{ Serialize, Deserialize };
   PartialEq,
   Clone
 )]
-#[diesel(belongs_to(FileItem, foreign_key = fileItemsItemId))]
+#[diesel(belongs_to(FileItem, foreign_key = fileitems_item_id))]
 #[diesel(table_name = items_art_layers)]
 pub struct ItemsArtLayers {
   pub id: String,
@@ -33,7 +33,7 @@ pub struct ItemsArtLayers {
   pub off: i32,
   pub default: String,
   pub change_type: String,
-  pub fileItemsItemId: String,
+  pub fileitems_item_id: String,
 }
 
 #[derive(Deserialize, Serialize)]
@@ -46,7 +46,7 @@ pub struct ItemsArtLayersRequest {
   pub off: Option<i32>,
   pub default: Option<String>,
   pub change_type: Option<String>,
-  pub fileItemsItemId: Option<String>,
+  pub fileitems_item_id: Option<String>,
 }
 
 pub fn init_art_layer(id: String) -> ItemsArtLayers {
@@ -59,6 +59,6 @@ pub fn init_art_layer(id: String) -> ItemsArtLayers {
     off: 0,
     default: "Off".to_string(),
     change_type: "Value 2".to_string(),
-    fileItemsItemId: format!("T_{}", id),
+    fileitems_item_id: format!("T_{}", id),
   }
 }

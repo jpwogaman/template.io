@@ -4,8 +4,8 @@ use crate::{
 };
 
 #[tauri::command]
-pub fn list_items_full_ranges(fileItemsItemId: String) -> Vec<ItemsFullRanges> {
-  items_full_ranges_service::list_items_full_ranges(fileItemsItemId)
+pub fn list_items_full_ranges(fileitems_item_id: String) -> Vec<ItemsFullRanges> {
+  items_full_ranges_service::list_items_full_ranges(fileitems_item_id)
 }
 
 #[tauri::command]
@@ -14,10 +14,10 @@ pub fn get_full_range(id: String) -> Option<ItemsFullRanges> {
 }
 
 #[tauri::command]
-pub fn create_full_range(fileItemsItemId: String, count: i32) {
+pub fn create_full_range(fileitems_item_id: String, count: i32) {
   // id's are T_0_FR_0, T_0_FR_1, T_0_FR_2, etc. so we need to find the highest id and increment it
   let items_full_ranges = items_full_ranges_service::list_items_full_ranges(
-    fileItemsItemId.clone()
+    fileitems_item_id.clone()
   );
 
   fn find_highest_id(items_full_ranges: &Vec<ItemsFullRanges>) -> i32 {
@@ -41,12 +41,12 @@ pub fn create_full_range(fileItemsItemId: String, count: i32) {
     let new_id = find_highest_id(&items_full_ranges) + 1 + i;
 
     let full_range = ItemsFullRanges {
-      id: format!("{}_FR_{}", fileItemsItemId.clone(), new_id),
+      id: format!("{}_FR_{}", fileitems_item_id.clone(), new_id),
       name: "".to_string(),
       low: "C-2".to_string(),
       high: "B8".to_string(),
       white_keys_only: false,
-      fileItemsItemId: fileItemsItemId.clone(),
+      fileitems_item_id: fileitems_item_id.clone(),
     };
 
     items_full_ranges_service::store_new_full_range(&full_range);
@@ -60,8 +60,8 @@ pub fn delete_full_range(id: String) {
 }
 
 #[tauri::command]
-pub fn delete_full_range_by_fileitem(id: String, fileItemsItemId: String) {
-  items_full_ranges_service::delete_full_range_by_fileitem(id, fileItemsItemId)
+pub fn delete_full_range_by_fileitem(id: String, fileitems_item_id: String) {
+  items_full_ranges_service::delete_full_range_by_fileitem(id, fileitems_item_id)
 }
 
 #[tauri::command]

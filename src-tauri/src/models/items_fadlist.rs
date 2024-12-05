@@ -22,7 +22,7 @@ use serde::{ Serialize, Deserialize };
   PartialEq,
   Clone
 )]
-#[diesel(belongs_to(FileItem, foreign_key = fileItemsItemId))]
+#[diesel(belongs_to(FileItem, foreign_key = fileitems_item_id))]
 #[diesel(table_name = items_fadlist)]
 pub struct ItemsFadList {
   pub id: String,
@@ -31,7 +31,7 @@ pub struct ItemsFadList {
   pub code: i32,
   pub default: i32,
   pub change_type: String,
-  pub fileItemsItemId: String,
+  pub fileitems_item_id: String,
 }
 
 #[derive(Deserialize, Serialize)]
@@ -42,7 +42,7 @@ pub struct ItemsFadListRequest {
   pub code: Option<i32>,
   pub default: Option<i32>,
   pub change_type: Option<String>,
-  pub fileItemsItemId: Option<String>,
+  pub fileitems_item_id: Option<String>,
 }
 
 pub fn init_fad(id: String) -> ItemsFadList {
@@ -53,6 +53,6 @@ pub fn init_fad(id: String) -> ItemsFadList {
     code: 0,
     default: 0,
     change_type: "Value 2".to_string(),
-    fileItemsItemId: format!("T_{}", id),
+    fileitems_item_id: format!("T_{}", id),
   }
 }

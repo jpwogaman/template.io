@@ -7,14 +7,14 @@ import {
   InputCheckBoxSwitch
 } from './index'
 
-import {
-  type FileItems,
-  type ItemsFullRanges,
-  type ItemsArtListTog,
-  type ItemsArtListTap,
-  type ItemArtLayers,
-  type ItemsFadList
-} from '@prisma/client'
+//import {
+//  type FileItems,
+//  type ItemsFullRanges,
+//  type ItemsArtListTog,
+//  type ItemsArtListTap,
+//  type ItemArtLayers,
+//  type ItemsFadList
+//} from '@prisma/client'
 
 import TrackOptionsTableKeys from '../utils/trackOptionsTableKeys'
 import TrackListTableKeys from '../utils/trackListTableKeys'
@@ -30,11 +30,11 @@ export type OnChangeHelperArgsType = {
   label?: string
 }
 
-export type SelectedItemType = FileItems & { fullRange: ItemsFullRanges[] } & {
-  artListTap: ItemsArtListTap[]
-} & { artListTog: ItemsArtListTog[] } & { fadList: ItemsFadList[] } & {
-  artLayers: ItemArtLayers[]
-}
+//export type SelectedItemType = FileItems & { fullRange: ItemsFullRanges[] } & {
+//  artListTap: ItemsArtListTap[]
+//} & { artListTog: ItemsArtListTog[] } & { fadList: ItemsFadList[] } & {
+//  artLayers: ItemArtLayers[]
+//}
 
 type InputTypeSelectorProps = {
   keySingle:
@@ -43,11 +43,11 @@ type InputTypeSelectorProps = {
     | (typeof SettingsTableKeys)['keys'][number]
   layoutConfigLabel?: string
   layoutDataSingle?:
-    | ItemsFullRanges
-    | ItemsArtListTog
-    | ItemsArtListTap
-    | ItemArtLayers
-    | ItemsFadList
+    | Items_Full_Ranges
+    | Items_ArtList_Tog
+    | Items_ArtList_Tap
+    | Items_Art_Layers
+    | Items_FadList
   onChangeHelper: ({
     newValue,
     layoutDataSingleId,
@@ -74,7 +74,7 @@ type InputTypeSelectorProps = {
     id: string
     default: boolean
   }[]
-  selectedItem?: SelectedItemType
+  selectedItem?: FullTrackForExport
   settingsModal?: boolean
 }
 
@@ -209,7 +209,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
     const layersOptions = key === 'artLayers' && artLayerOptions
 
     const stringListFullArtLayerIds = JSON.stringify(
-      selectedItem?.artLayers.map((artLayer: ItemArtLayers) => artLayer.id) ??
+      selectedItem?.art_layers.map((artLayer: Items_Art_Layers) => artLayer.id) ??
         ''
     )
 
@@ -218,7 +218,9 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
     const rangeOptions = key === 'ranges' && artRangeOptions
 
     const stringListOfFullRangeIds = JSON.stringify(
-      selectedItem?.fullRange.map((fullRange: ItemsFullRanges) => fullRange.id)
+      selectedItem?.full_ranges.map(
+        (fullRange: Items_Full_Ranges) => fullRange.id
+      )
     )
 
     const thisArtTog = artTogIndividualComponentLocked?.find(

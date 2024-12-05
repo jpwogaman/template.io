@@ -5,11 +5,11 @@ use crate::{
 };
 use diesel::prelude::*;
 
-pub fn list_items_artlist_tap(fileItemsItemId: String) -> Vec<ItemsArtListTap> {
+pub fn list_items_artlist_tap(fileitems_item_id: String) -> Vec<ItemsArtListTap> {
   let connection = &mut establish_db_connection();
 
   dsl::items_artlist_tap
-    .filter(dsl::fileItemsItemId.eq(fileItemsItemId))
+    .filter(dsl::fileitems_item_id.eq(fileitems_item_id))
     .order_by(dsl::id.asc())
     .load::<ItemsArtListTap>(connection)
     .expect("Error loading items_artlist_tap")
@@ -43,11 +43,11 @@ pub fn delete_art_tap(id: String) {
     .expect("Error deleting fad");
 }
 
-pub fn delete_art_tap_by_fileitem(id: String, fileItemsItemId: String) {
+pub fn delete_art_tap_by_fileitem(id: String, fileitems_item_id: String) {
   let connection = &mut establish_db_connection();
 
   let must_have_one = dsl::items_artlist_tap
-    .filter(dsl::fileItemsItemId.eq(fileItemsItemId.clone()))
+    .filter(dsl::fileitems_item_id.eq(fileitems_item_id.clone()))
     .load::<ItemsArtListTap>(connection)
     .expect("Error loading art_tap");
 
@@ -61,12 +61,12 @@ pub fn delete_art_tap_by_fileitem(id: String, fileItemsItemId: String) {
     .expect("Error deleting art_tap");
 }
 
-pub fn delete_all_art_tap_for_fileitem(fileItemsItemId: String) {
+pub fn delete_all_art_tap_for_fileitem(fileitems_item_id: String) {
   let connection = &mut establish_db_connection();
 
   diesel
     ::delete(
-      dsl::items_artlist_tap.filter(dsl::fileItemsItemId.eq(fileItemsItemId))
+      dsl::items_artlist_tap.filter(dsl::fileitems_item_id.eq(fileitems_item_id))
     )
     .execute(connection)
     .expect("Error deleting art_tap");
@@ -94,7 +94,7 @@ pub fn update_art_tap(data: ItemsArtListTapRequest) {
   };
 
   let all_art_tap_for_fileitem = list_items_artlist_tap(
-    original_art_tap.fileItemsItemId.clone()
+    original_art_tap.fileitems_item_id.clone()
   );
 
   let one_art_must_be_default = |default: bool| -> bool {
@@ -134,8 +134,8 @@ pub fn update_art_tap(data: ItemsArtListTapRequest) {
       data.ranges.unwrap_or(original_art_tap.ranges.clone())
     ),
     art_layers: data.art_layers.unwrap_or(original_art_tap.art_layers),
-    fileItemsItemId: data.fileItemsItemId.unwrap_or(
-      original_art_tap.fileItemsItemId
+    fileitems_item_id: data.fileitems_item_id.unwrap_or(
+      original_art_tap.fileitems_item_id
     ),
   };
 

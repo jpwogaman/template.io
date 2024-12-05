@@ -22,7 +22,7 @@ use serde::{ Serialize, Deserialize };
   PartialEq,
   Clone
 )]
-#[diesel(belongs_to(FileItem, foreign_key = fileItemsItemId))]
+#[diesel(belongs_to(FileItem, foreign_key = fileitems_item_id))]
 #[diesel(table_name = items_full_ranges)]
 pub struct ItemsFullRanges {
   pub id: String,
@@ -30,7 +30,7 @@ pub struct ItemsFullRanges {
   pub low: String,
   pub high: String,
   pub white_keys_only: bool,
-  pub fileItemsItemId: String,
+  pub fileitems_item_id: String,
 }
 
 #[derive(Deserialize, Serialize)]
@@ -40,7 +40,7 @@ pub struct ItemsFullRangesRequest {
   pub low: Option<String>,
   pub high: Option<String>,
   pub white_keys_only: Option<bool>,
-  pub fileItemsItemId: Option<String>,
+  pub fileitems_item_id: Option<String>,
 }
 
 pub fn init_full_range(id: String) -> ItemsFullRanges {
@@ -50,6 +50,6 @@ pub fn init_full_range(id: String) -> ItemsFullRanges {
     low: "C-2".to_string(),
     high: "G8".to_string(),
     white_keys_only: false,
-    fileItemsItemId: format!("T_{}", id),
+    fileitems_item_id: format!("T_{}", id),
   }
 }

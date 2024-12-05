@@ -42,14 +42,14 @@ export const NavBar: FC = () => {
     })
   }
   const createArtTog = () => {
-    invoke('create_art_tog', { fileItemsItemId: 'T_0', count: 1 }).then(
+    invoke('create_art_tog', { fileitems_item_id: 'T_0', count: 1 }).then(
       (response) => {
         console.log(response)
       }
     )
   }
   const createArtTap = () => {
-    invoke('create_art_tap', { fileItemsItemId: 'T_0', count: 1 }).then(
+    invoke('create_art_tap', { fileitems_item_id: 'T_0', count: 1 }).then(
       (response) => {
         console.log(response)
       }

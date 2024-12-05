@@ -105,7 +105,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       // Special case for Articulations
       const artId = selectedItemId + '_AT_' + optionNumber
       const isArtTog = (artId: string) => {
-        const art = selectedItem?.artListTog?.find(
+        const art = selectedItem?.art_list_tog?.find(
           (art: any) => art.id === artId
         )
         if (art) return true
@@ -307,33 +307,33 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
             case 'FR':
               del.fullRange({
                 rangeId: optionNumber ?? '',
-                fileItemsItemId: selectedItemId ?? ''
+                fileitems_item_id: selectedItemId ?? ''
               })
               break
             case 'AT':
               if (isArtTog(artId ?? '')) {
                 del.artListTog({
                   artId: artId ?? '',
-                  fileItemsItemId: selectedItemId ?? ''
+                  fileitems_item_id: selectedItemId ?? ''
                 })
               }
               if (!isArtTog(artId ?? '')) {
                 del.artListTap({
                   artId: artId ?? '',
-                  fileItemsItemId: selectedItemId ?? ''
+                  fileitems_item_id: selectedItemId ?? ''
                 })
               }
               break
             case 'AL':
               del.artLayer({
                 layerId: optionNumber ?? '',
-                fileItemsItemId: selectedItemId ?? ''
+                fileitems_item_id: selectedItemId ?? ''
               })
               break
             case 'FL':
               del.fadList({
                 fadId: optionNumber ?? '',
-                fileItemsItemId: selectedItemId ?? ''
+                fileitems_item_id: selectedItemId ?? ''
               })
               break
             default:

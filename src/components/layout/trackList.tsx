@@ -5,7 +5,7 @@ import tw from '@/utils/tw'
 import TrackListTableKeys from '../utils/trackListTableKeys'
 import {
   type OnChangeHelperArgsType,
-  type SelectedItemType,
+  //type SelectedItemType,
   InputTypeSelector
 } from '../inputs'
 
@@ -140,7 +140,7 @@ export const TrackList: FC = () => {
                       } as unknown as (typeof TrackListTableKeys)['keys'][number]
                     }
                     onChangeHelper={onChangeHelper}
-                    selectedItem={item as unknown as SelectedItemType}
+                    selectedItem={item as unknown as FullTrackForExport}
                   />
                 </td>
                 {/* LOCK CELL */}
@@ -181,7 +181,7 @@ export const TrackList: FC = () => {
                       <InputTypeSelector
                         keySingle={keyActual}
                         onChangeHelper={onChangeHelper}
-                        selectedItem={item as unknown as SelectedItemType}
+                        selectedItem={item as unknown as FullTrackForExport}
                       />
                     </td>
                   )
@@ -190,7 +190,7 @@ export const TrackList: FC = () => {
                 <td
                   id={id + '_artCount_' + 'cell'}
                   className={tw('p-0.5', locked ? 'text-gray-400' : '')}>
-                  {_count?.artListTog + _count?.artListTap}
+                  {_count?.art_list_tog + _count?.art_list_tap}
                 </td>
               </tr>
             )
