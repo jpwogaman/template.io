@@ -58,6 +58,7 @@ use crate::{
   },
 };
 use diesel::prelude::*;
+use serde_json::Value;
 
 pub fn init() {
   let fileitems = list_fileitems();
@@ -106,8 +107,8 @@ pub fn create_fileitem(count: i32) {
   }
 }
 
-pub fn create_all_fileitems_from_json(full_data: String) {
-  match serde_json::from_str::<FullTrackListForExport>(&full_data) {
+pub fn create_all_fileitems_from_json(full_data: Value) {
+  match serde_json::from_value::<FullTrackListForExport>(full_data) {
     Ok(json) => {
       delete_all_fileitems_and_relations();
 
@@ -115,8 +116,8 @@ pub fn create_all_fileitems_from_json(full_data: String) {
         let fileitem = full_track.fileitem;
         let full_ranges = full_track.full_ranges;
         let fad_list = full_track.fad_list;
-        let art_tog = full_track.art_tog;
-        let art_tap = full_track.art_tap;
+        let art_list_tog = full_track.art_list_tog;
+        let art_list_tap = full_track.art_list_tap;
         let art_layers = full_track.art_layers;
 
         store_new_item(&fileitem);
@@ -129,11 +130,11 @@ pub fn create_all_fileitems_from_json(full_data: String) {
           store_new_fad(&fad);
         }
 
-        for tog in art_tog {
+        for tog in art_list_tog {
           store_new_art_tog(&tog);
         }
 
-        for tap in art_tap {
+        for tap in art_list_tap {
           store_new_art_tap(&tap);
         }
 
@@ -142,8 +143,8 @@ pub fn create_all_fileitems_from_json(full_data: String) {
         }
       }
     }
-    Err(_) => {
-      println!("Failed to parse the JSON data into FullTrackListForExport");
+    Err(e) => {
+      eprintln!("JSON does not match schema: {:?}", e);
     }
   }
 }
@@ -174,8 +175,8 @@ pub fn list_all_fileitems_and_relation_counts() -> Vec<FullTrackWithCounts> {
         _count: FullTrackCounts {
           full_ranges: full_track.full_ranges.len() as i32,
           fad_list: full_track.fad_list.len() as i32,
-          art_list_tog: full_track.art_tog.len() as i32,
-          art_list_tap: full_track.art_tap.len() as i32,
+          art_list_tog: full_track.art_list_tog.len() as i32,
+          art_list_tap: full_track.art_list_tap.len() as i32,
           art_layers: full_track.art_layers.len() as i32,
         },
       };
@@ -192,8 +193,8 @@ pub fn get_fileitem_and_relations(id: String) -> Option<FullTrackForExport> {
 
   let full_ranges = list_items_full_ranges(id.clone());
   let fad_list = list_items_fadlist(id.clone());
-  let art_tog = list_items_artlist_tog(id.clone());
-  let art_tap = list_items_artlist_tap(id.clone());
+  let art_list_tog = list_items_artlist_tog(id.clone());
+  let art_list_tap = list_items_artlist_tap(id.clone());
   let art_layers = list_items_art_layers(id.clone());
 
   let full_track_for_export: Option<FullTrackForExport> = Some(
@@ -201,8 +202,8 @@ pub fn get_fileitem_and_relations(id: String) -> Option<FullTrackForExport> {
       fileitem: fileitem?,
       full_ranges: full_ranges,
       fad_list: fad_list,
-      art_tog: art_tog,
-      art_tap: art_tap,
+      art_list_tog: art_list_tog,
+      art_list_tap: art_list_tap,
       art_layers: art_layers,
     }
   );
@@ -375,8 +376,8 @@ pub fn renumber_all_fileitems() -> Vec<FileItem> {
   for fileitem in fileitems {
     let full_ranges = list_items_full_ranges(fileitem.id.clone());
     let fad_list = list_items_fadlist(fileitem.id.clone());
-    let art_tog = list_items_artlist_tog(fileitem.id.clone());
-    let art_tap = list_items_artlist_tap(fileitem.id.clone());
+    let art_list_tog = list_items_artlist_tog(fileitem.id.clone());
+    let art_list_tap = list_items_artlist_tap(fileitem.id.clone());
     let art_layers = list_items_art_layers(fileitem.id.clone());
 
     let new_fileitem = FileItem {
@@ -431,7 +432,7 @@ pub fn renumber_all_fileitems() -> Vec<FileItem> {
         .expect("Error updating fad");
     }
 
-    for tog in &art_tog {
+    for tog in &art_list_tog {
       let tog_id = split_sub_item_id(&tog.id);
       let new_tog = ItemsArtListTog {
         id: format!("T_{}_AT_{}", i, tog_id),
@@ -450,8 +451,8 @@ pub fn renumber_all_fileitems() -> Vec<FileItem> {
         .expect("Error updating tog");
     }
 
-    for tap in art_tap {
-      let tap_id = split_sub_item_id(&tap.id) + (art_tog.len() as i32);
+    for tap in art_list_tap {
+      let tap_id = split_sub_item_id(&tap.id) + (art_list_tog.len() as i32);
       let new_tap = ItemsArtListTap {
         id: format!("T_{}_AT_{}", i, tap_id),
         fileitems_item_id: format!("T_{}", i),

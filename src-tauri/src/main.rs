@@ -9,7 +9,7 @@ mod models;
 mod services;
 mod schema;
 use tauri_plugin_log;
-use log::info;
+use log::{ info, error };
 mod settings;
 
 use commands::{
@@ -22,6 +22,10 @@ use commands::{
   items_art_layers_commands::*,
 };
 use services::fileitem_service;
+use tauri_plugin_dialog::DialogExt;
+use tauri_plugin_fs::{ FilePath };
+use serde_json::Value;
+use std::fs;
 
 use tauri::{
   Manager,
@@ -74,7 +78,32 @@ async fn main() {
       app.on_menu_event(move |app, event| {
         match event.id().as_ref() {
           "import" => {
-            app.emit("import", "import").unwrap();
+            let file_path: Option<FilePath> = app
+              .dialog()
+              .file()
+              .blocking_pick_file();
+
+            if let Some(file_path) = file_path {
+              let file_path_str = file_path.to_string();
+
+              match fs::read_to_string(file_path_str) {
+                Ok(file_content) => {
+                  match serde_json::from_str::<Value>(&file_content) {
+                    Ok(parsed_json) => {
+                      create_all_fileitems_from_json(parsed_json);
+                    }
+                    Err(e) => {
+                      error!("Failed to parse JSON: {:?}", e);
+                    }
+                  }
+                }
+                Err(e) => {
+                  error!("Failed to read file: {:?}", e);
+                }
+              }
+            } else {
+              error!("No file selected");
+            }
           }
           "export" => {
             app.emit("export", "export").unwrap();

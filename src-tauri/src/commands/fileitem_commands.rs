@@ -7,6 +7,7 @@ use crate::{
   },
   services::fileitem_service,
 };
+use serde_json::Value;
 
 #[tauri::command]
 pub fn list_fileitems() -> Vec<FileItem> {
@@ -39,7 +40,7 @@ pub fn get_fileitem_and_relations(id: String) -> Option<FullTrackForExport> {
 }
 
 #[tauri::command]
-pub fn create_all_fileitems_from_json(full_data: String) {
+pub fn create_all_fileitems_from_json(full_data: Value) {
   fileitem_service::create_all_fileitems_from_json(full_data)
 }
 

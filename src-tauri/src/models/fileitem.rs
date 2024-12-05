@@ -79,8 +79,8 @@ pub struct FullTrackForExport {
   pub fileitem: FileItem,
   pub full_ranges: Vec<ItemsFullRanges>,
   pub fad_list: Vec<ItemsFadList>,
-  pub art_tog: Vec<ItemsArtListTog>,
-  pub art_tap: Vec<ItemsArtListTap>,
+  pub art_list_tog: Vec<ItemsArtListTog>,
+  pub art_list_tap: Vec<ItemsArtListTap>,
   pub art_layers: Vec<ItemsArtLayers>,
 }
 
