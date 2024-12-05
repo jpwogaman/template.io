@@ -5,5 +5,5 @@ CREATE TABLE items_full_ranges (
     low VARCHAR(50) NOT NULL,
     high VARCHAR(50) NOT NULL,
     white_keys_only BOOLEAN NOT NULL,
-    fileItemsItemId VARCHAR(50) NOT NULL REFERENCES fileitems(id)
+    fileitems_item_id VARCHAR(50) NOT NULL REFERENCES fileitems(id)
 );
