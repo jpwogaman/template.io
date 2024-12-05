@@ -43,6 +43,44 @@ pub fn delete_art_tog(id: String) {
     .expect("Error deleting fad");
 }
 
+pub fn delete_art_tog_by_fileitem(id: String, fileItemsItemId: String) {
+  let connection = &mut establish_db_connection();
+
+  let must_have_one = dsl::items_artlist_tog
+    .filter(dsl::fileItemsItemId.eq(fileItemsItemId.clone()))
+    .load::<ItemsArtListTog>(connection)
+    .expect("Error loading art");
+
+  if must_have_one.len() <= 1 {
+    return;
+  }
+
+  diesel
+    ::delete(dsl::items_artlist_tog.filter(dsl::id.eq(id)))
+    .execute(connection)
+    .expect("Error deleting art");
+}
+
+pub fn delete_all_art_tog_for_fileitem(fileItemsItemId: String) {
+  let connection = &mut establish_db_connection();
+
+  diesel
+    ::delete(
+      dsl::items_artlist_tog.filter(dsl::fileItemsItemId.eq(fileItemsItemId))
+    )
+    .execute(connection)
+    .expect("Error deleting fad");
+}
+
+pub fn delete_all_art_tog() {
+  let connection = &mut establish_db_connection();
+
+  diesel
+    ::delete(dsl::items_artlist_tog)
+    .execute(connection)
+    .expect("Error deleting fad");
+}
+
 pub fn update_art_tog(data: ItemsArtListTogRequest) {
   let connection = &mut establish_db_connection();
 
@@ -61,7 +99,9 @@ pub fn update_art_tog(data: ItemsArtListTogRequest) {
     change_type: data.change_type.unwrap_or(original_art_tog.change_type),
     ranges: data.ranges.unwrap_or(original_art_tog.ranges),
     art_layers: data.art_layers.unwrap_or(original_art_tog.art_layers),
-    fileItemsItemId: data.fileItemsItemId.unwrap_or(original_art_tog.fileItemsItemId),
+    fileItemsItemId: data.fileItemsItemId.unwrap_or(
+      original_art_tog.fileItemsItemId
+    ),
   };
 
   diesel

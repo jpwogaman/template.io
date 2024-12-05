@@ -23,7 +23,12 @@ pub fn create_full_range(fileItemsItemId: String, count: i32) {
   fn find_highest_id(items_full_ranges: &Vec<ItemsFullRanges>) -> i32 {
     let mut highest_id = 0;
     for items_full_range in items_full_ranges {
-      let id = items_full_range.id.split("_").nth(3).unwrap().parse::<i32>().unwrap();
+      let id = items_full_range.id
+        .split("_")
+        .nth(3)
+        .unwrap()
+        .parse::<i32>()
+        .unwrap();
       if id > highest_id {
         highest_id = id;
       }
@@ -52,6 +57,11 @@ pub fn create_full_range(fileItemsItemId: String, count: i32) {
 #[tauri::command]
 pub fn delete_full_range(id: String) {
   items_full_ranges_service::delete_full_range(id)
+}
+
+#[tauri::command]
+pub fn delete_full_range_by_fileitem(id: String, fileItemsItemId: String) {
+  items_full_ranges_service::delete_full_range_by_fileitem(id, fileItemsItemId)
 }
 
 #[tauri::command]

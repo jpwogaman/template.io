@@ -56,6 +56,11 @@ pub fn delete_fad(id: String) {
 }
 
 #[tauri::command]
+pub fn delete_fad_by_fileitem(id: String, fileItemsItemId: String) {
+  items_fadlist_service::delete_fad_by_fileitem(id, fileItemsItemId)
+}
+
+#[tauri::command]
 pub fn update_fad(data: ItemsFadListRequest) {
   items_fadlist_service::update_fad(data);
 }

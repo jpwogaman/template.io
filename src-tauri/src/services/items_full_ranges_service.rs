@@ -43,6 +43,44 @@ pub fn delete_full_range(id: String) {
     .expect("Error deleting range");
 }
 
+pub fn delete_full_range_by_fileitem(id: String, fileItemsItemId: String) {
+  let connection = &mut establish_db_connection();
+
+  let must_have_one = dsl::items_full_ranges
+    .filter(dsl::fileItemsItemId.eq(fileItemsItemId.clone()))
+    .load::<ItemsFullRanges>(connection)
+    .expect("Error loading range");
+
+  if must_have_one.len() <= 1 {
+    return;
+  }
+
+  diesel
+    ::delete(dsl::items_full_ranges.filter(dsl::id.eq(id)))
+    .execute(connection)
+    .expect("Error deleting range");
+}
+
+pub fn delete_all_full_ranges_for_fileitem(fileItemsItemId: String) {
+  let connection = &mut establish_db_connection();
+
+  diesel
+    ::delete(
+      dsl::items_full_ranges.filter(dsl::fileItemsItemId.eq(fileItemsItemId))
+    )
+    .execute(connection)
+    .expect("Error deleting range");
+}
+
+pub fn delete_all_full_ranges() {
+  let connection = &mut establish_db_connection();
+
+  diesel
+    ::delete(dsl::items_full_ranges)
+    .execute(connection)
+    .expect("Error deleting range");
+}
+
 pub fn update_full_range(data: ItemsFullRangesRequest) {
   let connection = &mut establish_db_connection();
 

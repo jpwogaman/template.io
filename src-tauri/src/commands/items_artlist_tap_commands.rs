@@ -57,6 +57,11 @@ pub fn delete_art_tap(id: String) {
 }
 
 #[tauri::command]
+pub fn delete_art_tap_by_fileitem(id: String, fileItemsItemId: String) {
+  items_artlist_tap_service::delete_art_tap_by_fileitem(id, fileItemsItemId)
+}
+
+#[tauri::command]
 pub fn update_art_tap(data: ItemsArtListTapRequest) {
   items_artlist_tap_service::update_art_tap(data);
 }

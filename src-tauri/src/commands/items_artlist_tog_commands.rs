@@ -57,6 +57,11 @@ pub fn delete_art_tog(id: String) {
 }
 
 #[tauri::command]
+pub fn delete_art_tog_by_fileitem(id: String, fileItemsItemId: String) {
+  items_artlist_tog_service::delete_art_tog_by_fileitem(id, fileItemsItemId)
+}
+
+#[tauri::command]
 pub fn update_art_tog(data: ItemsArtListTogRequest) {
   items_artlist_tog_service::update_art_tog(data);
 }

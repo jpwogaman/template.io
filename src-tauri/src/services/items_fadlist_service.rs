@@ -43,6 +43,44 @@ pub fn delete_fad(id: String) {
     .expect("Error deleting fad");
 }
 
+pub fn delete_fad_by_fileitem(id: String, fileItemsItemId: String) {
+  let connection = &mut establish_db_connection();
+
+  let must_have_one = dsl::items_fadlist
+    .filter(dsl::fileItemsItemId.eq(fileItemsItemId.clone()))
+    .load::<ItemsFadList>(connection)
+    .expect("Error loading fad");
+
+  if must_have_one.len() <= 1 {
+    return;
+  }
+
+  diesel
+    ::delete(dsl::items_fadlist.filter(dsl::id.eq(id)))
+    .execute(connection)
+    .expect("Error deleting fad");
+}
+
+pub fn delete_all_fad_for_fileitem(fileItemsItemId: String) {
+  let connection = &mut establish_db_connection();
+
+  diesel
+    ::delete(
+      dsl::items_fadlist.filter(dsl::fileItemsItemId.eq(fileItemsItemId))
+    )
+    .execute(connection)
+    .expect("Error deleting fad");
+}
+
+pub fn delete_all_fad() {
+  let connection = &mut establish_db_connection();
+
+  diesel
+    ::delete(dsl::items_fadlist)
+    .execute(connection)
+    .expect("Error deleting fad");
+}
+
 pub fn update_fad(data: ItemsFadListRequest) {
   let connection = &mut establish_db_connection();
 
@@ -55,7 +93,9 @@ pub fn update_fad(data: ItemsFadListRequest) {
     code: data.code.unwrap_or(original_fad.code),
     default: data.default.unwrap_or(original_fad.default),
     change_type: data.change_type.unwrap_or(original_fad.change_type),
-    fileItemsItemId: data.fileItemsItemId.unwrap_or(original_fad.fileItemsItemId),
+    fileItemsItemId: data.fileItemsItemId.unwrap_or(
+      original_fad.fileItemsItemId
+    ),
   };
 
   diesel

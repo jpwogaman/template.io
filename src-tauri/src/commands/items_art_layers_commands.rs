@@ -23,7 +23,12 @@ pub fn create_art_layer(fileItemsItemId: String, count: i32) {
   fn find_highest_id(items_art_layers: &Vec<ItemsArtLayers>) -> i32 {
     let mut highest_id = 0;
     for items_art_layer in items_art_layers {
-      let id = items_art_layer.id.split("_").nth(3).unwrap().parse::<i32>().unwrap();
+      let id = items_art_layer.id
+        .split("_")
+        .nth(3)
+        .unwrap()
+        .parse::<i32>()
+        .unwrap();
       if id > highest_id {
         highest_id = id;
       }
@@ -55,6 +60,11 @@ pub fn create_art_layer(fileItemsItemId: String, count: i32) {
 #[tauri::command]
 pub fn delete_art_layer(id: String) {
   items_art_layers_service::delete_art_layer(id)
+}
+
+#[tauri::command]
+pub fn delete_art_layer_by_fileitem(id: String, fileItemsItemId: String) {
+  items_art_layers_service::delete_art_layer_by_fileitem(id, fileItemsItemId)
 }
 
 #[tauri::command]

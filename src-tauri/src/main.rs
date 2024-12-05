@@ -128,9 +128,13 @@ async fn main() {
         // fileitem_commands
         list_fileitems,
         list_fileitems_and_relations,
+        list_fileitems_and_relation_counts,
         get_fileitem,
+        get_fileitem_and_relations,
         create_fileitem,
         delete_fileitem,
+        delete_fileitem_and_relations,
+        delete_all_fileitems_and_relations,        
         update_fileitem,
         // items_full_ranges_commands
         list_items_full_ranges,

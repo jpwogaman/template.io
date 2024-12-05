@@ -43,6 +43,44 @@ pub fn delete_art_layer(id: String) {
     .expect("Error deleting fad");
 }
 
+pub fn delete_art_layer_by_fileitem(id: String, fileItemsItemId: String) {
+  let connection = &mut establish_db_connection();
+
+  let must_have_one = dsl::items_art_layers
+    .filter(dsl::fileItemsItemId.eq(fileItemsItemId.clone()))
+    .load::<ItemsArtLayers>(connection)
+    .expect("Error loading layer");
+
+  if must_have_one.len() <= 1 {
+    return;
+  }
+
+  diesel
+    ::delete(dsl::items_art_layers.filter(dsl::id.eq(id)))
+    .execute(connection)
+    .expect("Error deleting layer");
+}
+
+pub fn delete_all_art_layers_for_fileitem(fileItemsItemId: String) {
+  let connection = &mut establish_db_connection();
+
+  diesel
+    ::delete(
+      dsl::items_art_layers.filter(dsl::fileItemsItemId.eq(fileItemsItemId))
+    )
+    .execute(connection)
+    .expect("Error deleting fad");
+}
+
+pub fn delete_all_art_layers() {
+  let connection = &mut establish_db_connection();
+
+  diesel
+    ::delete(dsl::items_art_layers)
+    .execute(connection)
+    .expect("Error deleting fad");
+}
+
 pub fn update_art_layer(data: ItemsArtLayersRequest) {
   let connection = &mut establish_db_connection();
 
@@ -57,7 +95,9 @@ pub fn update_art_layer(data: ItemsArtLayersRequest) {
     off: data.off.unwrap_or(original_art_layer.off),
     default: data.default.unwrap_or(original_art_layer.default),
     change_type: data.change_type.unwrap_or(original_art_layer.change_type),
-    fileItemsItemId: data.fileItemsItemId.unwrap_or(original_art_layer.fileItemsItemId),
+    fileItemsItemId: data.fileItemsItemId.unwrap_or(
+      original_art_layer.fileItemsItemId
+    ),
   };
 
   diesel
