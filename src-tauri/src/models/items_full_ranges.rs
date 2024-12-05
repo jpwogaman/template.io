@@ -12,6 +12,7 @@ use serde::{ Serialize, Deserialize };
 #[derive(
   Queryable,
   Serialize,
+  Deserialize,
   Insertable,
   AsChangeset,
   Selectable,

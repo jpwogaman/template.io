@@ -1,10 +1,22 @@
-use crate::schema::fileitems;
+use crate::{
+  schema::fileitems,
+  models::{
+    items_full_ranges::{ ItemsFullRanges },
+    items_fadlist::{ ItemsFadList },
+    items_artlist_tog::{ ItemsArtListTog },
+    items_artlist_tap::{ ItemsArtListTap },
+    items_art_layers::{ ItemsArtLayers },
+  },
+};
+
 use diesel::{ Insertable, Queryable, AsChangeset, Identifiable };
 use serde::{ Serialize, Deserialize };
+use serde_json::{  Value };
 
 #[derive(
   Queryable,
   Serialize,
+  Deserialize,
   Insertable,
   Identifiable,
   AsChangeset,
@@ -59,4 +71,38 @@ pub fn init_fileitem(id: String) -> FileItem {
     smp_out: "N/A".to_string(),
     color: "#71717A".to_string(),
   }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct FullTrackForExport {
+  #[serde(flatten)]
+  pub fileitem: FileItem,
+  pub full_ranges: Vec<ItemsFullRanges>,
+  pub fad_list: Vec<ItemsFadList>,
+  pub art_tog: Vec<ItemsArtListTog>,
+  pub art_tap: Vec<ItemsArtListTap>,
+  pub art_layers: Vec<ItemsArtLayers>,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct FullTrackListForExport {
+  #[serde(flatten)]
+  pub fileMetaData: Value,
+  pub items: Vec<FullTrackForExport>,
+}
+
+#[derive(Serialize)]
+pub struct FullTrackCounts {
+  pub art_list_tog: i32,
+  pub art_list_tap: i32,
+  pub art_layers: i32,
+  pub fad_list: i32,
+  pub full_ranges: i32,
+}
+
+#[derive(Serialize)]
+pub struct FullTrackWithCounts {
+  #[serde(flatten)]
+  pub fileitem: FileItem,
+  pub _count: FullTrackCounts,
 }

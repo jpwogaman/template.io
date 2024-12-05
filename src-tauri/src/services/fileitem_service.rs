@@ -1,7 +1,15 @@
 use crate::{
   db::establish_db_connection,
   models::{
-    fileitem::{ FileItem, FileItemRequest, init_fileitem },
+    fileitem::{
+      FileItem,
+      FileItemRequest,
+      FullTrackForExport,
+      FullTrackListForExport,
+      FullTrackWithCounts,
+      FullTrackCounts,
+      init_fileitem,
+    },
     items_full_ranges::{ ItemsFullRanges, init_full_range },
     items_fadlist::{ ItemsFadList, init_fad },
     items_artlist_tog::{ ItemsArtListTog, init_art_tog },
@@ -51,6 +59,7 @@ use crate::{
 };
 use diesel::prelude::*;
 use serde::{ Serialize };
+use serde_json::{ from_str, Value };
 
 pub fn init() {
   let fileitems = list_fileitems();
@@ -99,83 +108,108 @@ pub fn create_fileitem(count: i32) {
   }
 }
 
-#[derive(Serialize)]
-pub struct FullTrackListForExport {
-  #[serde(flatten)]
-  fileitem: FileItem,
-  full_ranges: Vec<ItemsFullRanges>,
-  fad_list: Vec<ItemsFadList>,
-  art_tog: Vec<ItemsArtListTog>,
-  art_tap: Vec<ItemsArtListTap>,
-  art_layers: Vec<ItemsArtLayers>,
+pub fn create_all_fileitems_from_json(full_data: String) {
+  match serde_json::from_str::<FullTrackListForExport>(&full_data) {
+    Ok(json) => {
+      delete_all_fileitems_and_relations();
+
+      for full_track in json.items {
+        let fileitem = full_track.fileitem;
+        let full_ranges = full_track.full_ranges;
+        let fad_list = full_track.fad_list;
+        let art_tog = full_track.art_tog;
+        let art_tap = full_track.art_tap;
+        let art_layers = full_track.art_layers;
+
+        store_new_item(&fileitem);
+
+        for full_range in full_ranges {
+          store_new_full_range(&full_range);
+        }
+
+        for fad in fad_list {
+          store_new_fad(&fad);
+        }
+
+        for tog in art_tog {
+          store_new_art_tog(&tog);
+        }
+
+        for tap in art_tap {
+          store_new_art_tap(&tap);
+        }
+
+        for layer in art_layers {
+          store_new_art_layer(&layer);
+        }
+      }
+    }
+    Err(_) => {
+      println!("Failed to parse the JSON data into FullTrackListForExport");
+    }
+  }
 }
 
-pub fn list_fileitems_and_relations() -> Vec<FullTrackListForExport> {
+pub fn list_all_fileitems_and_relations() -> Vec<FullTrackForExport> {
   let fileitems = list_fileitems();
 
   let mut fileitems_and_relations = Vec::new();
 
   for fileitem in fileitems {
-    let full_ranges = list_items_full_ranges(fileitem.id.clone());
-    let fad_list = list_items_fadlist(fileitem.id.clone());
-    let art_tog = list_items_artlist_tog(fileitem.id.clone());
-    let art_tap = list_items_artlist_tap(fileitem.id.clone());
-    let art_layers = list_items_art_layers(fileitem.id.clone());
+    get_fileitem_and_relations(fileitem.id.clone()).map(|full_track| {
+      fileitems_and_relations.push(full_track);
+    });
+  }
 
-    fileitems_and_relations.push(FullTrackListForExport {
-      fileitem: fileitem,
+  fileitems_and_relations
+}
+
+pub fn list_all_fileitems_and_relation_counts() -> Vec<FullTrackWithCounts> {
+  let fileitems = list_fileitems();
+
+  let mut fileitems_and_relations_counts = Vec::new();
+
+  for fileitem in fileitems {
+    get_fileitem_and_relations(fileitem.id.clone()).map(|full_track| {
+      let full_track_with_counts = FullTrackWithCounts {
+        fileitem: full_track.fileitem,
+        _count: FullTrackCounts {
+          full_ranges: full_track.full_ranges.len() as i32,
+          fad_list: full_track.fad_list.len() as i32,
+          art_list_tog: full_track.art_tog.len() as i32,
+          art_list_tap: full_track.art_tap.len() as i32,
+          art_layers: full_track.art_layers.len() as i32,
+        },
+      };
+
+      fileitems_and_relations_counts.push(full_track_with_counts);
+    });
+  }
+
+  fileitems_and_relations_counts
+}
+
+pub fn get_fileitem_and_relations(id: String) -> Option<FullTrackForExport> {
+  let fileitem = get_fileitem(id.clone());
+
+  let full_ranges = list_items_full_ranges(id.clone());
+  let fad_list = list_items_fadlist(id.clone());
+  let art_tog = list_items_artlist_tog(id.clone());
+  let art_tap = list_items_artlist_tap(id.clone());
+  let art_layers = list_items_art_layers(id.clone());
+
+  let full_track_for_export: Option<FullTrackForExport> = Some(
+    FullTrackForExport {
+      fileitem: fileitem?,
       full_ranges: full_ranges,
       fad_list: fad_list,
       art_tog: art_tog,
       art_tap: art_tap,
       art_layers: art_layers,
-    });
-  }
+    }
+  );
 
-  fileitems_and_relations
-}
-
-#[derive(Serialize)]
-pub struct FullTrackListCounts {
-  art_list_tog: i32,
-  art_list_tap: i32,
-  art_layers: i32,
-  fad_list: i32,
-  full_ranges: i32,
-}
-
-#[derive(Serialize)]
-pub struct FullTrackListWithCounts {
-  #[serde(flatten)]
-  fileitem: FileItem,
-  _count: FullTrackListCounts,
-}
-
-pub fn list_fileitems_and_relation_counts() -> Vec<FullTrackListWithCounts> {
-  let fileitems = list_fileitems();
-
-  let mut fileitems_and_relations = Vec::new();
-
-  for fileitem in fileitems {
-    let full_ranges = list_items_full_ranges(fileitem.id.clone());
-    let fad_list = list_items_fadlist(fileitem.id.clone());
-    let art_tog = list_items_artlist_tog(fileitem.id.clone());
-    let art_tap = list_items_artlist_tap(fileitem.id.clone());
-    let art_layers = list_items_art_layers(fileitem.id.clone());
-
-    fileitems_and_relations.push(FullTrackListWithCounts {
-      fileitem: fileitem,
-      _count: FullTrackListCounts {
-        art_list_tog: art_tog.len() as i32,
-        art_list_tap: art_tap.len() as i32,
-        art_layers: art_layers.len() as i32,
-        fad_list: fad_list.len() as i32,
-        full_ranges: full_ranges.len() as i32,
-      },
-    });
-  }
-
-  fileitems_and_relations
+  full_track_for_export
 }
 
 pub fn list_fileitems() -> Vec<FileItem> {
@@ -186,31 +220,6 @@ pub fn list_fileitems() -> Vec<FileItem> {
 
     .load::<FileItem>(connection)
     .expect("Error loading fileitems")
-}
-
-pub fn get_fileitem_and_relations(
-  id: String
-) -> Option<FullTrackListForExport> {
-  let fileitem = get_fileitem(id.clone());
-
-  let full_ranges = list_items_full_ranges(id.clone());
-  let fad_list = list_items_fadlist(id.clone());
-  let art_tog = list_items_artlist_tog(id.clone());
-  let art_tap = list_items_artlist_tap(id.clone());
-  let art_layers = list_items_art_layers(id.clone());
-
-  let FullTrackListForExport: Option<FullTrackListForExport> = Some(
-    FullTrackListForExport {
-      fileitem: fileitem?,
-      full_ranges: full_ranges,
-      fad_list: fad_list,
-      art_tog: art_tog,
-      art_tap: art_tap,
-      art_layers: art_layers,
-    }
-  );
-
-  FullTrackListForExport
 }
 
 pub fn get_fileitem(id: String) -> Option<FileItem> {
@@ -248,7 +257,6 @@ pub fn delete_all_fileitems() {
 
   diesel
     ::delete(fileitems_dsl::fileitems)
-
     .execute(connection)
     .expect("Error deleting fileitems");
 }
@@ -291,8 +299,6 @@ pub fn delete_all_fileitems_and_relations() {
   delete_all_fad();
   delete_all_full_ranges();
   delete_all_fileitems();
-
-  create_fileitem(1);
 }
 
 pub fn delete_fileitem_and_relations(id: String) {

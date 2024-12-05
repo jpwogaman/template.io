@@ -127,8 +127,8 @@ async fn main() {
       tauri::generate_handler![
         // fileitem_commands
         list_fileitems,
-        list_fileitems_and_relations,
-        list_fileitems_and_relation_counts,
+        list_all_fileitems_and_relations,
+        list_all_fileitems_and_relation_counts,
         get_fileitem,
         get_fileitem_and_relations,
         create_fileitem,
@@ -136,6 +136,7 @@ async fn main() {
         clear_fileitem,
         renumber_all_fileitems,
         delete_fileitem_and_relations,
+        create_all_fileitems_from_json,
         delete_all_fileitems_and_relations,
         update_fileitem,
         // items_full_ranges_commands

@@ -1,5 +1,12 @@
 use crate::{
-  models::{ fileitem::{ FileItem, FileItemRequest } },
+  models::fileitem::{
+    FileItem,
+    FileItemRequest,
+    FullTrackForExport,
+    FullTrackListForExport,
+    FullTrackWithCounts,
+    FullTrackCounts,
+  },
   services::fileitem_service,
 };
 
@@ -14,13 +21,13 @@ pub fn renumber_all_fileitems() -> Vec<FileItem> {
 }
 
 #[tauri::command]
-pub fn list_fileitems_and_relations() -> Vec<fileitem_service::FullTrackListForExport> {
-  fileitem_service::list_fileitems_and_relations()
+pub fn list_all_fileitems_and_relations() -> Vec<FullTrackForExport> {
+  fileitem_service::list_all_fileitems_and_relations()
 }
 
 #[tauri::command]
-pub fn list_fileitems_and_relation_counts() -> Vec<fileitem_service::FullTrackListWithCounts> {
-  fileitem_service::list_fileitems_and_relation_counts()
+pub fn list_all_fileitems_and_relation_counts() -> Vec<FullTrackWithCounts> {
+  fileitem_service::list_all_fileitems_and_relation_counts()
 }
 
 #[tauri::command]
@@ -31,8 +38,13 @@ pub fn get_fileitem(id: String) -> Option<FileItem> {
 #[tauri::command]
 pub fn get_fileitem_and_relations(
   id: String
-) -> Option<fileitem_service::FullTrackListForExport> {
+) -> Option<FullTrackForExport> {
   fileitem_service::get_fileitem_and_relations(id)
+}
+
+#[tauri::command]
+pub fn create_all_fileitems_from_json(full_data: String) {
+  fileitem_service::create_all_fileitems_from_json(full_data)
 }
 
 #[tauri::command]
@@ -63,4 +75,5 @@ pub fn delete_fileitem_and_relations(id: String) {
 #[tauri::command]
 pub fn delete_all_fileitems_and_relations() {
   fileitem_service::delete_all_fileitems_and_relations();
+  fileitem_service::create_fileitem(1);
 }
