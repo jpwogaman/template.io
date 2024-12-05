@@ -47,3 +47,17 @@ pub struct ItemsArtLayersRequest {
   pub change_type: Option<String>,
   pub fileItemsItemId: Option<String>,
 }
+
+pub fn init_art_layer(id: String) -> ItemsArtLayers {
+  ItemsArtLayers {
+    id: format!("T_{}_AL_0", id),
+    name: "".to_string(),
+    code_type: "/control".to_string(),
+    code: 0,
+    on: 127,
+    off: 0,
+    default: "Off".to_string(),
+    change_type: "Value 2".to_string(),
+    fileItemsItemId: format!("T_{}", id),
+  }
+}

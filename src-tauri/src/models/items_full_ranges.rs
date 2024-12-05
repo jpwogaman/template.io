@@ -41,3 +41,14 @@ pub struct ItemsFullRangesRequest {
   pub white_keys_only: Option<bool>,
   pub fileItemsItemId: Option<String>,
 }
+
+pub fn init_full_range(id: String) -> ItemsFullRanges {
+  ItemsFullRanges {
+    id: format!("T_{}_FR_0", id),
+    name: "".to_string(),
+    low: "C-2".to_string(),
+    high: "G8".to_string(),
+    white_keys_only: false,
+    fileItemsItemId: format!("T_{}", id),
+  }
+}

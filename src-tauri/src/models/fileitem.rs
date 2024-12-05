@@ -1,10 +1,5 @@
 use crate::schema::fileitems;
-use diesel::{
-  Insertable,
-  Queryable,
-  AsChangeset,
-  Identifiable,
-};
+use diesel::{ Insertable, Queryable, AsChangeset, Identifiable };
 use serde::{ Serialize, Deserialize };
 
 #[derive(
@@ -47,4 +42,21 @@ pub struct FileItemRequest {
   pub smp_number: Option<String>,
   pub smp_out: Option<String>,
   pub color: Option<String>,
+}
+
+pub fn init_fileitem(id: String) -> FileItem {
+  FileItem {
+    id: format!("T_{}", id),
+    locked: false,
+    name: "".to_string(),
+    notes: "".to_string(),
+    channel: 1,
+    base_delay: 0.0,
+    avg_delay: 0.0,
+    vep_out: "N/A".to_string(),
+    vep_instance: "N/A".to_string(),
+    smp_number: "N/A".to_string(),
+    smp_out: "N/A".to_string(),
+    color: "#71717A".to_string(),
+  }
 }

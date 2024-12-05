@@ -56,3 +56,22 @@ pub struct ItemsArtListTapRequest {
   pub art_layers: Option<String>,
   pub fileItemsItemId: Option<String>,
 }
+
+pub fn init_art_tap(id: String) -> ItemsArtListTap {
+  ItemsArtListTap {
+    // art_tog is T_{}_AT_0, art_tap is T_{}_AT_1 
+    id: format!("T_{}_AT_1", id),
+    name: "".to_string(),
+    toggle: false,
+    code_type: "/control".to_string(),
+    code: 0,
+    on: 127,
+    off: 0,
+    default: false,
+    delay: 0,
+    change_type: "Value 2".to_string(),
+    ranges: format!("[\"T_{}_FR_0\"]", id),
+    art_layers: "[\"\"]".to_string(),
+    fileItemsItemId: format!("T_{}", id),
+  }
+}

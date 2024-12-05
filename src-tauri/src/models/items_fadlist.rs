@@ -43,3 +43,15 @@ pub struct ItemsFadListRequest {
   pub change_type: Option<String>,
   pub fileItemsItemId: Option<String>,
 }
+
+pub fn init_fad(id: String) -> ItemsFadList {
+  ItemsFadList {
+    id: format!("T_{}_FL_0", id),
+    name: "".to_string(),
+    code_type: "/control".to_string(),
+    code: 0,
+    default: 0,
+    change_type: "Value 2".to_string(),
+    fileItemsItemId: format!("T_{}", id),
+  }
+}
