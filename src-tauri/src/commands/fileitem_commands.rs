@@ -38,7 +38,9 @@ pub fn get_fileitem(id: String) -> Option<FileItem> {
 }
 
 #[tauri::command]
-pub fn get_fileitem_and_relations(id: String) -> Option<fileitem_service::FullTrackListForExport> {
+pub fn get_fileitem_and_relations(
+  id: String
+) -> Option<fileitem_service::FullTrackListForExport> {
   fileitem_service::get_fileitem_and_relations(id)
 }
 
@@ -159,6 +161,11 @@ pub fn create_fileitem(count: i32) {
 #[tauri::command]
 pub fn delete_fileitem(id: String) {
   fileitem_service::delete_fileitem(id)
+}
+
+#[tauri::command]
+pub fn clear_fileitem(id: String) {
+  fileitem_service::clear_fileitem(id);
 }
 
 #[tauri::command]

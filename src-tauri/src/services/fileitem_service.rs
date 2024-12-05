@@ -340,3 +340,103 @@ pub fn delete_fileitem_and_relations(id: String) {
   delete_all_fad_for_fileitem(id.clone());
   delete_all_full_ranges_for_fileitem(id.clone());
 }
+
+pub fn clear_fileitem(id: String) {
+  let connection = &mut establish_db_connection();
+
+  let fileitem = FileItemRequest {
+    id: id.clone(),
+    locked: Some(false),
+    name: Some("".to_string()),
+    notes: Some("".to_string()),
+    channel: Some(1),
+    base_delay: Some(0.0),
+    avg_delay: Some(0.0),
+    vep_out: Some("N/A".to_string()),
+    vep_instance: Some("N/A".to_string()),
+    smp_number: Some("N/A".to_string()),
+    smp_out: Some("N/A".to_string()),
+    color: Some("#71717A".to_string()),
+  };
+
+  update_fileitem(fileitem);
+
+  delete_all_art_layers_for_fileitem(id.clone());
+  delete_all_art_tap_for_fileitem(id.clone());
+  delete_all_art_tog_for_fileitem(id.clone());
+  delete_all_fad_for_fileitem(id.clone());
+  delete_all_full_ranges_for_fileitem(id.clone());
+
+  let default_full_range = ItemsFullRanges {
+    id: format!("T_{}_FR_0", id.clone()),
+    name: "".to_string(),
+    low: "C-2".to_string(),
+    high: "B8".to_string(),
+    white_keys_only: false,
+    fileItemsItemId: id.clone(),
+  };
+
+  store_new_full_range(&default_full_range);
+
+  let default_fad = ItemsFadList {
+    id: format!("T_{}_FL_0", id.clone()),
+    name: "".to_string(),
+    code_type: "/control".to_string(),
+    code: 0,
+    default: 0,
+    change_type: "Value 2".to_string(),
+    fileItemsItemId: id.clone(),
+  };
+
+  store_new_fad(&default_fad);
+
+  let default_art_tog = ItemsArtListTog {
+    id: format!("T_{}_AT_0", id.clone()),
+    name: "".to_string(),
+    toggle: true,
+    code_type: "/control".to_string(),
+    code: 0,
+    on: 127,
+    off: 0,
+    default: "On".to_string(),
+    delay: 0,
+    change_type: "Value 2".to_string(),
+    ranges: format!("[\"T_{}_FR_0\"]", id.clone()),
+    art_layers: "[\"\"]".to_string(),
+    fileItemsItemId: id.clone(),
+  };
+
+  store_new_art_tog(&default_art_tog);
+
+  let default_art_tap = ItemsArtListTap {
+    id: format!("T_{}_AT_1", id.clone()),
+    name: "".to_string(),
+    toggle: false,
+    code_type: "/control".to_string(),
+    code: 0,
+    on: 127,
+    off: 0,
+    default: false,
+    delay: 0,
+    change_type: "Value 2".to_string(),
+    ranges: format!("[\"T_{}_FR_0\"]", id.clone()),
+    art_layers: "[\"\"]".to_string(),
+    fileItemsItemId: id.clone(),
+  };
+
+  store_new_art_tap(&default_art_tap);
+
+  let default_art_layer = ItemsArtLayers {
+    id: format!("T_{}_AL_0", id.clone()),
+    name: "".to_string(),
+    code_type: "/control".to_string(),
+    code: 0,
+    on: 127,
+    off: 0,
+    default: "Off".to_string(),
+    change_type: "Value 2".to_string(),
+    fileItemsItemId: id.clone(),
+  };
+
+  store_new_art_layer(&default_art_layer);
+}
