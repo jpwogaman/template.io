@@ -22,7 +22,7 @@ B. If you want to keep track of your template AND have a touchscreen application
 1. If on MAC, use your IAC driver to create 4 virtual MIDI ports named OSC1, OSC2, OSC3, and OSC4
 2. If on PC, download [**loopMIDI**](https://www.tobias-erichsen.de/software/loopmidi.html) and create the same 4 virtual MIDI ports
 
-    ![loopMIDI Setup](./public/Images/loopMIDI.png)
+    ![loopMIDI Setup](./assets/Images/loopMIDI.png)
 
 
 ## 2. Setup Template.io (eventually...)
@@ -35,7 +35,7 @@ Download the Template.io binary for your system, run the installer, and set your
 4. template-io-generic-remote.xml
 5. template-io-empty-tracks.cpr
 
-*Note: If you plan on running Template.io from source, then these files are already setup in the repository in 'template.io/public/for-cubase' and 'template.io/public/for-osc.' There is more information [**below**](#running-templateio-from-source) on making sure Template.io runs smoothly from source.*
+*Note: If you plan on running Template.io from source, then these files are already setup in the repository in 'template.io/assets/for-cubase' and 'template.io/assets/for-osc.' There is more information [**below**](#running-templateio-from-source) on making sure Template.io runs smoothly from source.*
 
 ## 3. Setup Open Stage Control
 Download and launch [**Open Stage Control**](https://github.com/jean-emmanuel/open-stage-control.git). Add the locations for the **template-io-workfile.json** and the **template-io-custom-module.js** files in the 'load' and 'custom-module' inputs, respectively. 
@@ -53,7 +53,7 @@ Also, if you use a touchscreen that is connect via USB (as opposed to a tablet u
 ```
 nofocus=1
 ```
-![Open Stage Control Setup](./public/Images/osc-launcher.png)
+![Open Stage Control Setup](./assets/Images/osc-launcher.png)
 
 The in/out configuration works like this:
 
@@ -69,9 +69,9 @@ The in/out configuration works like this:
 
 Now in Cubase, setup your MIDI ports to match the scheme above, create a new Generic Remote, and import **template-io-generic-remote.xml**. This tells Cubase to transmit Control Code 126 at Value 1 on Channel 1 on Port OSC3 every time a MIDI track is selected. Because of our custom-module, every time Open Stage Control receives this exact MIDI signal, it will send Control Code 127 at Value 127 on Channel 1 on Port OSC4 back to Cubase. 
 
-![Cubase Ports Setup](./public/Images/cubase-port-setup.png)
+![Cubase Ports Setup](./assets/Images/cubase-port-setup.png)
 
-![Generic Remote Setup](./public/Images/template-io-generic-remote.png)
+![Generic Remote Setup](./assets/Images/template-io-generic-remote.png)
 
 ## 5. Build Your Template! (evntually...)
 
@@ -81,13 +81,13 @@ Create empty MIDI tracks and start naming and routing them as you would normally
 
 I know this seems like a hassle, so I took the liberty of setting up these transformers on over 2,000 empty MIDI tracks so you wouldn't have to! **Disclaimer: only about 384 tracks are currently setup.** I recommend you import these into your template (or just use the file provided to start a new one). These tracks are available in the **template-io-empty-tracks.cpr** file and are all disabled for you to activate anytime you wish to add a new instrument.
 
-![transformer setup](./public/Images/cubase-transformer.png)
+![transformer setup](./assets/Images/cubase-transformer.png)
 
 You can now use Template.io to add information about your tracks and when you save, it will automatically update the **template-io-tracks.json**, which the custom-module is reading. This will update your instance of Open Stage Control and put all of the parameters that each track can use right at the tip of your fingers. 
 
-![template.io main view](./public/Images/template-io-main-view.PNG)
+![template.io main view](./assets/Images/template-io-main-view.PNG)
 
-![custom module in action](./public/Images/custom-module-in-action.gif)
+![custom module in action](./assets/Images/custom-module-in-action.gif)
 
 
 # Running Template.io from Source
