@@ -136,6 +136,7 @@ export const SelectList: FC<SelectListProps> = ({ numbers, valName }) => {
   )
 }
 
+// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
 export const selectArrays: {
   [index: string]: {
     name: string

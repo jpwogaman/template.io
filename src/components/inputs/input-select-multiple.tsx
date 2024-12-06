@@ -15,7 +15,7 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
   const shortenedSubComponentId = (initialId: string) => {
     return `${
       //initialId.split('_')[2]}_${
-      parseInt(initialId.split('_')[3] as string)
+      parseInt(initialId.split('_')[3]!)
     }`
   }
 
@@ -50,31 +50,29 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
     }
   }
 
-  inputSelectOptionElements = JSON.parse(options as string).map(
-    (name: string) => (
-      // this should be a <li> element, but SONARLINT doesn't like it
-      <button
-        key={name}
-        title={id + '_' + name + '_currentlySelected: ' + value.includes(name)}
-        className={tw(
-          value.includes(name) && !codeDisabled ? 'font-bold text-red-700' : '',
-          value.includes(name) && codeDisabled ? 'font-bold text-red-800' : ''
-        )}
-        onKeyDown={(e) => {
-          e.preventDefault()
-          console.log('keydown')
-        }}
-        onClick={(event) => {
-          event.preventDefault()
-          valChange({
-            ...event,
-            target: { ...event.target, value: name }
-          } as unknown as ChangeEvent<HTMLSelectElement>)
-        }}>
-        {shortenedSubComponentId(name)}
-      </button>
-    )
-  )
+  inputSelectOptionElements = JSON.parse(options!).map((name: string) => (
+    // this should be a <li> element, but SONARLINT doesn't like it
+    <button
+      key={name}
+      title={id + '_' + name + '_currentlySelected: ' + value.includes(name)}
+      className={tw(
+        value.includes(name) && !codeDisabled ? 'font-bold text-red-700' : '',
+        value.includes(name) && codeDisabled ? 'font-bold text-red-800' : ''
+      )}
+      onKeyDown={(e) => {
+        e.preventDefault()
+        console.log('keydown')
+      }}
+      onClick={(event) => {
+        event.preventDefault()
+        valChange({
+          ...event,
+          target: { ...event.target, value: name }
+        } as unknown as ChangeEvent<HTMLSelectElement>)
+      }}>
+      {shortenedSubComponentId(name)}
+    </button>
+  ))
 
   return (
     <ul

@@ -60,13 +60,9 @@ export const ModalContext = createContext<ModalContextType>(
 
 interface ModalProviderProps {
   children: ReactNode
-  refreshAfterClose?: boolean
 }
 
-export const ModalProvider: FC<ModalProviderProps> = ({
-  children,
-  refreshAfterClose
-}) => {
+export const ModalProvider: FC<ModalProviderProps> = ({ children }) => {
   const [modalOpen, setModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState<ModalMessage>({
     loadingMessage: '',
@@ -77,10 +73,9 @@ export const ModalProvider: FC<ModalProviderProps> = ({
   const [loading, setLoading] = useState(false)
   const [status, setStatus] = useState<status>(null)
 
-  // eslint-disable-next-line @typescript-eslint/unbound-method
   const close = useCallback(() => {
     setModalOpen(false)
-  }, [refreshAfterClose, setModalOpen])
+  }, [setModalOpen])
 
   const open = useCallback(() => {
     setModalOpen(true)

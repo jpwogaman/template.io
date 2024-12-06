@@ -24,10 +24,10 @@ export const TrackOptions: FC = () => {
 
   //////////////////////////////////////////
   // This logic is used to disable individual components in the artTap, artTog, and fadList tables.
-  const allArtTogs = selectedItem?.art_list_tog ?? []
-  const allArtTaps = selectedItem?.art_list_tap ?? []
-  const allArtLayers = selectedItem?.art_layers ?? []
-  const allFads = selectedItem?.fad_list ?? []
+  const allArtTogs = selectedItem?.art_list_tog
+  const allArtTaps = selectedItem?.art_list_tap
+  const allArtLayers = selectedItem?.art_layers
+  const allFads = selectedItem?.fad_list
 
   const [artTogIndividualComponentLocked, setArtTogIndividualComponentLocked] =
     useState([
@@ -72,7 +72,7 @@ export const TrackOptions: FC = () => {
 
   useEffect(() => {
     setArtTogIndividualComponentLocked(
-      allArtTogs?.map((artTog) => {
+      allArtTogs!.map((artTog) => {
         const V1 = artTog.change_type === 'Value 1'
         return {
           id: artTog.id,
@@ -84,7 +84,7 @@ export const TrackOptions: FC = () => {
 
   useEffect(() => {
     setArtTapIndividualComponentLocked(
-      allArtTaps?.map((artTap) => {
+      allArtTaps!.map((artTap) => {
         const V1 = artTap.change_type === 'Value 1'
         return {
           id: artTap.id,
@@ -94,7 +94,7 @@ export const TrackOptions: FC = () => {
       })
     )
     setArtTapOneDefaultOnly(
-      allArtTaps?.map((artTap) => {
+      allArtTaps!.map((artTap) => {
         return {
           id: artTap.id,
           default: artTap.default ?? false
@@ -106,7 +106,7 @@ export const TrackOptions: FC = () => {
   useEffect(
     () =>
       setArtLayerIndividualComponentLocked(
-        allArtLayers?.map((artLayer) => {
+        allArtLayers!.map((artLayer) => {
           return {
             id: artLayer.id,
             code: false
@@ -118,7 +118,7 @@ export const TrackOptions: FC = () => {
 
   useEffect(() => {
     setFadIndividualComponentLocked(
-      allFads?.map((fad) => {
+      allFads!.map((fad) => {
         const V1 = fad.change_type === 'Value 1'
         return {
           id: fad.id,
@@ -237,11 +237,11 @@ export const TrackOptions: FC = () => {
    `
 
   const locked = selectedItem?.locked ?? false
-  const notesId = selectedItem?.id + '_notes'
-  const notesSelectedLocked = locked && selectedSubItemId === notesId
-  const notesSelectedUnlocked = !locked && selectedSubItemId === notesId
-  const notesUnselectedLocked = locked && selectedSubItemId !== notesId
-  const notesUnselectedUnlocked = !locked && selectedSubItemId !== notesId
+  //const notesId = selectedItem?.id + '_notes'
+  //const notesSelectedLocked = locked && selectedSubItemId === notesId
+  //const notesSelectedUnlocked = !locked && selectedSubItemId === notesId
+  //const notesUnselectedLocked = locked && selectedSubItemId !== notesId
+  //const notesUnselectedUnlocked = !locked && selectedSubItemId !== notesId
 
   //////////////////////////////////////////
   return (
@@ -404,9 +404,7 @@ export const TrackOptions: FC = () => {
                                 layoutConfigLabel={layoutConfig.label}
                                 layoutDataSingle={layoutDataSingle}
                                 onChangeHelper={onChangeHelper}
-                                selectedItem={
-                                  selectedItem as FullTrackForExport
-                                }
+                                selectedItem={selectedItem!}
                               />
                             </td>
                           )
@@ -426,7 +424,7 @@ export const TrackOptions: FC = () => {
                   return (
                     <table
                       onClick={() => setSelectedSubItemId(layoutDataSingleId)}
-                      onKeyDown={() => {}}
+                      //onKeyDown={() => {}}
                       onContextMenu={() => {
                         setIsContextMenuOpen(true)
                         setContextMenuId(layoutDataSingleId)
@@ -466,9 +464,7 @@ export const TrackOptions: FC = () => {
                                   layoutConfigLabel={layoutConfig.label}
                                   layoutDataSingle={layoutDataSingle}
                                   onChangeHelper={onChangeHelper}
-                                  selectedItem={
-                                    selectedItem as FullTrackForExport
-                                  }
+                                  selectedItem={selectedItem!}
                                 />
                               </td>
                             </tr>

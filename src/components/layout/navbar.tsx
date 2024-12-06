@@ -5,15 +5,10 @@ import { useTheme } from 'next-themes'
 import { useState, useEffect } from 'react'
 import { invoke } from '@tauri-apps/api/core'
 import { IconBtnToggle } from '@/components/layout/icon-btn-toggle'
-import {
-  useMutations,
-  useSelectedItem,
-  useContextMenu
-} from '@/components/context'
+import { useMutations, useSelectedItem } from '@/components/context'
 
 export const NavBar: FC = () => {
-  const { selectedItemId, setSelectedItemId, copiedItemId, copiedSubItemId } =
-    useSelectedItem()
+  const { selectedItemId, copiedItemId, copiedSubItemId } = useSelectedItem()
   const [mounted, setMounted] = useState(false)
   const {
     dataLength,
@@ -32,28 +27,32 @@ export const NavBar: FC = () => {
     return null
   }
   const listItems = () => {
-    invoke('list_all_fileitems_and_relations').then((response) => {
-      console.log(response)
-    })
+    invoke('list_all_fileitems_and_relations')
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((e) => console.error(e))
   }
   const createItem = () => {
-    invoke('create_fileitem', { count: 1 }).then((response) => {
-      console.log(response)
-    })
+    invoke('create_fileitem', { count: 1 })
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((e) => console.error(e))
   }
   const createArtTog = () => {
-    invoke('create_art_tog', { fileitems_item_id: 'T_0', count: 1 }).then(
-      (response) => {
+    invoke('create_art_tog', { fileitems_item_id: 'T_0', count: 1 })
+      .then((response) => {
         console.log(response)
-      }
-    )
+      })
+      .catch((e) => console.error(e))
   }
   const createArtTap = () => {
-    invoke('create_art_tap', { fileitems_item_id: 'T_0', count: 1 }).then(
-      (response) => {
+    invoke('create_art_tap', { fileitems_item_id: 'T_0', count: 1 })
+      .then((response) => {
         console.log(response)
-      }
-    )
+      })
+      .catch((e) => console.error(e))
   }
   return (
     <nav className='container sticky top-0 z-50 max-h-[40px] min-w-full items-center bg-zinc-900'>

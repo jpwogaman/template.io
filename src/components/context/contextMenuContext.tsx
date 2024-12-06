@@ -57,14 +57,13 @@ export const ContextMenuProvider: FC<ContextMenuProviderProps> = ({
     top: 0,
     left: 0
   })
-  // eslint-disable-next-line @typescript-eslint/unbound-method
   const close = useCallback(() => {
     setIsContextMenuOpen(false)
-  }, [isContextMenuOpen])
+  }, [setIsContextMenuOpen])
 
   const open = useCallback(() => {
     setIsContextMenuOpen(true)
-  }, [isContextMenuOpen])
+  }, [setIsContextMenuOpen])
 
   const setContextMenuPositionHelper = (e: MouseEvent) => {
     if (e.pageX + 15 > window.innerWidth - 250) {
@@ -107,7 +106,7 @@ export const ContextMenuProvider: FC<ContextMenuProviderProps> = ({
       setContextMenuPositionHelper(e)
       open()
     }
-    const handleLeftClick = (e: MouseEvent) => {
+    const handleLeftClick = () => {
       if (isContextMenuOpen) {
         close()
       }
@@ -119,7 +118,7 @@ export const ContextMenuProvider: FC<ContextMenuProviderProps> = ({
       window.addEventListener('click', handleLeftClick)
       window.removeEventListener('contextmenu', handleRightClick)
     }
-  }, [isContextMenuOpen])
+  }, [isContextMenuOpen, open, close])
 
   const value = useMemo(
     () => ({

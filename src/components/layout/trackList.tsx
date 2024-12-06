@@ -34,7 +34,7 @@ export const TrackList: FC = () => {
 
   const sortedData = data?.toSorted((a, b) => {
     return (
-      parseInt(a.id.split('_')[1] || '0') - parseInt(b.id.split('_')[1] || '0')
+      parseInt(a.id.split('_')[1] ?? '0') - parseInt(b.id.split('_')[1] ?? '0')
     )
   })
 

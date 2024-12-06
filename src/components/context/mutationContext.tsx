@@ -18,8 +18,8 @@ import { useSelectedItem } from './selectedItemContext'
 interface MutationContextType {
   data: FullTrackWithCounts[] | null
   dataLength: number
-  refetchAll: () => void
-  refetchSelected: () => void
+  //refetchAll: () => void
+  //refetchSelected: () => void
   vepSamplerCount: number
   vepInstanceCount: number
   nonVepSamplerCount: number
@@ -35,43 +35,58 @@ interface MutationContextType {
   previousItemId: string
   nextItemId: string
   //////////////////////////////////////////
-  exportItems: {
-    export: () => void
-  }
   create: {
-    allItemsFromJSON: (data: any) => void
-    track: (data: any) => void
+    track: ({ count }: { count: number }) => void
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     fullRange: (data: any) => void
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     artListTog: (data: any) => void
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     artListTap: (data: any) => void
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     artLayer: (data: any) => void
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     fadList: (data: any) => void
   }
   update: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     track: (data: any) => void
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     fullRange: (data: any) => void
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     artListTog: (data: any) => void
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     artListTap: (data: any) => void
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     artLayer: (data: any) => void
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     fadList: (data: any) => void
   }
   del: {
     track: (data: { itemId: string }) => void
     allTracks: () => void
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     fullRange: (data: any) => void
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     artListTog: (data: any) => void
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     artListTap: (data: any) => void
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     artLayer: (data: any) => void
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     fadList: (data: any) => void
   }
   clear: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     track: (data: any) => void
   }
   renumber: {
     allTracks: () => void
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     artList: (data: any) => void
   }
   paste: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     track: (data: any) => void
   }
 }
@@ -79,8 +94,8 @@ interface MutationContextType {
 const mutationContextDefaultValues: MutationContextType = {
   data: null,
   dataLength: 0,
-  refetchAll: () => {},
-  refetchSelected: () => {},
+  //refetchAll: () => {},
+  //refetchSelected: () => {},
   vepSamplerCount: 0,
   vepInstanceCount: 0,
   nonVepSamplerCount: 0,
@@ -96,11 +111,8 @@ const mutationContextDefaultValues: MutationContextType = {
   previousItemId: '',
   nextItemId: '',
   //////////////////////////////////////////
-  exportItems: {
-    export: () => {}
-  },
   create: {
-    allItemsFromJSON: () => {},
+    /* eslint-disable @typescript-eslint/no-empty-function */
     track: () => {},
     fullRange: () => {},
     artListTog: () => {},
@@ -109,6 +121,7 @@ const mutationContextDefaultValues: MutationContextType = {
     fadList: () => {}
   },
   update: {
+    /* eslint-disable @typescript-eslint/no-empty-function */
     track: () => {},
     fullRange: () => {},
     artListTog: () => {},
@@ -117,6 +130,7 @@ const mutationContextDefaultValues: MutationContextType = {
     fadList: () => {}
   },
   del: {
+    /* eslint-disable @typescript-eslint/no-empty-function */
     track: () => {},
     allTracks: () => {},
     fullRange: () => {},
@@ -126,13 +140,16 @@ const mutationContextDefaultValues: MutationContextType = {
     fadList: () => {}
   },
   clear: {
+    /* eslint-disable @typescript-eslint/no-empty-function */
     track: () => {}
   },
   renumber: {
+    /* eslint-disable @typescript-eslint/no-empty-function */
     allTracks: () => {},
     artList: () => {}
   },
   paste: {
+    /* eslint-disable @typescript-eslint/no-empty-function */
     track: () => {}
   }
 }
@@ -146,6 +163,7 @@ interface MutationProviderProps {
 }
 
 export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { selectedItemId, setSelectedItemId } = useSelectedItem()
   const [mounted, setMounted] = useState(false)
   const [data, setData] = useState<FullTrackWithCounts[] | null>(null)
@@ -155,8 +173,14 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
 
   useEffect(() => {
     setMounted(true)
-    getData()
-    getSelectedItem()
+    getData().catch((error) => {
+      console.log('getData error', error)
+    })
+    getSelectedItem().catch((error) => {
+      console.log('getSelectedItem error', error)
+    })
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   //////////////////////////////////////////
@@ -166,26 +190,26 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       await invoke('list_fileitems').then((data) => {
         setData(data as FullTrackWithCounts[])
       }),
-    []
+    [setData]
   )
 
-  const refetchAll = () => getData()
+  //const refetchAll = () => getData()
 
   const getSelectedItem = useCallback(
     async () =>
       await invoke('get_fileitem', { id: selectedItemId }).then((data) => {
         setSelectedItem(data as FullTrackForExport)
       }),
-    []
+    [selectedItemId, setSelectedItem]
   )
 
-  const refetchSelected = () => getSelectedItem()
+  //const refetchSelected = () => getSelectedItem()
   //////////////////////////////////////////
   // logic to count vep samplers and instances
   const dataLength = data?.length ?? 0
-  let vepSamplerCount = 0
-  let nonVepSamplerCount = 0
-  let vepInstanceCount = 0
+  const vepSamplerCount = 0
+  const nonVepSamplerCount = 0
+  const vepInstanceCount = 0
 
   //const vepInstanceArray: string[] = []
   //for (const item of data ?? []) {
@@ -263,15 +287,16 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //////////////////////////////////////////
   // logic to find previous and next item ids
 
-  let selectedItemIndex = 0
-  let previousItemId = ''
-  let nextItemId = ''
-  let selectedItemRangeCount = 0
-  let selectedItemArtTogCount = 0
-  let selectedItemArtTapCount = 0
-  let selectedItemArtCount = 0
-  let selectedItemLayerCount = 0
-  let selectedItemFadCount = 0
+  // eslint-disable prefer-const
+  const selectedItemIndex = 0
+  const previousItemId = ''
+  const nextItemId = ''
+  const selectedItemRangeCount = 0
+  const selectedItemArtTogCount = 0
+  const selectedItemArtTapCount = 0
+  const selectedItemArtCount = 0
+  const selectedItemLayerCount = 0
+  const selectedItemFadCount = 0
 
   //const selectedItemIndex =
   //  data?.findIndex((item: any) => item.id === selectedItemId) ?? 0
@@ -292,48 +317,29 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //const selectedItemFadCount = data?.[selectedItemIndex]?._count?.fadList ?? 0
 
   //////////////////////////////////////////
-  // EXPORT mutations
-  const exportMutation = () => {
-    console.log('exportMutation')
-  }
-
-  //const exportMutation = trpc.tauriMenuEvents.export.useMutation({
-  //  onSuccess: (data) => {
-  //    exportJSON(data)
-  //    exportMutation.reset()
-  //  },
-  //  onError: () => {
-  //    alert('There was an error submitting your request. Please try again.')
-  //  }
-  //})
-
-  //////////////////////////////////////////
   // CREATE mutations
-  const createAllItemsFromJSONMutation = (data: any) => {
-    console.log('createAllItemsFromJSONMutation')
-  }
-  //const createAllItemsFromJSONMutation =
-  //  trpc.items.createAllItemsFromJSON.useMutation({
-  //    onSuccess: () => {
-  //      createAllItemsFromJSONMutation.reset()
-  //    },
-  //    onError: (error) => {
-  //      alert(error.message)
-  //    }
-  //  })
-  const createSingleItemMutation = ({ count }: { count: number }) => {
-    void invoke('create_fileitem', { count: count })
-      .then(() => {
-        refetchAll()
-        refetchSelected()
-      })
-      .catch((error) => {
-        console.log('create_fileitem error', error)
-      })
-  }
-  const createSingleFullRangeMutation = (data: any) => {
-    console.log('createSingleFullRangeMutation')
-  }
+
+  const createSingleItemMutation = useCallback(
+    ({ count }: { count: number }) => {
+      void invoke('create_fileitem', { count: count })
+        .then(() => {
+          getData().catch((error) => {
+            console.log('getData error', error)
+          })
+          getSelectedItem().catch((error) => {
+            console.log('getSelectedItem error', error)
+          })
+        })
+        .catch((error) => {
+          console.log('create_fileitem error', error)
+        })
+    },
+    [getData, getSelectedItem]
+  )
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const createSingleFullRangeMutation = useCallback((data: any) => {
+    console.log('createSingleFullRangeMutation', data)
+  }, [])
   //const createSingleFullRangeMutation =
   //  trpc.items.createSingleFullRange.useMutation({
   //    onSuccess: () => {
@@ -347,9 +353,10 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //      )
   //    }
   //  })
-  const createSingleArtListTogMutation = (data: any) => {
-    console.log('createSingleArtListTogMutation')
-  }
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const createSingleArtListTogMutation = useCallback((data: any) => {
+    console.log('createSingleArtListTogMutation', data)
+  }, [])
   //const createSingleArtListTogMutation =
   //  trpc.items.createSingleArtListTog.useMutation({
   //    onSuccess: () => {
@@ -364,9 +371,10 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //      )
   //    }
   //  })
-  const createSingleArtListTapMutation = (data: any) => {
-    console.log('createSingleArtListTapMutation')
-  }
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const createSingleArtListTapMutation = useCallback((data: any) => {
+    console.log('createSingleArtListTapMutation', data)
+  }, [])
   //const createSingleArtListTapMutation =
   //  trpc.items.createSingleArtListTap.useMutation({
   //    onSuccess: () => {
@@ -381,9 +389,11 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //      )
   //    }
   //  })
-  const createSingleArtLayerMutation = (data: any) => {
-    console.log('createSingleArtLayerMutation')
-  }
+
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const createSingleArtLayerMutation = useCallback((data: any) => {
+    console.log('createSingleArtLayerMutation', data)
+  }, [])
   //const createSingleArtLayerMutation =
   //  trpc.items.createSingleArtLayer.useMutation({
   //    onSuccess: () => {
@@ -398,9 +408,10 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //      )
   //    }
   //  })
-  const createSingleFadListMutation = (data: any) => {
-    console.log('createSingleFadListMutation')
-  }
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const createSingleFadListMutation = useCallback((data: any) => {
+    console.log('createSingleFadListMutation', data)
+  }, [])
   //const createSingleFadListMutation =
   //  trpc.items.createSingleFadList.useMutation({
   //    onSuccess: () => {
@@ -417,17 +428,14 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   ////////////////////////////////////////////
   //// UPDATE mutations
 
-  const updateSingleItemMutation = (data: Partial<FileItem>) => {
+  const updateSingleItemMutation = useCallback((data: Partial<FileItem>) => {
     void invoke('update_fileitem', { data: data })
-      .then(() => {
-        refetchAll()
-        refetchSelected()
-      })
+      .then(() => {})
       .catch((error) => {
         console.log('update_fileitem error', error)
       })
     console.log('updateSingleItemMutation')
-  }
+  }, [])
   //const updateSingleItemMutation = trpc.items.updateSingleItem.useMutation({
   //  onSuccess: () => {
   //    updateSingleItemMutation.reset()
@@ -438,9 +446,10 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //    alert('There was an error submitting your request. Please try again.')
   //  }
   //})
-  const updateSingleFullRangeMutation = (data: any) => {
-    console.log('updateSingleFullRangeMutation')
-  }
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const updateSingleFullRangeMutation = useCallback((data: any) => {
+    console.log('updateSingleFullRangeMutation', data)
+  }, [])
   //const updateSingleFullRangeMutation =
   //  trpc.items.updateSingleFullRange.useMutation({
   //    onSuccess: () => {
@@ -454,9 +463,11 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //      )
   //    }
   //  })
-  const updateSingleArtListTogMutation = (data: any) => {
-    console.log('updateSingleArtListTogMutation')
-  }
+
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const updateSingleArtListTogMutation = useCallback((data: any) => {
+    console.log('updateSingleArtListTogMutation', data)
+  }, [])
   //const updateSingleArtListTogMutation =
   //  trpc.items.updateSingleArtListTog.useMutation({
   //    onSuccess: () => {
@@ -470,9 +481,10 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //      )
   //    }
   //  })
-  const updateSingleArtListTapMutation = (data: any) => {
-    console.log('updateSingleArtListTapMutation')
-  }
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const updateSingleArtListTapMutation = useCallback((data: any) => {
+    console.log('updateSingleArtListTapMutation', data)
+  }, [])
   //const updateSingleArtListTapMutation =
   //  trpc.items.updateSingleArtListTap.useMutation({
   //    onSuccess: () => {
@@ -486,9 +498,10 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //      )
   //    }
   //  })
-  const updateSingleArtLayerMutation = (data: any) => {
-    console.log('updateSingleArtLayerMutation')
-  }
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const updateSingleArtLayerMutation = useCallback((data: any) => {
+    console.log('updateSingleArtLayerMutation', data)
+  }, [])
   //const updateSingleArtLayerMutation =
   //  trpc.items.updateSingleArtLayer.useMutation({
   //    onSuccess: () => {
@@ -503,9 +516,10 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //      )
   //    }
   //  })
-  const updateSingleFadListMutation = (data: any) => {
-    console.log('updateSingleFadListMutation')
-  }
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const updateSingleFadListMutation = useCallback((data: any) => {
+    console.log('updateSingleFadListMutation', data)
+  }, [])
   //const updateSingleFadListMutation =
   //  trpc.items.updateSingleFadList.useMutation({
   //    onSuccess: () => {
@@ -521,16 +535,13 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //  })
   ////////////////////////////////////////////
   //// DELETE mutations
-  const deleteAllItemsMutation = () => {
+  const deleteAllItemsMutation = useCallback(() => {
     void invoke('delete_all_fileitems_and_relations')
-      .then(() => {
-        refetchAll()
-        refetchSelected()
-      })
+      .then(() => {})
       .catch((error) => {
         console.log('create_fileitem error', error)
       })
-  }
+  }, [])
   //const deleteAllItemsMutation = trpc.items.deleteAllItems.useMutation({
   //  onSuccess: () => {
   //    deleteAllItemsMutation.reset()
@@ -542,9 +553,10 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //    alert('There was an error submitting your request. Please try again.')
   //  }
   //})
-  const deleteSingleItemMutation = (data: any) => {
-    console.log('deleteSingleItemMutation')
-  }
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const deleteSingleItemMutation = useCallback((data: any) => {
+    console.log('deleteSingleItemMutation', data)
+  }, [])
   //const deleteSingleItemMutation = trpc.items.deleteSingleItem.useMutation({
   //  onSuccess: () => {
   //    deleteSingleItemMutation.reset()
@@ -556,9 +568,10 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //    alert('There was an error submitting your request. Please try again.')
   //  }
   //})
-  const deleteSingleFullRangeMutation = (data: any) => {
-    console.log('deleteSingleFullRangeMutation')
-  }
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const deleteSingleFullRangeMutation = useCallback((data: any) => {
+    console.log('deleteSingleFullRangeMutation', data)
+  }, [])
   //const deleteSingleFullRangeMutation =
   //  trpc.items.deleteSingleFullRange.useMutation({
   //    onSuccess: () => {
@@ -572,9 +585,10 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //      )
   //    }
   //  })
-  const deleteSingleArtListTogMutation = (data: any) => {
-    console.log('deleteSingleArtListTogMutation')
-  }
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const deleteSingleArtListTogMutation = useCallback((data: any) => {
+    console.log('deleteSingleArtListTogMutation', data)
+  }, [])
   //const deleteSingleArtListTogMutation =
   //  trpc.items.deleteSingleArtListTog.useMutation({
   //    onSuccess: () => {
@@ -589,9 +603,10 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //      )
   //    }
   //  })
-  const deleteSingleArtListTapMutation = (data: any) => {
-    console.log('deleteSingleArtListTapMutation')
-  }
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const deleteSingleArtListTapMutation = useCallback((data: any) => {
+    console.log('deleteSingleArtListTapMutation', data)
+  }, [])
 
   //const deleteSingleArtListTapMutation =
   //  trpc.items.deleteSingleArtListTap.useMutation({
@@ -607,9 +622,10 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //      )
   //    }
   //  })
-  const deleteSingleArtLayerMutation = (data: any) => {
-    console.log('deleteSingleArtLayerMutation')
-  }
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const deleteSingleArtLayerMutation = useCallback((data: any) => {
+    console.log('deleteSingleArtLayerMutation', data)
+  }, [])
   //const deleteSingleArtLayerMutation =
   //  trpc.items.deleteSingleArtLayer.useMutation({
   //    onSuccess: () => {
@@ -623,9 +639,10 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //      )
   //    }
   //  })
-  const deleteSingleFadListMutation = (data: any) => {
-    console.log('deleteSingleFadListMutation')
-  }
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const deleteSingleFadListMutation = useCallback((data: any) => {
+    console.log('deleteSingleFadListMutation', data)
+  }, [])
   //const deleteSingleFadListMutation =
   //  trpc.items.deleteSingleFadList.useMutation({
   //    onSuccess: () => {
@@ -641,9 +658,10 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //  })
   ////////////////////////////////////////////
   //// CLEAR mutations
-  const clearSingleItemMutation = (data: any) => {
-    console.log('clearSingleItemMutation')
-  }
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const clearSingleItemMutation = useCallback((data: any) => {
+    console.log('clearSingleItemMutation', data)
+  }, [])
   //const clearSingleItemMutation = trpc.items.clearSingleItem.useMutation({
   //  onSuccess: () => {
   //    clearSingleItemMutation.reset()
@@ -656,9 +674,9 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //})
   ////////////////////////////////////////////
   //// RENUMBER/REORDER mutations
-  const renumberAllItemsMutation = () => {
+  const renumberAllItemsMutation = useCallback(() => {
     console.log('renumberAllItemsMutation')
-  }
+  }, [])
   //const renumberAllItemsMutation = trpc.items.renumberAllItems.useMutation({
   //  onSuccess: () => {
   //    renumberAllItemsMutation.reset()
@@ -669,9 +687,10 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //    alert('There was an error submitting your request. Please try again.')
   //  }
   //})
-  const renumberArtListMutation = (data: any) => {
-    console.log('renumberArtListMutation')
-  }
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const renumberArtListMutation = useCallback((data: any) => {
+    console.log('renumberArtListMutation', data)
+  }, [])
   //const renumberArtListMutation = trpc.items.renumberArtList.useMutation({
   //  onSuccess: () => {
   //    renumberArtListMutation.reset()
@@ -685,9 +704,10 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //})
   ////////////////////////////////////////////
   //// PASTE/DUPLICATE mutations
-  const pasteSingleItemMutation = (data: any) => {
-    console.log('pasteSingleItemMutation')
-  }
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const pasteSingleItemMutation = useCallback((data: any) => {
+    console.log('pasteSingleItemMutation', data)
+  }, [])
   //const pasteSingleItemMutation = trpc.items.pasteSingleItem.useMutation({
   //  onSuccess: () => {
   //    pasteSingleItemMutation.reset()
@@ -699,52 +719,92 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   //  }
   //})
   //////////////////////////////////////////
-  const exportItems = {
-    export: exportMutation
-  }
-  const create = {
-    allItemsFromJSON: createAllItemsFromJSONMutation,
-    track: createSingleItemMutation,
-    fullRange: createSingleFullRangeMutation,
-    artListTog: createSingleArtListTogMutation,
-    artListTap: createSingleArtListTapMutation,
-    artLayer: createSingleArtLayerMutation,
-    fadList: createSingleFadListMutation
-  }
-  const update = {
-    track: updateSingleItemMutation,
-    fullRange: updateSingleFullRangeMutation,
-    artListTog: updateSingleArtListTogMutation,
-    artListTap: updateSingleArtListTapMutation,
-    artLayer: updateSingleArtLayerMutation,
-    fadList: updateSingleFadListMutation
-  }
-  const del = {
-    track: deleteSingleItemMutation,
-    allTracks: deleteAllItemsMutation,
-    fullRange: deleteSingleFullRangeMutation,
-    artListTog: deleteSingleArtListTogMutation,
-    artListTap: deleteSingleArtListTapMutation,
-    artLayer: deleteSingleArtLayerMutation,
-    fadList: deleteSingleFadListMutation
-  }
-  const clear = {
-    track: clearSingleItemMutation
-  }
-  const renumber = {
-    allTracks: renumberAllItemsMutation,
-    artList: renumberArtListMutation
-  }
-  const paste = {
-    track: pasteSingleItemMutation
-  }
+  const create = useMemo(
+    () => ({
+      track: createSingleItemMutation,
+      fullRange: createSingleFullRangeMutation,
+      artListTog: createSingleArtListTogMutation,
+      artListTap: createSingleArtListTapMutation,
+      artLayer: createSingleArtLayerMutation,
+      fadList: createSingleFadListMutation
+    }),
+    [
+      createSingleItemMutation,
+      createSingleFullRangeMutation,
+      createSingleArtListTogMutation,
+      createSingleArtListTapMutation,
+      createSingleArtLayerMutation,
+      createSingleFadListMutation
+    ]
+  )
+  const update = useMemo(
+    () => ({
+      track: updateSingleItemMutation,
+      fullRange: updateSingleFullRangeMutation,
+      artListTog: updateSingleArtListTogMutation,
+      artListTap: updateSingleArtListTapMutation,
+      artLayer: updateSingleArtLayerMutation,
+      fadList: updateSingleFadListMutation
+    }),
+    [
+      updateSingleItemMutation,
+      updateSingleFullRangeMutation,
+      updateSingleArtListTogMutation,
+      updateSingleArtListTapMutation,
+      updateSingleArtLayerMutation,
+      updateSingleFadListMutation
+    ]
+  )
+
+  const del = useMemo(
+    () => ({
+      track: deleteSingleItemMutation,
+      allTracks: deleteAllItemsMutation,
+      fullRange: deleteSingleFullRangeMutation,
+      artListTog: deleteSingleArtListTogMutation,
+      artListTap: deleteSingleArtListTapMutation,
+      artLayer: deleteSingleArtLayerMutation,
+      fadList: deleteSingleFadListMutation
+    }),
+    [
+      deleteSingleItemMutation,
+      deleteAllItemsMutation,
+      deleteSingleFullRangeMutation,
+      deleteSingleArtListTogMutation,
+      deleteSingleArtListTapMutation,
+      deleteSingleArtLayerMutation,
+      deleteSingleFadListMutation
+    ]
+  )
+
+  const clear = useMemo(
+    () => ({
+      track: clearSingleItemMutation
+    }),
+    [clearSingleItemMutation]
+  )
+
+  const renumber = useMemo(
+    () => ({
+      allTracks: renumberAllItemsMutation,
+      artList: renumberArtListMutation
+    }),
+    [renumberAllItemsMutation, renumberArtListMutation]
+  )
+
+  const paste = useMemo(
+    () => ({
+      track: pasteSingleItemMutation
+    }),
+    [pasteSingleItemMutation]
+  )
 
   const value = useMemo(
     () => ({
       data,
       dataLength,
-      refetchAll,
-      refetchSelected,
+      //refetchAll,
+      //refetchSelected,
       vepSamplerCount,
       vepInstanceCount,
       nonVepSamplerCount,
@@ -760,7 +820,6 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       previousItemId,
       nextItemId,
       /////////////////////////////////
-      exportItems,
       create,
       update,
       del,
@@ -771,8 +830,8 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     [
       data,
       dataLength,
-      refetchAll,
-      refetchSelected,
+      //refetchAll,
+      //refetchSelected,
       vepSamplerCount,
       vepInstanceCount,
       nonVepSamplerCount,
@@ -788,7 +847,6 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       previousItemId,
       nextItemId,
       /////////////////////////////////
-      exportItems,
       create,
       update,
       del,

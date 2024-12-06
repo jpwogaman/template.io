@@ -21,6 +21,7 @@ interface TauriListenersContextType {
 
 const tauriListenersContextDefaultValues: TauriListenersContextType = {
   del: {
+    /* eslint-disable @typescript-eslint/no-empty-function */
     allTracks: () => {}
   }
 }
@@ -55,7 +56,7 @@ export const TauriListenersProvider: FC<TauriListenersProviderProps> = ({
 
   listen('delete_all', () => {
     del.allTracks()
-  })
+  }).catch((e) => console.error(e))
   listen('about', () => {
     if (modalOpen) {
       close()
@@ -63,7 +64,7 @@ export const TauriListenersProvider: FC<TauriListenersProviderProps> = ({
       open()
       setModalType('about')
     }
-  })
+  }).catch((e) => console.error(e))
   listen('settings', () => {
     if (modalOpen) {
       close()
@@ -71,7 +72,7 @@ export const TauriListenersProvider: FC<TauriListenersProviderProps> = ({
       open()
       setModalType('settings')
     }
-  })
+  }).catch((e) => console.error(e))
 
   return (
     <TauriListenersContext.Provider value={value}>

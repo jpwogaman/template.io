@@ -9,9 +9,7 @@ import {
   useContextMenu
 } from '@/components/context'
 
-type ContextMenuProps = {}
-
-export const ContextMenu: FC<ContextMenuProps> = () => {
+export const ContextMenu: FC = () => {
   const {
     selectedItemId,
     setSelectedItemId,
@@ -27,7 +25,7 @@ export const ContextMenu: FC<ContextMenuProps> = () => {
     useContextMenu()
 
   const isArtTog = (artId: string) => {
-    const art = selectedItem?.art_list_tog?.find((art: any) => art.id === artId)
+    const art = selectedItem?.art_list_tog?.find((art) => art.id === artId)
     if (art) return true
   }
 

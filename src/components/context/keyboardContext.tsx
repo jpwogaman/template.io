@@ -41,12 +41,13 @@ const keyboardContextDefaultValues: KeyboardType = {
   selectedItemLayerCount: 0,
   selectedItemFadCount: 0,
   selectedItemId: null,
-  setSelectedItemId: () => {},
   selectedSubItemId: null,
-  setSelectedSubItemId: () => {},
   copiedItemId: null,
-  setCopiedItemId: () => {},
   copiedSubItemId: null,
+  /* eslint-disable @typescript-eslint/no-empty-function */
+  setSelectedItemId: () => {},
+  setSelectedSubItemId: () => {},
+  setCopiedItemId: () => {},
   setCopiedSubItemId: () => {}
 }
 
@@ -86,7 +87,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
     const handleKeys = (e: KeyboardEvent) => {
       const selectedInput = window.document.activeElement as HTMLInputElement
 
-      const isButton = selectedInput?.tagName === 'BUTTON'
+      //const isButton = selectedInput?.tagName === 'BUTTON'
       const isSelect = selectedInput?.tagName === 'SELECT'
 
       ////////////////////////////////
@@ -105,9 +106,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       // Special case for Articulations
       const artId = selectedItemId + '_AT_' + optionNumber
       const isArtTog = (artId: string) => {
-        const art = selectedItem?.art_list_tog?.find(
-          (art: any) => art.id === artId
-        )
+        const art = selectedItem?.art_list_tog?.find((art) => art.id === artId)
         if (art) return true
       }
 
@@ -353,6 +352,8 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
     return () => {
       window.removeEventListener('keydown', handleKeys)
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setSelectedItemId, selectedItemId])
 
   const value = useMemo(

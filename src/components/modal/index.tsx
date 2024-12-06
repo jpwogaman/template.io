@@ -6,7 +6,7 @@ import { LazyMotion } from 'framer-motion'
 import * as m from 'framer-motion/m'
 import { useModal } from '@/components/context'
 import SettingsTableKeys from './settingsTableKeys'
-import { InputTypeSelector, OnChangeHelperArgsType } from '../inputs'
+import { InputTypeSelector, type OnChangeHelperArgsType } from '../inputs'
 import Link from 'next/link'
 
 const loadFeatures = () =>
@@ -60,9 +60,7 @@ const dropIn = {
 }
 
 export const Modal = () => {
-  const { close, loading, status, modalOpen, modalMessage, modalType } =
-    useModal()
-  const { loadingMessage, successMessage, errorMessage } = modalMessage
+  const { close, modalOpen, modalType } = useModal()
 
   const onChangeHelper = ({ newValue, key }: OnChangeHelperArgsType) => {
     localStorage.setItem(key, newValue as string)

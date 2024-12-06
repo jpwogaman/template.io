@@ -184,9 +184,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
 
   if (SubComponentLevel) {
     const shortenedSubComponentId = (initialId: string) => {
-      return `${initialId.split('_')[2]}_${parseInt(
-        initialId.split('_')[3] as string
-      )}`
+      return `${initialId.split('_')[2]}_${parseInt(initialId.split('_')[3]!)}`
     }
 
     const artLayerOptions =
