@@ -106,7 +106,28 @@ async fn main() {
             }
           }
           "export" => {
-            app.emit("export", "export").unwrap();
+            let full_track_list_for_export = fileitem_service::list_all_fileitems_and_relations_for_json_export();
+            let file_path: Option<FilePath> = app
+              .dialog()
+              .file()
+              .blocking_save_file();
+
+            if let Some(file_path) = file_path {
+              let file_path_str = file_path.to_string();
+              let json_string = serde_json::to_string(&full_track_list_for_export).unwrap();
+              match fs::write(file_path_str, json_string) {
+                Ok(_) => {
+                  info!("File saved successfully");
+                }
+                Err(e) => {
+                  error!("Failed to save file: {:?}", e);
+                }
+              }
+            } else {
+              error!("No file selected");
+            }
+
+
           }
           "delete_all" => {
             app.emit("delete_all", "delete_all").unwrap();
@@ -167,6 +188,7 @@ async fn main() {
         delete_fileitem_and_relations,
         create_all_fileitems_from_json,
         delete_all_fileitems_and_relations,
+        list_all_fileitems_and_relations_for_json_export,
         update_fileitem,
         // items_full_ranges_commands
         list_items_full_ranges,

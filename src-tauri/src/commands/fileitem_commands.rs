@@ -4,6 +4,7 @@ use crate::{
     FileItemRequest,
     FullTrackForExport,
     FullTrackWithCounts,
+    FullTrackListForExport,
   },
   services::fileitem_service,
 };
@@ -42,6 +43,11 @@ pub fn get_fileitem_and_relations(id: String) -> Option<FullTrackForExport> {
 #[tauri::command]
 pub fn create_all_fileitems_from_json(full_data: Value) {
   fileitem_service::create_all_fileitems_from_json(full_data)
+}
+
+#[tauri::command]
+pub fn list_all_fileitems_and_relations_for_json_export() -> FullTrackListForExport{
+  fileitem_service::list_all_fileitems_and_relations_for_json_export()
 }
 
 #[tauri::command]
