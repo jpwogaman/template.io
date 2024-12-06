@@ -44,13 +44,15 @@
     "eslint.config.js",
     "next-env.d.ts",
     "dist/types/**/*.ts",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "src-tauri/src/models/**/*.d.ts",
   ],
   "exclude": [
     "node_modules",
     "dist",
     ".next",
-    "src-tauri/target"
+    "src-tauri/target",
+    "assets"
   ],
   "forceConsistentCasingInFileNames": true,
   
