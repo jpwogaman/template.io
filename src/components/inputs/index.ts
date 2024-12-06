@@ -7,6 +7,5 @@ export { InputText } from './input-text'
 export {
   InputTypeSelector,
   type OnChangeHelperArgsType,
-  //type SelectedItemType,
   type InputComponentProps
 } from './input-type-selector'

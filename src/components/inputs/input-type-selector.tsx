@@ -7,15 +7,6 @@ import {
   InputCheckBoxSwitch
 } from './index'
 
-//import {
-//  type FileItems,
-//  type ItemsFullRanges,
-//  type ItemsArtListTog,
-//  type ItemsArtListTap,
-//  type ItemArtLayers,
-//  type ItemsFadList
-//} from '@prisma/client'
-
 import TrackOptionsTableKeys from '../utils/trackOptionsTableKeys'
 import TrackListTableKeys from '../utils/trackListTableKeys'
 import SettingsTableKeys from '../modal/settingsTableKeys'
@@ -29,12 +20,6 @@ export type OnChangeHelperArgsType = {
   key: string
   label?: string
 }
-
-//export type SelectedItemType = FileItems & { fullRange: ItemsFullRanges[] } & {
-//  artListTap: ItemsArtListTap[]
-//} & { artListTog: ItemsArtListTog[] } & { fadList: ItemsFadList[] } & {
-//  artLayers: ItemArtLayers[]
-//}
 
 type InputTypeSelectorProps = {
   keySingle:

@@ -1,6 +1,6 @@
 export * from './tauriListenersContext'
 export * from './selectedItemContext'
-export * from './newMutationContext'
+export * from './mutationContext'
 export * from './modalContext'
 export * from './contextMenuContext'
 export * from './keyboardContext'

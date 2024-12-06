@@ -1,7 +1,6 @@
 import '@/styles/globals.css'
 import { allFontsClassName } from '@/styles/fonts'
 
-import { TRPCReactProvider } from '@/utils/trpc/react'
 import {
   TauriListenersProvider,
   SelectedItemProvider,
@@ -25,7 +24,6 @@ export default function RootLayout({
       suppressHydrationWarning
       className={allFontsClassName}>
       <body className='h-screen overflow-x-hidden'>
-        {/*<TRPCReactProvider>*/}
         <SelectedItemProvider>
           <MutationProvider>
             <ModalProvider>
@@ -48,7 +46,6 @@ export default function RootLayout({
             </ModalProvider>
           </MutationProvider>
         </SelectedItemProvider>
-        {/*</TRPCReactProvider>*/}
       </body>
     </html>
   )

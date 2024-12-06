@@ -11,28 +11,15 @@ import {
 } from 'react'
 
 import { listen } from '@tauri-apps/api/event'
-import { importJSON } from '@/utils/importJSON'
-import { useModal, useSelectedItem, useMutations } from '@/components/context'
+import { useModal, useMutations } from '@/components/context'
 
 interface TauriListenersContextType {
-  exportItems: {
-    export: () => void
-  }
-  create: {
-    allItemsFromJSON: (data: string) => void
-  }
   del: {
     allTracks: () => void
   }
 }
 
 const tauriListenersContextDefaultValues: TauriListenersContextType = {
-  exportItems: {
-    export: () => {}
-  },
-  create: {
-    allItemsFromJSON: () => {}
-  },
   del: {
     allTracks: () => {}
   }
@@ -51,32 +38,21 @@ export const TauriListenersProvider: FC<TauriListenersProviderProps> = ({
 }) => {
   const [mounted, setMounted] = useState(false)
   const { modalOpen, close, open, setModalType } = useModal()
-  const { selectedItemId, setSelectedItemId } = useSelectedItem()
-  const { exportItems, create, del } = useMutations()
+  const { del } = useMutations()
   useEffect(() => {
     setMounted(true)
   }, [])
 
   const value = useMemo(
     () => ({
-      exportItems,
-      create,
       del
     }),
-    [exportItems, create, del]
+    [del]
   )
-
   if (!mounted) {
     return null
   }
-  listen('export', () => {
-    exportItems.export()
-  })
-  listen('import', () => {
-    importJSON().then((data) => {
-      create.allItemsFromJSON(data ?? '')
-    })
-  })
+
   listen('delete_all', () => {
     del.allTracks()
   })

@@ -39,7 +39,7 @@ const TrackOptionsTableKeys = [
       {
         className: 'w-[9.5%]',
         show: true,
-        key: 'whiteKeysOnly',
+        key: 'white_keys_only',
         input: 'checkbox',
         selectArray: null,
         label: 'WKO'
@@ -78,7 +78,7 @@ const TrackOptionsTableKeys = [
       {
         className: 'w-[14%]',
         show: true,
-        key: 'codeType',
+        key: 'code_type',
         input: 'select',
         selectArray: 'valAddrList',
         label: 'Code Type'
@@ -126,7 +126,7 @@ const TrackOptionsTableKeys = [
       {
         className: 'w-[9.5%]',
         show: true,
-        key: 'changeType',
+        key: 'change_type',
         input: 'checkbox-switch',
         selectArray: 'valChngList',
         label: 'Change'
@@ -142,7 +142,7 @@ const TrackOptionsTableKeys = [
       {
         className: 'w-[9.5%]',
         show: true,
-        key: 'artLayers',
+        key: 'art_layers',
         input: 'select-multiple',
         selectArray: 'artLayersArray',
         label: 'Layers'
@@ -181,7 +181,7 @@ const TrackOptionsTableKeys = [
       {
         className: 'w-[14%]',
         show: true,
-        key: 'codeType',
+        key: 'code_type',
         input: 'select',
         selectArray: 'valAddrList',
         label: 'Code Type'
@@ -229,7 +229,7 @@ const TrackOptionsTableKeys = [
       {
         className: 'w-[9.5%]',
         show: true,
-        key: 'changeType',
+        key: 'change_type',
         input: 'checkbox-switch',
         selectArray: 'valChngList',
         label: 'Change'
@@ -245,7 +245,7 @@ const TrackOptionsTableKeys = [
       {
         className: 'w-[9.5%]',
         show: true,
-        key: 'artLayers',
+        key: 'art_layers',
         input: 'select-multiple',
         selectArray: 'artLayersArray',
         label: 'Layers'
@@ -276,7 +276,7 @@ const TrackOptionsTableKeys = [
       {
         className: 'w-[14%]',
         show: true,
-        key: 'codeType',
+        key: 'code_type',
         input: 'select',
         selectArray: 'valAddrList',
         label: 'Code Type'
@@ -316,7 +316,7 @@ const TrackOptionsTableKeys = [
       {
         className: 'w-[9.5%]',
         show: true,
-        key: 'changeType',
+        key: 'change_type',
         input: 'checkbox-switch',
         selectArray: 'valChngList',
         label: 'Change'
@@ -347,7 +347,7 @@ const TrackOptionsTableKeys = [
       {
         className: 'w-[14%]',
         show: true,
-        key: 'codeType',
+        key: 'code_type',
         input: 'select',
         selectArray: 'valAddrList',
         label: 'Code Type'
@@ -371,7 +371,7 @@ const TrackOptionsTableKeys = [
       {
         className: 'w-[9.5%]',
         show: true,
-        key: 'changeType',
+        key: 'change_type',
         input: 'checkbox-switch',
         selectArray: 'valChngList',
         label: 'Change'

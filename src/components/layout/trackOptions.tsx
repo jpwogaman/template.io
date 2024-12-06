@@ -2,21 +2,9 @@
 
 import { type FC, Fragment, useState, useEffect } from 'react'
 
-//import {
-//  type ItemsFullRanges,
-//  type ItemsArtListTog,
-//  type ItemsArtListTap,
-//  type ItemArtLayers,
-//  type ItemsFadList
-//} from '@prisma/client'
-
 import { IconBtnToggle } from '@/components/layout/icon-btn-toggle'
 import tw from '@/utils/tw'
-import {
-  type OnChangeHelperArgsType,
-  //type SelectedItemType,
-  InputTypeSelector
-} from '../inputs'
+import { type OnChangeHelperArgsType, InputTypeSelector } from '../inputs'
 
 import TrackListTableKeys from '../utils/trackListTableKeys'
 import TrackOptionsTableKeys from '../utils/trackOptionsTableKeys'
