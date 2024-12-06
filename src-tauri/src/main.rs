@@ -145,15 +145,11 @@ async fn main() {
         }
       });
 
-      let tray_icon = Image::from_path("icons/32x32.png").expect(
-        "failed to load icon"
-      );
-
       let tray_menu = MenuBuilder::new(app).text("quit", "Quit").build()?;
       let _tray = TrayIconBuilder::new()
         .menu(&tray_menu)
-        .icon(tray_icon)
-        .tooltip("My awesome Tauri app")
+        .icon(app.default_window_icon().unwrap().clone())
+        .tooltip("Template.io")
         .on_tray_icon_event(|tray, event| {
           if
             let TrayIconEvent::Click {
