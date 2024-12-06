@@ -101,3 +101,5 @@ const TrackListTableKeys = {
 } as const
 
 export default TrackListTableKeys
+
+export type TrackListTableKeys = typeof TrackListTableKeys

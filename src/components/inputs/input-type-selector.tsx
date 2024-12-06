@@ -7,9 +7,9 @@ import {
   InputCheckBoxSwitch
 } from './index'
 
-import TrackOptionsTableKeys from '../utils/trackOptionsTableKeys'
-import TrackListTableKeys from '../utils/trackListTableKeys'
-import SettingsTableKeys from '../modal/settingsTableKeys'
+import { type TrackOptionsTableKeys } from '../utils/trackOptionsTableKeys'
+import { type TrackListTableKeys } from '../utils/trackListTableKeys'
+import { type SettingsTableKeys } from '../modal/settingsTableKeys'
 import tw from '@/utils/tw'
 import { InputColorPicker } from './input-color-picker'
 import { InputTextRich } from './input-text-rich'
@@ -23,9 +23,9 @@ export type OnChangeHelperArgsType = {
 
 type InputTypeSelectorProps = {
   keySingle:
-    | (typeof TrackOptionsTableKeys)[number]['keys'][number]
-    | (typeof TrackListTableKeys)['keys'][number]
-    | (typeof SettingsTableKeys)['keys'][number]
+    | TrackOptionsTableKeys[number]['keys'][number]
+    | TrackListTableKeys['keys'][number]
+    | SettingsTableKeys['keys'][number]
   layoutConfigLabel?: string
   layoutDataSingle?:
     | Items_Full_Ranges

@@ -56,6 +56,8 @@ const SettingsTableKeys = {
       label: 'Number of Ranges/Articulations/Faders to Add at a Time'
     }
   ]
-} 
+}
 
 export default SettingsTableKeys
+
+export type SettingsTableKeys = typeof SettingsTableKeys

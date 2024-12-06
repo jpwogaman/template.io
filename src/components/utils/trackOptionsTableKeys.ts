@@ -381,3 +381,5 @@ const TrackOptionsTableKeys = [
 ] as const
 
 export default TrackOptionsTableKeys
+
+export type TrackOptionsTableKeys = typeof TrackOptionsTableKeys

@@ -9,8 +9,14 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
   options,
   onChangeFunction
 }) => {
-  
-  const value = JSON.parse(defaultValue as unknown as string)
+  //defaultValue and options for this select will be either ranges or art_layers
+  //ranges: "[\"T_{}_FR_0\"]"
+  //art_layers: "[\"\"]"
+
+  const value =
+    typeof defaultValue === 'string'
+      ? (JSON.parse(defaultValue) as string[])
+      : []
 
   const shortenedSubComponentId = (initialId: string) => {
     return `${
@@ -21,6 +27,7 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
 
   let inputSelectOptionElements:
     | React.JSX.Element
+    | React.JSX.Element[]
     | string[]
     | number[]
     | undefined = selectArrays.valNoneList?.array
@@ -50,7 +57,9 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
     }
   }
 
-  inputSelectOptionElements = JSON.parse(options!).map((name: string) => (
+  const parsedOptions = JSON.parse(options!) as string[]
+
+  inputSelectOptionElements = parsedOptions.map((name: string) => (
     // this should be a <li> element, but SONARLINT doesn't like it
     <button
       key={name}

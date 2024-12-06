@@ -6,7 +6,7 @@ import { IconBtnToggle } from '@/components/layout/icon-btn-toggle'
 import tw from '@/utils/tw'
 import { type OnChangeHelperArgsType, InputTypeSelector } from '../inputs'
 
-import TrackListTableKeys from '../utils/trackListTableKeys'
+import { type TrackListTableKeys } from '../utils/trackListTableKeys'
 import TrackOptionsTableKeys from '../utils/trackOptionsTableKeys'
 
 import {
@@ -71,8 +71,10 @@ export const TrackOptions: FC = () => {
   ])
 
   useEffect(() => {
+    if (!allArtTogs) return
+
     setArtTogIndividualComponentLocked(
-      allArtTogs!.map((artTog) => {
+      allArtTogs.map((artTog) => {
         const V1 = artTog.change_type === 'Value 1'
         return {
           id: artTog.id,
@@ -83,8 +85,9 @@ export const TrackOptions: FC = () => {
   }, [allArtTogs])
 
   useEffect(() => {
+    if (!allArtTaps) return
     setArtTapIndividualComponentLocked(
-      allArtTaps!.map((artTap) => {
+      allArtTaps.map((artTap) => {
         const V1 = artTap.change_type === 'Value 1'
         return {
           id: artTap.id,
@@ -94,7 +97,7 @@ export const TrackOptions: FC = () => {
       })
     )
     setArtTapOneDefaultOnly(
-      allArtTaps!.map((artTap) => {
+      allArtTaps.map((artTap) => {
         return {
           id: artTap.id,
           default: artTap.default ?? false
@@ -103,22 +106,22 @@ export const TrackOptions: FC = () => {
     )
   }, [allArtTaps])
 
-  useEffect(
-    () =>
-      setArtLayerIndividualComponentLocked(
-        allArtLayers!.map((artLayer) => {
-          return {
-            id: artLayer.id,
-            code: false
-          }
-        })
-      ),
-    [allArtLayers]
-  )
+  useEffect(() => {
+    if (!allArtLayers) return
+    setArtLayerIndividualComponentLocked(
+      allArtLayers.map((artLayer) => {
+        return {
+          id: artLayer.id,
+          code: false
+        }
+      })
+    )
+  }, [allArtLayers])
 
   useEffect(() => {
+    if (!allFads) return
     setFadIndividualComponentLocked(
-      allFads!.map((fad) => {
+      allFads.map((fad) => {
         const V1 = fad.change_type === 'Value 1'
         return {
           id: fad.id,
@@ -273,7 +276,7 @@ export const TrackOptions: FC = () => {
               input: 'text-rich',
               selectArray: undefined,
               label: undefined
-            } as unknown as (typeof TrackListTableKeys)['keys'][number]
+            } as unknown as TrackListTableKeys['keys'][number]
           }
           onChangeHelper={onChangeHelperTrack}
           selectedItem={selectedItem as unknown as FullTrackForExport}
