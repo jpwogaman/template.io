@@ -9,7 +9,6 @@ mod models;
 mod services;
 mod schema;
 use tauri_plugin_log;
-use log::{ info, error };
 mod settings;
 
 use commands::{
@@ -21,23 +20,17 @@ use commands::{
   items_artlist_tap_commands::*,
   items_art_layers_commands::*,
 };
-use services::fileitem_service;
-use tauri_plugin_dialog::DialogExt;
-use tauri_plugin_fs::{ FilePath };
-use serde_json::Value;
-use std::fs;
+use services::{ fileitem_service, import_export_service };
 
 use tauri::{
   Manager,
   Emitter,
-  image::Image,
   menu::{ MenuBuilder, SubmenuBuilder },
   tray::{ MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent },
 };
 
 #[tokio::main]
 async fn main() {
-  info!("init");
   tauri::async_runtime::set(tokio::runtime::Handle::current());
   let context = tauri::generate_context!();
 
@@ -78,56 +71,10 @@ async fn main() {
       app.on_menu_event(move |app, event| {
         match event.id().as_ref() {
           "import" => {
-            let file_path: Option<FilePath> = app
-              .dialog()
-              .file()
-              .blocking_pick_file();
-
-            if let Some(file_path) = file_path {
-              let file_path_str = file_path.to_string();
-
-              match fs::read_to_string(file_path_str) {
-                Ok(file_content) => {
-                  match serde_json::from_str::<Value>(&file_content) {
-                    Ok(parsed_json) => {
-                      create_all_fileitems_from_json(parsed_json);
-                    }
-                    Err(e) => {
-                      error!("Failed to parse JSON: {:?}", e);
-                    }
-                  }
-                }
-                Err(e) => {
-                  error!("Failed to read file: {:?}", e);
-                }
-              }
-            } else {
-              error!("No file selected");
-            }
+            import_export_service::import(app.clone());
           }
           "export" => {
-            let full_track_list_for_export = fileitem_service::list_all_fileitems_and_relations_for_json_export();
-            let file_path: Option<FilePath> = app
-              .dialog()
-              .file()
-              .blocking_save_file();
-
-            if let Some(file_path) = file_path {
-              let file_path_str = file_path.to_string();
-              let json_string = serde_json::to_string(&full_track_list_for_export).unwrap();
-              match fs::write(file_path_str, json_string) {
-                Ok(_) => {
-                  info!("File saved successfully");
-                }
-                Err(e) => {
-                  error!("Failed to save file: {:?}", e);
-                }
-              }
-            } else {
-              error!("No file selected");
-            }
-
-
+            import_export_service::export(app.clone());
           }
           "delete_all" => {
             app.emit("delete_all", "delete_all").unwrap();
