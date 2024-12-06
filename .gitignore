@@ -46,4 +46,4 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
-/public/for-cubase/Track Pictures
+/assets/for-cubase/Track Pictures
