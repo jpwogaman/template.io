@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<remotedescription version="1.1">
+<ctrltable name="Standard MIDI">
+<ctrl><name>Studio Setup</name><stat>176</stat><chan>1</chan><addr>1</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Preferences</name><stat>176</stat><chan>1</chan><addr>2</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Key Commands</name><stat>176</stat><chan>1</chan><addr>3</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Project Setup</name><stat>176</stat><chan>1</chan><addr>4</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Save</name><stat>176</stat><chan>1</chan><addr>5</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Export Audio Mixdown</name><stat>176</stat><chan>1</chan><addr>6</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Logical Editor</name><stat>176</stat><chan>1</chan><addr>7</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Project Logical Editor</name><stat>176</stat><chan>1</chan><addr>8</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>A5X + SUB8</name><stat>176</stat><chan>1</chan><addr>9</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>DT 770's</name><stat>176</stat><chan>1</chan><addr>10</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Auto Fades Settings</name><stat>176</stat><chan>1</chan><addr>11</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Divide Track List</name><stat>176</stat><chan>1</chan><addr>12</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Record</name><stat>176</stat><chan>1</chan><addr>13</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Stop</name><stat>176</stat><chan>1</chan><addr>14</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Pan L</name><stat>176</stat><chan>1</chan><addr>15</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Pan R</name><stat>176</stat><chan>1</chan><addr>16</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Toggle Selected Folders</name><stat>176</stat><chan>1</chan><addr>17</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Close All Folders</name><stat>176</stat><chan>1</chan><addr>18</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Open All Folders</name><stat>176</stat><chan>1</chan><addr>19</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Export Video</name><stat>176</stat><chan>1</chan><addr>20</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Toggle MIDI Tracks Timebase</name><stat>176</stat><chan>1</chan><addr>21</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Process Tempo</name><stat>176</stat><chan>1</chan><addr>22</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>MIDI: Reset on Stopped</name><stat>176</stat><chan>1</chan><addr>23</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>MIDI: Reset</name><stat>176</stat><chan>1</chan><addr>24</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Select Tracks with Same Version</name><stat>176</stat><chan>1</chan><addr>25</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Next Version</name><stat>176</stat><chan>1</chan><addr>26</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Previous Version</name><stat>176</stat><chan>1</chan><addr>27</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Show Only Selected Tracks</name><stat>176</stat><chan>1</chan><addr>28</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Show Tracks with Versions</name><stat>176</stat><chan>1</chan><addr>29</addr><max>127</max><flags>1</flags></ctrl>
+</ctrltable>
+<bank name="GR1-OSC1-CH2">
+<entry ctrl="Studio Setup">
+<command><category>Devices</category><action>Setup</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Preferences">
+<command><category>Edit</category><action>Preferences</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Key Commands">
+<command><category>Edit</category><action>Key Commands</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Project Setup">
+<command><category>Project</category><action>Setup</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Save">
+<command><category>File</category><action>Save</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Export Audio Mixdown">
+<command><category>File</category><action>Export Audio Mixdown</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Logical Editor">
+<command><category>MIDI</category><action>Logical Editor</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Project Logical Editor">
+<command><category>Edit</category><action>Project Logical Editor</action><flags>1</flags></command>
+</entry>
+<entry ctrl="A5X + SUB8">
+<value><device>VST Control Room</device><chan>-1</chan><tag>16399</tag><flags>1</flags></value>
+</entry>
+<entry ctrl="DT 770's">
+<value><device>VST Control Room</device><chan>-1</chan><tag>16400</tag><flags>1</flags></value>
+</entry>
+<entry ctrl="Auto Fades Settings">
+<command><category>Project</category><action>Auto Fades Settings</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Divide Track List">
+<command><category>Project</category><action>Divide Track List</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Record">
+<command><category>Transport</category><action>Record</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Stop">
+<command><category>Transport</category><action>Stop</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Pan L">
+<value><device>VST Mixer</device><chan>-2</chan><name>panner:panX</name><flags>0</flags></value>
+</entry>
+<entry ctrl="Pan R">
+<value><device>VST Mixer</device><chan>-2</chan><name>panner:panX2</name><flags>0</flags></value>
+</entry>
+<entry ctrl="Toggle Selected Folders">
+<command><category>Process Project Logical Editor</category><action>Toggle Selected Folder open state</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Close All Folders">
+<command><category>Process Project Logical Editor</category><action>Collapse All Visible Folders</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Open All Folders">
+<command><category>Process Project Logical Editor</category><action>Open All Visible Folders Except VEP</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Export Video">
+<command><category>File</category><action>Export Video</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Toggle MIDI Tracks Timebase">
+<command><category>Process Project Logical Editor</category><action>toggle timebase MIDI tracks</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Process Tempo">
+<command><category>Edit</category><action>Process Tempo</action><flags>1</flags></command>
+</entry>
+<entry ctrl="MIDI: Reset on Stopped">
+<command><category>Preferences</category><action>MIDI - Reset on Stop</action><flags>1</flags></command>
+</entry>
+<entry ctrl="MIDI: Reset">
+<command><category>MIDI</category><action>Reset</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Select Tracks with Same Version">
+<command><category>TrackVersions</category><action>Select Tracks with Same Version ID</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Next Version">
+<command><category>TrackVersions</category><action>Next Version</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Previous Version">
+<command><category>TrackVersions</category><action>Previous Version</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Show Only Selected Tracks">
+<command><category>Channel &amp; Track Visibility</category><action>ShowSelected</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Show Tracks with Versions">
+<command><category>Process Project Logical Editor</category><action>Show Tracks with Track Versions</action><flags>1</flags></command>
+</entry>
+</bank>
+</remotedescription>

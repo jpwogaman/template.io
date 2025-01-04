@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<remotedescription version="1.1">
+<ctrltable name="Standard MIDI">
+<ctrl><name>Toggle Event Names</name><stat>176</stat><chan>3</chan><addr>1</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Show Volume Automation</name><stat>176</stat><chan>3</chan><addr>2</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Show Tracks With Data at Cursor</name><stat>176</stat><chan>3</chan><addr>3</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Show Tracks With Data</name><stat>176</stat><chan>3</chan><addr>4</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Hide All Automation</name><stat>176</stat><chan>3</chan><addr>5</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Toggle VCA's</name><stat>176</stat><chan>3</chan><addr>6</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Hide Selected Tracks</name><stat>176</stat><chan>3</chan><addr>7</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Show Inserts Automation</name><stat>176</stat><chan>3</chan><addr>8</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Return to Start Position on Stop</name><stat>176</stat><chan>3</chan><addr>9</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Close All Plugins</name><stat>176</stat><chan>3</chan><addr>10</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Undo Visibility Change</name><stat>176</stat><chan>3</chan><addr>11</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Edit VST</name><stat>176</stat><chan>3</chan><addr>12</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Video Follows Edit</name><stat>176</stat><chan>3</chan><addr>13</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Show All Tracks With Data Between Locators</name><stat>176</stat><chan>3</chan><addr>14</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Show All Tracks In Selected Folder</name><stat>176</stat><chan>3</chan><addr>15</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show BIG DRUMS</name><stat>176</stat><chan>3</chan><addr>16</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show BSNS</name><stat>176</stat><chan>3</chan><addr>17</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show CLS</name><stat>176</stat><chan>3</chan><addr>18</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show DB</name><stat>176</stat><chan>3</chan><addr>19</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show EMPTY TRACKS</name><stat>176</stat><chan>3</chan><addr>20</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show ENS BR</name><stat>176</stat><chan>3</chan><addr>21</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show ENS STR</name><stat>176</stat><chan>3</chan><addr>22</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show ENS WW</name><stat>176</stat><chan>3</chan><addr>23</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show FLS</name><stat>176</stat><chan>3</chan><addr>24</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show GONGS</name><stat>176</stat><chan>3</chan><addr>25</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show HNS</name><stat>176</stat><chan>3</chan><addr>26</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show HP</name><stat>176</stat><chan>3</chan><addr>27</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show KEYS</name><stat>176</stat><chan>3</chan><addr>28</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show MISC PERC</name><stat>176</stat><chan>3</chan><addr>29</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show OBS</name><stat>176</stat><chan>3</chan><addr>30</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show OUTPUTS</name><stat>176</stat><chan>3</chan><addr>31</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show SOLO STR</name><stat>176</stat><chan>3</chan><addr>32</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show SYNTHS</name><stat>176</stat><chan>3</chan><addr>33</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show TBA</name><stat>176</stat><chan>3</chan><addr>34</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show TBNS</name><stat>176</stat><chan>3</chan><addr>35</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show TIMP</name><stat>176</stat><chan>3</chan><addr>36</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show TPTS</name><stat>176</stat><chan>3</chan><addr>37</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show VC</name><stat>176</stat><chan>3</chan><addr>38</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show VLA</name><stat>176</stat><chan>3</chan><addr>39</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show VLN 1</name><stat>176</stat><chan>3</chan><addr>40</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show VLN 2</name><stat>176</stat><chan>3</chan><addr>41</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show VOX</name><stat>176</stat><chan>3</chan><addr>42</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>select all MIDI and Instrument Tracks</name><stat>176</stat><chan>3</chan><addr>43</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show GUITARS</name><stat>176</stat><chan>3</chan><addr>44</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show BATTERY PERC</name><stat>176</stat><chan>3</chan><addr>45</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Guide Track Mute</name><stat>176</stat><chan>3</chan><addr>46</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Guide Track Solo</name><stat>176</stat><chan>3</chan><addr>47</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Hide FX (MIDI)</name><stat>176</stat><chan>3</chan><addr>48</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show only STRINGS</name><stat>176</stat><chan>3</chan><addr>49</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show only WINDS</name><stat>176</stat><chan>3</chan><addr>50</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show only BRASS</name><stat>176</stat><chan>3</chan><addr>51</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>show only ENHANCERS</name><stat>176</stat><chan>3</chan><addr>52</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>hide-all-but-perc</name><stat>176</stat><chan>3</chan><addr>53</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Activate Next Part</name><stat>176</stat><chan>3</chan><addr>54</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Activate Previous Part</name><stat>176</stat><chan>3</chan><addr>55</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Hide all VEP outs</name><stat>176</stat><chan>3</chan><addr>56</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Show all VEP outs</name><stat>176</stat><chan>3</chan><addr>57</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Hide all MIDI tracks</name><stat>176</stat><chan>3</chan><addr>58</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Show all MIDI tracks</name><stat>176</stat><chan>3</chan><addr>59</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Select all Device Tracks</name><stat>176</stat><chan>3</chan><addr>60</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Deselect Selected</name><stat>176</stat><chan>3</chan><addr>61</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Toggle Marker Lines</name><stat>176</stat><chan>3</chan><addr>62</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Show SOLO VOX</name><stat>176</stat><chan>3</chan><addr>63</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Show TUNED PERC</name><stat>176</stat><chan>3</chan><addr>64</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Show FX</name><stat>176</stat><chan>3</chan><addr>65</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Show DRUM KIT</name><stat>176</stat><chan>3</chan><addr>66</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Show STEMS</name><stat>176</stat><chan>3</chan><addr>67</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Show INPUTS</name><stat>176</stat><chan>3</chan><addr>68</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Show All Automation (toggle used only)</name><stat>176</stat><chan>3</chan><addr>69</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Show All Sends Automation</name><stat>176</stat><chan>3</chan><addr>70</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Toggle Left Zone</name><stat>176</stat><chan>3</chan><addr>71</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Toggle Lower Zone</name><stat>176</stat><chan>3</chan><addr>72</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Toggle Right Zone</name><stat>176</stat><chan>3</chan><addr>73</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Toggle Info Line</name><stat>176</stat><chan>3</chan><addr>74</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Toggle Overview</name><stat>176</stat><chan>3</chan><addr>75</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Toggle Status Line</name><stat>176</stat><chan>3</chan><addr>76</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Toggle Upper Zone</name><stat>176</stat><chan>3</chan><addr>77</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Toggle Regions</name><stat>176</stat><chan>3</chan><addr>78</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Toggle Transport Zone</name><stat>176</stat><chan>3</chan><addr>79</addr><max>127</max><flags>1</flags></ctrl>
+</ctrltable>
+<bank name="GR3-OSC1-CH4">
+<entry ctrl="Toggle Event Names">
+<command><category>Preferences</category><action>Event Display - Show Event Names</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Show Volume Automation">
+<command><category>Automation</category><action>Show All Volume Automation</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Show Tracks With Data at Cursor">
+<command><category>Channel &amp; Track Visibility</category><action>ShowPlaying</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Show Tracks With Data">
+<command><category>Channel &amp; Track Visibility</category><action>ShowUsed</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Hide All Automation">
+<command><category>Automation</category><action>Hide All Automation</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Toggle VCA's">
+<command><category>Process Project Logical Editor</category><action>Toggle VCA's</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Hide Selected Tracks">
+<command><category>Channel &amp; Track Visibility</category><action>HideSelected</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Show Inserts Automation">
+<command><category>Automation</category><action>Show All Insert Automation</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Return to Start Position on Stop">
+<command><category>Preferences</category><action>Transport - Return to Start Position on Stop</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Close All Plugins">
+<command><category>Windows</category><action>Close All Plug-in Windows</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Undo Visibility Change">
+<command><category>Channel &amp; Track Visibility</category><action>channelOrganizerUndo</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Edit VST">
+<command><category>Edit</category><action>Edit VST Instrument</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Video Follows Edit">
+<command><category>Transport</category><action>Edit Mode</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Show All Tracks With Data Between Locators">
+<command><category>Channel &amp; Track Visibility</category><action>ShowCycle</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Show All Tracks In Selected Folder">
+<command><category>Process Project Logical Editor</category><action>Show All Tracks in Selected Folder</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show BIG DRUMS">
+<command><category>Process Project Logical Editor</category><action>show BIG DRUMS</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show BSNS">
+<command><category>Process Project Logical Editor</category><action>show BSNS</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show CLS">
+<command><category>Process Project Logical Editor</category><action>show CLS</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show DB">
+<command><category>Process Project Logical Editor</category><action>show DB</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show EMPTY TRACKS">
+<command><category>Process Project Logical Editor</category><action>show EMPTY TRACKS</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show ENS BR">
+<command><category>Process Project Logical Editor</category><action>show ENS BR</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show ENS STR">
+<command><category>Process Project Logical Editor</category><action>show ENS STR</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show ENS WW">
+<command><category>Process Project Logical Editor</category><action>show ENS WW</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show FLS">
+<command><category>Process Project Logical Editor</category><action>show FLS</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show GONGS">
+<command><category>Process Project Logical Editor</category><action>show GONGS</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show HNS">
+<command><category>Process Project Logical Editor</category><action>show HNS</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show HP">
+<command><category>Process Project Logical Editor</category><action>show HP</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show KEYS">
+<command><category>Process Project Logical Editor</category><action>show KEYS</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show MISC PERC">
+<command><category>Process Project Logical Editor</category><action>show MISC PERC</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show OBS">
+<command><category>Process Project Logical Editor</category><action>show OBS</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show OUTPUTS">
+<command><category>Process Project Logical Editor</category><action>show OUTPUTS</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show SOLO STR">
+<command><category>Process Project Logical Editor</category><action>show SOLO STR</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show SYNTHS">
+<command><category>Process Project Logical Editor</category><action>show SYNTHS</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show TBA">
+<command><category>Process Project Logical Editor</category><action>show TBA</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show TBNS">
+<command><category>Process Project Logical Editor</category><action>show TBNS</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show TIMP">
+<command><category>Process Project Logical Editor</category><action>show TIMP</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show TPTS">
+<command><category>Process Project Logical Editor</category><action>show TPTS</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show VC">
+<command><category>Process Project Logical Editor</category><action>show VC</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show VLA">
+<command><category>Process Project Logical Editor</category><action>show VLA</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show VLN 1">
+<command><category>Process Project Logical Editor</category><action>show VLN 1</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show VLN 2">
+<command><category>Process Project Logical Editor</category><action>show VLN 2</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show VOX">
+<command><category>Process Project Logical Editor</category><action>show VOX</action><flags>1</flags></command>
+</entry>
+<entry ctrl="select all MIDI and Instrument Tracks">
+<command><category>Process Project Logical Editor</category><action>select all MIDI and Instrument Tracks</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show GUITARS">
+<command><category>Process Project Logical Editor</category><action>show GUITARS</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show BATTERY PERC">
+<command><category>Process Project Logical Editor</category><action>show BATTERY PERC</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Guide Track Mute">
+<command><category>Process Project Logical Editor</category><action>Guide Track Mute</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Guide Track Solo">
+<command><category>Process Project Logical Editor</category><action>Guide Track Solo</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Hide FX (MIDI)">
+<command><category>Process Project Logical Editor</category><action>hide FX MIDI</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show only STRINGS">
+<command><category>Process Project Logical Editor</category><action>hide all but STRINGS</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show only WINDS">
+<command><category>Process Project Logical Editor</category><action>hide all but WINDS</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show only BRASS">
+<command><category>Process Project Logical Editor</category><action>hide all but BRASS</action><flags>1</flags></command>
+</entry>
+<entry ctrl="show only ENHANCERS">
+<command><category>Process Project Logical Editor</category><action>hide all but ENHANCERS</action><flags>1</flags></command>
+</entry>
+<entry ctrl="hide-all-but-perc">
+<command><category>Process Project Logical Editor</category><action>hide-all-but-perc</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Activate Next Part">
+<command><category>Edit</category><action>Activate Next Part</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Activate Previous Part">
+<command><category>Edit</category><action>Activate Previous Part</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Hide all VEP outs">
+<command><category>Process Project Logical Editor</category><action>hide all VEP outs (devices)</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Show all VEP outs">
+<command><category>Process Project Logical Editor</category><action>show all VEP outs (devices)</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Hide all MIDI tracks">
+<command><category>Process Project Logical Editor</category><action>hide all MIDI and Instrument Tracks</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Show all MIDI tracks">
+<command><category>Process Project Logical Editor</category><action>show all MIDI and Instrument Tracks</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Select all Device Tracks">
+<command><category>Process Project Logical Editor</category><action>select all VEP outs (devices)</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Deselect Selected">
+<command><category>Process Project Logical Editor</category><action>Deselect Selected</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Toggle Marker Lines">
+<command><category>Preferences</category><action>Markers - Show Marker Lines</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Show SOLO VOX">
+<command><category>Process Project Logical Editor</category><action>Show SOLO VOX</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Show TUNED PERC">
+<command><category>Process Project Logical Editor</category><action>Show TUNED PERC</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Show FX">
+<command><category>Process Project Logical Editor</category><action>Show FX</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Show DRUM KIT">
+<command><category>Process Project Logical Editor</category><action>Show DRUM KIT</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Show STEMS">
+<command><category>Process Project Logical Editor</category><action>Show  STEMS</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Show INPUTS">
+<command><category>Process Project Logical Editor</category><action>Show INPUTS</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Show All Automation (toggle used only)">
+<command><category>Automation</category><action>Show All - Used Only</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Show All Sends Automation">
+<command><category>Automation</category><action>Show All Send Automation</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Toggle Left Zone">
+<command><category>Window Zones</category><action>Show/Hide Left Zone</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Toggle Lower Zone">
+<command><category>Window Zones</category><action>Show/Hide Lower Zone</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Toggle Right Zone">
+<command><category>Window Zones</category><action>Show/Hide Right Zone</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Toggle Info Line">
+<command><category>Window Zones</category><action>Show/Hide Infoview</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Toggle Overview">
+<command><category>Window Zones</category><action>Show/Hide Overview</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Toggle Status Line">
+<command><category>Window Zones</category><action>Show/Hide Status Line</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Toggle Upper Zone">
+<command><category>Window Zones</category><action>Show/Hide Upper Zone</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Toggle Regions">
+<command><category>Window Zones</category><action>Show/Hide Regions</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Toggle Transport Zone">
+<command><category>Window Zones</category><action>Show/Hide Transport Zone</action><flags>1</flags></command>
+</entry>
+</bank>
+</remotedescription>

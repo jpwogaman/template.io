@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<remotedescription version="1.1">
+<ctrltable name="Standard MIDI">
+<ctrl><name>CUE-01</name><stat>176</stat><chan>5</chan><addr>0</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-02</name><stat>176</stat><chan>5</chan><addr>1</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-03</name><stat>176</stat><chan>5</chan><addr>2</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-04</name><stat>176</stat><chan>5</chan><addr>3</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-05</name><stat>176</stat><chan>5</chan><addr>4</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-06</name><stat>176</stat><chan>5</chan><addr>5</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-07</name><stat>176</stat><chan>5</chan><addr>6</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-08</name><stat>176</stat><chan>5</chan><addr>7</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-09</name><stat>176</stat><chan>5</chan><addr>8</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-10</name><stat>176</stat><chan>5</chan><addr>9</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-11</name><stat>176</stat><chan>5</chan><addr>10</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-12</name><stat>176</stat><chan>5</chan><addr>11</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-13</name><stat>176</stat><chan>5</chan><addr>12</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-14</name><stat>176</stat><chan>5</chan><addr>13</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-15</name><stat>176</stat><chan>5</chan><addr>14</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-16</name><stat>176</stat><chan>5</chan><addr>15</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-17</name><stat>176</stat><chan>5</chan><addr>16</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-18</name><stat>176</stat><chan>5</chan><addr>17</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-19</name><stat>176</stat><chan>5</chan><addr>18</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-20</name><stat>176</stat><chan>5</chan><addr>19</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-21</name><stat>176</stat><chan>5</chan><addr>20</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-22</name><stat>176</stat><chan>5</chan><addr>21</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-23</name><stat>176</stat><chan>5</chan><addr>22</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-24</name><stat>176</stat><chan>5</chan><addr>23</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-25</name><stat>176</stat><chan>5</chan><addr>24</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-26</name><stat>176</stat><chan>5</chan><addr>25</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-27</name><stat>176</stat><chan>5</chan><addr>26</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-28</name><stat>176</stat><chan>5</chan><addr>27</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-29</name><stat>176</stat><chan>5</chan><addr>28</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-30</name><stat>176</stat><chan>5</chan><addr>29</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-31</name><stat>176</stat><chan>5</chan><addr>30</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-32</name><stat>176</stat><chan>5</chan><addr>31</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-33</name><stat>176</stat><chan>5</chan><addr>32</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-34</name><stat>176</stat><chan>5</chan><addr>33</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-35</name><stat>176</stat><chan>5</chan><addr>34</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-36</name><stat>176</stat><chan>5</chan><addr>35</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-37</name><stat>176</stat><chan>5</chan><addr>36</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-38</name><stat>176</stat><chan>5</chan><addr>37</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-39</name><stat>176</stat><chan>5</chan><addr>38</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-40</name><stat>176</stat><chan>5</chan><addr>39</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-41</name><stat>176</stat><chan>5</chan><addr>40</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-42</name><stat>176</stat><chan>5</chan><addr>41</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-43</name><stat>176</stat><chan>5</chan><addr>42</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-44</name><stat>176</stat><chan>5</chan><addr>43</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-45</name><stat>176</stat><chan>5</chan><addr>44</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-46</name><stat>176</stat><chan>5</chan><addr>45</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-47</name><stat>176</stat><chan>5</chan><addr>46</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-48</name><stat>176</stat><chan>5</chan><addr>47</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-49</name><stat>176</stat><chan>5</chan><addr>48</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-50</name><stat>176</stat><chan>5</chan><addr>49</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-51</name><stat>176</stat><chan>5</chan><addr>50</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-52</name><stat>176</stat><chan>5</chan><addr>51</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-53</name><stat>176</stat><chan>5</chan><addr>52</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-54</name><stat>176</stat><chan>5</chan><addr>53</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-55</name><stat>176</stat><chan>5</chan><addr>54</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-56</name><stat>176</stat><chan>5</chan><addr>55</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-57</name><stat>176</stat><chan>5</chan><addr>56</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-58</name><stat>176</stat><chan>5</chan><addr>57</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-59</name><stat>176</stat><chan>5</chan><addr>58</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-60</name><stat>176</stat><chan>5</chan><addr>59</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-61</name><stat>176</stat><chan>5</chan><addr>60</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-62</name><stat>176</stat><chan>5</chan><addr>61</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-63</name><stat>176</stat><chan>5</chan><addr>62</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-64</name><stat>176</stat><chan>5</chan><addr>63</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-65</name><stat>176</stat><chan>5</chan><addr>64</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-66</name><stat>176</stat><chan>5</chan><addr>65</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-67</name><stat>176</stat><chan>5</chan><addr>66</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-68</name><stat>176</stat><chan>5</chan><addr>67</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-69</name><stat>176</stat><chan>5</chan><addr>68</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-70</name><stat>176</stat><chan>5</chan><addr>69</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-71</name><stat>176</stat><chan>5</chan><addr>70</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-72</name><stat>176</stat><chan>5</chan><addr>71</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-73</name><stat>176</stat><chan>5</chan><addr>72</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-74</name><stat>176</stat><chan>5</chan><addr>73</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-75</name><stat>176</stat><chan>5</chan><addr>74</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-76</name><stat>176</stat><chan>5</chan><addr>75</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-77</name><stat>176</stat><chan>5</chan><addr>76</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-78</name><stat>176</stat><chan>5</chan><addr>77</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-79</name><stat>176</stat><chan>5</chan><addr>78</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-80</name><stat>176</stat><chan>5</chan><addr>79</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-81</name><stat>176</stat><chan>5</chan><addr>80</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-82</name><stat>176</stat><chan>5</chan><addr>81</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-83</name><stat>176</stat><chan>5</chan><addr>82</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-84</name><stat>176</stat><chan>5</chan><addr>83</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-85</name><stat>176</stat><chan>5</chan><addr>84</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-86</name><stat>176</stat><chan>5</chan><addr>85</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-87</name><stat>176</stat><chan>5</chan><addr>86</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-88</name><stat>176</stat><chan>5</chan><addr>87</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-89</name><stat>176</stat><chan>5</chan><addr>88</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CUE-90</name><stat>176</stat><chan>5</chan><addr>89</addr><max>127</max><flags>1</flags></ctrl>
+</ctrltable>
+<bank name="GR6-OSC1-CH6-CUES">
+<entry ctrl="CUE-01">
+<command><category>Process Project Logical Editor</category><action>CUE - 01</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-02">
+<command><category>Process Project Logical Editor</category><action>CUE - 02</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-03">
+<command><category>Process Project Logical Editor</category><action>CUE - 03</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-04">
+<command><category>Process Project Logical Editor</category><action>CUE - 04</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-05">
+<command><category>Process Project Logical Editor</category><action>CUE - 05</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-06">
+<command><category>Process Project Logical Editor</category><action>CUE - 06</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-07">
+<command><category>Process Project Logical Editor</category><action>CUE - 07</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-08">
+<command><category>Process Project Logical Editor</category><action>CUE - 08</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-09">
+<command><category>Process Project Logical Editor</category><action>CUE - 09</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-10">
+<command><category>Process Project Logical Editor</category><action>CUE - 10</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-11">
+<command><category>Process Project Logical Editor</category><action>CUE - 11</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-12">
+<command><category>Process Project Logical Editor</category><action>CUE - 12</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-13">
+<command><category>Process Project Logical Editor</category><action>CUE - 13</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-14">
+<command><category>Process Project Logical Editor</category><action>CUE - 14</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-15">
+<command><category>Process Project Logical Editor</category><action>CUE - 15</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-16">
+<command><category>Process Project Logical Editor</category><action>CUE - 16</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-17">
+<command><category>Process Project Logical Editor</category><action>CUE - 17</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-18">
+<command><category>Process Project Logical Editor</category><action>CUE - 18</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-19">
+<command><category>Process Project Logical Editor</category><action>CUE - 19</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-20">
+<command><category>Process Project Logical Editor</category><action>CUE - 20</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-21">
+<command><category>Process Project Logical Editor</category><action>CUE - 21</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-22">
+<command><category>Process Project Logical Editor</category><action>CUE - 22</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-23">
+<command><category>Process Project Logical Editor</category><action>CUE - 23</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-24">
+<command><category>Process Project Logical Editor</category><action>CUE - 24</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-25">
+<command><category>Process Project Logical Editor</category><action>CUE - 25</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-26">
+<command><category>Process Project Logical Editor</category><action>CUE - 26</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-27">
+<command><category>Process Project Logical Editor</category><action>CUE - 27</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-28">
+<command><category>Process Project Logical Editor</category><action>CUE - 28</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-29">
+<command><category>Process Project Logical Editor</category><action>CUE - 29</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-30">
+<command><category>Process Project Logical Editor</category><action>CUE - 30</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-31">
+<command><category>Process Project Logical Editor</category><action>CUE - 31</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-32">
+<command><category>Process Project Logical Editor</category><action>CUE - 32</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-33">
+<command><category>Process Project Logical Editor</category><action>CUE - 33</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-34">
+<command><category>Process Project Logical Editor</category><action>CUE - 34</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-35">
+<command><category>Process Project Logical Editor</category><action>CUE - 35</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-36">
+<command><category>Process Project Logical Editor</category><action>CUE - 36</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-37">
+<command><category>Process Project Logical Editor</category><action>CUE - 37</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-38">
+<command><category>Process Project Logical Editor</category><action>CUE - 38</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-39">
+<command><category>Process Project Logical Editor</category><action>CUE - 39</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-40">
+<command><category>Process Project Logical Editor</category><action>CUE - 40</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-41">
+<command><category>Process Project Logical Editor</category><action>CUE - 41</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-42">
+<command><category>Process Project Logical Editor</category><action>CUE - 42</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-43">
+<command><category>Process Project Logical Editor</category><action>CUE - 43</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-44">
+<command><category>Process Project Logical Editor</category><action>CUE - 44</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-45">
+<command><category>Process Project Logical Editor</category><action>CUE - 45</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-46">
+<command><category>Process Project Logical Editor</category><action>CUE - 46</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-47">
+<command><category>Process Project Logical Editor</category><action>CUE - 47</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-48">
+<command><category>Process Project Logical Editor</category><action>CUE - 48</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-49">
+<command><category>Process Project Logical Editor</category><action>CUE - 49</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-50">
+<command><category>Process Project Logical Editor</category><action>CUE - 50</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-51">
+<command><category>Process Project Logical Editor</category><action>CUE - 51</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-52">
+<command><category>Process Project Logical Editor</category><action>CUE - 52</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-53">
+<command><category>Process Project Logical Editor</category><action>CUE - 53</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-54">
+<command><category>Process Project Logical Editor</category><action>CUE - 54</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-55">
+<command><category>Process Project Logical Editor</category><action>CUE - 55</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-56">
+<command><category>Process Project Logical Editor</category><action>CUE - 56</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-57">
+<command><category>Process Project Logical Editor</category><action>CUE - 57</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-58">
+<command><category>Process Project Logical Editor</category><action>CUE - 58</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-59">
+<command><category>Process Project Logical Editor</category><action>CUE - 59</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-60">
+<command><category>Process Project Logical Editor</category><action>CUE - 60</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-61">
+<command><category>Process Project Logical Editor</category><action>CUE - 61</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-62">
+<command><category>Process Project Logical Editor</category><action>CUE - 62</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-63">
+<command><category>Process Project Logical Editor</category><action>CUE - 63</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-64">
+<command><category>Process Project Logical Editor</category><action>CUE - 64</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-65">
+<command><category>Process Project Logical Editor</category><action>CUE - 65</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-66">
+<command><category>Process Project Logical Editor</category><action>CUE - 66</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-67">
+<command><category>Process Project Logical Editor</category><action>CUE - 67</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-68">
+<command><category>Process Project Logical Editor</category><action>CUE - 68</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-69">
+<command><category>Process Project Logical Editor</category><action>CUE - 69</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-70">
+<command><category>Process Project Logical Editor</category><action>CUE - 70</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-71">
+<command><category>Process Project Logical Editor</category><action>CUE - 71</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-72">
+<command><category>Process Project Logical Editor</category><action>CUE - 72</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-73">
+<command><category>Process Project Logical Editor</category><action>CUE - 73</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-74">
+<command><category>Process Project Logical Editor</category><action>CUE - 74</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-75">
+<command><category>Process Project Logical Editor</category><action>CUE - 75</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-76">
+<command><category>Process Project Logical Editor</category><action>CUE - 76</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-77">
+<command><category>Process Project Logical Editor</category><action>CUE - 77</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-78">
+<command><category>Process Project Logical Editor</category><action>CUE - 78</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-79">
+<command><category>Process Project Logical Editor</category><action>CUE - 79</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-80">
+<command><category>Process Project Logical Editor</category><action>CUE - 80</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-81">
+<command><category>Process Project Logical Editor</category><action>CUE - 81</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-82">
+<command><category>Process Project Logical Editor</category><action>CUE - 82</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-83">
+<command><category>Process Project Logical Editor</category><action>CUE - 83</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-84">
+<command><category>Process Project Logical Editor</category><action>CUE - 84</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-85">
+<command><category>Process Project Logical Editor</category><action>CUE - 85</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-86">
+<command><category>Process Project Logical Editor</category><action>CUE - 86</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-87">
+<command><category>Process Project Logical Editor</category><action>CUE - 87</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-88">
+<command><category>Process Project Logical Editor</category><action>CUE - 88</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-89">
+<command><category>Process Project Logical Editor</category><action>CUE - 89</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CUE-90">
+<command><category>Process Project Logical Editor</category><action>CUE - 90</action><flags>1</flags></command>
+</entry>
+</bank>
+</remotedescription>

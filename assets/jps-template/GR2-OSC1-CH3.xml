@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<remotedescription version="1.1">
+<ctrltable name="Standard MIDI">
+<ctrl><name>Show/Hide All CC's</name><stat>176</stat><chan>2</chan><addr>1</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Show All Used CC's</name><stat>176</stat><chan>2</chan><addr>2</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Show Vel</name><stat>176</stat><chan>2</chan><addr>3</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Show 1,11,Vel</name><stat>176</stat><chan>2</chan><addr>4</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Copy CC11 to CC1</name><stat>176</stat><chan>2</chan><addr>5</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Copy CC1 to CC11</name><stat>176</stat><chan>2</chan><addr>6</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Fixed Velocity 100</name><stat>176</stat><chan>2</chan><addr>7</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>(Velocity &gt; 100) - 5</name><stat>176</stat><chan>2</chan><addr>8</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Velocity - 5</name><stat>176</stat><chan>2</chan><addr>9</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Velocity + 5</name><stat>176</stat><chan>2</chan><addr>10</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Quantize + Ends + Lengths</name><stat>176</stat><chan>2</chan><addr>11</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Delete All CC, Prg, SysEx in Cycle Range</name><stat>176</stat><chan>2</chan><addr>12</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Double Tempo</name><stat>176</stat><chan>2</chan><addr>13</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Half Tempo</name><stat>176</stat><chan>2</chan><addr>14</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Grid: Triplet</name><stat>176</stat><chan>2</chan><addr>15</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Grid: Dotted</name><stat>176</stat><chan>2</chan><addr>16</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Grid: Whole</name><stat>176</stat><chan>2</chan><addr>17</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Grid: Half</name><stat>176</stat><chan>2</chan><addr>18</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Grid: Quarter</name><stat>176</stat><chan>2</chan><addr>19</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Grid: Eighth</name><stat>176</stat><chan>2</chan><addr>20</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Grid: Sixteenth</name><stat>176</stat><chan>2</chan><addr>21</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Grid: Thirty-Second</name><stat>176</stat><chan>2</chan><addr>22</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Grid: Sixty-Fourth</name><stat>176</stat><chan>2</chan><addr>23</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Grid: One-Hundred-Twenty-Eighth</name><stat>176</stat><chan>2</chan><addr>24</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Grid: Grid</name><stat>176</stat><chan>2</chan><addr>25</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Grid: Events</name><stat>176</stat><chan>2</chan><addr>26</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Bypass Inserts (M)</name><stat>176</stat><chan>2</chan><addr>27</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Bypass Eqs (M)</name><stat>176</stat><chan>2</chan><addr>28</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Bypass Channel Strip (M)</name><stat>176</stat><chan>2</chan><addr>29</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Bypass Sends (MX)</name><stat>176</stat><chan>2</chan><addr>30</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>In-Place Editor</name><stat>176</stat><chan>2</chan><addr>31</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Open Lower Mixer</name><stat>176</stat><chan>2</chan><addr>32</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CC58 Spread Articulations</name><stat>176</stat><chan>2</chan><addr>33</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CC58 Spread Articulations</name><stat>176</stat><chan>2</chan><addr>33</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Quantize Lengths</name><stat>176</stat><chan>2</chan><addr>35</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Quantize Ends</name><stat>176</stat><chan>2</chan><addr>36</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Delete Overlaps (Poly)</name><stat>176</stat><chan>2</chan><addr>37</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Show 64,67,Vel</name><stat>176</stat><chan>2</chan><addr>38</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Vel &lt; 65 Nudge 200ms</name><stat>176</stat><chan>2</chan><addr>39</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Vel 65-100 Nudge 100ms</name><stat>176</stat><chan>2</chan><addr>40</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CC11 Beyond</name><stat>176</stat><chan>2</chan><addr>41</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CC11 Before</name><stat>176</stat><chan>2</chan><addr>42</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CC1 Beyond</name><stat>176</stat><chan>2</chan><addr>43</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>CC1 Before</name><stat>176</stat><chan>2</chan><addr>44</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Fixed Vel 10</name><stat>176</stat><chan>2</chan><addr>45</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>16ths to 16th Triplets</name><stat>176</stat><chan>2</chan><addr>46</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Duplicate 2nd Triplet 16th Every 8th Beat</name><stat>176</stat><chan>2</chan><addr>47</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Delete 3rd 16th Triplet Every 8th Beat</name><stat>176</stat><chan>2</chan><addr>48</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>16th Triplets to 16th</name><stat>176</stat><chan>2</chan><addr>49</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Quantize 16th Triplets to Reg 8th Grid</name><stat>176</stat><chan>2</chan><addr>50</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Random Vel +/- 10</name><stat>176</stat><chan>2</chan><addr>51</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Random Position +/- 10 ticks</name><stat>176</stat><chan>2</chan><addr>52</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>All CC's to Cursor</name><stat>176</stat><chan>2</chan><addr>53</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Delete All Automation Beyond Cursor</name><stat>176</stat><chan>2</chan><addr>54</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Read Enable</name><stat>176</stat><chan>2</chan><addr>55</addr><max>127</max><flags>1</flags></ctrl>
+<ctrl><name>Write Enable</name><stat>176</stat><chan>2</chan><addr>56</addr><max>127</max><flags>1</flags></ctrl>
+</ctrltable>
+<bank name="GR2-OSC1-CH3">
+<entry ctrl="Show/Hide All CC's">
+<command><category>MIDI</category><action>Show/Hide Controller Lanes</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Show All Used CC's">
+<command><category>MIDI</category><action>Show Used Controllers</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Show Vel">
+<command><category>MIDI</category><action>Controller Lane Setup 1</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Show 1,11,Vel">
+<command><category>MIDI</category><action>Controller Lane Setup 2</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Copy CC11 to CC1">
+<command><category>Process Logical Preset</category><action>Copy CC11 to CC1</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Copy CC1 to CC11">
+<command><category>Process Logical Preset</category><action>Copy CC1 to CC11</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Fixed Velocity 100">
+<command><category>Process Logical Preset</category><action>fixed velocity 100</action><flags>1</flags></command>
+</entry>
+<entry ctrl="(Velocity &gt; 100) - 5">
+<command><category>Process Logical Preset</category><action>(Velocity _ 100) - 5</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Velocity - 5">
+<command><category>Process Logical Preset</category><action>Velocity - 5</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Velocity + 5">
+<command><category>Process Logical Preset</category><action>Velocity + 5</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Quantize + Ends + Lengths">
+<command><category>Macro</category><action>Full Quantize</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Delete All CC, Prg, SysEx in Cycle Range">
+<command><category>Process Logical Preset</category><action>Delete all CC, Prg, SysEx, in Cycle Range</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Double Tempo">
+<command><category>Process Logical Preset</category><action>double tempo</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Half Tempo">
+<command><category>Process Logical Preset</category><action>half tempo</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Grid: Triplet">
+<command><category>Quantize Category</category><action>Toggle Quantize Triplet</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Grid: Dotted">
+<command><category>Quantize Category</category><action>Toggle Quantize Dotted</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Grid: Whole">
+<command><category>Quantize Category</category><action>Set Quantize to 1th</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Grid: Half">
+<command><category>Quantize Category</category><action>Set Quantize to 2th</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Grid: Quarter">
+<command><category>Quantize Category</category><action>Set Quantize to 4th</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Grid: Eighth">
+<command><category>Quantize Category</category><action>Set Quantize to 8th</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Grid: Sixteenth">
+<command><category>Quantize Category</category><action>Set Quantize to 16th</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Grid: Thirty-Second">
+<command><category>Quantize Category</category><action>Set Quantize to 32th</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Grid: Sixty-Fourth">
+<command><category>Quantize Category</category><action>Set Quantize to 64th</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Grid: One-Hundred-Twenty-Eighth">
+<command><category>Quantize Category</category><action>Set Quantize to 128th</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Grid: Grid">
+<command><category>Edit</category><action>Snap Type: Grid</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Grid: Events">
+<command><category>Edit</category><action>Snap Type: Events</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Bypass Inserts (M)">
+<command><category>Mixer</category><action>Bypass: Inserts</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Bypass Eqs (M)">
+<command><category>Mixer</category><action>Bypass: EQs</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Bypass Channel Strip (M)">
+<command><category>Mixer</category><action>Bypass: Channel Strip</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Bypass Sends (MX)">
+<command><category>Mixer</category><action>Bypass: Sends</action><flags>1</flags></command>
+</entry>
+<entry ctrl="In-Place Editor">
+<command><category>Editors</category><action>Edit Inplace</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Open Lower Mixer">
+<command><category>Devices</category><action>MixConsole Lower Zone</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CC58 Spread Articulations">
+<command><category>Process Project Logical Editor</category><action>Spread-CC58</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Quantize Lengths">
+<command><category>Quantize Category</category><action>Quantize Lengths</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Quantize Ends">
+<command><category>Quantize Category</category><action>Quantize Ends</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Delete Overlaps (Poly)">
+<command><category>MIDI</category><action>Delete Overlaps (poly)</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Show 64,67,Vel">
+<command><category>MIDI</category><action>Controller Lane Setup 10</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Vel &lt; 65 Nudge 200ms">
+<command><category>Process Logical Preset</category><action>Vel Under 65, nudge 200ms</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Vel 65-100 Nudge 100ms">
+<command><category>Process Logical Preset</category><action>Vel Between 65-100, nudge 100ms</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CC11 Beyond">
+<command><category>Process Logical Preset</category><action>Select CC 11 Beyond Cursor</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CC11 Before">
+<command><category>Process Logical Preset</category><action>Select CC 11 Before Cursor</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CC1 Beyond">
+<command><category>Process Logical Preset</category><action>Select CC 1 Beyond Cursor</action><flags>1</flags></command>
+</entry>
+<entry ctrl="CC1 Before">
+<command><category>Process Logical Preset</category><action>Select CC 1 Before Cursor</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Fixed Vel 10">
+<command><category>Process Logical Preset</category><action>Fixed Velocity 10</action><flags>1</flags></command>
+</entry>
+<entry ctrl="16ths to 16th Triplets">
+<command><category>Process Logical Preset</category><action>16th to trip 16ths</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Duplicate 2nd Triplet 16th Every 8th Beat">
+<command><category>Process Logical Preset</category><action>duplicate 2nd trip 16th every 8th beat</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Delete 3rd 16th Triplet Every 8th Beat">
+<command><category>Process Logical Preset</category><action>delete 3nd trip 16th every 8th beat</action><flags>1</flags></command>
+</entry>
+<entry ctrl="16th Triplets to 16th">
+<command><category>Process Logical Preset</category><action>16th trips to reg 16ths</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Quantize 16th Triplets to Reg 8th Grid">
+<command><category>Process Logical Preset</category><action>quantize every 2nd trip 16th to 8th note grid</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Random Vel +/- 10">
+<command><category>Process Logical Preset</category><action>Randomize Velocity Relatively (-10 to 10)</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Random Position +/- 10 ticks">
+<command><category>Process Logical Preset</category><action>Randomize Position +-10 Ticks</action><flags>1</flags></command>
+</entry>
+<entry ctrl="All CC's to Cursor">
+<command><category>Process Logical Preset</category><action>move controllers to cursor</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Delete All Automation Beyond Cursor">
+<command><category>Process Project Logical Editor</category><action>Delete All Automation Data of Selected Audio, MIDI &amp; Instrument Tracks beyond Cursor</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Read Enable">
+<command><category>Automation</category><action>Toggle Read Enable All Tracks</action><flags>1</flags></command>
+</entry>
+<entry ctrl="Write Enable">
+<command><category>Automation</category><action>Toggle Write Enable All Tracks</action><flags>1</flags></command>
+</entry>
+</bank>
+</remotedescription>
