@@ -32,12 +32,6 @@ export const TrackList: FC = () => {
     })
   }
 
-  const sortedData = data?.toSorted((a, b) => {
-    return (
-      parseInt(a.id.split('_')[1] ?? '0') - parseInt(b.id.split('_')[1] ?? '0')
-    )
-  })
-
   const trackTh = `border-[1.5px]
   border-b-transparent
   border-zinc-100
@@ -89,7 +83,7 @@ export const TrackList: FC = () => {
           </tr>
         </thead>
         <tbody>
-          {sortedData?.map((item) => {
+          {data?.map((item) => {
             const { id, locked, _count } = item
 
             const selectedLocked = locked && selectedItemId === id

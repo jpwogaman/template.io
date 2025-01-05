@@ -151,7 +151,7 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
 
 pub fn list_all_fileitems_and_relations_for_json_export() -> FullTrackListForExport {
   let fileitems_and_relations = list_all_fileitems_and_relations();
-  
+
   FullTrackListForExport {
     file_meta_data: serde_json::json!({}),
     items: fileitems_and_relations,
@@ -223,11 +223,25 @@ pub fn get_fileitem_and_relations(id: String) -> Option<FullTrackForExport> {
 pub fn list_fileitems() -> Vec<FileItem> {
   let connection = &mut establish_db_connection();
 
-  fileitems_dsl::fileitems
-    .order_by(fileitems_dsl::id.asc())
-
+  let mut fileitems = fileitems_dsl::fileitems
     .load::<FileItem>(connection)
-    .expect("Error loading fileitems")
+    .expect("Error loading fileitems");
+
+  fileitems.sort_by(|a, b| {
+    let a_id_number = a.id
+      .split('_')
+      .nth(1)
+      .and_then(|num| num.parse::<i32>().ok())
+      .unwrap_or(0);
+    let b_id_number = b.id
+      .split('_')
+      .nth(1)
+      .and_then(|num| num.parse::<i32>().ok())
+      .unwrap_or(0);
+    a_id_number.cmp(&b_id_number)
+  });
+
+  fileitems
 }
 
 pub fn get_fileitem(id: String) -> Option<FileItem> {
