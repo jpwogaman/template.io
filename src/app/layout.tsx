@@ -26,10 +26,10 @@ export default function RootLayout({
       <body className='h-screen overflow-x-hidden'>
         <SelectedItemProvider>
           <MutationProvider>
-            <ModalProvider>
-              <TauriListenersProvider>
-                <ContextMenuProvider>
-                  <KeyboardProvider>
+            <KeyboardProvider>
+              <ModalProvider>
+                <TauriListenersProvider>
+                  <ContextMenuProvider>
                     <ThemeProvider
                       storageKey='theme'
                       attribute='class'
@@ -40,10 +40,10 @@ export default function RootLayout({
                       <ContextMenu />
                       {children}
                     </ThemeProvider>
-                  </KeyboardProvider>
-                </ContextMenuProvider>
-              </TauriListenersProvider>
-            </ModalProvider>
+                  </ContextMenuProvider>
+                </TauriListenersProvider>
+              </ModalProvider>
+            </KeyboardProvider>
           </MutationProvider>
         </SelectedItemProvider>
       </body>

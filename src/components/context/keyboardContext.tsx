@@ -3,53 +3,15 @@
 import {
   createContext,
   useContext,
-  useMemo,
-  type ReactNode,
-  type FC,
   useEffect,
-  type Dispatch,
-  type SetStateAction
+  type ReactNode,
+  type FC
 } from 'react'
 import { useMutations, useSelectedItem } from '@/components/context'
 
-interface KeyboardType {
-  previousItemId: string
-  nextItemId: string
-  selectedItemRangeCount: number
-  selectedItemArtCount: number
-  selectedItemArtTogCount: number
-  selectedItemArtTapCount: number
-  selectedItemLayerCount: number
-  selectedItemFadCount: number
-  selectedItemId: string | null
-  setSelectedItemId: Dispatch<SetStateAction<string | null>>
-  selectedSubItemId: string | null
-  setSelectedSubItemId: Dispatch<SetStateAction<string | null>>
-  copiedItemId: string | null
-  setCopiedItemId: Dispatch<SetStateAction<string | null>>
-  copiedSubItemId: string | null
-  setCopiedSubItemId: Dispatch<SetStateAction<string | null>>
-}
+interface KeyboardType {}
 
-const keyboardContextDefaultValues: KeyboardType = {
-  previousItemId: '',
-  nextItemId: '',
-  selectedItemRangeCount: 0,
-  selectedItemArtCount: 0,
-  selectedItemArtTogCount: 0,
-  selectedItemArtTapCount: 0,
-  selectedItemLayerCount: 0,
-  selectedItemFadCount: 0,
-  selectedItemId: null,
-  selectedSubItemId: null,
-  copiedItemId: null,
-  copiedSubItemId: null,
-  /* eslint-disable @typescript-eslint/no-empty-function */
-  setSelectedItemId: () => {},
-  setSelectedSubItemId: () => {},
-  setCopiedItemId: () => {},
-  setCopiedSubItemId: () => {}
-}
+const keyboardContextDefaultValues: KeyboardType = {}
 
 export const KeyboardContext = createContext<KeyboardType>(
   keyboardContextDefaultValues
@@ -68,21 +30,20 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
     selectedSubItemId,
     setCopiedItemId,
     setCopiedSubItemId,
-    setSelectedSubItemId
-  } = useSelectedItem()
-  const {
-    selectedItem,
-    create,
-    del,
+    nextItemId,
+    setNextItemId,
+    previousItemId,
+    setPreviousItemId,
+    setSelectedSubItemId,
     selectedItemRangeCount: rangeCount,
     selectedItemArtCount: artCount,
     selectedItemArtTogCount: artTogCount,
     selectedItemArtTapCount: artTapCount,
     selectedItemLayerCount: layerCount,
-    selectedItemFadCount: fadCount,
-    previousItemId,
-    nextItemId
-  } = useMutations()
+    selectedItemFadCount: fadCount
+  } = useSelectedItem()
+  const { selectedItem, create, del } = useMutations()
+
   useEffect(() => {
     const handleKeys = (e: KeyboardEvent) => {
       const selectedInput = window.document.activeElement as HTMLInputElement
@@ -156,17 +117,18 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
           nextInput?.focus()
           return
         }
+
         if (previousItemId === '') return
 
         const newInput = selectedInput?.id.replace(
           selectedItemId ?? '',
-          previousItemId
+          previousItemId ?? ''
         )
         const previousInput = window.document.getElementById(newInput ?? '')
 
         selectedInput?.blur()
         previousInput?.focus()
-        setSelectedItemId(previousItemId)
+        setSelectedItemId(previousItemId ?? '')
         setSelectedSubItemId(previousItemId + '_notes')
       }
       if (!e.ctrlKey && !e.shiftKey && e.key === 'ArrowDown') {
@@ -214,12 +176,12 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
 
         const newInput = selectedInput?.id.replace(
           selectedItemId ?? '',
-          nextItemId
+          nextItemId ?? ''
         )
         const nextInput = window.document.getElementById(newInput ?? '')
 
         nextInput?.focus()
-        setSelectedItemId(nextItemId)
+        setSelectedItemId(nextItemId ?? '')
         setSelectedSubItemId(nextItemId + '_notes')
       }
       if (e.shiftKey && e.key === 'ArrowUp') {
@@ -346,60 +308,15 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         //})
       }
       ////////////////////////////////
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }
-
     window.addEventListener('keydown', handleKeys)
     return () => {
       window.removeEventListener('keydown', handleKeys)
     }
+  }, [selectedItemId, previousItemId, nextItemId])
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setSelectedItemId, selectedItemId])
-
-  const value = useMemo(
-    () => ({
-      previousItemId,
-      nextItemId,
-      selectedItemRangeCount: rangeCount,
-      selectedItemArtCount: artCount,
-      selectedItemArtTogCount: artTogCount,
-      selectedItemArtTapCount: artTapCount,
-      selectedItemLayerCount: layerCount,
-      selectedItemFadCount: fadCount,
-      selectedItemId,
-      setSelectedItemId,
-      selectedSubItemId,
-      setSelectedSubItemId,
-      copiedItemId,
-      setCopiedItemId,
-      copiedSubItemId,
-      setCopiedSubItemId
-    }),
-    [
-      previousItemId,
-      nextItemId,
-      rangeCount,
-      artCount,
-      artTogCount,
-      artTapCount,
-      layerCount,
-      fadCount,
-      selectedItemId,
-      setSelectedItemId,
-      selectedSubItemId,
-      setSelectedSubItemId,
-      copiedItemId,
-      setCopiedItemId,
-      copiedSubItemId,
-      setCopiedSubItemId
-    ]
-  )
-
-  return (
-    <KeyboardContext.Provider value={value}>
-      {children}
-    </KeyboardContext.Provider>
-  )
+  return <KeyboardContext.Provider value>{children}</KeyboardContext.Provider>
 }
 
 export const useKeyboard = () => {

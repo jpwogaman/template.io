@@ -25,15 +25,6 @@ interface MutationContextType {
   nonVepSamplerCount: number
   //////////////////////////////////////////
   selectedItem: FullTrackForExport | null
-  selectedItemIndex: number
-  selectedItemRangeCount: number
-  selectedItemArtTogCount: number
-  selectedItemArtTapCount: number
-  selectedItemArtCount: number
-  selectedItemLayerCount: number
-  selectedItemFadCount: number
-  previousItemId: string
-  nextItemId: string
   //////////////////////////////////////////
   create: {
     track: ({ count }: { count: number }) => void
@@ -101,15 +92,6 @@ const mutationContextDefaultValues: MutationContextType = {
   nonVepSamplerCount: 0,
   //////////////////////////////////////////
   selectedItem: null,
-  selectedItemIndex: 0,
-  selectedItemRangeCount: 0,
-  selectedItemArtTogCount: 0,
-  selectedItemArtTapCount: 0,
-  selectedItemArtCount: 0,
-  selectedItemLayerCount: 0,
-  selectedItemFadCount: 0,
-  previousItemId: '',
-  nextItemId: '',
   //////////////////////////////////////////
   create: {
     /* eslint-disable @typescript-eslint/no-empty-function */
@@ -164,7 +146,32 @@ interface MutationProviderProps {
 
 export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { selectedItemId, setSelectedItemId } = useSelectedItem()
+  const {
+    selectedItemId,
+    selectedSubItemId,
+    nextItemId,
+    previousItemId,
+    selectedItemRangeCount,
+    selectedItemArtTogCount,
+    selectedItemArtTapCount,
+    selectedItemArtCount,
+    selectedItemLayerCount,
+    selectedItemFadCount,
+    copiedItemId,
+    copiedSubItemId,
+    setSelectedItemId,
+    setSelectedSubItemId,
+    setNextItemId,
+    setPreviousItemId,
+    setSelectedItemRangeCount,
+    setSelectedItemArtTogCount,
+    setSelectedItemArtTapCount,
+    setSelectedItemArtCount,
+    setSelectedItemLayerCount,
+    setSelectedItemFadCount,
+    setCopiedItemId,
+    setCopiedSubItemId
+  } = useSelectedItem()
   const [mounted, setMounted] = useState(false)
   const [data, setData] = useState<FullTrackWithCounts[] | null>(null)
   const [selectedItem, setSelectedItem] = useState<FullTrackForExport | null>(
@@ -174,12 +181,11 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   useEffect(() => {
     setMounted(true)
     getData().catch((error) => {
-      console.log('getData error', error)
+      console.log('getData_error', error)
     })
     getSelectedItem().catch((error) => {
-      console.log('getSelectedItem error', error)
+      console.log('getSelectedItem_error', error)
     })
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -190,17 +196,19 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       await invoke('list_fileitems').then((data) => {
         setData(data as FullTrackWithCounts[])
       }),
-    [setData]
+    []
   )
 
   //const refetchAll = () => getData()
 
   const getSelectedItem = useCallback(
     async () =>
-      await invoke('get_fileitem', { id: selectedItemId }).then((data) => {
-        setSelectedItem(data as FullTrackForExport)
-      }),
-    [selectedItemId, setSelectedItem]
+      await invoke('get_fileitem_and_relations', { id: selectedItemId }).then(
+        (data) => {
+          setSelectedItem(data as FullTrackForExport)
+        }
+      ),
+    [selectedItemId]
   )
 
   //const refetchSelected = () => getSelectedItem()
@@ -286,35 +294,26 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
 
   //////////////////////////////////////////
   // logic to find previous and next item ids
+  useEffect(() => {
+    if (!data) return
 
-  // eslint-disable prefer-const
-  const selectedItemIndex = 0
-  const previousItemId = ''
-  const nextItemId = ''
-  const selectedItemRangeCount = 0
-  const selectedItemArtTogCount = 0
-  const selectedItemArtTapCount = 0
-  const selectedItemArtCount = 0
-  const selectedItemLayerCount = 0
-  const selectedItemFadCount = 0
+    const index =
+      data.findIndex(
+        (item: FullTrackWithCounts) => item.id === selectedItemId
+      ) ?? 0
 
-  //const selectedItemIndex =
-  //  data?.findIndex((item: any) => item.id === selectedItemId) ?? 0
-  //const previousItemId = data?.[selectedItemIndex - 1]?.id ?? ''
-  //const nextItemId = data?.[selectedItemIndex + 1]?.id ?? ''
+    setPreviousItemId(data[index - 1]?.id ?? '')
+    setNextItemId(data[index + 1]?.id ?? '')
+    setSelectedItemRangeCount(data[index]?._count?.full_ranges ?? 0)
+    setSelectedItemArtTogCount(data[index]?._count?.art_list_tog ?? 0)
+    setSelectedItemArtTapCount(data[index]?._count?.art_list_tap ?? 0)
+    setSelectedItemLayerCount(data[index]?._count?.art_layers ?? 0)
+    setSelectedItemFadCount(data[index]?._count?.fad_list ?? 0)
 
-  ////////////////////////////////////////////
-  //// logic to count selected item's connected sub-items
-  //const selectedItemRangeCount =
-  //  data?.[selectedItemIndex]?._count?.fullRange ?? 0
-  //const selectedItemArtTogCount =
-  //  data?.[selectedItemIndex]?._count?.artListTog ?? 0
-  //const selectedItemArtTapCount =
-  //  data?.[selectedItemIndex]?._count?.artListTap ?? 0
-  //const selectedItemArtCount = selectedItemArtTogCount + selectedItemArtTapCount
-  //const selectedItemLayerCount =
-  //  data?.[selectedItemIndex]?._count?.artLayers ?? 0
-  //const selectedItemFadCount = data?.[selectedItemIndex]?._count?.fadList ?? 0
+    getSelectedItem().catch((error) => {
+      console.log('getSelectedItem_error', error)
+    })
+  }, [selectedItemId, data])
 
   //////////////////////////////////////////
   // CREATE mutations
@@ -810,15 +809,6 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       nonVepSamplerCount,
       /////////////////////////////////
       selectedItem,
-      selectedItemIndex,
-      selectedItemRangeCount,
-      selectedItemArtTogCount,
-      selectedItemArtTapCount,
-      selectedItemArtCount,
-      selectedItemLayerCount,
-      selectedItemFadCount,
-      previousItemId,
-      nextItemId,
       /////////////////////////////////
       create,
       update,
@@ -837,15 +827,6 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       nonVepSamplerCount,
       /////////////////////////////////
       selectedItem,
-      selectedItemIndex,
-      selectedItemRangeCount,
-      selectedItemArtTogCount,
-      selectedItemArtTapCount,
-      selectedItemArtCount,
-      selectedItemLayerCount,
-      selectedItemFadCount,
-      previousItemId,
-      nextItemId,
       /////////////////////////////////
       create,
       update,

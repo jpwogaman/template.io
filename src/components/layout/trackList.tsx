@@ -101,7 +101,7 @@ export const TrackList: FC = () => {
                 }}
                 onClick={() => {
                   setSelectedItemId(id)
-                  setSelectedSubItemId(id + '_FR_0')
+                  setSelectedSubItemId(id + '_notes')
                 }}
                 className={tw(
                   selectedUnlocked

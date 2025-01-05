@@ -57,31 +57,31 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
     }
   }
 
-  const parsedOptions = JSON.parse(options!) as string[]
+  //const parsedOptions = JSON.parse(options!) as string[]
 
-  inputSelectOptionElements = parsedOptions.map((name: string) => (
-    // this should be a <li> element, but SONARLINT doesn't like it
-    <button
-      key={name}
-      title={id + '_' + name + '_currentlySelected: ' + value.includes(name)}
-      className={tw(
-        value.includes(name) && !codeDisabled ? 'font-bold text-red-700' : '',
-        value.includes(name) && codeDisabled ? 'font-bold text-red-800' : ''
-      )}
-      onKeyDown={(e) => {
-        e.preventDefault()
-        console.log('keydown')
-      }}
-      onClick={(event) => {
-        event.preventDefault()
-        valChange({
-          ...event,
-          target: { ...event.target, value: name }
-        } as unknown as ChangeEvent<HTMLSelectElement>)
-      }}>
-      {shortenedSubComponentId(name)}
-    </button>
-  ))
+  //inputSelectOptionElements = parsedOptions.map((name: string) => (
+  //  // this should be a <li> element, but SONARLINT doesn't like it
+  //  <button
+  //    key={name}
+  //    title={id + '_' + name + '_currentlySelected: ' + value.includes(name)}
+  //    className={tw(
+  //      value.includes(name) && !codeDisabled ? 'font-bold text-red-700' : '',
+  //      value.includes(name) && codeDisabled ? 'font-bold text-red-800' : ''
+  //    )}
+  //    onKeyDown={(e) => {
+  //      e.preventDefault()
+  //      console.log('keydown')
+  //    }}
+  //    onClick={(event) => {
+  //      event.preventDefault()
+  //      valChange({
+  //        ...event,
+  //        target: { ...event.target, value: name }
+  //      } as unknown as ChangeEvent<HTMLSelectElement>)
+  //    }}>
+  //    {shortenedSubComponentId(name)}
+  //  </button>
+  //))
 
   return (
     <ul
@@ -91,7 +91,7 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
         codeDisabled ? 'cursor-not-allowed text-gray-400' : 'cursor-pointer',
         'flex flex-wrap gap-2'
       )}>
-      {inputSelectOptionElements}
+      {/*{inputSelectOptionElements}*/}
     </ul>
   )
 }
