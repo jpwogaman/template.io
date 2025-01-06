@@ -99,6 +99,10 @@ export const TrackList: FC = () => {
                   setIsContextMenuOpen(true)
                   setContextMenuId(id)
                 }}
+                onKeyUpCapture={() => {
+                  setSelectedItemId(id)
+                  setSelectedSubItemId(id + '_notes')
+                }}
                 onClick={() => {
                   setSelectedItemId(id)
                   setSelectedSubItemId(id + '_notes')
