@@ -101,9 +101,12 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       ////////////////////////////////
       // NAVIGATE TRACKS or ARTS or LAYERS or FADS
       if (command === 'TAB') {
+        if (e.target instanceof HTMLElement) {
+          console.log('e.target', e.target.id)
+        }
         console.log('selectedSubItemId', selectedSubItemId)
         console.log('optionField', optionField)
-        console.log('selectedInput', selectedInput)
+        console.log('selectedInput', selectedInput.id)
 
         //if (
         //  selectedInput?.id.includes('changeLayout') &&
@@ -391,9 +394,9 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
     ]
   )
   useEffect(() => {
-    window.addEventListener('keydown', handleKeys)
+    window.addEventListener('keyup', handleKeys)
     return () => {
-      window.removeEventListener('keydown', handleKeys)
+      window.removeEventListener('keyup', handleKeys)
     }
   }, [handleKeys])
 
