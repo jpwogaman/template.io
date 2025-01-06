@@ -193,7 +193,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   // initial queries
   const getData = useCallback(
     async () =>
-      await invoke('list_fileitems').then((data) => {
+      await invoke('list_all_fileitems_and_relation_counts').then((data) => {
         setData(data as FullTrackWithCounts[])
       }),
     []
@@ -304,9 +304,14 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
 
     setPreviousItemId(data[index - 1]?.id ?? '')
     setNextItemId(data[index + 1]?.id ?? '')
+
     setSelectedItemRangeCount(data[index]?._count?.full_ranges ?? 0)
     setSelectedItemArtTogCount(data[index]?._count?.art_list_tog ?? 0)
     setSelectedItemArtTapCount(data[index]?._count?.art_list_tap ?? 0)
+    setSelectedItemArtCount(
+      (data[index]?._count?.art_list_tog ?? 0) +
+        (data[index]?._count?.art_list_tap ?? 0)
+    )
     setSelectedItemLayerCount(data[index]?._count?.art_layers ?? 0)
     setSelectedItemFadCount(data[index]?._count?.fad_list ?? 0)
 
