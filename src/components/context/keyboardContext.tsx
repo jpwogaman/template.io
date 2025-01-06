@@ -6,7 +6,8 @@ import {
   useEffect,
   type ReactNode,
   type FC,
-  useCallback
+  useCallback,
+  use
 } from 'react'
 import { useMutations, useSelectedItem } from '@/components/context'
 
@@ -45,10 +46,32 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
   } = useSelectedItem()
   const { selectedItem, create, del } = useMutations()
 
+  const commandSimplifier = useCallback((e: KeyboardEvent) => {
+    if (e.ctrlKey && !e.shiftKey && !e.altKey) {
+      return `CTRL_${e.key.toUpperCase()}`
+    }
+    if (e.ctrlKey && e.shiftKey && !e.altKey) {
+      return `CTRL_SHIFT_${e.key.toUpperCase()}`
+    }
+    if (e.ctrlKey && e.shiftKey && e.altKey) {
+      return `CTRL_SHIFT_ALT_${e.key.toUpperCase()}`
+    }
+    if (!e.ctrlKey && e.shiftKey && !e.altKey) {
+      return `SHIFT_${e.key.toUpperCase()}`
+    }
+    if (!e.ctrlKey && e.shiftKey && e.altKey) {
+      return `SHIFT_ALT_${e.key.toUpperCase()}`
+    }
+    if (!e.ctrlKey && !e.shiftKey && e.altKey) {
+      return `ALT_${e.key.toUpperCase()}`
+    }
+    return e.key.toUpperCase()
+  }, [])
+
   const handleKeys = useCallback(
     (e: KeyboardEvent) => {
       const selectedInput = window.document.activeElement as HTMLInputElement
-
+      const command = commandSimplifier(e)
       //const isButton = selectedInput?.tagName === 'BUTTON'
       const isSelect = selectedInput?.tagName === 'SELECT'
 
@@ -75,7 +98,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
 
       ////////////////////////////////
       // NAVIGATE TRACKS or ARTS or LAYERS or FADS
-      if (!e.ctrlKey && !e.shiftKey && e.key === 'ArrowUp') {
+      if (command === 'ARROWUP') {
         if (selectedInput?.id.includes('notes')) return
         e.preventDefault()
 
@@ -148,7 +171,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         setSelectedItemId(previousItemId ?? '')
         setSelectedSubItemId(previousItemId + '_notes')
       }
-      if (!e.ctrlKey && !e.shiftKey && e.key === 'ArrowDown') {
+      if (command === 'ARROWDOWN') {
         if (selectedInput?.id.includes('notes')) return
         e.preventDefault()
 
@@ -201,7 +224,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         setSelectedItemId(nextItemId ?? '')
         setSelectedSubItemId(nextItemId + '_notes')
       }
-      if (e.shiftKey && e.key === 'ArrowUp') {
+      if (command === 'SHIFT_ARROWUP') {
         if (!selectedInput?.id.includes('_FR_0')) return
         e.preventDefault()
         const nextInput = window.document.getElementById(
@@ -210,7 +233,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         setSelectedSubItemId(selectedItemId + '_notes')
         nextInput?.focus()
       }
-      if (e.shiftKey && e.key === 'ArrowDown') {
+      if (command === 'SHIFT_ARROWDOWN') {
         if (!selectedInput?.id.includes('_notes')) return
         e.preventDefault()
 
@@ -220,13 +243,12 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         setSelectedSubItemId(selectedItemId + '_FR_0')
         nextInput?.focus()
       }
-
       ////////////////////////////////
       // NAVIGATE BETWEEN TRACKLIST AND TRACK OPTIONS
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+      if (command === 'ARROWLEFT' || command === 'ARROWRIGHT') {
         if (isSelect) e.preventDefault()
       }
-      if (e.ctrlKey && e.key === 'ArrowRight') {
+      if (command === 'CTRL_ARROWRIGHT') {
         if (selectedInput?.id.includes('notes')) return
         if (selectedInputIsInTrackOptions) return
 
@@ -237,7 +259,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         setSelectedSubItemId(selectedItemId + '_notes')
         trackOptionsNameInput?.focus()
       }
-      if (e.ctrlKey && e.key === 'ArrowLeft') {
+      if (command === 'CTRL_ARROWLEFT') {
         if (
           !selectedInput?.id.includes('notes') &&
           !selectedInputIsInTrackOptions
@@ -252,13 +274,13 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       }
       ////////////////////////////////
       // ADD NEW TRACK or ART or LAYER or FAD
-      if (!e.altKey && e.ctrlKey && e.shiftKey && e.key === 'ArrowUp') {
+      if (command === 'CTRL_SHIFT_ARROWUP') {
         if (selectedInput?.id.includes('notes')) return
         e.preventDefault()
         alert('Add new item above')
         //create.track()
       }
-      if (!e.altKey && e.ctrlKey && e.shiftKey && e.key === 'ArrowDown') {
+      if (command === 'CTRL_SHIFT_ARROWDOWN') {
         if (selectedInput?.id.includes('notes')) return
         e.preventDefault()
         alert('Add new item below')
@@ -266,19 +288,19 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       }
       ////////////////////////////////
       // DUPLICATE TRACK or ART or LAYER or FAD
-      if (e.ctrlKey && e.shiftKey && e.altKey && e.key === 'ArrowUp') {
+      if (command === 'CTRL_SHIFT_ALT_ARROWUP') {
         if (selectedInput?.id.includes('notes')) return
         e.preventDefault()
         alert('Duplicate selected item above')
       }
-      if (e.ctrlKey && e.shiftKey && e.altKey && e.key === 'ArrowDown') {
+      if (command === 'CTRL_SHIFT_ALT_ARROWDOWN') {
         if (selectedInput?.id.includes('notes')) return
         e.preventDefault()
         alert('Duplicate selected item below')
       }
       ////////////////////////////////
       // DELETE TRACK or ART or LAYER or FAD
-      if (e.ctrlKey && e.key === 'Delete') {
+      if (command === 'CTRL_DELETE') {
         e.preventDefault()
         if (selectedInputIsInTrackOptions) {
           switch (optionType) {
