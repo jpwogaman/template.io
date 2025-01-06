@@ -430,7 +430,9 @@ export const TrackOptions: FC = () => {
                   return (
                     <table
                       onClick={() => setSelectedSubItemId(layoutDataSingleId)}
-                      //onKeyDown={() => {}}
+                      onKeyUpCapture={() => {
+                        setSelectedSubItemId(layoutDataSingleId)
+                      }}
                       onContextMenu={() => {
                         setIsContextMenuOpen(true)
                         setContextMenuId(layoutDataSingleId)
