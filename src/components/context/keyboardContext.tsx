@@ -6,9 +6,7 @@ import {
   useEffect,
   type ReactNode,
   type FC,
-  useCallback,
-  useState,
-  useRef
+  useCallback
 } from 'react'
 import { useMutations, useSelectedItem } from '@/components/context'
 
@@ -108,6 +106,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       // NAVIGATE TRACKS or ARTS or LAYERS or FADS
       if (command === 'ARROWUP') {
         if (keyDownTarget_FROM?.id.includes('notes')) return
+        if (keyDownTarget_FROM?.id.includes('changeLayout')) return
         e.preventDefault()
 
         if (selectedInputIsInTrackOptions) {
@@ -149,6 +148,8 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       }
       if (command === 'ARROWDOWN') {
         if (keyDownTarget_FROM?.id.includes('notes')) return
+        if (keyDownTarget_FROM?.id.includes('changeLayout')) return
+
         e.preventDefault()
 
         if (selectedInputIsInTrackOptions) {
@@ -193,7 +194,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         const nextInput = window.document.getElementById(
           `${selectedItemId}_notes`
         )
-        setSelectedSubItemId(selectedItemId + '_notes')
+        setSelectedSubItemId(`${selectedItemId}_notes`)
         nextInput?.focus()
       }
       if (command === 'SHIFT_ARROWDOWN') {
@@ -212,7 +213,6 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         if (isSelect) e.preventDefault()
       }
       if (command === 'CTRL_ARROWRIGHT') {
-        if (keyDownTarget_FROM?.id.includes('notes')) return
         if (selectedInputIsInTrackOptions) return
 
         e.preventDefault()
@@ -223,11 +223,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         trackOptionsNameInput?.focus()
       }
       if (command === 'CTRL_ARROWLEFT') {
-        if (
-          !keyDownTarget_FROM?.id.includes('notes') &&
-          !selectedInputIsInTrackOptions
-        )
-          return
+        if (!selectedInputIsInTrackOptions) return
 
         e.preventDefault()
         const trackListNameInput = window.document.getElementById(
