@@ -5,7 +5,8 @@ import {
   useContext,
   useEffect,
   type ReactNode,
-  type FC
+  type FC,
+  useCallback
 } from 'react'
 import { useMutations, useSelectedItem } from '@/components/context'
 
@@ -35,17 +36,17 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
     previousItemId,
     setPreviousItemId,
     setSelectedSubItemId,
-    selectedItemRangeCount: rangeCount,
-    selectedItemArtCount: artCount,
-    selectedItemArtTogCount: artTogCount,
-    selectedItemArtTapCount: artTapCount,
-    selectedItemLayerCount: layerCount,
-    selectedItemFadCount: fadCount
+    selectedItemRangeCount,
+    selectedItemArtCount,
+    selectedItemArtTogCount,
+    selectedItemArtTapCount,
+    selectedItemLayerCount,
+    selectedItemFadCount
   } = useSelectedItem()
   const { selectedItem, create, del } = useMutations()
 
-  useEffect(() => {
-    const handleKeys = (e: KeyboardEvent) => {
+  const handleKeys = useCallback(
+    (e: KeyboardEvent) => {
       const selectedInput = window.document.activeElement as HTMLInputElement
 
       //const isButton = selectedInput?.tagName === 'BUTTON'
@@ -59,9 +60,10 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         selectedInput?.id.includes('_AL_') ||
         selectedInput?.id.includes('_FL_')
 
-      const optionType = selectedInput?.id.split('_')[2]
-      const optionNumber = selectedInput?.id.split('_')[3]
-      const optionField = selectedInput?.id.split('_')[4]
+      // id will be like: T_1_FR_0_name
+      const optionType = selectedInput?.id.split('_')[2] // FR, AT, AL, FL
+      const optionNumber = selectedInput?.id.split('_')[3] // 0, 1, 2, 3
+      const optionField = selectedInput?.id.split('_')[4] // name, value, notes
 
       ////////////////////////////////
       // Special case for Articulations
@@ -96,18 +98,33 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
           }
           if (optionType === 'AT' && nextNumber < 0) {
             newInput =
-              selectedItemId + '_FR_' + (rangeCount - 1) + '_' + optionField
-            previousSubItemId = selectedItemId + '_FR_' + (rangeCount - 1)
+              selectedItemId +
+              '_FR_' +
+              (selectedItemRangeCount - 1) +
+              '_' +
+              optionField
+            previousSubItemId =
+              selectedItemId + '_FR_' + (selectedItemRangeCount - 1)
           }
           if (optionType === 'AL' && nextNumber < 0) {
             newInput =
-              selectedItemId + '_AT_' + (artCount - 1) + '_' + optionField
-            previousSubItemId = selectedItemId + '_AT_' + (artCount - 1)
+              selectedItemId +
+              '_AT_' +
+              (selectedItemArtCount - 1) +
+              '_' +
+              optionField
+            previousSubItemId =
+              selectedItemId + '_AT_' + (selectedItemArtCount - 1)
           }
           if (optionType === 'FL' && nextNumber < 0) {
             newInput =
-              selectedItemId + '_AL_' + (layerCount - 1) + '_' + optionField
-            previousSubItemId = selectedItemId + '_AL_' + (layerCount - 1)
+              selectedItemId +
+              '_AL_' +
+              (selectedItemLayerCount - 1) +
+              '_' +
+              optionField
+            previousSubItemId =
+              selectedItemId + '_AL_' + (selectedItemLayerCount - 1)
           }
 
           setSelectedSubItemId(previousSubItemId)
@@ -149,19 +166,19 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
           let nextSubItemId =
             selectedItemId + '_' + optionType + '_' + nextNumber
 
-          if (optionType === 'FR' && nextNumber > rangeCount - 1) {
+          if (optionType === 'FR' && nextNumber > selectedItemRangeCount - 1) {
             newInput = selectedItemId + '_AT_0_' + optionField
             nextSubItemId = selectedItemId + '_AT_0'
           }
-          if (optionType === 'AT' && nextNumber > artCount - 1) {
+          if (optionType === 'AT' && nextNumber > selectedItemArtCount - 1) {
             newInput = selectedItemId + '_AL_0_' + optionField
             nextSubItemId = selectedItemId + '_AL_0'
           }
-          if (optionType === 'AL' && nextNumber > layerCount - 1) {
+          if (optionType === 'AL' && nextNumber > selectedItemLayerCount - 1) {
             newInput = selectedItemId + '_FL_0_' + optionField
             nextSubItemId = selectedItemId + '_FL_0'
           }
-          if (optionType === 'FL' && nextNumber > fadCount - 1) {
+          if (optionType === 'FL' && nextNumber > selectedItemFadCount - 1) {
             return
           }
           setSelectedSubItemId(nextSubItemId)
@@ -309,12 +326,15 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       }
       ////////////////////////////////
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }
+    },
+    [selectedItemId, previousItemId, nextItemId]
+  )
+  useEffect(() => {
     window.addEventListener('keydown', handleKeys)
     return () => {
       window.removeEventListener('keydown', handleKeys)
     }
-  }, [selectedItemId, previousItemId, nextItemId])
+  }, [handleKeys])
 
   return <KeyboardContext.Provider value>{children}</KeyboardContext.Provider>
 }
