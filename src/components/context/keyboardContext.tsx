@@ -6,8 +6,7 @@ import {
   useEffect,
   type ReactNode,
   type FC,
-  useCallback,
-  use
+  useCallback
 } from 'react'
 import { useMutations, useSelectedItem } from '@/components/context'
 
@@ -70,7 +69,9 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
 
   const handleKeys = useCallback(
     (e: KeyboardEvent) => {
-      const selectedInput = window.document.activeElement as HTMLInputElement
+      const selectedInput = window.document.activeElement as
+        | HTMLInputElement
+        | HTMLButtonElement
       const command = commandSimplifier(e)
       //const isButton = selectedInput?.tagName === 'BUTTON'
       const isSelect = selectedInput?.tagName === 'SELECT'
@@ -78,6 +79,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       ////////////////////////////////
       // Find out if selectedInput is in Track Options
       const selectedInputIsInTrackOptions =
+        selectedInput?.id.includes('_notes') ||
         selectedInput?.id.includes('_FR_') ||
         selectedInput?.id.includes('_AT_') ||
         selectedInput?.id.includes('_AL_') ||
@@ -98,56 +100,82 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
 
       ////////////////////////////////
       // NAVIGATE TRACKS or ARTS or LAYERS or FADS
+      if (command === 'TAB') {
+        console.log('selectedSubItemId', selectedSubItemId)
+        console.log('optionField', optionField)
+        console.log('selectedInput', selectedInput)
+
+        //if (
+        //  selectedInput?.id.includes('changeLayout') &&
+        //  selectedSubItemId.includes('_notes')
+        //) {
+        //  setSelectedSubItemId(selectedItemId + '_FR_0')
+        //  return
+        //}
+        if (selectedInput?.id.includes('changeLayout')) return
+        ////////////////////////////////
+        if (selectedInputIsInTrackOptions) return
+        //if (selectedInputIsInTrackOptions) {
+        //  const nextNumber = parseInt(optionNumber ?? '0') + 1
+
+        //  let nextSubItemId = `${selectedItemId}_${optionType}_${nextNumber}`
+
+        //  if (optionType === 'FR' && nextNumber > selectedItemRangeCount - 1) {
+        //    nextSubItemId = selectedItemId + '_AT_0'
+        //  }
+        //  if (optionType === 'AT' && nextNumber > selectedItemArtCount - 1) {
+        //    nextSubItemId = selectedItemId + '_AL_0'
+        //  }
+        //  if (optionType === 'AL' && nextNumber > selectedItemLayerCount - 1) {
+        //    nextSubItemId = selectedItemId + '_FL_0'
+        //  }
+        //  if (optionType === 'FL' && nextNumber > selectedItemFadCount - 1) {
+        //    return
+        //  }
+        //  if (nextSubItemId === selectedSubItemId) return
+
+        //  setSelectedSubItemId(nextSubItemId)
+        //}
+
+        ////////////////////////////////
+        if (selectedInput?.id.includes(selectedItemId)) return
+        if (nextItemId === '') return
+        setSelectedItemId(nextItemId ?? '')
+        setSelectedSubItemId(`${nextItemId}_notes`)
+      }
+      if (command === 'SHIFT_TAB') {
+        if (selectedInput?.id.includes('changeLayout')) return
+        ////////////////////////////////
+        if (selectedInputIsInTrackOptions) return
+        ////////////////////////////////
+        if (selectedInput?.id.includes(selectedItemId)) return
+        if (previousItemId === '') return
+        setSelectedItemId(previousItemId ?? '')
+        setSelectedSubItemId(`${previousItemId}_notes`)
+      }
       if (command === 'ARROWUP') {
         if (selectedInput?.id.includes('notes')) return
         e.preventDefault()
 
         if (selectedInputIsInTrackOptions) {
           const nextNumber = parseInt(optionNumber ?? '0') - 1
-          let newInput =
-            selectedItemId +
-            '_' +
-            optionType +
-            '_' +
-            nextNumber +
-            '_' +
-            optionField
-
-          let previousSubItemId =
-            selectedItemId + '_' + optionType + '_' + nextNumber
+          let newInput = `${selectedItemId}_${optionType}_${nextNumber}_name`
+          let previousSubItemId = `${selectedItemId}_${optionType}_${nextNumber}`
 
           if (optionType === 'FR' && nextNumber < 0) {
             return
           }
           if (optionType === 'AT' && nextNumber < 0) {
-            newInput =
-              selectedItemId +
-              '_FR_' +
-              (selectedItemRangeCount - 1) +
-              '_' +
-              optionField
-            previousSubItemId =
-              selectedItemId + '_FR_' + (selectedItemRangeCount - 1)
+            newInput = `${selectedItemId}_FR_${selectedItemRangeCount - 1}_${optionField}`
+            previousSubItemId = `${selectedItemId}_FR_${selectedItemRangeCount - 1}`
           }
           if (optionType === 'AL' && nextNumber < 0) {
-            newInput =
-              selectedItemId +
-              '_AT_' +
-              (selectedItemArtCount - 1) +
-              '_' +
-              optionField
-            previousSubItemId =
-              selectedItemId + '_AT_' + (selectedItemArtCount - 1)
+            newInput = `${selectedItemId}_AT_${selectedItemArtCount - 1}_${optionField}`
+            previousSubItemId = `${selectedItemId}_AT_${selectedItemArtCount - 1}`
           }
           if (optionType === 'FL' && nextNumber < 0) {
-            newInput =
-              selectedItemId +
-              '_AL_' +
-              (selectedItemLayerCount - 1) +
-              '_' +
-              optionField
-            previousSubItemId =
-              selectedItemId + '_AL_' + (selectedItemLayerCount - 1)
+            newInput = `${selectedItemId}_AL_${selectedItemLayerCount - 1}_${optionField}`
+            previousSubItemId = `${selectedItemId}_AL_${selectedItemLayerCount - 1}`
           }
 
           setSelectedSubItemId(previousSubItemId)
@@ -169,7 +197,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         selectedInput?.blur()
         previousInput?.focus()
         setSelectedItemId(previousItemId ?? '')
-        setSelectedSubItemId(previousItemId + '_notes')
+        setSelectedSubItemId(`${previousItemId}_notes`)
       }
       if (command === 'ARROWDOWN') {
         if (selectedInput?.id.includes('notes')) return
@@ -177,29 +205,21 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
 
         if (selectedInputIsInTrackOptions) {
           const nextNumber = parseInt(optionNumber ?? '0') + 1
-          let newInput =
-            selectedItemId +
-            '_' +
-            optionType +
-            '_' +
-            nextNumber +
-            '_' +
-            optionField
 
-          let nextSubItemId =
-            selectedItemId + '_' + optionType + '_' + nextNumber
+          let newInput = `${selectedItemId}_${optionType}_${nextNumber}_name`
+          let nextSubItemId = `${selectedItemId}_${optionType}_${nextNumber}`
 
           if (optionType === 'FR' && nextNumber > selectedItemRangeCount - 1) {
-            newInput = selectedItemId + '_AT_0_' + optionField
-            nextSubItemId = selectedItemId + '_AT_0'
+            newInput = `${selectedItemId}_AT_0_${optionField}`
+            nextSubItemId = `${selectedItemId}_AT_0`
           }
           if (optionType === 'AT' && nextNumber > selectedItemArtCount - 1) {
-            newInput = selectedItemId + '_AL_0_' + optionField
-            nextSubItemId = selectedItemId + '_AL_0'
+            newInput = `${selectedItemId}_AL_0_${optionField}`
+            nextSubItemId = `${selectedItemId}_AL_0`
           }
           if (optionType === 'AL' && nextNumber > selectedItemLayerCount - 1) {
-            newInput = selectedItemId + '_FL_0_' + optionField
-            nextSubItemId = selectedItemId + '_FL_0'
+            newInput = `${selectedItemId}_FL_0_${optionField}`
+            nextSubItemId = `${selectedItemId}_FL_0`
           }
           if (optionType === 'FL' && nextNumber > selectedItemFadCount - 1) {
             return
@@ -222,13 +242,13 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
 
         nextInput?.focus()
         setSelectedItemId(nextItemId ?? '')
-        setSelectedSubItemId(nextItemId + '_notes')
+        setSelectedSubItemId(`${nextItemId}_notes`)
       }
       if (command === 'SHIFT_ARROWUP') {
         if (!selectedInput?.id.includes('_FR_0')) return
         e.preventDefault()
         const nextInput = window.document.getElementById(
-          selectedItemId + '_notes'
+          `${selectedItemId}_notes`
         )
         setSelectedSubItemId(selectedItemId + '_notes')
         nextInput?.focus()
@@ -238,9 +258,9 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         e.preventDefault()
 
         const nextInput = window.document.getElementById(
-          selectedItemId + '_FR_0_name'
+          `${selectedItemId}_FR_0_name`
         )
-        setSelectedSubItemId(selectedItemId + '_FR_0')
+        setSelectedSubItemId(`${selectedItemId}_FR_0`)
         nextInput?.focus()
       }
       ////////////////////////////////
@@ -254,9 +274,9 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
 
         e.preventDefault()
         const trackOptionsNameInput = window.document.getElementById(
-          selectedItemId + '_notes'
+          `${selectedItemId}_notes`
         )
-        setSelectedSubItemId(selectedItemId + '_notes')
+        setSelectedSubItemId(`${selectedItemId}_notes`)
         trackOptionsNameInput?.focus()
       }
       if (command === 'CTRL_ARROWLEFT') {
@@ -268,7 +288,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
 
         e.preventDefault()
         const trackListNameInput = window.document.getElementById(
-          selectedItemId + '_name'
+          `${selectedItemId}_name`
         )
         trackListNameInput?.focus()
       }
@@ -349,7 +369,26 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       ////////////////////////////////
       // eslint-disable-next-line react-hooks/exhaustive-deps
     },
-    [selectedItemId, previousItemId, nextItemId]
+    [
+      selectedItemId,
+      setSelectedItemId,
+      copiedItemId,
+      copiedSubItemId,
+      selectedSubItemId,
+      setCopiedItemId,
+      setCopiedSubItemId,
+      nextItemId,
+      setNextItemId,
+      previousItemId,
+      setPreviousItemId,
+      setSelectedSubItemId,
+      selectedItemRangeCount,
+      selectedItemArtCount,
+      selectedItemArtTogCount,
+      selectedItemArtTapCount,
+      selectedItemLayerCount,
+      selectedItemFadCount
+    ]
   )
   useEffect(() => {
     window.addEventListener('keydown', handleKeys)
