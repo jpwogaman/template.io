@@ -69,26 +69,29 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
 
   const handleKeys = useCallback(
     (e: KeyboardEvent) => {
-      const selectedInput = window.document.activeElement as
-        | HTMLInputElement
-        | HTMLButtonElement
+      if (e.repeat) {
+        e.preventDefault()
+        return
+      }
+
+      const prevSelectedInput = e.target as HTMLInputElement | HTMLButtonElement
       const command = commandSimplifier(e)
-      //const isButton = selectedInput?.tagName === 'BUTTON'
-      const isSelect = selectedInput?.tagName === 'SELECT'
+
+      const isSelect = prevSelectedInput?.tagName === 'SELECT'
 
       ////////////////////////////////
       // Find out if selectedInput is in Track Options
       const selectedInputIsInTrackOptions =
-        selectedInput?.id.includes('_notes') ||
-        selectedInput?.id.includes('_FR_') ||
-        selectedInput?.id.includes('_AT_') ||
-        selectedInput?.id.includes('_AL_') ||
-        selectedInput?.id.includes('_FL_')
+        prevSelectedInput?.id.includes('_notes') ||
+        prevSelectedInput?.id.includes('_FR_') ||
+        prevSelectedInput?.id.includes('_AT_') ||
+        prevSelectedInput?.id.includes('_AL_') ||
+        prevSelectedInput?.id.includes('_FL_')
 
       // id will be like: T_1_FR_0_name
-      const optionType = selectedInput?.id.split('_')[2] // FR, AT, AL, FL
-      const optionNumber = selectedInput?.id.split('_')[3] // 0, 1, 2, 3
-      const optionField = selectedInput?.id.split('_')[4] // name, value, notes
+      const optionType = prevSelectedInput?.id.split('_')[2] // FR, AT, AL, FL
+      const optionNumber = prevSelectedInput?.id.split('_')[3] // 0, 1, 2, 3
+      const optionField = prevSelectedInput?.id.split('_')[4] // name, value, notes
 
       ////////////////////////////////
       // Special case for Articulations
@@ -106,7 +109,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         }
         console.log('selectedSubItemId', selectedSubItemId)
         console.log('optionField', optionField)
-        console.log('selectedInput', selectedInput.id)
+        console.log('prevSelectedInput', prevSelectedInput?.id)
 
         //if (
         //  selectedInput?.id.includes('changeLayout') &&
@@ -115,7 +118,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         //  setSelectedSubItemId(selectedItemId + '_FR_0')
         //  return
         //}
-        if (selectedInput?.id.includes('changeLayout')) return
+        if (prevSelectedInput?.id.includes('changeLayout')) return
         ////////////////////////////////
         if (selectedInputIsInTrackOptions) return
         //if (selectedInputIsInTrackOptions) {
@@ -141,23 +144,23 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         //}
 
         ////////////////////////////////
-        if (selectedInput?.id.includes(selectedItemId)) return
+        if (prevSelectedInput?.id.includes(selectedItemId)) return
         if (nextItemId === '') return
         setSelectedItemId(nextItemId ?? '')
         setSelectedSubItemId(`${nextItemId}_notes`)
       }
       if (command === 'SHIFT_TAB') {
-        if (selectedInput?.id.includes('changeLayout')) return
+        if (prevSelectedInput?.id.includes('changeLayout')) return
         ////////////////////////////////
         if (selectedInputIsInTrackOptions) return
         ////////////////////////////////
-        if (selectedInput?.id.includes(selectedItemId)) return
+        if (prevSelectedInput?.id.includes(selectedItemId)) return
         if (previousItemId === '') return
         setSelectedItemId(previousItemId ?? '')
         setSelectedSubItemId(`${previousItemId}_notes`)
       }
       if (command === 'ARROWUP') {
-        if (selectedInput?.id.includes('notes')) return
+        if (prevSelectedInput?.id.includes('notes')) return
         e.preventDefault()
 
         if (selectedInputIsInTrackOptions) {
@@ -191,19 +194,19 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
 
         if (previousItemId === '') return
 
-        const newInput = selectedInput?.id.replace(
+        const newInput = prevSelectedInput?.id.replace(
           selectedItemId ?? '',
           previousItemId ?? ''
         )
         const previousInput = window.document.getElementById(newInput ?? '')
 
-        selectedInput?.blur()
+        prevSelectedInput?.blur()
         previousInput?.focus()
         setSelectedItemId(previousItemId ?? '')
         setSelectedSubItemId(`${previousItemId}_notes`)
       }
       if (command === 'ARROWDOWN') {
-        if (selectedInput?.id.includes('notes')) return
+        if (prevSelectedInput?.id.includes('notes')) return
         e.preventDefault()
 
         if (selectedInputIsInTrackOptions) {
@@ -237,7 +240,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
 
         if (nextItemId === '') return
 
-        const newInput = selectedInput?.id.replace(
+        const newInput = prevSelectedInput?.id.replace(
           selectedItemId ?? '',
           nextItemId ?? ''
         )
@@ -248,7 +251,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         setSelectedSubItemId(`${nextItemId}_notes`)
       }
       if (command === 'SHIFT_ARROWUP') {
-        if (!selectedInput?.id.includes('_FR_0')) return
+        if (!prevSelectedInput?.id.includes('_FR_0')) return
         e.preventDefault()
         const nextInput = window.document.getElementById(
           `${selectedItemId}_notes`
@@ -257,7 +260,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         nextInput?.focus()
       }
       if (command === 'SHIFT_ARROWDOWN') {
-        if (!selectedInput?.id.includes('_notes')) return
+        if (!prevSelectedInput?.id.includes('_notes')) return
         e.preventDefault()
 
         const nextInput = window.document.getElementById(
@@ -272,7 +275,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         if (isSelect) e.preventDefault()
       }
       if (command === 'CTRL_ARROWRIGHT') {
-        if (selectedInput?.id.includes('notes')) return
+        if (prevSelectedInput?.id.includes('notes')) return
         if (selectedInputIsInTrackOptions) return
 
         e.preventDefault()
@@ -284,7 +287,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       }
       if (command === 'CTRL_ARROWLEFT') {
         if (
-          !selectedInput?.id.includes('notes') &&
+          !prevSelectedInput?.id.includes('notes') &&
           !selectedInputIsInTrackOptions
         )
           return
@@ -298,13 +301,13 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       ////////////////////////////////
       // ADD NEW TRACK or ART or LAYER or FAD
       if (command === 'CTRL_SHIFT_ARROWUP') {
-        if (selectedInput?.id.includes('notes')) return
+        if (prevSelectedInput?.id.includes('notes')) return
         e.preventDefault()
         alert('Add new item above')
         //create.track()
       }
       if (command === 'CTRL_SHIFT_ARROWDOWN') {
-        if (selectedInput?.id.includes('notes')) return
+        if (prevSelectedInput?.id.includes('notes')) return
         e.preventDefault()
         alert('Add new item below')
         create.track({ count: 1 })
@@ -312,12 +315,12 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       ////////////////////////////////
       // DUPLICATE TRACK or ART or LAYER or FAD
       if (command === 'CTRL_SHIFT_ALT_ARROWUP') {
-        if (selectedInput?.id.includes('notes')) return
+        if (prevSelectedInput?.id.includes('notes')) return
         e.preventDefault()
         alert('Duplicate selected item above')
       }
       if (command === 'CTRL_SHIFT_ALT_ARROWDOWN') {
-        if (selectedInput?.id.includes('notes')) return
+        if (prevSelectedInput?.id.includes('notes')) return
         e.preventDefault()
         alert('Duplicate selected item below')
       }
@@ -394,9 +397,9 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
     ]
   )
   useEffect(() => {
-    window.addEventListener('keyup', handleKeys)
+    window.addEventListener('keydown', handleKeys)
     return () => {
-      window.removeEventListener('keyup', handleKeys)
+      window.removeEventListener('keydown', handleKeys)
     }
   }, [handleKeys])
 
