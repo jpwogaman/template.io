@@ -5,14 +5,31 @@ use crate::{
 };
 use diesel::prelude::*;
 
-pub fn list_items_full_ranges(fileitems_item_id: String) -> Vec<ItemsFullRanges> {
+pub fn list_items_full_ranges(
+  fileitems_item_id: String
+) -> Vec<ItemsFullRanges> {
   let connection = &mut establish_db_connection();
 
-  dsl::items_full_ranges
+  let mut items_full_ranges = dsl::items_full_ranges
     .filter(dsl::fileitems_item_id.eq(fileitems_item_id))
-    .order_by(dsl::id.asc())
     .load::<ItemsFullRanges>(connection)
-    .expect("Error loading items_full_ranges")
+    .expect("Error loading items_full_ranges");
+
+  items_full_ranges.sort_by(|a, b| {
+    let a_id_number = a.id
+      .split('_')
+      .nth(3)
+      .and_then(|num| num.parse::<i32>().ok())
+      .unwrap_or(0);
+    let b_id_number = b.id
+      .split('_')
+      .nth(3)
+      .and_then(|num| num.parse::<i32>().ok())
+      .unwrap_or(0);
+    a_id_number.cmp(&b_id_number)
+  });
+
+  items_full_ranges
 }
 
 pub fn get_full_range(id: String) -> Option<ItemsFullRanges> {
@@ -66,7 +83,9 @@ pub fn delete_all_full_ranges_for_fileitem(fileitems_item_id: String) {
 
   diesel
     ::delete(
-      dsl::items_full_ranges.filter(dsl::fileitems_item_id.eq(fileitems_item_id))
+      dsl::items_full_ranges.filter(
+        dsl::fileitems_item_id.eq(fileitems_item_id)
+      )
     )
     .execute(connection)
     .expect("Error deleting range");

@@ -8,11 +8,26 @@ use diesel::prelude::*;
 pub fn list_items_art_layers(fileitems_item_id: String) -> Vec<ItemsArtLayers> {
   let connection = &mut establish_db_connection();
 
-  dsl::items_art_layers
+  let mut items_art_layers = dsl::items_art_layers
     .filter(dsl::fileitems_item_id.eq(fileitems_item_id))
-    .order_by(dsl::id.asc())
     .load::<ItemsArtLayers>(connection)
-    .expect("Error loading items_art_layers")
+    .expect("Error loading items_art_layers");
+
+  items_art_layers.sort_by(|a, b| {
+    let a_id_number = a.id
+      .split('_')
+      .nth(3)
+      .and_then(|num| num.parse::<i32>().ok())
+      .unwrap_or(0);
+    let b_id_number = b.id
+      .split('_')
+      .nth(3)
+      .and_then(|num| num.parse::<i32>().ok())
+      .unwrap_or(0);
+    a_id_number.cmp(&b_id_number)
+  });
+
+  items_art_layers
 }
 
 pub fn get_art_layer(id: String) -> Option<ItemsArtLayers> {

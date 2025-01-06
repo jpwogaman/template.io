@@ -5,14 +5,31 @@ use crate::{
 };
 use diesel::prelude::*;
 
-pub fn list_items_artlist_tap(fileitems_item_id: String) -> Vec<ItemsArtListTap> {
+pub fn list_items_artlist_tap(
+  fileitems_item_id: String
+) -> Vec<ItemsArtListTap> {
   let connection = &mut establish_db_connection();
 
-  dsl::items_artlist_tap
+  let mut items_artlist_tap = dsl::items_artlist_tap
     .filter(dsl::fileitems_item_id.eq(fileitems_item_id))
-    .order_by(dsl::id.asc())
     .load::<ItemsArtListTap>(connection)
-    .expect("Error loading items_artlist_tap")
+    .expect("Error loading items_artlist_tap");
+
+  items_artlist_tap.sort_by(|a, b| {
+    let a_id_number = a.id
+      .split('_')
+      .nth(3)
+      .and_then(|num| num.parse::<i32>().ok())
+      .unwrap_or(0);
+    let b_id_number = b.id
+      .split('_')
+      .nth(3)
+      .and_then(|num| num.parse::<i32>().ok())
+      .unwrap_or(0);
+    a_id_number.cmp(&b_id_number)
+  });
+
+  items_artlist_tap
 }
 
 pub fn get_art_tap(id: String) -> Option<ItemsArtListTap> {
@@ -66,7 +83,9 @@ pub fn delete_all_art_tap_for_fileitem(fileitems_item_id: String) {
 
   diesel
     ::delete(
-      dsl::items_artlist_tap.filter(dsl::fileitems_item_id.eq(fileitems_item_id))
+      dsl::items_artlist_tap.filter(
+        dsl::fileitems_item_id.eq(fileitems_item_id)
+      )
     )
     .execute(connection)
     .expect("Error deleting art_tap");

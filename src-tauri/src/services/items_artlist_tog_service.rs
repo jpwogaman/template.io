@@ -8,11 +8,26 @@ use diesel::prelude::*;
 pub fn list_items_artlist_tog(fileitems_item_id: String) -> Vec<ItemsArtListTog> {
   let connection = &mut establish_db_connection();
 
-  dsl::items_artlist_tog
+  let mut items_artlist_tog = dsl::items_artlist_tog
     .filter(dsl::fileitems_item_id.eq(fileitems_item_id))
-    .order_by(dsl::id.asc())
     .load::<ItemsArtListTog>(connection)
-    .expect("Error loading items_artlist_tog")
+    .expect("Error loading items_artlist_tog");
+
+  items_artlist_tog.sort_by(|a, b| {
+    let a_id_number = a.id
+      .split('_')
+      .nth(3)
+      .and_then(|num| num.parse::<i32>().ok())
+      .unwrap_or(0);
+    let b_id_number = b.id
+      .split('_')
+      .nth(3)
+      .and_then(|num| num.parse::<i32>().ok())
+      .unwrap_or(0);
+    a_id_number.cmp(&b_id_number)
+  });
+
+  items_artlist_tog
 }
 
 pub fn get_art_tog(id: String) -> Option<ItemsArtListTog> {

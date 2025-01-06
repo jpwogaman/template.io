@@ -8,11 +8,26 @@ use diesel::prelude::*;
 pub fn list_items_fadlist(fileitems_item_id: String) -> Vec<ItemsFadList> {
   let connection = &mut establish_db_connection();
 
-  dsl::items_fadlist
+  let mut items_fadlist = dsl::items_fadlist
     .filter(dsl::fileitems_item_id.eq(fileitems_item_id))
-    .order_by(dsl::id.asc())
     .load::<ItemsFadList>(connection)
-    .expect("Error loading items_fadlist")
+    .expect("Error loading items_fadlist");
+
+  items_fadlist.sort_by(|a, b| {
+    let a_id_number = a.id
+      .split('_')
+      .nth(3)
+      .and_then(|num| num.parse::<i32>().ok())
+      .unwrap_or(0);
+    let b_id_number = b.id
+      .split('_')
+      .nth(3)
+      .and_then(|num| num.parse::<i32>().ok())
+      .unwrap_or(0);
+    a_id_number.cmp(&b_id_number)
+  });
+
+  items_fadlist
 }
 
 pub fn get_fad(id: String) -> Option<ItemsFadList> {
