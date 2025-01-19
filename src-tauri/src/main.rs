@@ -29,10 +29,78 @@ use tauri::{
   tray::{ MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent },
 };
 
+use specta_typescript::Typescript;
+use tauri_specta::{ collect_commands, Builder };
+
 #[tokio::main]
 async fn main() {
   tauri::async_runtime::set(tokio::runtime::Handle::current());
   let context = tauri::generate_context!();
+
+  /////
+  let builder = Builder::<tauri::Wry>::new().commands(
+    collect_commands![
+      // fileitem_commands
+      list_fileitems,
+      list_all_fileitems_and_relations,
+      list_all_fileitems_and_relation_counts,
+      get_fileitem,
+      get_fileitem_and_relations,
+      create_fileitem,
+      delete_fileitem,
+      clear_fileitem,
+      renumber_all_fileitems,
+      delete_fileitem_and_relations,
+      //create_all_fileitems_from_json,
+      delete_all_fileitems_and_relations,
+      list_all_fileitems_and_relations_for_json_export,
+      update_fileitem,
+      // items_full_ranges_commands
+      list_items_full_ranges,
+      get_full_range,
+      create_full_range,
+      delete_full_range,
+      delete_full_range_by_fileitem,
+      update_full_range,
+      // items_fadlist_commands
+      list_items_fadlist,
+      get_fad,
+      create_fad,
+      delete_fad,
+      delete_fad_by_fileitem,
+      update_fad,
+      // items_artlist_tog_commands
+      list_items_artlist_tog,
+      get_art_tog,
+      create_art_tog,
+      delete_art_tog,
+      delete_art_tog_by_fileitem,
+      update_art_tog,
+      // items_artlist_tap_commands
+      list_items_artlist_tap,
+      get_art_tap,
+      create_art_tap,
+      delete_art_tap,
+      delete_art_tap_by_fileitem,
+      update_art_tap,
+      // items_art_layers_commands
+      list_items_art_layers,
+      get_art_layer,
+      create_art_layer,
+      delete_art_layer,
+      delete_art_layer_by_fileitem,
+      update_art_layer,
+      // settings_commands
+      get_settings,
+      set_settings
+    ]
+  );
+
+  #[cfg(debug_assertions)]
+  builder
+    .export(Typescript::default(), "../src/components/commands/commands.ts")
+    .expect("Failed to export typescript bindings");
+  /////
 
   tauri::Builder
     ::default()
@@ -46,12 +114,16 @@ async fn main() {
     .plugin(tauri_plugin_fs::init())
     .plugin(tauri_plugin_global_shortcut::Builder::new().build())
     .plugin(tauri_plugin_shell::init())
-    .setup(|app| {
+    .setup(move |app| {
       tokio::spawn(async move {
         db::init();
         settings_services::Settings::init();
         fileitem_service::init();
       });
+
+      /////
+      builder.mount_events(app);
+      /////
       let file_submenu = SubmenuBuilder::new(app, "File")
         .text("import", "Import")
         .text("export", "Export")

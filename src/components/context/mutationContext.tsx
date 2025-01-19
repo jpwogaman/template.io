@@ -12,12 +12,19 @@ import {
 } from 'react'
 
 import { invoke } from '@tauri-apps/api/core'
+//import {
+//  type FullTrackWithCounts,
+//  type FullTrackForExport,
+//  type FileItem
+//} from 'src-tauri/src/models'
+import { useSelectedItem } from './selectedItemContext'
 import {
+  commands,
+  type Settings,
   type FullTrackWithCounts,
   type FullTrackForExport,
   type FileItem
-} from 'src-tauri/src/models'
-import { useSelectedItem } from './selectedItemContext'
+} from '../commands/commands'
 
 interface MutationContextType {
   data: FullTrackWithCounts[] | null
@@ -195,117 +202,145 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
 
   //////////////////////////////////////////
   // initial queries
-  const getData = useCallback(
-    async () =>
-      await invoke('list_all_fileitems_and_relation_counts').then((data) => {
-        setData(data as FullTrackWithCounts[])
-      }),
+  const getData = useCallback(async () => {
+    try {
+      const data = await commands.listAllFileitemsAndRelationCounts()
+      setData(data)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }, [])
+
+  const getSelectedItem = useCallback(async () => {
+    if (!selectedItemId) return
+    try {
+      const data = await commands.getFileitemAndRelations(selectedItemId)
+      setSelectedItem(data as FullTrackForExport)
+    } catch (error) {
+      console.error('Error fetching selected item:', error)
+    }
+  }, [selectedItemId])
+
+  const refetchAll = useCallback(() => {
+    void getData()
+  }, [getData])
+
+  const refetchSelected = useCallback(() => {
+    void getSelectedItem()
+  }, [getSelectedItem])
+
+  //////////////////////////////////////////
+
+  const getSettings = useCallback(async () => {
+    const settings = await commands.getSettings()
+    return settings
+  }, [])
+
+  const updateSettings = useCallback(
+    async ({
+      key,
+      value
+    }: {
+      key: keyof Settings
+      value: Settings[keyof Settings]
+    }) => {
+      const settings = await commands.getSettings()
+      commands.setSettings({ ...settings, [key]: value })
+    },
     []
   )
 
-  //const refetchAll = () => getData()
-
-  const getSelectedItem = useCallback(
-    async () =>
-      await invoke('get_fileitem_and_relations', { id: selectedItemId }).then(
-        (data) => {
-          setSelectedItem(data as FullTrackForExport)
-        }
-      ),
-    [selectedItemId]
-  )
-
-  //const refetchSelected = () => getSelectedItem()
   //////////////////////////////////////////
   // logic to count vep samplers and instances
   const dataLength = data?.length ?? 0
-  const vepSamplerCount = 0
-  const nonVepSamplerCount = 0
-  const vepInstanceCount = 0
+  let vepSamplerCount = 0
+  let nonVepSamplerCount = 0
+  let vepInstanceCount = 0
 
-  //const vepInstanceArray: string[] = []
-  //for (const item of data ?? []) {
-  //  vepInstanceArray.push(item.vepInstance)
-  //}
-  //const vepInstanceArraySet = new Set(
-  //  vepInstanceArray.filter((item) => item !== '')
-  //)
-  //const vepInstanceArraySetArray = Array.from(vepInstanceArraySet)
-  //const vepInstanceCount = vepInstanceArraySetArray.filter(
-  //  (item) => item !== 'N/A'
-  //).length
+  const vepInstanceArray: string[] = []
+  for (const item of data ?? []) {
+    vepInstanceArray.push(item.vep_instance)
+  }
+  const vepInstanceArraySet = new Set(
+    vepInstanceArray.filter((item) => item !== '')
+  )
+  const vepInstanceArraySetArray = Array.from(vepInstanceArraySet)
+  
+  vepInstanceCount = vepInstanceArraySetArray.filter(
+    (item) => item !== 'N/A'
+  ).length
 
-  //const instanceArraysObject: {
-  //  [key: string]: string[]
-  //} = {}
+  const instanceArraysObject: {
+    [key: string]: string[]
+  } = {}
 
-  //for (const element of vepInstanceArraySetArray) {
-  //  Object.defineProperty(instanceArraysObject, element, {
-  //    value: [],
-  //    writable: true,
-  //    enumerable: true,
-  //    configurable: true
-  //  })
-  //}
+  for (const element of vepInstanceArraySetArray) {
+    Object.defineProperty(instanceArraysObject, element, {
+      value: [],
+      writable: true,
+      enumerable: true,
+      configurable: true
+    })
+  }
 
-  //for (const item of data ?? []) {
-  //  const itemInstance = item.vepInstance
-  //  if (itemInstance === '') continue
+  for (const item of data ?? []) {
+    const itemInstance = item.vep_instance
+    if (itemInstance === '') continue
 
-  //  if (itemInstance === 'N/A') {
-  //    if (item.name === '') continue
-  //    if (item.channel !== 1) continue
-  //    nonVepSamplerCount++
-  //    continue
-  //  }
+    if (itemInstance === 'N/A') {
+      if (item.name === '') continue
+      if (item.channel !== 1) continue
+      nonVepSamplerCount++
+      continue
+    }
 
-  //  if (vepInstanceArraySetArray.find((element) => element === itemInstance)) {
-  //    instanceArraysObject[itemInstance]?.push(item.smpNumber)
-  //  }
-  //}
+    if (vepInstanceArraySetArray.find((element) => element === itemInstance)) {
+      instanceArraysObject[itemInstance]?.push(item.smp_number)
+    }
+  }
 
-  //const eachInstanceArraySet: {
-  //  [key: string]: Set<string>
-  //} = {}
+  const eachInstanceArraySet: {
+    [key: string]: Set<string>
+  } = {}
 
-  //for (const [key, value] of Object.entries(instanceArraysObject)) {
-  //  eachInstanceArraySet[key] = new Set(value)
-  //}
+  for (const [key, value] of Object.entries(instanceArraysObject)) {
+    eachInstanceArraySet[key] = new Set(value)
+  }
 
-  //const eachInstanceArraySetArray: {
-  //  [key: string]: string[]
-  //} = {}
+  const eachInstanceArraySetArray: {
+    [key: string]: string[]
+  } = {}
 
-  //for (const [key, value] of Object.entries(eachInstanceArraySet)) {
-  //  eachInstanceArraySetArray[key] = Array.from(value)
-  //}
+  for (const [key, value] of Object.entries(eachInstanceArraySet)) {
+    eachInstanceArraySetArray[key] = Array.from(value)
+  }
 
-  //const eachInstanceArraySetArrayLength: {
-  //  [key: string]: number
-  //} = {}
+  const eachInstanceArraySetArrayLength: {
+    [key: string]: number
+  } = {}
 
-  //for (const [key, value] of Object.entries(eachInstanceArraySetArray)) {
-  //  eachInstanceArraySetArrayLength[key] = value.length
-  //}
+  for (const [key, value] of Object.entries(eachInstanceArraySetArray)) {
+    eachInstanceArraySetArrayLength[key] = value.length
+  }
 
-  //const eachInstanceArraySetArrayLengthArray = Object.values(
-  //  eachInstanceArraySetArrayLength
-  //)
+  const eachInstanceArraySetArrayLengthArray = Object.values(
+    eachInstanceArraySetArrayLength
+  )
 
-  //for (const element of eachInstanceArraySetArrayLengthArray) {
-  //  vepSamplerCount += element
-  //}
+  for (const element of eachInstanceArraySetArrayLengthArray) {
+    vepSamplerCount += element
+  }
 
   //////////////////////////////////////////
   // logic to find previous and next item ids
 
-  const updateSettings = useCallback(
-    async () =>
-      await invoke('set_settings', { id: selectedItemId }).then((data) => {
-        setSelectedItem(data as FullTrackForExport)
-      }),
-    [selectedItemId]
-  )
+  //const updateSettings = useCallback(
+  //  async () =>
+  //    await invoke('set_settings', { id: selectedItemId }).then((data) => {
+  //      setSelectedItem(data as FullTrackForExport)
+  //    }),
+  //  [selectedItemId]
+  //)
 
   useEffect(() => {
     if (!data) return
@@ -328,24 +363,18 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     setSelectedItemLayerCount(data[index]?._count?.art_layers ?? 0)
     setSelectedItemFadCount(data[index]?._count?.fad_list ?? 0)
 
-    getSelectedItem().catch((error) => {
-      console.log('getSelectedItem_error', error)
-    })
+    refetchSelected()
   }, [selectedItemId, data])
 
   //////////////////////////////////////////
   // CREATE mutations
-
   const createSingleItemMutation = useCallback(
-    ({ count }: { count: number }) => {
-      void invoke('create_fileitem', { count: count })
+    async ({ count }: { count: number }) => {
+      await commands
+        .createFileitem(count)
         .then(() => {
-          getData().catch((error) => {
-            console.log('getData error', error)
-          })
-          getSelectedItem().catch((error) => {
-            console.log('getSelectedItem error', error)
-          })
+          refetchAll()
+          refetchSelected()
         })
         .catch((error) => {
           console.log('create_fileitem error', error)

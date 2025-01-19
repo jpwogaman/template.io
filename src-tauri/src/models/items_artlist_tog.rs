@@ -22,7 +22,8 @@ use ts_rs::TS;
   Debug,
   PartialEq,
   Clone,
-  TS
+  TS,
+  specta::Type
 )]
 #[diesel(belongs_to(FileItem, foreign_key = fileitems_item_id))]
 #[diesel(table_name = items_artlist_tog)]
@@ -43,33 +44,45 @@ pub struct ItemsArtListTog {
   pub fileitems_item_id: String,
 }
 
-#[derive(Deserialize, Serialize, TS)]
+#[derive(Deserialize, Serialize, TS, specta::Type)]
 #[ts(export, export_to = "itemsArtlistTog.ts")]
 pub struct ItemsArtListTogRequest {
   pub id: String,
   #[ts(optional)]
+  #[specta(optional)]
   pub name: Option<String>,
   #[ts(optional)]
+  #[specta(optional)]
   pub toggle: Option<bool>,
   #[ts(optional)]
+  #[specta(optional)]
   pub code_type: Option<String>,
   #[ts(optional)]
+  #[specta(optional)]
   pub code: Option<i32>,
   #[ts(optional)]
+  #[specta(optional)]
   pub on: Option<i32>,
   #[ts(optional)]
+  #[specta(optional)]
   pub off: Option<i32>,
   #[ts(optional)]
+  #[specta(optional)]
   pub default: Option<String>,
   #[ts(optional)]
+  #[specta(optional)]
   pub delay: Option<i32>,
   #[ts(optional)]
+  #[specta(optional)]
   pub change_type: Option<String>,
   #[ts(optional)]
+  #[specta(optional)]
   pub ranges: Option<String>,
   #[ts(optional)]
+  #[specta(optional)]
   pub art_layers: Option<String>,
   #[ts(optional)]
+  #[specta(optional)]
   pub fileitems_item_id: Option<String>,
 }
 

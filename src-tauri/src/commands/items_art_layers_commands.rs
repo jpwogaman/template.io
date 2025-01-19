@@ -4,16 +4,19 @@ use crate::{
 };
 
 #[tauri::command]
+#[specta::specta]
 pub fn list_items_art_layers(fileitems_item_id: String) -> Vec<ItemsArtLayers> {
   items_art_layers_service::list_items_art_layers(fileitems_item_id)
 }
 
 #[tauri::command]
+#[specta::specta]
 pub fn get_art_layer(id: String) -> Option<ItemsArtLayers> {
   items_art_layers_service::get_art_layer(id)
 }
 
 #[tauri::command]
+#[specta::specta]
 pub fn create_art_layer(fileitems_item_id: String, count: i32) {
   // id's are T_0_FR_0, T_0_FR_1, T_0_FR_2, etc. so we need to find the highest id and increment it
   let items_art_layers = items_art_layers_service::list_items_art_layers(
@@ -58,16 +61,19 @@ pub fn create_art_layer(fileitems_item_id: String, count: i32) {
 }
 
 #[tauri::command]
+#[specta::specta]
 pub fn delete_art_layer(id: String) {
   items_art_layers_service::delete_art_layer(id)
 }
 
 #[tauri::command]
+#[specta::specta]
 pub fn delete_art_layer_by_fileitem(id: String, fileitems_item_id: String) {
   items_art_layers_service::delete_art_layer_by_fileitem(id, fileitems_item_id)
 }
 
 #[tauri::command]
+#[specta::specta]
 pub fn update_art_layer(data: ItemsArtLayersRequest) {
   items_art_layers_service::update_art_layer(data);
 }

@@ -1,7 +1,7 @@
 use serde::{ Deserialize, Serialize };
 use ts_rs::TS;
 
-#[derive(Deserialize, Serialize, Debug, TS)]
+#[derive(Deserialize, Serialize, Debug, TS, specta::Type)]
 #[ts(export, export_to = "settings.ts")]
 pub struct Settings {
   pub vep_out_settings: i32,
@@ -14,6 +14,8 @@ pub struct Settings {
   pub sub_item_add_count: i32,
   pub selected_item_id: String,
   pub selected_sub_item_id: String,
+  #[ts(optional)]
+  #[specta(optional)]
   pub previous_item_id: Option<String>,
   pub next_item_id: String,
 }
