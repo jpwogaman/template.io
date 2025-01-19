@@ -1,6 +1,7 @@
 use crate::{
   schema::fileitems,
   models::{
+    file_metadata::{ FileMetadata },
     items_full_ranges::{ ItemsFullRanges },
     items_fadlist::{ ItemsFadList },
     items_artlist_tog::{ ItemsArtListTog },
@@ -11,7 +12,7 @@ use crate::{
 
 use diesel::{ Insertable, Queryable, AsChangeset, Identifiable };
 use serde::{ Serialize, Deserialize };
-use serde_json::{  Value };
+use ts_rs::TS;
 
 #[derive(
   Queryable,
@@ -22,9 +23,11 @@ use serde_json::{  Value };
   AsChangeset,
   Debug,
   PartialEq,
-  Clone
+  Clone,
+  TS
 )]
 #[diesel(table_name = fileitems)]
+#[ts(export, export_to = "fileitem.ts")]
 pub struct FileItem {
   pub id: String,
   pub locked: bool,
@@ -40,19 +43,31 @@ pub struct FileItem {
   pub color: String,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, TS)]
+#[ts(export, export_to = "fileitem.ts")]
 pub struct FileItemRequest {
   pub id: String,
+  #[ts(optional)]
   pub locked: Option<bool>,
+  #[ts(optional)]
   pub name: Option<String>,
+  #[ts(optional)]
   pub notes: Option<String>,
+  #[ts(optional)]
   pub channel: Option<i32>,
+  #[ts(optional)]
   pub base_delay: Option<f32>,
+  #[ts(optional)]
   pub avg_delay: Option<f32>,
+  #[ts(optional)]
   pub vep_out: Option<String>,
+  #[ts(optional)]
   pub vep_instance: Option<String>,
+  #[ts(optional)]
   pub smp_number: Option<String>,
+  #[ts(optional)]
   pub smp_out: Option<String>,
+  #[ts(optional)]
   pub color: Option<String>,
 }
 
@@ -73,9 +88,10 @@ pub fn init_fileitem(id: String) -> FileItem {
   }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, TS)]
+#[ts(export, export_to = "fileitem.ts")]
 pub struct FullTrackForExport {
-  #[serde(flatten)]
+  #[ts(flatten)]
   pub fileitem: FileItem,
   pub full_ranges: Vec<ItemsFullRanges>,
   pub fad_list: Vec<ItemsFadList>,
@@ -84,13 +100,15 @@ pub struct FullTrackForExport {
   pub art_layers: Vec<ItemsArtLayers>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, TS)]
+#[ts(export, export_to = "fileitem.ts")]
 pub struct FullTrackListForExport {
-  pub file_meta_data: Value,
+  pub file_meta_data: FileMetadata,
   pub items: Vec<FullTrackForExport>,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, TS)]
+#[ts(export, export_to = "fileitem.ts")]
 pub struct FullTrackCounts {
   pub art_list_tog: i32,
   pub art_list_tap: i32,
@@ -99,9 +117,10 @@ pub struct FullTrackCounts {
   pub full_ranges: i32,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, TS)]
+#[ts(export, export_to = "fileitem.ts")]
 pub struct FullTrackWithCounts {
-  #[serde(flatten)]
+  #[ts(flatten)]
   pub fileitem: FileItem,
   pub _count: FullTrackCounts,
 }

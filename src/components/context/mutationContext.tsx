@@ -12,7 +12,11 @@ import {
 } from 'react'
 
 import { invoke } from '@tauri-apps/api/core'
-
+import {
+  type FullTrackWithCounts,
+  type FullTrackForExport,
+  type FileItem
+} from 'src-tauri/src/models'
 import { useSelectedItem } from './selectedItemContext'
 
 interface MutationContextType {
@@ -294,6 +298,15 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
 
   //////////////////////////////////////////
   // logic to find previous and next item ids
+
+  const updateSettings = useCallback(
+    async () =>
+      await invoke('set_settings', { id: selectedItemId }).then((data) => {
+        setSelectedItem(data as FullTrackForExport)
+      }),
+    [selectedItemId]
+  )
+
   useEffect(() => {
     if (!data) return
 

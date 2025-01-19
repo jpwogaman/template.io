@@ -10,6 +10,7 @@ use crate::{
       FullTrackCounts,
       init_fileitem,
     },
+    file_metadata::{ FileMetadata },
     items_full_ranges::{ ItemsFullRanges, init_full_range },
     items_fadlist::{ ItemsFadList, init_fad },
     items_artlist_tog::{ ItemsArtListTog, init_art_tog },
@@ -153,7 +154,10 @@ pub fn list_all_fileitems_and_relations_for_json_export() -> FullTrackListForExp
   let fileitems_and_relations = list_all_fileitems_and_relations();
 
   FullTrackListForExport {
-    file_meta_data: serde_json::json!({}),
+    file_meta_data: FileMetadata {
+      file_name: "".to_string(),
+      file_created_date: "".to_string(),
+    },
     items: fileitems_and_relations,
   }
 }

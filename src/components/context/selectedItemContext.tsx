@@ -4,13 +4,16 @@ import {
   createContext,
   useContext,
   useMemo,
-  useEffect,
   type ReactNode,
   type FC,
   type SetStateAction,
   type Dispatch,
-  useState
+  useState,
+  useCallback,
+  useEffect
 } from 'react'
+import { invoke } from '@tauri-apps/api/core'
+import { type Settings } from 'src-tauri/src/models'
 
 interface SelectedItemContextType {
   selectedItemId: string
@@ -78,13 +81,13 @@ interface SelectedItemProviderProps {
 export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
   children
 }) => {
-  const [selectedItemId, setSelectedItemId] = useState('T_12')
-  const [selectedSubItemId, setSelectedSubItemId] = useState('T_12_notes')
+  const [selectedItemId, setSelectedItemId] = useState('T_0')
+  const [selectedSubItemId, setSelectedSubItemId] = useState('T_0_notes')
   const [copiedItemId, setCopiedItemId] = useState<string | null>(null)
   const [copiedSubItemId, setCopiedSubItemId] = useState<string | null>(null)
 
-  const [previousItemId, setPreviousItemId] = useState<string | null>('T_11')
-  const [nextItemId, setNextItemId] = useState<string | null>('T_13')
+  const [previousItemId, setPreviousItemId] = useState<string | null>(null)
+  const [nextItemId, setNextItemId] = useState<string | null>('T_1')
 
   const [selectedItemRangeCount, setSelectedItemRangeCount] = useState(0)
   const [selectedItemArtTogCount, setSelectedItemArtTogCount] = useState(0)
@@ -92,6 +95,25 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
   const [selectedItemArtCount, setSelectedItemArtCount] = useState(0)
   const [selectedItemLayerCount, setSelectedItemLayerCount] = useState(0)
   const [selectedItemFadCount, setSelectedItemFadCount] = useState(0)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+    getData()
+  }, [])
+
+  const getData = useCallback(
+    async () =>
+      await invoke('get_settings').then((data) => {
+        const settings = data as Settings
+
+        setSelectedItemId(settings.selected_item_id)
+        setSelectedSubItemId(settings.selected_sub_item_id)
+        setPreviousItemId(settings.previous_item_id)
+        setNextItemId(settings.next_item_id)
+      }),
+    []
+  )
 
   const value = useMemo(
     () => ({
@@ -147,6 +169,10 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
       setCopiedSubItemId
     ]
   )
+
+  if (!mounted) {
+    return null
+  }
 
   return (
     <SelectedItemContext.Provider value={value}>

@@ -1,19 +1,7 @@
-use serde::{ Deserialize, Serialize };
 use std::fs;
 use std::io::Write;
 use std::path::Path;
-
-#[derive(Deserialize, Serialize, Debug)]
-pub struct Settings {
-  pub vep_out_settings: i32,
-  pub smp_out_settings: i32,
-  pub default_range_count: i32,
-  pub default_art_tog_count: i32,
-  pub default_art_tap_count: i32,
-  pub default_fad_tog_count: i32,
-  pub track_add_count: i32,
-  pub sub_item_add_count: i32,
-}
+pub use crate::models::{ settings::{ Settings, init_settings } };
 
 impl Settings {
   pub fn init() {
@@ -46,16 +34,7 @@ fn create_file() {
 
   let mut file = fs::File::create(path).unwrap();
 
-  let settings = Settings {
-    vep_out_settings: 128,
-    smp_out_settings: 32,
-    default_range_count: 1,
-    default_art_tog_count: 2,
-    default_art_tap_count: 4,
-    default_fad_tog_count: 4,
-    track_add_count: 1,
-    sub_item_add_count: 1,
-  };
+  let settings = init_settings();
 
   file
     .write_all(serde_json::to_string_pretty(&settings).unwrap().as_bytes())

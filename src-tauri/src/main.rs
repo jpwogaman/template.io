@@ -4,12 +4,13 @@
 )]
 
 mod db;
+mod schema;
+
 mod commands;
 mod models;
 mod services;
-mod schema;
+
 use tauri_plugin_log;
-mod settings;
 
 use commands::{
   fileitem_commands::*,
@@ -20,8 +21,7 @@ use commands::{
   items_artlist_tap_commands::*,
   items_art_layers_commands::*,
 };
-use services::{ fileitem_service, import_export_service };
-
+use services::{ settings_services, fileitem_service, import_export_service };
 use tauri::{
   Manager,
   Emitter,
@@ -49,7 +49,7 @@ async fn main() {
     .setup(|app| {
       tokio::spawn(async move {
         db::init();
-        settings::Settings::init();
+        settings_services::Settings::init();
         fileitem_service::init();
       });
       let file_submenu = SubmenuBuilder::new(app, "File")

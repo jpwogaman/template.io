@@ -15,6 +15,15 @@ import {
   useContextMenu
 } from '@/components/context'
 
+import {
+  type FullTrackForExport,
+  type ItemsFullRanges,
+  type ItemsArtLayers,
+  type ItemsArtListTap,
+  type ItemsArtListTog,
+  type ItemsFadList
+} from 'src-tauri/src/models'
+
 export const TrackOptions: FC = () => {
   const { selectedItemId, selectedSubItemId, setSelectedSubItemId } =
     useSelectedItem()
@@ -284,11 +293,11 @@ export const TrackOptions: FC = () => {
       </div>
       {TrackOptionsTableKeys.map((layoutConfig) => {
         let layoutDataArray:
-          | Items_Full_Ranges[]
-          | Items_ArtList_Tog[]
-          | Items_ArtList_Tap[]
-          | Items_Art_Layers[]
-          | Items_FadList[]
+          | ItemsFullRanges[]
+          | ItemsArtListTog[]
+          | ItemsArtListTap[]
+          | ItemsArtLayers[]
+          | ItemsFadList[]
           | undefined = []
 
         if (layoutConfig.label === 'full_ranges') {

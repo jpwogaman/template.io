@@ -8,6 +8,7 @@ use diesel::{
   Selectable,
 };
 use serde::{ Serialize, Deserialize };
+use ts_rs::TS;
 
 #[derive(
   Queryable,
@@ -20,10 +21,12 @@ use serde::{ Serialize, Deserialize };
   Associations,
   Debug,
   PartialEq,
-  Clone
+  Clone,
+  TS
 )]
 #[diesel(belongs_to(FileItem, foreign_key = fileitems_item_id))]
 #[diesel(table_name = items_art_layers)]
+#[ts(export, export_to = "itemsArtLayers.ts")]
 pub struct ItemsArtLayers {
   pub id: String,
   pub name: String,
@@ -36,16 +39,25 @@ pub struct ItemsArtLayers {
   pub fileitems_item_id: String,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, TS)]
+#[ts(export, export_to = "itemsArtLayers.ts")]
 pub struct ItemsArtLayersRequest {
   pub id: String,
+  #[ts(optional)]
   pub name: Option<String>,
+  #[ts(optional)]
   pub code_type: Option<String>,
+  #[ts(optional)]
   pub code: Option<i32>,
+  #[ts(optional)]
   pub on: Option<i32>,
+  #[ts(optional)]
   pub off: Option<i32>,
+  #[ts(optional)]
   pub default: Option<String>,
+  #[ts(optional)]
   pub change_type: Option<String>,
+  #[ts(optional)]
   pub fileitems_item_id: Option<String>,
 }
 

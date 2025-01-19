@@ -11,6 +11,8 @@ import {
   useContextMenu
 } from '@/components/context'
 
+import { type FullTrackForExport } from 'src-tauri/src/models'
+
 export const TrackList: FC = () => {
   const { selectedItemId, setSelectedItemId, setSelectedSubItemId } =
     useSelectedItem()

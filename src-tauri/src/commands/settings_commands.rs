@@ -1,4 +1,4 @@
-use crate::settings::Settings;
+use crate::services::settings_services::Settings;
 
 #[tauri::command]
 pub fn get_settings() -> Settings {

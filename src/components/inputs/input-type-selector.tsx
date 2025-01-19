@@ -14,6 +14,15 @@ import tw from '@/utils/tw'
 import { InputColorPicker } from './input-color-picker'
 import { InputTextRich } from './input-text-rich'
 
+import {
+  type FullTrackForExport,
+  type ItemsFullRanges,
+  type ItemsArtLayers,
+  type ItemsArtListTap,
+  type ItemsArtListTog,
+  type ItemsFadList
+} from 'src-tauri/src/models'
+
 export type OnChangeHelperArgsType = {
   newValue?: string | number | boolean
   layoutDataSingleId?: string
@@ -28,11 +37,11 @@ type InputTypeSelectorProps = {
     | SettingsTableKeys['keys'][number]
   layoutConfigLabel?: string
   layoutDataSingle?:
-    | Items_Full_Ranges
-    | Items_ArtList_Tog
-    | Items_ArtList_Tap
-    | Items_Art_Layers
-    | Items_FadList
+    | ItemsFullRanges
+    | ItemsArtListTog
+    | ItemsArtListTap
+    | ItemsArtLayers
+    | ItemsFadList
   onChangeHelper: ({
     newValue,
     layoutDataSingleId,
@@ -63,8 +72,9 @@ type InputTypeSelectorProps = {
   settingsModal?: boolean
 }
 
-type ChangeEventHelper = 
-  ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>
+type ChangeEventHelper = ChangeEvent<
+  HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement
+>
 
 export type InputComponentProps = {
   id: string
@@ -101,7 +111,6 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
   const inputColorPicker = input === 'color-picker'
   const inputText = input === 'text'
   const inputTextRich = input === 'text-rich'
-
 
   const MainComponentLevel =
     typeof layoutDataSingle === 'undefined' &&
@@ -192,7 +201,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
     const layersOptions = key === 'artLayers' && artLayerOptions
 
     const stringListFullArtLayerIds = JSON.stringify(
-      selectedItem?.art_layers.map((artLayer: Items_Art_Layers) => artLayer.id) ??
+      selectedItem?.art_layers.map((artLayer: ItemsArtLayers) => artLayer.id) ??
         ''
     )
 
@@ -202,7 +211,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
 
     const stringListOfFullRangeIds = JSON.stringify(
       selectedItem?.full_ranges.map(
-        (fullRange: Items_Full_Ranges) => fullRange.id
+        (fullRange: ItemsFullRanges) => fullRange.id
       )
     )
 
@@ -276,7 +285,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
         ? stringListOfFullRangeIds
         : layersOptions
           ? stringListFullArtLayerIds
-          : selectArray ?? '',
+          : (selectArray ?? ''),
       textTypeValidator: typeof layoutDataSingle[key as 'id'],
       onChangeFunction: (event: ChangeEventHelper) =>
         onChangeHelper({
