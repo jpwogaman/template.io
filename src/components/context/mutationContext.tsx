@@ -11,98 +11,92 @@ import {
   useState
 } from 'react'
 
-import { invoke } from '@tauri-apps/api/core'
-//import {
-//  type FullTrackWithCounts,
-//  type FullTrackForExport,
-//  type FileItem
-//} from 'src-tauri/src/models'
 import { useSelectedItem } from './selectedItemContext'
 import {
   commands,
   type Settings,
   type FullTrackWithCounts,
   type FullTrackForExport,
-  type FileItem
+  type FileItem,
+  FileItemRequest,
+  ItemsFullRangesRequest,
+  ItemsArtListTogRequest,
+  ItemsArtListTapRequest,
+  ItemsArtLayersRequest,
+  ItemsFadListRequest
 } from '../commands/commands'
+
+type createSubItemArgs = {
+  fileitemsItemId: string
+  count: number
+}
+
+type deleteSubItemArgs = {
+  id: string
+  fileitemsItemId: string
+}
+
+type pasteItemArgs = {
+  destinationItemId: string
+  copiedItemId: string
+}
 
 interface MutationContextType {
   data: FullTrackWithCounts[] | null
+  selectedItem: FullTrackForExport | null
   dataLength: number
-  //refetchAll: () => void
-  //refetchSelected: () => void
   vepSamplerCount: number
   vepInstanceCount: number
   nonVepSamplerCount: number
-  //////////////////////////////////////////
-  selectedItem: FullTrackForExport | null
+  refetchAll: () => void
+  refetchSelected: () => void
   //////////////////////////////////////////
   create: {
-    track: ({ count }: { count: number }) => void
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    fullRange: (data: any) => void
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    artListTog: (data: any) => void
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    artListTap: (data: any) => void
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    artLayer: (data: any) => void
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    fadList: (data: any) => void
+    track: (count: number) => void
+    fullRange: (data: createSubItemArgs) => void
+    artListTog: (data: createSubItemArgs) => void
+    artListTap: (data: createSubItemArgs) => void
+    artLayer: (data: createSubItemArgs) => void
+    fadList: (data: createSubItemArgs) => void
   }
   update: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    track: (data: any) => void
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    fullRange: (data: any) => void
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    artListTog: (data: any) => void
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    artListTap: (data: any) => void
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    artLayer: (data: any) => void
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    fadList: (data: any) => void
+    track: (data: FileItemRequest) => void
+    fullRange: (data: ItemsFullRangesRequest) => void
+    artListTog: (data: ItemsArtListTogRequest) => void
+    artListTap: (data: ItemsArtListTapRequest) => void
+    artLayer: (data: ItemsArtLayersRequest) => void
+    fadList: (data: ItemsFadListRequest) => void
   }
   del: {
-    track: (data: { itemId: string }) => void
     allTracks: () => void
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    fullRange: (data: any) => void
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    artListTog: (data: any) => void
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    artListTap: (data: any) => void
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    artLayer: (data: any) => void
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    fadList: (data: any) => void
+    track: (id: string) => void
+    fullRange: (data: deleteSubItemArgs) => void
+    artListTog: (data: deleteSubItemArgs) => void
+    artListTap: (data: deleteSubItemArgs) => void
+    artLayer: (data: deleteSubItemArgs) => void
+    fadList: (data: deleteSubItemArgs) => void
   }
   clear: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    track: (data: any) => void
+    track: (id: string) => void
   }
   renumber: {
     allTracks: () => void
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    artList: (data: any) => void
   }
   paste: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    track: (data: any) => void
+    track: (data: pasteItemArgs) => void
   }
 }
 
 const mutationContextDefaultValues: MutationContextType = {
   data: null,
+  selectedItem: null,
   dataLength: 0,
-  //refetchAll: () => {},
-  //refetchSelected: () => {},
   vepSamplerCount: 0,
   vepInstanceCount: 0,
   nonVepSamplerCount: 0,
-  //////////////////////////////////////////
-  selectedItem: null,
+  /* eslint-disable @typescript-eslint/no-empty-function */
+  refetchAll: () => {},
+  refetchSelected: () => {},
   //////////////////////////////////////////
   create: {
     /* eslint-disable @typescript-eslint/no-empty-function */
@@ -138,8 +132,7 @@ const mutationContextDefaultValues: MutationContextType = {
   },
   renumber: {
     /* eslint-disable @typescript-eslint/no-empty-function */
-    allTracks: () => {},
-    artList: () => {}
+    allTracks: () => {}
   },
   paste: {
     /* eslint-disable @typescript-eslint/no-empty-function */
@@ -183,6 +176,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     setCopiedItemId,
     setCopiedSubItemId
   } = useSelectedItem()
+
   const [mounted, setMounted] = useState(false)
   const [data, setData] = useState<FullTrackWithCounts[] | null>(null)
   const [selectedItem, setSelectedItem] = useState<FullTrackForExport | null>(
@@ -265,7 +259,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     vepInstanceArray.filter((item) => item !== '')
   )
   const vepInstanceArraySetArray = Array.from(vepInstanceArraySet)
-  
+
   vepInstanceCount = vepInstanceArraySetArray.filter(
     (item) => item !== 'N/A'
   ).length
@@ -330,18 +324,8 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   for (const element of eachInstanceArraySetArrayLengthArray) {
     vepSamplerCount += element
   }
-
   //////////////////////////////////////////
-  // logic to find previous and next item ids
-
-  //const updateSettings = useCallback(
-  //  async () =>
-  //    await invoke('set_settings', { id: selectedItemId }).then((data) => {
-  //      setSelectedItem(data as FullTrackForExport)
-  //    }),
-  //  [selectedItemId]
-  //)
-
+  // logic to find previous and next item ids, as well as set some other counts
   useEffect(() => {
     if (!data) return
 
@@ -365,11 +349,10 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
 
     refetchSelected()
   }, [selectedItemId, data])
-
   //////////////////////////////////////////
   // CREATE mutations
   const createSingleItemMutation = useCallback(
-    async ({ count }: { count: number }) => {
+    async (count: number) => {
       await commands
         .createFileitem(count)
         .then(() => {
@@ -377,393 +360,306 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
           refetchSelected()
         })
         .catch((error) => {
-          console.log('create_fileitem error', error)
+          console.log('createFileitem error', error)
         })
     },
-    [getData, getSelectedItem]
+    [refetchAll, refetchSelected]
   )
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  const createSingleFullRangeMutation = useCallback((data: any) => {
-    console.log('createSingleFullRangeMutation', data)
-  }, [])
-  //const createSingleFullRangeMutation =
-  //  trpc.items.createSingleFullRange.useMutation({
-  //    onSuccess: () => {
-  //      createSingleFullRangeMutation.reset()
-  //      refetchSelected()
-  //    },
-  //    onError: (error) => {
-  //      alert(
-  //        error.message ??
-  //          'There was an error submitting your request. Please try again.'
-  //      )
-  //    }
-  //  })
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const createSingleArtListTogMutation = useCallback((data: any) => {
-    console.log('createSingleArtListTogMutation', data)
-  }, [])
-  //const createSingleArtListTogMutation =
-  //  trpc.items.createSingleArtListTog.useMutation({
-  //    onSuccess: () => {
-  //      createSingleArtListTogMutation.reset()
-  //      //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-  //      refetchSelected()
-  //    },
-  //    onError: (error) => {
-  //      alert(
-  //        error.message ??
-  //          'There was an error submitting your request. Please try again.'
-  //      )
-  //    }
-  //  })
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const createSingleArtListTapMutation = useCallback((data: any) => {
-    console.log('createSingleArtListTapMutation', data)
-  }, [])
-  //const createSingleArtListTapMutation =
-  //  trpc.items.createSingleArtListTap.useMutation({
-  //    onSuccess: () => {
-  //      createSingleArtListTapMutation.reset()
-  //      //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-  //      refetchSelected()
-  //    },
-  //    onError: (error) => {
-  //      alert(
-  //        error.message ??
-  //          'There was an error submitting your request. Please try again.'
-  //      )
-  //    }
-  //  })
-
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const createSingleArtLayerMutation = useCallback((data: any) => {
-    console.log('createSingleArtLayerMutation', data)
-  }, [])
-  //const createSingleArtLayerMutation =
-  //  trpc.items.createSingleArtLayer.useMutation({
-  //    onSuccess: () => {
-  //      createSingleArtLayerMutation.reset()
-  //      //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-  //      refetchSelected()
-  //    },
-  //    onError: (error) => {
-  //      alert(
-  //        error.message ??
-  //          'There was an error submitting your request. Please try again.'
-  //      )
-  //    }
-  //  })
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const createSingleFadListMutation = useCallback((data: any) => {
-    console.log('createSingleFadListMutation', data)
-  }, [])
-  //const createSingleFadListMutation =
-  //  trpc.items.createSingleFadList.useMutation({
-  //    onSuccess: () => {
-  //      createSingleFadListMutation.reset()
-  //      refetchSelected()
-  //    },
-  //    onError: (error) => {
-  //      alert(
-  //        error.message ??
-  //          'There was an error submitting your request. Please try again.'
-  //      )
-  //    }
-  //  })
+  const createSingleFullRangeMutation = useCallback(
+    async ({ fileitemsItemId, count }: createSubItemArgs) => {
+      await commands
+        .createFullRange(fileitemsItemId, count)
+        .then(() => {
+          refetchAll()
+          refetchSelected()
+        })
+        .catch((error) => {
+          console.log('createFullRange error', error)
+        })
+    },
+    [refetchAll, refetchSelected]
+  )
+  const createSingleArtListTogMutation = useCallback(
+    async ({ fileitemsItemId, count }: createSubItemArgs) => {
+      await commands
+        .createArtTog(fileitemsItemId, count)
+        .then(() => {
+          refetchAll()
+          refetchSelected()
+        })
+        .catch((error) => {
+          console.log('createArtTog error', error)
+        })
+    },
+    [refetchAll, refetchSelected]
+  )
+  const createSingleArtListTapMutation = useCallback(
+    async ({ fileitemsItemId, count }: createSubItemArgs) => {
+      await commands
+        .createArtTap(fileitemsItemId, count)
+        .then(() => {
+          refetchAll()
+          refetchSelected()
+        })
+        .catch((error) => {
+          console.log('createArtTap error', error)
+        })
+    },
+    [refetchAll, refetchSelected]
+  )
+  const createSingleArtLayerMutation = useCallback(
+    async ({ fileitemsItemId, count }: createSubItemArgs) => {
+      await commands
+        .createArtLayer(fileitemsItemId, count)
+        .then(() => {
+          refetchAll()
+          refetchSelected()
+        })
+        .catch((error) => {
+          console.log('createArtLayer error', error)
+        })
+    },
+    [refetchAll, refetchSelected]
+  )
+  const createSingleFadListMutation = useCallback(
+    async ({ fileitemsItemId, count }: createSubItemArgs) => {
+      await commands
+        .createFad(fileitemsItemId, count)
+        .then(() => {
+          refetchAll()
+          refetchSelected()
+        })
+        .catch((error) => {
+          console.log('createFad error', error)
+        })
+    },
+    [refetchAll, refetchSelected]
+  )
   ////////////////////////////////////////////
   //// UPDATE mutations
-
-  const updateSingleItemMutation = useCallback((data: Partial<FileItem>) => {
-    void invoke('update_fileitem', { data: data })
-      .then(() => {})
-      .catch((error) => {
-        console.log('update_fileitem error', error)
-      })
-    console.log('updateSingleItemMutation')
-  }, [])
-  //const updateSingleItemMutation = trpc.items.updateSingleItem.useMutation({
-  //  onSuccess: () => {
-  //    updateSingleItemMutation.reset()
-  //    refetchAll()
-  //    refetchSelected()
-  //  },
-  //  onError: () => {
-  //    alert('There was an error submitting your request. Please try again.')
-  //  }
-  //})
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const updateSingleFullRangeMutation = useCallback((data: any) => {
-    console.log('updateSingleFullRangeMutation', data)
-  }, [])
-  //const updateSingleFullRangeMutation =
-  //  trpc.items.updateSingleFullRange.useMutation({
-  //    onSuccess: () => {
-  //      updateSingleFullRangeMutation.reset()
-  //      refetchSelected()
-  //    },
-  //    onError: (error) => {
-  //      alert(
-  //        error.message ??
-  //          'There was an error submitting your request. Please try again.'
-  //      )
-  //    }
-  //  })
-
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const updateSingleArtListTogMutation = useCallback((data: any) => {
-    console.log('updateSingleArtListTogMutation', data)
-  }, [])
-  //const updateSingleArtListTogMutation =
-  //  trpc.items.updateSingleArtListTog.useMutation({
-  //    onSuccess: () => {
-  //      updateSingleArtListTogMutation.reset()
-  //      refetchSelected()
-  //    },
-  //    onError: (error) => {
-  //      alert(
-  //        error.message ??
-  //          'There was an error submitting your request. Please try again.'
-  //      )
-  //    }
-  //  })
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const updateSingleArtListTapMutation = useCallback((data: any) => {
-    console.log('updateSingleArtListTapMutation', data)
-  }, [])
-  //const updateSingleArtListTapMutation =
-  //  trpc.items.updateSingleArtListTap.useMutation({
-  //    onSuccess: () => {
-  //      updateSingleArtListTapMutation.reset()
-  //      refetchSelected()
-  //    },
-  //    onError: (error) => {
-  //      alert(
-  //        error.message ??
-  //          'There was an error submitting your request. Please try again.'
-  //      )
-  //    }
-  //  })
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const updateSingleArtLayerMutation = useCallback((data: any) => {
-    console.log('updateSingleArtLayerMutation', data)
-  }, [])
-  //const updateSingleArtLayerMutation =
-  //  trpc.items.updateSingleArtLayer.useMutation({
-  //    onSuccess: () => {
-  //      updateSingleArtLayerMutation.reset()
-  //      //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-  //      refetchSelected()
-  //    },
-  //    onError: (error) => {
-  //      alert(
-  //        error.message ??
-  //          'There was an error submitting your request. Please try again.'
-  //      )
-  //    }
-  //  })
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const updateSingleFadListMutation = useCallback((data: any) => {
-    console.log('updateSingleFadListMutation', data)
-  }, [])
-  //const updateSingleFadListMutation =
-  //  trpc.items.updateSingleFadList.useMutation({
-  //    onSuccess: () => {
-  //      updateSingleFadListMutation.reset()
-  //      refetchSelected()
-  //    },
-  //    onError: (error) => {
-  //      alert(
-  //        error.message ??
-  //          'There was an error submitting your request. Please try again.'
-  //      )
-  //    }
-  //  })
+  const updateSingleItemMutation = useCallback(
+    async (data: FileItemRequest) => {
+      await commands
+        .updateFileitem(data)
+        .then(() => {
+          refetchAll()
+          refetchSelected()
+        })
+        .catch((error) => {
+          console.log('updateFileItem error', error)
+        })
+    },
+    [refetchAll, refetchSelected]
+  )
+  const updateSingleFullRangeMutation = useCallback(
+    async (data: ItemsFullRangesRequest) => {
+      await commands
+        .updateFullRange(data)
+        .then(() => {
+          refetchAll()
+          refetchSelected()
+        })
+        .catch((error) => {
+          console.log('updateFullRange error', error)
+        })
+    },
+    [refetchAll, refetchSelected]
+  )
+  const updateSingleArtListTogMutation = useCallback(
+    async (data: ItemsArtListTogRequest) => {
+      await commands
+        .updateArtTog(data)
+        .then(() => {
+          refetchAll()
+          refetchSelected()
+        })
+        .catch((error) => {
+          console.log('updateArtTog error', error)
+        })
+    },
+    [refetchAll, refetchSelected]
+  )
+  const updateSingleArtListTapMutation = useCallback(
+    async (data: ItemsArtListTapRequest) => {
+      await commands
+        .updateArtTap(data)
+        .then(() => {
+          refetchAll()
+          refetchSelected()
+        })
+        .catch((error) => {
+          console.log('updateArtTap error', error)
+        })
+    },
+    [refetchAll, refetchSelected]
+  )
+  const updateSingleArtLayerMutation = useCallback(
+    async (data: ItemsArtLayersRequest) => {
+      await commands
+        .updateArtLayer(data)
+        .then(() => {
+          refetchAll()
+          refetchSelected()
+        })
+        .catch((error) => {
+          console.log('updateArtLayer error', error)
+        })
+    },
+    [refetchAll, refetchSelected]
+  )
+  const updateSingleFadListMutation = useCallback(
+    async (data: ItemsFadListRequest) => {
+      await commands
+        .updateFad(data)
+        .then(() => {
+          refetchAll()
+          refetchSelected()
+        })
+        .catch((error) => {
+          console.log('updateFad error', error)
+        })
+    },
+    [refetchAll, refetchSelected]
+  )
   ////////////////////////////////////////////
   //// DELETE mutations
-  const deleteAllItemsMutation = useCallback(() => {
-    void invoke('delete_all_fileitems_and_relations')
-      .then(() => {})
-      .catch((error) => {
-        console.log('create_fileitem error', error)
+  const deleteAllItemsMutation = useCallback(async () => {
+    await commands
+      .deleteAllFileitemsAndRelations()
+      .then(() => {
+        refetchAll()
+        refetchSelected()
       })
-  }, [])
-  //const deleteAllItemsMutation = trpc.items.deleteAllItems.useMutation({
-  //  onSuccess: () => {
-  //    deleteAllItemsMutation.reset()
-  //    createSingleItemMutation.mutate({
-  //      count: 1
-  //    })
-  //  },
-  //  onError: () => {
-  //    alert('There was an error submitting your request. Please try again.')
-  //  }
-  //})
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const deleteSingleItemMutation = useCallback((data: any) => {
-    console.log('deleteSingleItemMutation', data)
-  }, [])
-  //const deleteSingleItemMutation = trpc.items.deleteSingleItem.useMutation({
-  //  onSuccess: () => {
-  //    deleteSingleItemMutation.reset()
-  //    refetchAll()
-  //    refetchSelected()
-  //    setSelectedItemId(previousItemId)
-  //  },
-  //  onError: () => {
-  //    alert('There was an error submitting your request. Please try again.')
-  //  }
-  //})
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const deleteSingleFullRangeMutation = useCallback((data: any) => {
-    console.log('deleteSingleFullRangeMutation', data)
-  }, [])
-  //const deleteSingleFullRangeMutation =
-  //  trpc.items.deleteSingleFullRange.useMutation({
-  //    onSuccess: () => {
-  //      deleteSingleFullRangeMutation.reset()
-  //      refetchSelected()
-  //    },
-  //    onError: (error) => {
-  //      alert(
-  //        error.message ??
-  //          'There was an error submitting your request. Please try again.'
-  //      )
-  //    }
-  //  })
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const deleteSingleArtListTogMutation = useCallback((data: any) => {
-    console.log('deleteSingleArtListTogMutation', data)
-  }, [])
-  //const deleteSingleArtListTogMutation =
-  //  trpc.items.deleteSingleArtListTog.useMutation({
-  //    onSuccess: () => {
-  //      deleteSingleArtListTogMutation.reset()
-  //      //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-  //      refetchSelected()
-  //    },
-  //    onError: (error) => {
-  //      alert(
-  //        error.message ??
-  //          'There was an error submitting your request. Please try again.'
-  //      )
-  //    }
-  //  })
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const deleteSingleArtListTapMutation = useCallback((data: any) => {
-    console.log('deleteSingleArtListTapMutation', data)
-  }, [])
-
-  //const deleteSingleArtListTapMutation =
-  //  trpc.items.deleteSingleArtListTap.useMutation({
-  //    onSuccess: () => {
-  //      deleteSingleArtListTapMutation.reset()
-  //      //renumberArtListMutation.mutate({ itemId: selectedItemId ?? '' })
-  //      refetchSelected()
-  //    },
-  //    onError: (error) => {
-  //      alert(
-  //        error.message ??
-  //          'There was an error submitting your request. Please try again.'
-  //      )
-  //    }
-  //  })
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const deleteSingleArtLayerMutation = useCallback((data: any) => {
-    console.log('deleteSingleArtLayerMutation', data)
-  }, [])
-  //const deleteSingleArtLayerMutation =
-  //  trpc.items.deleteSingleArtLayer.useMutation({
-  //    onSuccess: () => {
-  //      deleteSingleArtLayerMutation.reset()
-  //      refetchSelected()
-  //    },
-  //    onError: (error) => {
-  //      alert(
-  //        error.message ??
-  //          'There was an error submitting your request. Please try again.'
-  //      )
-  //    }
-  //  })
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const deleteSingleFadListMutation = useCallback((data: any) => {
-    console.log('deleteSingleFadListMutation', data)
-  }, [])
-  //const deleteSingleFadListMutation =
-  //  trpc.items.deleteSingleFadList.useMutation({
-  //    onSuccess: () => {
-  //      deleteSingleFadListMutation.reset()
-  //      refetchSelected()
-  //    },
-  //    onError: (error) => {
-  //      alert(
-  //        error.message ??
-  //          'There was an error submitting your request. Please try again.'
-  //      )
-  //    }
-  //  })
+      .catch((error) => {
+        console.log('deleteAllFileitemsAndRelations error', error)
+      })
+  }, [refetchAll, refetchSelected])
+  const deleteSingleItemMutation = useCallback(
+    async (id: string) => {
+      await commands
+        .deleteFileitemAndRelations(id)
+        .then(() => {
+          refetchAll()
+          if (!previousItemId) return
+          setSelectedItemId(previousItemId)
+        })
+        .catch((error) => {
+          console.log('deleteFileitemAndRelations error', error)
+        })
+    },
+    [refetchAll, setSelectedItemId]
+  )
+  const deleteSingleFullRangeMutation = useCallback(
+    async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
+      await commands
+        .deleteFullRangeByFileitem(id, fileitemsItemId)
+        .then(() => {
+          refetchAll()
+          if (!previousItemId) return
+          setSelectedItemId(previousItemId)
+        })
+        .catch((error) => {
+          console.log('deleteFullRangeByFileitem error', error)
+        })
+    },
+    [refetchAll, setSelectedItemId]
+  )
+  const deleteSingleArtListTogMutation = useCallback(
+    async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
+      await commands
+        .deleteArtTogByFileitem(id, fileitemsItemId)
+        .then(() => {
+          refetchAll()
+          if (!previousItemId) return
+          setSelectedItemId(previousItemId)
+        })
+        .catch((error) => {
+          console.log('deleteArtTogByFileitem error', error)
+        })
+    },
+    [refetchAll, setSelectedItemId]
+  )
+  const deleteSingleArtListTapMutation = useCallback(
+    async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
+      await commands
+        .deleteArtTapByFileitem(id, fileitemsItemId)
+        .then(() => {
+          refetchAll()
+          if (!previousItemId) return
+          setSelectedItemId(previousItemId)
+        })
+        .catch((error) => {
+          console.log('deleteArtTogByFileitem error', error)
+        })
+    },
+    [refetchAll, setSelectedItemId]
+  )
+  const deleteSingleArtLayerMutation = useCallback(
+    async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
+      await commands
+        .deleteArtLayerByFileitem(id, fileitemsItemId)
+        .then(() => {
+          refetchAll()
+          if (!previousItemId) return
+          setSelectedItemId(previousItemId)
+        })
+        .catch((error) => {
+          console.log('deleteArtLayerByFileitem error', error)
+        })
+    },
+    [refetchAll, setSelectedItemId]
+  )
+  const deleteSingleFadListMutation = useCallback(
+    async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
+      await commands
+        .deleteFadByFileitem(id, fileitemsItemId)
+        .then(() => {
+          refetchAll()
+          if (!previousItemId) return
+          setSelectedItemId(previousItemId)
+        })
+        .catch((error) => {
+          console.log('deleteFadByFileitem error', error)
+        })
+    },
+    [refetchAll, setSelectedItemId]
+  )
   ////////////////////////////////////////////
   //// CLEAR mutations
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const clearSingleItemMutation = useCallback((data: any) => {
-    console.log('clearSingleItemMutation', data)
-  }, [])
-  //const clearSingleItemMutation = trpc.items.clearSingleItem.useMutation({
-  //  onSuccess: () => {
-  //    clearSingleItemMutation.reset()
-  //    refetchSelected()
-  //    refetchAll()
-  //  },
-  //  onError: () => {
-  //    alert('There was an error submitting your request. Please try again.')
-  //  }
-  //})
+  const clearSingleItemMutation = useCallback(
+    async (id: string) => {
+      await commands
+        .clearFileitem(id)
+        .then(() => {
+          refetchAll()
+          if (!previousItemId) return
+          setSelectedItemId(previousItemId)
+        })
+        .catch((error) => {
+          console.log('clearFileitem error', error)
+        })
+    },
+    [refetchAll, setSelectedItemId]
+  )
   ////////////////////////////////////////////
   //// RENUMBER/REORDER mutations
-  const renumberAllItemsMutation = useCallback(() => {
-    console.log('renumberAllItemsMutation')
-  }, [])
-  //const renumberAllItemsMutation = trpc.items.renumberAllItems.useMutation({
-  //  onSuccess: () => {
-  //    renumberAllItemsMutation.reset()
-  //    refetchSelected()
-  //    refetchAll()
-  //  },
-  //  onError: () => {
-  //    alert('There was an error submitting your request. Please try again.')
-  //  }
-  //})
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const renumberArtListMutation = useCallback((data: any) => {
-    console.log('renumberArtListMutation', data)
-  }, [])
-  //const renumberArtListMutation = trpc.items.renumberArtList.useMutation({
-  //  onSuccess: () => {
-  //    renumberArtListMutation.reset()
-
-  //    refetchSelected()
-  //    refetchAll()
-  //  },
-  //  onError: () => {
-  //    alert('There was an error submitting your request. Please try again.')
-  //  }
-  //})
+  const renumberAllItemsMutation = useCallback(async () => {
+    await commands
+      .renumberAllFileitems()
+      .then(() => {
+        refetchAll()
+        refetchSelected()
+      })
+      .catch((error) => {
+        console.log('renumberAllItemsMutation error', error)
+      })
+  }, [refetchAll, refetchSelected])
   ////////////////////////////////////////////
   //// PASTE/DUPLICATE mutations
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const pasteSingleItemMutation = useCallback((data: any) => {
+  const pasteSingleItemMutation = useCallback((data: pasteItemArgs) => {
     console.log('pasteSingleItemMutation', data)
   }, [])
-  //const pasteSingleItemMutation = trpc.items.pasteSingleItem.useMutation({
-  //  onSuccess: () => {
-  //    pasteSingleItemMutation.reset()
-  //    refetchAll()
-  //    refetchSelected()
-  //  },
-  //  onError: () => {
-  //    alert('There was an error submitting your request. Please try again.')
-  //  }
-  //})
   //////////////////////////////////////////
   const create = useMemo(
     () => ({
@@ -832,10 +728,9 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
 
   const renumber = useMemo(
     () => ({
-      allTracks: renumberAllItemsMutation,
-      artList: renumberArtListMutation
+      allTracks: renumberAllItemsMutation
     }),
-    [renumberAllItemsMutation, renumberArtListMutation]
+    [renumberAllItemsMutation]
   )
 
   const paste = useMemo(
@@ -849,8 +744,8 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     () => ({
       data,
       dataLength,
-      //refetchAll,
-      //refetchSelected,
+      refetchAll,
+      refetchSelected,
       vepSamplerCount,
       vepInstanceCount,
       nonVepSamplerCount,
@@ -867,8 +762,8 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     [
       data,
       dataLength,
-      //refetchAll,
-      //refetchSelected,
+      refetchAll,
+      refetchSelected,
       vepSamplerCount,
       vepInstanceCount,
       nonVepSamplerCount,

@@ -51,7 +51,7 @@ export const ContextMenu: FC = () => {
           console.log('addTrackAbove')
           break
         case 'addTrackBelow':
-          create.track({ count: 1 })
+          create.track(1)
           break
         case 'duplicateTrackAbove':
           console.log('duplicateTrackAbove')
@@ -70,14 +70,10 @@ export const ContextMenu: FC = () => {
           })
           break
         case 'clearTrack':
-          clear.track({
-            itemId: selectedItemId ?? ''
-          })
+          clear.track(selectedItemId ?? '')
           break
         case 'deleteTrack':
-          del.track({
-            itemId: selectedItemId ?? ''
-          })
+          del.track(selectedItemId ?? '')
           break
 
         default:
@@ -97,7 +93,8 @@ export const ContextMenu: FC = () => {
           break
         case 'addRangeBelow':
           create.fullRange({
-            itemId: selectedItemId ?? ''
+            fileitemsItemId: selectedItemId ?? '',
+            count: 1
           })
           break
         case 'duplicateRangeAbove':
@@ -117,8 +114,8 @@ export const ContextMenu: FC = () => {
           break
         case 'deleteRange':
           del.fullRange({
-            rangeId: contextMenuId ?? '',
-            fileitems_item_id: selectedItemId ?? ''
+            id: contextMenuId ?? '',
+            fileitemsItemId: selectedItemId ?? ''
           })
           break
 
@@ -137,11 +134,13 @@ export const ContextMenu: FC = () => {
         case 'addArticulationBelow':
           if (isArtTog(contextMenuId ?? '')) {
             create.artListTog({
-              itemId: selectedItemId ?? ''
+              fileitemsItemId: selectedItemId ?? '',
+              count: 1
             })
           } else {
             create.artListTap({
-              itemId: selectedItemId ?? ''
+              fileitemsItemId: selectedItemId ?? '',
+              count: 1
             })
           }
           break
@@ -159,13 +158,13 @@ export const ContextMenu: FC = () => {
         case 'deleteArticulation':
           if (isArtTog(contextMenuId ?? '')) {
             del.artListTog({
-              artId: contextMenuId ?? '',
-              fileitems_item_id: selectedItemId ?? ''
+              id: contextMenuId ?? '',
+              fileitemsItemId: selectedItemId ?? ''
             })
           } else {
             del.artListTap({
-              artId: contextMenuId ?? '',
-              fileitems_item_id: selectedItemId ?? ''
+              id: contextMenuId ?? '',
+              fileitemsItemId: selectedItemId ?? ''
             })
           }
           break
@@ -184,7 +183,8 @@ export const ContextMenu: FC = () => {
           break
         case 'addLayerBelow':
           create.artLayer({
-            itemId: selectedItemId ?? ''
+            fileitemsItemId: selectedItemId ?? '',
+            count: 1
           })
           break
         case 'duplicateLayerAbove':
@@ -200,8 +200,8 @@ export const ContextMenu: FC = () => {
           break
         case 'deleteLayer':
           del.artLayer({
-            layerId: contextMenuId ?? '',
-            fileitems_item_id: selectedItemId ?? ''
+            id: contextMenuId ?? '',
+            fileitemsItemId: selectedItemId ?? ''
           })
           break
 
@@ -219,7 +219,8 @@ export const ContextMenu: FC = () => {
           break
         case 'addFaderBelow':
           create.fadList({
-            itemId: selectedItemId ?? ''
+            fileitemsItemId: selectedItemId ?? '',
+            count: 1
           })
           break
         case 'duplicateFaderAbove':
@@ -235,8 +236,8 @@ export const ContextMenu: FC = () => {
           break
         case 'deleteFader':
           del.fadList({
-            fadId: contextMenuId ?? '',
-            fileitems_item_id: selectedItemId ?? ''
+            id: contextMenuId ?? '',
+            fileitemsItemId: selectedItemId ?? ''
           })
           break
 
