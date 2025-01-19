@@ -556,14 +556,13 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
         .deleteFullRangeByFileitem(id, fileitemsItemId)
         .then(() => {
           refetchAll()
-          if (!previousItemId) return
-          setSelectedItemId(previousItemId)
+          refetchSelected()
         })
         .catch((error) => {
           console.log('deleteFullRangeByFileitem error', error)
         })
     },
-    [refetchAll, setSelectedItemId]
+    [refetchAll, refetchSelected]
   )
   const deleteSingleArtListTogMutation = useCallback(
     async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
@@ -571,14 +570,13 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
         .deleteArtTogByFileitem(id, fileitemsItemId)
         .then(() => {
           refetchAll()
-          if (!previousItemId) return
-          setSelectedItemId(previousItemId)
+          refetchSelected()
         })
         .catch((error) => {
           console.log('deleteArtTogByFileitem error', error)
         })
     },
-    [refetchAll, setSelectedItemId]
+    [refetchAll, refetchSelected]
   )
   const deleteSingleArtListTapMutation = useCallback(
     async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
@@ -586,14 +584,13 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
         .deleteArtTapByFileitem(id, fileitemsItemId)
         .then(() => {
           refetchAll()
-          if (!previousItemId) return
-          setSelectedItemId(previousItemId)
+          refetchSelected()
         })
         .catch((error) => {
           console.log('deleteArtTogByFileitem error', error)
         })
     },
-    [refetchAll, setSelectedItemId]
+    [refetchAll, refetchSelected]
   )
   const deleteSingleArtLayerMutation = useCallback(
     async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
@@ -601,14 +598,13 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
         .deleteArtLayerByFileitem(id, fileitemsItemId)
         .then(() => {
           refetchAll()
-          if (!previousItemId) return
-          setSelectedItemId(previousItemId)
+          refetchSelected()
         })
         .catch((error) => {
           console.log('deleteArtLayerByFileitem error', error)
         })
     },
-    [refetchAll, setSelectedItemId]
+    [refetchAll, refetchSelected]
   )
   const deleteSingleFadListMutation = useCallback(
     async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
@@ -616,14 +612,13 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
         .deleteFadByFileitem(id, fileitemsItemId)
         .then(() => {
           refetchAll()
-          if (!previousItemId) return
-          setSelectedItemId(previousItemId)
+          refetchSelected()
         })
         .catch((error) => {
           console.log('deleteFadByFileitem error', error)
         })
     },
-    [refetchAll, setSelectedItemId]
+    [refetchAll, refetchSelected]
   )
   ////////////////////////////////////////////
   //// CLEAR mutations
