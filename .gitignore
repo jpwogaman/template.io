@@ -9,9 +9,6 @@
 /coverage
 
 # database
-/prisma/db.postgresql
-/prisma/db.postgresql-journal
-/prisma/db.sqlite
 /db.sqlite
 /diesel.toml
 /src-tauri/diesel.toml

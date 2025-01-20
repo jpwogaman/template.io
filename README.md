@@ -104,18 +104,7 @@ You can now use Template.io to add information about your tracks and when you sa
     pnpm install
     ```
 5)  ```
-    npx prisma generate
-    ```
-6)  ```
     pnpm tauri dev
     ```
 
 You can now go back to [**Step 3**](#3-setup-open-stage-control) above and continue with setup.
-
-# Technologies Used to Build Template.io
-
-| Component                                                                 | Version                                                                                                                               | 
-| ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | 
-| [**Tauri**](https://github.com/tauri-apps/tauri)                          | [![npm version](https://img.shields.io/npm/v/create-tauri-app.svg?style=flat)](https://github.com/tauri-apps/tauri)                   |
-| [**React**](https://github.com/facebook/react)                            | [![npm version](https://img.shields.io/npm/v/react.svg?style=flat)](https://github.com/facebook/react)                                |
-| [**tailwindcss**](https://github.com/tailwindlabs/tailwindcss)            | [![npm version](https://img.shields.io/npm/v/tailwindcss.svg?style=flat)](https://github.com/tailwindlabs/tailwindcss)                |
