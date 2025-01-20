@@ -11,20 +11,11 @@ import {
 } from 'react'
 
 import { listen } from '@tauri-apps/api/event'
-import { useModal, useMutations } from '@/components/context'
+import { useModal } from '@/components/context'
 
-interface TauriListenersContextType {
-  del: {
-    allTracks: () => void
-  }
-}
+interface TauriListenersContextType {}
 
-const tauriListenersContextDefaultValues: TauriListenersContextType = {
-  del: {
-    /* eslint-disable @typescript-eslint/no-empty-function */
-    allTracks: () => {}
-  }
-}
+const tauriListenersContextDefaultValues: TauriListenersContextType = {}
 
 export const TauriListenersContext = createContext<TauriListenersContextType>(
   tauriListenersContextDefaultValues
@@ -39,24 +30,14 @@ export const TauriListenersProvider: FC<TauriListenersProviderProps> = ({
 }) => {
   const [mounted, setMounted] = useState(false)
   const { modalOpen, close, open, setModalType } = useModal()
-  const { del } = useMutations()
   useEffect(() => {
     setMounted(true)
   }, [])
 
-  const value = useMemo(
-    () => ({
-      del
-    }),
-    [del]
-  )
   if (!mounted) {
     return null
   }
 
-  listen('delete_all', () => {
-    del.allTracks()
-  }).catch((e) => console.error(e))
   listen('about', () => {
     if (modalOpen) {
       close()
@@ -75,7 +56,7 @@ export const TauriListenersProvider: FC<TauriListenersProviderProps> = ({
   }).catch((e) => console.error(e))
 
   return (
-    <TauriListenersContext.Provider value={value}>
+    <TauriListenersContext.Provider value>
       {children}
     </TauriListenersContext.Provider>
   )

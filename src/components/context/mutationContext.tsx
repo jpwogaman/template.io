@@ -17,14 +17,13 @@ import {
   type Settings,
   type FullTrackWithCounts,
   type FullTrackForExport,
-  type FileItem,
-  FileItemRequest,
-  ItemsFullRangesRequest,
-  ItemsArtListTogRequest,
-  ItemsArtListTapRequest,
-  ItemsArtLayersRequest,
-  ItemsFadListRequest
-} from '../commands/commands'
+  type FileItemRequest,
+  type ItemsFullRangesRequest,
+  type ItemsArtListTogRequest,
+  type ItemsArtListTapRequest,
+  type ItemsArtLayersRequest,
+  type ItemsFadListRequest
+} from '../backendCommands/backendCommands'
 
 type createSubItemArgs = {
   fileitemsItemId: string

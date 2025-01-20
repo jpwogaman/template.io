@@ -37,7 +37,7 @@ async fn main() {
   tauri::async_runtime::set(tokio::runtime::Handle::current());
   let context = tauri::generate_context!();
 
-  /////
+  ///// for specta
   let builder = Builder::<tauri::Wry>::new().commands(
     collect_commands![
       // fileitem_commands
@@ -98,7 +98,7 @@ async fn main() {
 
   #[cfg(debug_assertions)]
   builder
-    .export(Typescript::default(), "../src/components/commands/commands.ts")
+    .export(Typescript::default(), "../src/components/backendCommands/backendCommands.ts")
     .expect("Failed to export typescript bindings");
   /////
 
@@ -144,12 +144,16 @@ async fn main() {
         match event.id().as_ref() {
           "import" => {
             import_export_service::import(app.clone());
+            fileitem_service::list_all_fileitems_and_relations();
           }
           "export" => {
-            import_export_service::export(app.clone());
+            import_export_service::export(app.clone());            
           }
           "delete_all" => {
             app.emit("delete_all", "delete_all").unwrap();
+            fileitem_service::delete_all_fileitems_and_relations();
+            fileitem_service::create_fileitem(1);
+            fileitem_service::list_all_fileitems_and_relations();
           }
           "quit" => {
             std::process::exit(0);

@@ -1,8 +1,6 @@
 use serde::{ Deserialize, Serialize };
-use ts_rs::TS;
 
-#[derive(Deserialize, Serialize, Debug, TS, specta::Type)]
-#[ts(export, export_to = "fileMetadata.ts")]
+#[derive(Deserialize, Serialize, Debug, specta::Type)]
 pub struct FileMetadata {
   pub file_name: String,
   pub file_created_date: String,  

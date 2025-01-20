@@ -29,7 +29,7 @@
         "title": "Template.io",
         "fullscreen": false,
         "resizable": true,
-        "alwaysOnTop": true,
+        "alwaysOnTop": false,
         "center": true,
         "height": 800,
         "minHeight": 600,

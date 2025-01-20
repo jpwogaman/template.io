@@ -10,10 +10,6 @@ edition = "2021"
 rust-version = "1.84.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-[[bin]]
-name = "bindings_index"
-path = "./bin/bindings_index.rs"
-
 [build-dependencies]
 tauri-build = { version = "2.0.3", features = [] }
 
@@ -32,7 +28,6 @@ libsqlite3-sys = { version = "0.30.1", features = ["bundled"] }
 reqwest = { version = "0.12.9", features = ["json"] }
 chrono = { version = "0.4.38", features = ["serde"] }
 uuid = "1.11.0"
-ts-rs = "10.1"
 
 tauri = { version = "2.0", features = ["tray-icon", "image-png"] }
 tauri-plugin-shell = "2.0.2"
@@ -44,6 +39,7 @@ tauri-plugin-dialog = "2.0.4"
 tauri-plugin-process = "2.0.1"
 tauri-plugin-clipboard-manager = "2.1.0-beta.7"
 tauri-plugin-http = "2.0.4"
+
 specta = "=2.0.0-rc.22"
 specta-typescript = "0.0.9"
 tauri-specta = { version = "=2.0.0-rc.21", features = ["derive", "typescript"] }

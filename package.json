@@ -20,9 +20,7 @@
     "start": "next start",
     "deps": "ncu --interactive --format group",
     "tauri": "tauri",
-    "count": "count-lines-in-repo.bat",
-    "clean_bindings": "del /s /q src-tauri\\src\\models\\*.ts",
-    "bindings": "pnpm clean_bindings && cd src-tauri && cargo test && cargo run --bin bindings_index && npx prettier --write \"src/models/*.ts\""
+    "count": "count-lines-in-repo.bat"
   },
   "ct3aMetadata": {
     "initVersion": "6.11.2"

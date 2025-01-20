@@ -243,7 +243,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         if (keyDownTarget_FROM?.id.includes('notes')) return
         e.preventDefault()
         alert('Add new item below')
-        create.track({ count: 1 })
+        create.track(1)
       }
       ////////////////////////////////
       // DUPLICATE TRACK or ART or LAYER or FAD
@@ -265,34 +265,34 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
           switch (optionType) {
             case 'FR':
               del.fullRange({
-                rangeId: optionNumber ?? '',
-                fileitems_item_id: selectedItemId ?? ''
+                id: optionNumber ?? '',
+                fileitemsItemId: selectedItemId ?? ''
               })
               break
             case 'AT':
               if (isArtTog(selectedSubItemId)) {
                 del.artListTog({
-                  artId: selectedSubItemId,
-                  fileitems_item_id: selectedItemId ?? ''
+                  id: selectedSubItemId,
+                  fileitemsItemId: selectedItemId ?? ''
                 })
               }
               if (!isArtTog(selectedSubItemId)) {
                 del.artListTap({
-                  artId: selectedSubItemId,
-                  fileitems_item_id: selectedItemId ?? ''
+                  id: selectedSubItemId,
+                  fileitemsItemId: selectedItemId ?? ''
                 })
               }
               break
             case 'AL':
               del.artLayer({
-                layerId: optionNumber ?? '',
-                fileitems_item_id: selectedItemId ?? ''
+                id: optionNumber ?? '',
+                fileitemsItemId: selectedItemId ?? ''
               })
               break
             case 'FL':
               del.fadList({
-                fadId: optionNumber ?? '',
-                fileitems_item_id: selectedItemId ?? ''
+                id: optionNumber ?? '',
+                fileitemsItemId: selectedItemId ?? ''
               })
               break
             default:

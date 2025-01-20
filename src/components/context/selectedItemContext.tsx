@@ -13,15 +13,15 @@ import {
   useEffect
 } from 'react'
 import { invoke } from '@tauri-apps/api/core'
-import { type Settings } from 'src-tauri/src/models'
+import { type Settings } from '../backendCommands/backendCommands'
 
 interface SelectedItemContextType {
   selectedItemId: string
   selectedSubItemId: string
-  copiedItemId: string | null
-  copiedSubItemId: string | null
-  nextItemId: string | null
-  previousItemId: string | null
+  copiedItemId: string | null | undefined
+  copiedSubItemId: string | null | undefined
+  nextItemId: string | null | undefined
+  previousItemId: string | null | undefined
   selectedItemRangeCount: number
   selectedItemArtTogCount: number
   selectedItemArtTapCount: number
@@ -30,16 +30,16 @@ interface SelectedItemContextType {
   selectedItemFadCount: number
   setSelectedItemId: Dispatch<SetStateAction<string>>
   setSelectedSubItemId: Dispatch<SetStateAction<string>>
-  setNextItemId: Dispatch<SetStateAction<string | null>>
-  setPreviousItemId: Dispatch<SetStateAction<string | null>>
+  setNextItemId: Dispatch<SetStateAction<string | null | undefined>>
+  setPreviousItemId: Dispatch<SetStateAction<string | null | undefined>>
   setSelectedItemRangeCount: Dispatch<SetStateAction<number>>
   setSelectedItemArtTogCount: Dispatch<SetStateAction<number>>
   setSelectedItemArtTapCount: Dispatch<SetStateAction<number>>
   setSelectedItemArtCount: Dispatch<SetStateAction<number>>
   setSelectedItemLayerCount: Dispatch<SetStateAction<number>>
   setSelectedItemFadCount: Dispatch<SetStateAction<number>>
-  setCopiedItemId: Dispatch<SetStateAction<string | null>>
-  setCopiedSubItemId: Dispatch<SetStateAction<string | null>>
+  setCopiedItemId: Dispatch<SetStateAction<string | null | undefined>>
+  setCopiedSubItemId: Dispatch<SetStateAction<string | null | undefined>>
 }
 
 const selectedItemContextDefaultValues: SelectedItemContextType = {
@@ -83,11 +83,17 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
 }) => {
   const [selectedItemId, setSelectedItemId] = useState('T_0')
   const [selectedSubItemId, setSelectedSubItemId] = useState('T_0_notes')
-  const [copiedItemId, setCopiedItemId] = useState<string | null>(null)
-  const [copiedSubItemId, setCopiedSubItemId] = useState<string | null>(null)
+  const [copiedItemId, setCopiedItemId] = useState<string | null | undefined>(
+    null
+  )
+  const [copiedSubItemId, setCopiedSubItemId] = useState<
+    string | null | undefined
+  >(null)
 
-  const [previousItemId, setPreviousItemId] = useState<string | null>(null)
-  const [nextItemId, setNextItemId] = useState<string | null>('T_1')
+  const [previousItemId, setPreviousItemId] = useState<
+    string | null | undefined
+  >(null)
+  const [nextItemId, setNextItemId] = useState<string | null | undefined>('T_1')
 
   const [selectedItemRangeCount, setSelectedItemRangeCount] = useState(0)
   const [selectedItemArtTogCount, setSelectedItemArtTogCount] = useState(0)
