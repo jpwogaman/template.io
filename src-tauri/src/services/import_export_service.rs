@@ -5,7 +5,6 @@ use serde_json::{ Value, from_str, to_string };
 use std::fs::{ read_to_string, write };
 use crate::services::fileitem_service::{
   create_all_fileitems_from_json,
-  delete_all_fileitems_and_relations,
   list_all_fileitems_and_relations_for_json_export,
 };
 use log::{ error, info };
@@ -20,7 +19,6 @@ pub fn import(app: AppHandle) {
       Ok(file_content) => {
         match from_str::<Value>(&file_content) {
           Ok(parsed_json) => {
-            delete_all_fileitems_and_relations();
             create_all_fileitems_from_json(parsed_json);            
           }
           Err(e) => {
