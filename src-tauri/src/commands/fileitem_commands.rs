@@ -47,7 +47,7 @@ pub fn get_fileitem_and_relations(id: String) -> Option<FullTrackForExport> {
 }
 
 #[tauri::command]
-//#[specta::specta]
+#[specta::specta]
 pub fn create_all_fileitems_from_json(full_data: Value) {
   fileitem_service::create_all_fileitems_from_json(full_data)
 }
