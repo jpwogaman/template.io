@@ -9,20 +9,6 @@ use crate::{
 
 #[tauri::command]
 #[specta::specta]
-pub fn list_items_artlist_tog(
-  fileitems_item_id: String
-) -> Vec<ItemsArtListTog> {
-  items_artlist_tog_service::list_items_artlist_tog(fileitems_item_id)
-}
-
-#[tauri::command]
-#[specta::specta]
-pub fn get_art_tog(id: String) -> Option<ItemsArtListTog> {
-  items_artlist_tog_service::get_art_tog(id)
-}
-
-#[tauri::command]
-#[specta::specta]
 pub fn create_art_tog(fileitems_item_id: String, count: i32) {
   // id's are T_0_FR_0, T_0_FR_1, T_0_FR_2, etc. so we need to find the highest id and increment it
   let items_artlist_tog_len = items_artlist_tog_service
@@ -58,12 +44,6 @@ pub fn create_art_tog(fileitems_item_id: String, count: i32) {
   }
 
   items_artlist_service::renumber_all_arts(fileitems_item_id.clone());
-}
-
-#[tauri::command]
-#[specta::specta]
-pub fn delete_art_tog(id: String) {
-  items_artlist_tog_service::delete_art_tog(id)
 }
 
 #[tauri::command]

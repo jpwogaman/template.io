@@ -5,18 +5,6 @@ use crate::{
 
 #[tauri::command]
 #[specta::specta]
-pub fn list_items_full_ranges(fileitems_item_id: String) -> Vec<ItemsFullRanges> {
-  items_full_ranges_service::list_items_full_ranges(fileitems_item_id)
-}
-
-#[tauri::command]
-#[specta::specta]
-pub fn get_full_range(id: String) -> Option<ItemsFullRanges> {
-  items_full_ranges_service::get_full_range(id)
-}
-
-#[tauri::command]
-#[specta::specta]
 pub fn create_full_range(fileitems_item_id: String, count: i32) {
   // id's are T_0_FR_0, T_0_FR_1, T_0_FR_2, etc. so we need to find the highest id and increment it
   let items_full_ranges = items_full_ranges_service::list_items_full_ranges(
@@ -55,12 +43,6 @@ pub fn create_full_range(fileitems_item_id: String, count: i32) {
     items_full_ranges_service::store_new_full_range(&full_range);
     i += 1;
   }
-}
-
-#[tauri::command]
-#[specta::specta]
-pub fn delete_full_range(id: String) {
-  items_full_ranges_service::delete_full_range(id)
 }
 
 #[tauri::command]

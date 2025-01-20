@@ -49,15 +49,6 @@ pub fn store_new_fad(new_fad: &ItemsFadList) {
     .expect("Error saving new fad");
 }
 
-pub fn delete_fad(id: String) {
-  let connection = &mut establish_db_connection();
-
-  diesel
-    ::delete(dsl::items_fadlist.filter(dsl::id.eq(id)))
-    .execute(connection)
-    .expect("Error deleting fad");
-}
-
 pub fn delete_fad_by_fileitem(id: String, fileitems_item_id: String) {
   let connection = &mut establish_db_connection();
 

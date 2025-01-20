@@ -5,26 +5,14 @@
 
 
 export const commands = {
-async listFileitems() : Promise<FileItem[]> {
-    return await TAURI_INVOKE("list_fileitems");
-},
-async listAllFileitemsAndRelations() : Promise<FullTrackForExport[]> {
-    return await TAURI_INVOKE("list_all_fileitems_and_relations");
-},
 async listAllFileitemsAndRelationCounts() : Promise<FullTrackWithCounts[]> {
     return await TAURI_INVOKE("list_all_fileitems_and_relation_counts");
-},
-async getFileitem(id: string) : Promise<FileItem | null> {
-    return await TAURI_INVOKE("get_fileitem", { id });
 },
 async getFileitemAndRelations(id: string) : Promise<FullTrackForExport | null> {
     return await TAURI_INVOKE("get_fileitem_and_relations", { id });
 },
 async createFileitem(count: number) : Promise<void> {
     await TAURI_INVOKE("create_fileitem", { count });
-},
-async deleteFileitem(id: string) : Promise<void> {
-    await TAURI_INVOKE("delete_fileitem", { id });
 },
 async clearFileitem(id: string) : Promise<void> {
     await TAURI_INVOKE("clear_fileitem", { id });
@@ -35,26 +23,11 @@ async renumberAllFileitems() : Promise<FileItem[]> {
 async deleteFileitemAndRelations(id: string) : Promise<void> {
     await TAURI_INVOKE("delete_fileitem_and_relations", { id });
 },
-async deleteAllFileitemsAndRelations() : Promise<void> {
-    await TAURI_INVOKE("delete_all_fileitems_and_relations");
-},
-async listAllFileitemsAndRelationsForJsonExport() : Promise<FullTrackListForExport> {
-    return await TAURI_INVOKE("list_all_fileitems_and_relations_for_json_export");
-},
 async updateFileitem(data: FileItemRequest) : Promise<void> {
     await TAURI_INVOKE("update_fileitem", { data });
 },
-async listItemsFullRanges(fileitemsItemId: string) : Promise<ItemsFullRanges[]> {
-    return await TAURI_INVOKE("list_items_full_ranges", { fileitemsItemId });
-},
-async getFullRange(id: string) : Promise<ItemsFullRanges | null> {
-    return await TAURI_INVOKE("get_full_range", { id });
-},
 async createFullRange(fileitemsItemId: string, count: number) : Promise<void> {
     await TAURI_INVOKE("create_full_range", { fileitemsItemId, count });
-},
-async deleteFullRange(id: string) : Promise<void> {
-    await TAURI_INVOKE("delete_full_range", { id });
 },
 async deleteFullRangeByFileitem(id: string, fileitemsItemId: string) : Promise<void> {
     await TAURI_INVOKE("delete_full_range_by_fileitem", { id, fileitemsItemId });
@@ -62,17 +35,8 @@ async deleteFullRangeByFileitem(id: string, fileitemsItemId: string) : Promise<v
 async updateFullRange(data: ItemsFullRangesRequest) : Promise<void> {
     await TAURI_INVOKE("update_full_range", { data });
 },
-async listItemsFadlist(fileitemsItemId: string) : Promise<ItemsFadList[]> {
-    return await TAURI_INVOKE("list_items_fadlist", { fileitemsItemId });
-},
-async getFad(id: string) : Promise<ItemsFadList | null> {
-    return await TAURI_INVOKE("get_fad", { id });
-},
 async createFad(fileitemsItemId: string, count: number) : Promise<void> {
     await TAURI_INVOKE("create_fad", { fileitemsItemId, count });
-},
-async deleteFad(id: string) : Promise<void> {
-    await TAURI_INVOKE("delete_fad", { id });
 },
 async deleteFadByFileitem(id: string, fileitemsItemId: string) : Promise<void> {
     await TAURI_INVOKE("delete_fad_by_fileitem", { id, fileitemsItemId });
@@ -80,17 +44,8 @@ async deleteFadByFileitem(id: string, fileitemsItemId: string) : Promise<void> {
 async updateFad(data: ItemsFadListRequest) : Promise<void> {
     await TAURI_INVOKE("update_fad", { data });
 },
-async listItemsArtlistTog(fileitemsItemId: string) : Promise<ItemsArtListTog[]> {
-    return await TAURI_INVOKE("list_items_artlist_tog", { fileitemsItemId });
-},
-async getArtTog(id: string) : Promise<ItemsArtListTog | null> {
-    return await TAURI_INVOKE("get_art_tog", { id });
-},
 async createArtTog(fileitemsItemId: string, count: number) : Promise<void> {
     await TAURI_INVOKE("create_art_tog", { fileitemsItemId, count });
-},
-async deleteArtTog(id: string) : Promise<void> {
-    await TAURI_INVOKE("delete_art_tog", { id });
 },
 async deleteArtTogByFileitem(id: string, fileitemsItemId: string) : Promise<void> {
     await TAURI_INVOKE("delete_art_tog_by_fileitem", { id, fileitemsItemId });
@@ -98,17 +53,8 @@ async deleteArtTogByFileitem(id: string, fileitemsItemId: string) : Promise<void
 async updateArtTog(data: ItemsArtListTogRequest) : Promise<void> {
     await TAURI_INVOKE("update_art_tog", { data });
 },
-async listItemsArtlistTap(fileitemsItemId: string) : Promise<ItemsArtListTap[]> {
-    return await TAURI_INVOKE("list_items_artlist_tap", { fileitemsItemId });
-},
-async getArtTap(id: string) : Promise<ItemsArtListTap | null> {
-    return await TAURI_INVOKE("get_art_tap", { id });
-},
 async createArtTap(fileitemsItemId: string, count: number) : Promise<void> {
     await TAURI_INVOKE("create_art_tap", { fileitemsItemId, count });
-},
-async deleteArtTap(id: string) : Promise<void> {
-    await TAURI_INVOKE("delete_art_tap", { id });
 },
 async deleteArtTapByFileitem(id: string, fileitemsItemId: string) : Promise<void> {
     await TAURI_INVOKE("delete_art_tap_by_fileitem", { id, fileitemsItemId });
@@ -116,17 +62,8 @@ async deleteArtTapByFileitem(id: string, fileitemsItemId: string) : Promise<void
 async updateArtTap(data: ItemsArtListTapRequest) : Promise<void> {
     await TAURI_INVOKE("update_art_tap", { data });
 },
-async listItemsArtLayers(fileitemsItemId: string) : Promise<ItemsArtLayers[]> {
-    return await TAURI_INVOKE("list_items_art_layers", { fileitemsItemId });
-},
-async getArtLayer(id: string) : Promise<ItemsArtLayers | null> {
-    return await TAURI_INVOKE("get_art_layer", { id });
-},
 async createArtLayer(fileitemsItemId: string, count: number) : Promise<void> {
     await TAURI_INVOKE("create_art_layer", { fileitemsItemId, count });
-},
-async deleteArtLayer(id: string) : Promise<void> {
-    await TAURI_INVOKE("delete_art_layer", { id });
 },
 async deleteArtLayerByFileitem(id: string, fileitemsItemId: string) : Promise<void> {
     await TAURI_INVOKE("delete_art_layer_by_fileitem", { id, fileitemsItemId });
@@ -154,10 +91,8 @@ async setSettings(settings: Settings) : Promise<void> {
 
 export type FileItem = { id: string; locked: boolean; name: string; notes: string; channel: number; base_delay: number; avg_delay: number; vep_out: string; vep_instance: string; smp_number: string; smp_out: string; color: string }
 export type FileItemRequest = { id: string; locked?: boolean | null; name?: string | null; notes?: string | null; channel?: number | null; base_delay?: number | null; avg_delay?: number | null; vep_out?: string | null; vep_instance?: string | null; smp_number?: string | null; smp_out?: string | null; color?: string | null }
-export type FileMetadata = { file_name: string; file_created_date: string }
 export type FullTrackCounts = { art_list_tog: number; art_list_tap: number; art_layers: number; fad_list: number; full_ranges: number }
 export type FullTrackForExport = ({ id: string; locked: boolean; name: string; notes: string; channel: number; base_delay: number; avg_delay: number; vep_out: string; vep_instance: string; smp_number: string; smp_out: string; color: string }) & { full_ranges: ItemsFullRanges[]; fad_list: ItemsFadList[]; art_list_tog: ItemsArtListTog[]; art_list_tap: ItemsArtListTap[]; art_layers: ItemsArtLayers[] }
-export type FullTrackListForExport = { file_meta_data: FileMetadata; items: FullTrackForExport[] }
 export type FullTrackWithCounts = ({ id: string; locked: boolean; name: string; notes: string; channel: number; base_delay: number; avg_delay: number; vep_out: string; vep_instance: string; smp_number: string; smp_out: string; color: string }) & { _count: FullTrackCounts }
 export type ItemsArtLayers = { id: string; name: string; code_type: string; code: number; on: number; off: number; default: string; change_type: string; fileitems_item_id: string }
 export type ItemsArtLayersRequest = { id: string; name?: string | null; code_type?: string | null; code?: number | null; on?: number | null; off?: number | null; default?: string | null; change_type?: string | null; fileitems_item_id?: string | null }

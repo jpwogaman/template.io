@@ -67,7 +67,6 @@ interface MutationContextType {
     fadList: (data: ItemsFadListRequest) => void
   }
   del: {
-    allTracks: () => void
     track: (id: string) => void
     fullRange: (data: deleteSubItemArgs) => void
     artListTog: (data: deleteSubItemArgs) => void
@@ -118,7 +117,6 @@ const mutationContextDefaultValues: MutationContextType = {
   del: {
     /* eslint-disable @typescript-eslint/no-empty-function */
     track: () => {},
-    allTracks: () => {},
     fullRange: () => {},
     artListTog: () => {},
     artListTap: () => {},
@@ -523,17 +521,6 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   )
   ////////////////////////////////////////////
   //// DELETE mutations
-  const deleteAllItemsMutation = useCallback(async () => {
-    await commands
-      .deleteAllFileitemsAndRelations()
-      .then(() => {
-        refetchAll()
-        refetchSelected()
-      })
-      .catch((error) => {
-        console.log('deleteAllFileitemsAndRelations error', error)
-      })
-  }, [refetchAll, refetchSelected])
   const deleteSingleItemMutation = useCallback(
     async (id: string) => {
       await commands
@@ -695,7 +682,6 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   const del = useMemo(
     () => ({
       track: deleteSingleItemMutation,
-      allTracks: deleteAllItemsMutation,
       fullRange: deleteSingleFullRangeMutation,
       artListTog: deleteSingleArtListTogMutation,
       artListTap: deleteSingleArtListTapMutation,
@@ -704,7 +690,6 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     }),
     [
       deleteSingleItemMutation,
-      deleteAllItemsMutation,
       deleteSingleFullRangeMutation,
       deleteSingleArtListTogMutation,
       deleteSingleArtListTapMutation,

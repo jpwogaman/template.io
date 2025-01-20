@@ -51,15 +51,6 @@ pub fn store_new_full_range(new_full_range: &ItemsFullRanges) {
     .expect("Error saving new range");
 }
 
-pub fn delete_full_range(id: String) {
-  let connection = &mut establish_db_connection();
-
-  diesel
-    ::delete(dsl::items_full_ranges.filter(dsl::id.eq(id)))
-    .execute(connection)
-    .expect("Error deleting range");
-}
-
 pub fn delete_full_range_by_fileitem(id: String, fileitems_item_id: String) {
   let connection = &mut establish_db_connection();
 

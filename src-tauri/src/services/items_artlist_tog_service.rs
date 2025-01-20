@@ -49,15 +49,6 @@ pub fn store_new_art_tog(new_art_tog: &ItemsArtListTog) {
     .expect("Error saving new fad");
 }
 
-pub fn delete_art_tog(id: String) {
-  let connection = &mut establish_db_connection();
-
-  diesel
-    ::delete(dsl::items_artlist_tog.filter(dsl::id.eq(id)))
-    .execute(connection)
-    .expect("Error deleting fad");
-}
-
 pub fn delete_art_tog_by_fileitem(id: String, fileitems_item_id: String) {
   let connection = &mut establish_db_connection();
 

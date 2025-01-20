@@ -5,18 +5,6 @@ use crate::{
 
 #[tauri::command]
 #[specta::specta]
-pub fn list_items_fadlist(fileitems_item_id: String) -> Vec<ItemsFadList> {
-  items_fadlist_service::list_items_fadlist(fileitems_item_id)
-}
-
-#[tauri::command]
-#[specta::specta]
-pub fn get_fad(id: String) -> Option<ItemsFadList> {
-  items_fadlist_service::get_fad(id)
-}
-
-#[tauri::command]
-#[specta::specta]
 pub fn create_fad(fileitems_item_id: String, count: i32) {
   // id's are T_0_FR_0, T_0_FR_1, T_0_FR_2, etc. so we need to find the highest id and increment it
   let items_fadlist = items_fadlist_service::list_items_fadlist(
@@ -51,12 +39,6 @@ pub fn create_fad(fileitems_item_id: String, count: i32) {
     items_fadlist_service::store_new_fad(&fad);
     i += 1;
   }
-}
-
-#[tauri::command]
-#[specta::specta]
-pub fn delete_fad(id: String) {
-  items_fadlist_service::delete_fad(id)
 }
 
 #[tauri::command]

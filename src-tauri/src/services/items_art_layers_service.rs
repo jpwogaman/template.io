@@ -49,15 +49,6 @@ pub fn store_new_art_layer(new_art_layer: &ItemsArtLayers) {
     .expect("Error saving new fad");
 }
 
-pub fn delete_art_layer(id: String) {
-  let connection = &mut establish_db_connection();
-
-  diesel
-    ::delete(dsl::items_art_layers.filter(dsl::id.eq(id)))
-    .execute(connection)
-    .expect("Error deleting fad");
-}
-
 pub fn delete_art_layer_by_fileitem(id: String, fileitems_item_id: String) {
   let connection = &mut establish_db_connection();
 
