@@ -105,7 +105,8 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
 
   useEffect(() => {
     setMounted(true)
-    getData()
+    getData().catch((e) => console.error(e))
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [])
 
   const getData = useCallback(

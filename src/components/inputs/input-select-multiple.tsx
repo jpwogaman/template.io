@@ -6,6 +6,7 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
   id,
   codeDisabled,
   defaultValue,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   options,
   onChangeFunction
 }) => {
@@ -18,6 +19,7 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
       ? (JSON.parse(defaultValue) as string[])
       : []
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const shortenedSubComponentId = (initialId: string) => {
     return `${
       //initialId.split('_')[2]}_${
@@ -25,6 +27,7 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
     }`
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, prefer-const
   let inputSelectOptionElements:
     | React.JSX.Element
     | React.JSX.Element[]
@@ -32,6 +35,7 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
     | number[]
     | undefined = selectArrays.valNoneList?.array
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const valChange = (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {

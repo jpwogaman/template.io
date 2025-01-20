@@ -12,6 +12,7 @@ import {
 import { listen } from '@tauri-apps/api/event'
 import { useModal } from '@/components/context'
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface TauriListenersContextType {}
 
 const tauriListenersContextDefaultValues: TauriListenersContextType = {}

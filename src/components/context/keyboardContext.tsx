@@ -10,6 +10,7 @@ import {
 } from 'react'
 import { useMutations, useSelectedItem } from '@/components/context'
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface KeyboardType {}
 
 const keyboardContextDefaultValues: KeyboardType = {}
@@ -26,20 +27,12 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
   const {
     selectedItemId,
     setSelectedItemId,
-    copiedItemId,
-    copiedSubItemId,
     selectedSubItemId,
-    setCopiedItemId,
-    setCopiedSubItemId,
     nextItemId,
-    setNextItemId,
     previousItemId,
-    setPreviousItemId,
     setSelectedSubItemId,
     selectedItemRangeCount,
     selectedItemArtCount,
-    selectedItemArtTogCount,
-    selectedItemArtTapCount,
     selectedItemLayerCount,
     selectedItemFadCount
   } = useSelectedItem()
@@ -300,33 +293,24 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
           }
           return
         }
-
-        //del.track({
-        //  itemId: selectedItemId ?? ''
-        //})
       }
       ////////////////////////////////
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     },
     [
       selectedItemId,
       setSelectedItemId,
-      copiedItemId,
-      copiedSubItemId,
       selectedSubItemId,
-      setCopiedItemId,
-      setCopiedSubItemId,
       nextItemId,
-      setNextItemId,
       previousItemId,
-      setPreviousItemId,
       setSelectedSubItemId,
       selectedItemRangeCount,
       selectedItemArtCount,
-      selectedItemArtTogCount,
-      selectedItemArtTapCount,
       selectedItemLayerCount,
-      selectedItemFadCount
+      selectedItemFadCount,
+      commandSimplifier,
+      create,
+      del,
+      selectedItem?.art_list_tog,
     ]
   )
 

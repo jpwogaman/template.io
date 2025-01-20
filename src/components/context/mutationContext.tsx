@@ -146,22 +146,10 @@ interface MutationProviderProps {
 }
 
 export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const {
     selectedItemId,
-    selectedSubItemId,
-    nextItemId,
     previousItemId,
-    selectedItemRangeCount,
-    selectedItemArtTogCount,
-    selectedItemArtTapCount,
-    selectedItemArtCount,
-    selectedItemLayerCount,
-    selectedItemFadCount,
-    copiedItemId,
-    copiedSubItemId,
     setSelectedItemId,
-    setSelectedSubItemId,
     setNextItemId,
     setPreviousItemId,
     setSelectedItemRangeCount,
@@ -169,9 +157,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     setSelectedItemArtTapCount,
     setSelectedItemArtCount,
     setSelectedItemLayerCount,
-    setSelectedItemFadCount,
-    setCopiedItemId,
-    setCopiedSubItemId
+    setSelectedItemFadCount
   } = useSelectedItem()
 
   const [mounted, setMounted] = useState(false)
@@ -206,7 +192,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     if (!selectedItemId) return
     try {
       const data = await commands.getFileitemAndRelations(selectedItemId)
-      setSelectedItem(data as FullTrackForExport)
+      setSelectedItem(data)
     } catch (error) {
       console.error('Error fetching selected item:', error)
     }
@@ -222,11 +208,13 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
 
   //////////////////////////////////////////
 
+  //eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getSettings = useCallback(async () => {
     const settings = await commands.getSettings()
     return settings
   }, [])
 
+  //eslint-disable-next-line @typescript-eslint/no-unused-vars
   const updateSettings = useCallback(
     async ({
       key,
@@ -236,7 +224,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       value: Settings[keyof Settings]
     }) => {
       const settings = await commands.getSettings()
-      commands.setSettings({ ...settings, [key]: value })
+      void commands.setSettings({ ...settings, [key]: value })
     },
     []
   )
@@ -261,9 +249,10 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     (item) => item !== 'N/A'
   ).length
 
-  const instanceArraysObject: {
-    [key: string]: string[]
-  } = {}
+  const instanceArraysObject: Record<string, Array<string>> = {}
+  //const instanceArraysObject: {
+  //  [key: string]: string[]
+  //} = {}
 
   for (const element of vepInstanceArraySetArray) {
     Object.defineProperty(instanceArraysObject, element, {
@@ -290,25 +279,28 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     }
   }
 
-  const eachInstanceArraySet: {
-    [key: string]: Set<string>
-  } = {}
+  const eachInstanceArraySet: Record<string, Set<string>> = {}
+  //const eachInstanceArraySet: {
+  //  [key: string]: Set<string>
+  //} = {}
 
   for (const [key, value] of Object.entries(instanceArraysObject)) {
     eachInstanceArraySet[key] = new Set(value)
   }
 
-  const eachInstanceArraySetArray: {
-    [key: string]: string[]
-  } = {}
+  const eachInstanceArraySetArray: Record<string, Array<string>> = {}
+  //const eachInstanceArraySetArray: {
+  //  [key: string]: string[]
+  //} = {}
 
   for (const [key, value] of Object.entries(eachInstanceArraySet)) {
     eachInstanceArraySetArray[key] = Array.from(value)
   }
 
-  const eachInstanceArraySetArrayLength: {
-    [key: string]: number
-  } = {}
+  const eachInstanceArraySetArrayLength: Record<string, number> = {}
+  //const eachInstanceArraySetArrayLength: {
+  //  [key: string]: number
+  //} = {}
 
   for (const [key, value] of Object.entries(eachInstanceArraySetArray)) {
     eachInstanceArraySetArrayLength[key] = value.length
@@ -345,6 +337,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     setSelectedItemFadCount(data[index]?._count?.fad_list ?? 0)
 
     refetchSelected()
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [selectedItemId, data])
   //////////////////////////////////////////
   // CREATE mutations
@@ -362,7 +355,6 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     },
     [refetchAll, refetchSelected]
   )
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   const createSingleFullRangeMutation = useCallback(
     async ({ fileitemsItemId, count }: createSubItemArgs) => {
       await commands
@@ -534,7 +526,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
           console.log('deleteFileitemAndRelations error', error)
         })
     },
-    [refetchAll, setSelectedItemId]
+    [refetchAll, setSelectedItemId, previousItemId]
   )
   const deleteSingleFullRangeMutation = useCallback(
     async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
@@ -614,14 +606,13 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
         .clearFileitem(id)
         .then(() => {
           refetchAll()
-          if (!previousItemId) return
-          setSelectedItemId(previousItemId)
+          refetchSelected()
         })
         .catch((error) => {
           console.log('clearFileitem error', error)
         })
     },
-    [refetchAll, setSelectedItemId]
+    [refetchAll, refetchSelected]
   )
   ////////////////////////////////////////////
   //// RENUMBER/REORDER mutations
