@@ -47,7 +47,7 @@ OSC1:null,OSC1 OSC2:OSC2,OSC2 OSC3:OSC3,OSC3 OSC4:null,OSC4
 ```JS
 //port1:input,output port2:input,output
 ```
-*Note: if you are already using Open Stage Control and have a your own ports, custom-module, workfile, etc. setup, I still recommend going through these steps to see how the system works. There is more information [**below**]() on bringing the elements of the workfile and custom-module into your own projects.*
+*Note: if you are already using Open Stage Control and have a your own ports, custom-module, workfile, etc. setup, I still recommend going through these steps to see how the system works.*
 
 Also, if you use a touchscreen that is connect via USB (as opposed to a tablet using WIFI), I recommend that you add the following to the 'client-options' input:
 ```
@@ -83,7 +83,7 @@ I know this seems like a hassle, so I took the liberty of setting up these trans
 
 ![transformer setup](./assets/Images/cubase-transformer.png)
 
-You can now use Template.io to add information about your tracks and when you save, it will automatically update the **template-io-tracks.json**, which the custom-module is reading. This will update your instance of Open Stage Control and put all of the parameters that each track can use right at the tip of your fingers. 
+You can now use Template.io to add information about your tracks and when you save, it will automatically update the **template-io-tracks.json**, which the custom-module is reading. **You may need to restart your instance of Open Stage Control**, but now you will have all of the parameters that each track can use right at the tip of your fingers. 
 
 ![template.io main view](./assets/Images/template-io-main-view.PNG)
 
@@ -92,7 +92,7 @@ You can now use Template.io to add information about your tracks and when you sa
 
 # Running Template.io from Source
 
-1) [**Tauri Prerequisites**](https://tauri.app/v1/guides/getting-started/prerequisites) - this includes downloading Rust, as well as configuring your PATH. 
+1) [**Tauri Prerequisites**](https://v2.tauri.app/start/prerequisites/) - this includes downloading Rust, as well as configuring your PATH. 
 
 2)  ```
     git clone https://github.com/jpwogaman/template.io.git
