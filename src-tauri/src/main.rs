@@ -144,16 +144,15 @@ async fn main() {
         match event.id().as_ref() {
           "import" => {
             import_export_service::import(app.clone());
-            fileitem_service::list_all_fileitems_and_relations();
+            app.emit("refresh", "refresh").unwrap();
           }
           "export" => {
             import_export_service::export(app.clone());            
           }
           "delete_all" => {
-            app.emit("delete_all", "delete_all").unwrap();
             fileitem_service::delete_all_fileitems_and_relations();
             fileitem_service::create_fileitem(1);
-            fileitem_service::list_all_fileitems_and_relations();
+            app.emit("refresh", "refresh").unwrap();
           }
           "quit" => {
             std::process::exit(0);

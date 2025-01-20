@@ -3,7 +3,6 @@
 import {
   createContext,
   useContext,
-  useMemo,
   type ReactNode,
   type FC,
   useEffect,
@@ -37,6 +36,10 @@ export const TauriListenersProvider: FC<TauriListenersProviderProps> = ({
   if (!mounted) {
     return null
   }
+
+  listen('refresh', () => {
+    location.reload()
+  }).catch((e) => console.error(e))
 
   listen('about', () => {
     if (modalOpen) {
