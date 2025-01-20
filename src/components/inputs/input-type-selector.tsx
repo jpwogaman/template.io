@@ -21,7 +21,7 @@ import {
   type ItemsArtListTap,
   type ItemsArtListTog,
   type ItemsFadList
-} from 'src-tauri/src/models'
+} from '../backendCommands/backendCommands'
 
 export type OnChangeHelperArgsType = {
   newValue?: string | number | boolean

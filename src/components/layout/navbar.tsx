@@ -3,12 +3,11 @@
 import { type FC } from 'react'
 import { useTheme } from 'next-themes'
 import { useState, useEffect } from 'react'
-import { invoke } from '@tauri-apps/api/core'
 import { IconBtnToggle } from '@/components/layout/icon-btn-toggle'
 import { useMutations, useSelectedItem } from '@/components/context'
 
 export const NavBar: FC = () => {
-  const { selectedItemId, copiedItemId, copiedSubItemId } = useSelectedItem()
+  const { copiedItemId, copiedSubItemId } = useSelectedItem()
   const [mounted, setMounted] = useState(false)
   const {
     dataLength,
@@ -26,34 +25,7 @@ export const NavBar: FC = () => {
   if (!mounted) {
     return null
   }
-  const listItems = () => {
-    invoke('list_all_fileitems_and_relations')
-      .then((response) => {
-        console.log(response)
-      })
-      .catch((e) => console.error(e))
-  }
-  const createItem = () => {
-    invoke('create_fileitem', { count: 1 })
-      .then((response) => {
-        console.log(response)
-      })
-      .catch((e) => console.error(e))
-  }
-  const createArtTog = () => {
-    invoke('create_art_tog', { fileitems_item_id: 'T_0', count: 1 })
-      .then((response) => {
-        console.log(response)
-      })
-      .catch((e) => console.error(e))
-  }
-  const createArtTap = () => {
-    invoke('create_art_tap', { fileitems_item_id: 'T_0', count: 1 })
-      .then((response) => {
-        console.log(response)
-      })
-      .catch((e) => console.error(e))
-  }
+
   return (
     <nav className='container sticky top-0 z-50 max-h-[40px] min-w-full items-center bg-zinc-900'>
       <ul className='flex justify-between'>
@@ -84,36 +56,11 @@ export const NavBar: FC = () => {
         <li className='block flex gap-2 p-2 pl-5 text-left text-xs text-zinc-200'>
           <button
             className='border px-2'
-            onClick={() => renumber.artList({ itemId: selectedItemId ?? '' })}>
-            Renumber Arts
-          </button>
-          <button
-            className='border px-2'
             onClick={() => renumber.allTracks()}>
             Renumber Tracks
           </button>
           <button className='border px-2'>{`Copied Item: ${copiedItemId}`}</button>
           <button className='border px-2'>{`Copied SubItem: ${copiedSubItemId}`}</button>
-          <button
-            className='border px-2'
-            onClick={listItems}>
-            SQL Test
-          </button>
-          <button
-            className='border px-2'
-            onClick={createItem}>
-            SQL Create
-          </button>
-          <button
-            className='border px-2'
-            onClick={createArtTog}>
-            SQL Create Art Tog
-          </button>
-          <button
-            className='border px-2'
-            onClick={createArtTap}>
-            SQL Create Art Tap
-          </button>
         </li>
         <li className='block w-60 cursor-pointer p-2 text-right text-zinc-200'>
           <IconBtnToggle

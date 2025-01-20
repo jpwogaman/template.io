@@ -22,7 +22,7 @@ import {
   type ItemsArtListTap,
   type ItemsArtListTog,
   type ItemsFadList
-} from 'src-tauri/src/models'
+} from '../backendCommands/backendCommands'
 
 export const TrackOptions: FC = () => {
   const { selectedItemId, selectedSubItemId, setSelectedSubItemId } =
@@ -176,9 +176,9 @@ export const TrackOptions: FC = () => {
     key
   }: OnChangeHelperArgsType) => {
     //I need to throttle this so it doesn't fire on every keypress, only when the user stops typing for a second or so.
-
+    if (!id) return
     update.track({
-      itemId: id,
+      id: id,
       [key]: newValue
     })
   }
@@ -192,44 +192,44 @@ export const TrackOptions: FC = () => {
     if (label === 'fullRange') {
       if (key === 'whiteKeysOnly') {
         update.fullRange({
-          rangeId: layoutDataSingleId ?? '',
-          whiteKeysOnly: newValue === 'true'
+          id: layoutDataSingleId ?? '',
+          white_keys_only: newValue === 'true'
         })
       } else {
         update.fullRange({
-          rangeId: layoutDataSingleId ?? '',
+          id: layoutDataSingleId ?? '',
           [key]: newValue
         })
       }
     }
     if (label === 'art_list_tog') {
       update.artListTog({
-        artId: layoutDataSingleId ?? '',
+        id: layoutDataSingleId ?? '',
         [key]: newValue
       })
     }
     if (label === 'art_list_tap') {
       if (key === 'default') {
         update.artListTap({
-          artId: layoutDataSingleId ?? '',
+          id: layoutDataSingleId ?? '',
           default: newValue === 'true'
         })
         return
       }
       update.artListTap({
-        artId: layoutDataSingleId ?? '',
+        id: layoutDataSingleId ?? '',
         [key]: newValue
       })
     }
     if (label === 'artLayers') {
       update.artLayer({
-        layerId: layoutDataSingleId ?? '',
+        id: layoutDataSingleId ?? '',
         [key]: newValue
       })
     }
     if (label === 'fadList') {
       update.fadList({
-        fadId: layoutDataSingleId ?? '',
+        id: layoutDataSingleId ?? '',
         [key]: newValue
       })
     }

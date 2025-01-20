@@ -11,7 +11,7 @@ import {
   useContextMenu
 } from '@/components/context'
 
-import { type FullTrackForExport } from 'src-tauri/src/models'
+import { type FullTrackForExport } from '../backendCommands/backendCommands'
 
 export const TrackList: FC = () => {
   const { selectedItemId, setSelectedItemId, setSelectedSubItemId } =
@@ -28,6 +28,7 @@ export const TrackList: FC = () => {
   }: OnChangeHelperArgsType) => {
     //I need to throttle this so it doesn't fire on every keypress, only when the user stops typing for a second or so.
 
+    if (!id) return
     update.track({
       id,
       [key]: newValue
