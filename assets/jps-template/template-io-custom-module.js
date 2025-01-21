@@ -1,83 +1,13 @@
-const allTrack_jsn = loadJSON('tracks-11.27.2023-v23.json')
+// @ts-check
+/// <reference path="./custom-module.d.ts" />
+
+/** @type {import("@/../../src/components/backendCommands/backendCommands").FullTrackListForExport} */
+const allTrack_jsn = loadJSON('tracks-11.27.2023-v23_new-import-test.json')
 
 const items = allTrack_jsn.items
-// full schema for an item in the JSON file
-//{
-//  id: string
-//  locked: boolean
-//  name: string
-//  notes: string
-//  channel: number | null
-//  baseDelay: number | null
-//  avgDelay: number | null
-//  vepOut: string
-//  vepInstance: string
-//  smpNumber: string
-//  smpOut: string
-//  color: string
-//  fullRange:  {
-//      id: string;
-//      name: string | null;
-//      low: string | null;
-//      high: string | null;
-//      whiteKeysOnly: boolean | null;
-//      fileItemsItemId: string | null;
-//  }[]
-//  artListTog: {
-//      id: string;
-//      name: string | null;
-//      toggle: boolean;
-//      codeType: string | null;
-//      code: number | null;
-//      on: number | null;
-//      off: number | null;
-//      default: string | null;
-//      delay: number | null;
-//      changeType: string | null;
-//      ranges: string | null; // actually a string[], parsed in OSC
-//      artLayers: string | null; // actually a string[], parsed in OSC
-//      fileItemsItemId: string | null;
-//  }[]
-//  artListTap: {
-//      id: string;
-//      name: string | null;
-//      toggle: boolean;
-//      codeType: string | null;
-//      code: number | null;
-//      on: number | null;
-//      off: number | null;
-//      default: boolean | null;
-//      delay: number | null;
-//      changeType: string | null;
-//      ranges: string | null; // actually a string[], parsed in OSC
-//      artLayers: string | null; // actually a string[], parsed in OSC
-//      fileItemsItemId: string | null;
-//  }[]
-//  artLayers: {
-//      id: string;
-//      name: string | null;
-//      codeType: string | null;
-//      code: number | null;
-//      on: number | null;
-//      off: number | null;
-//      default: string;
-//      changeType: string | null;
-//      fileItemsItemId: string | null;
-//      itemsArtListTogId: string | null;
-//      itemsArtListTapId: string | null;
-//  }[]
-//  fadList:  {
-//      id: string;
-//      name: string | null;
-//      codeType: string | null;
-//      code: number | null;
-//      default: number | null;
-//      changeType: string | null;
-//      fileItemsItemId: string | null;
-//  }[]
-//}
 
 //array of all notes (Middle C == C3 == MIDI Code 60)
+/** @type {string[]} */
 const globalAllNotesList = []
 for (let i = -2; i < 9; i++) {
   globalAllNotesList.push(
@@ -102,6 +32,12 @@ function sendUpdateCode() {
 
 const SENDPARAMS = false
 // send default articulation parameters to Cubase, this does not just update the template-io UI, it actually sends the MIDI command to Cubase
+/**
+ * @param {string} artOrFadPort
+ * @param {string} artOrFadAddress
+ * @param {number} artOrFadCode
+ * @param {number} artOrFadDefaultValue
+ */
 function sendParameters(
   artOrFadPort,
   artOrFadAddress,
@@ -124,6 +60,10 @@ let toggleAutoUpdate = false
 let toggleShowCodes = true
 let toggleSendUpdate = false
 
+/**
+ * @param {number} arg1_OSC2
+ * @param {number} arg2_OSC2
+ */
 function toggles_OSC2(arg1_OSC2, arg2_OSC2) {
   // auto-update on track selection
   if (arg1_OSC2 === 127 && arg2_OSC2 === 1) {
@@ -144,6 +84,10 @@ function toggles_OSC2(arg1_OSC2, arg2_OSC2) {
   }
 }
 
+/**
+ * @param {number} arg1_OSC3
+ * @param {number} arg2_OSC3
+ */
 function toggles_OSC3(arg1_OSC3, arg2_OSC3) {
   if (arg1_OSC3 === 126 && arg2_OSC3 === 1) {
     toggleSendUpdate = true
@@ -159,20 +103,20 @@ function oscReset() {
   const artCount = 18
   // reset all fader info in OSC
   for (let i = 0; i < fadCount; i++) {
-    const fadNameAddress = '/cc_' + parseInt(i + 1) + '_text_display'
-    const fadCodeAddress = '/cc_' + parseInt(i + 1) + '_increment'
-    const fadDefaultValueAddress = '/cc_' + parseInt(i + 1) + '_fad'
+    const fadNameAddress = '/cc_' + (i + 1) + '_text_display'
+    const fadCodeAddress = '/cc_' + (i + 1) + '_increment'
+    const fadDefaultValueAddress = '/cc_' + (i + 1) + '_fad'
     receive(fadNameAddress, ' ')
     receive(fadDefaultValueAddress, 0)
     receive(fadCodeAddress, 0)
   }
   // reset all articulation info in OSC
   for (let i = 0; i < artCount; i++) {
-    const artNameAddress = '/art_name_' + parseInt(i + 1)
-    const artInputBypassAddress = '/art_inpt_' + parseInt(i + 1)
-    const artColorAddress = '/art_colr_' + parseInt(i + 1)
-    const artAlphaFillOnAddress = '/art_mod_a_' + parseInt(i + 1)
-    const artAlphaFillOffAddress = '/art_mod_b_' + parseInt(i + 1)
+    const artNameAddress = '/art_name_' + (i + 1)
+    const artInputBypassAddress = '/art_inpt_' + (i + 1)
+    const artColorAddress = '/art_colr_' + (i + 1)
+    const artAlphaFillOnAddress = '/art_mod_a_' + (i + 1)
+    const artAlphaFillOffAddress = '/art_mod_b_' + (i + 1)
     receive(artNameAddress, ' ')
     receive(artInputBypassAddress, 'true')
     receive(artColorAddress, '#A9A9A9')
@@ -180,8 +124,8 @@ function oscReset() {
     receive(artAlphaFillOffAddress, 0.15)
   }
   // reset the range information in OSC
-  receive('/template_io_key_range_var_1', [])
-  receive('/template_io_key_range_var_2', [])
+  receive('/template_io_key_range_var_1', ...[])
+  receive('/template_io_key_range_var_2', ...[])
   receive('/template_io_key_range_script', 1)
   receive('/selected_track_number', ' ')
   receive('/selected_track_delays', ' ')
@@ -200,6 +144,7 @@ module.exports = {
     }, 100)
   },
 
+  /** @param {OscFilterData} data */
   oscInFilter: function (data) {
     const { address, args, host, port } = data
 
@@ -261,8 +206,8 @@ module.exports = {
     receive('/template_io_selected_track_name', trkName)
     receive('/template_io_selected_track_notes', trkNotes)
 
-    const trkBaseDelay = items[trkNumb].baseDelay // number | null
-    const trkAvgDelay = items[trkNumb].avgDelay // number | null
+    const trkBaseDelay = items[trkNumb].base_delay // number | null
+    const trkAvgDelay = items[trkNumb].avg_delay // number | null
     // hack to get the base delay to show positive or negative
     let trkBaseDelaySign = ''
     let trkAvgDelaySign = ''
@@ -279,21 +224,21 @@ module.exports = {
     )
 
     // if there are more than 4 faders in the JSON file, then we show a red border around the fader panel so that the user knows to paginate
-    if (items[trkNumb].fadList.length > 4) {
+    if (items[trkNumb].fad_list.length > 4) {
       receive('/fader_panel_color_2', '1px solid red')
     } else {
       receive('/fader_panel_color_2', '')
     }
 
-    const fadListJsn = items[trkNumb].fadList
+    const fadListJsn = items[trkNumb].fad_list
     for (let i = 0; i < fadListJsn.length; i++) {
-      const fadNameAddress = '/cc_' + parseInt(i + 1) + '_text_display'
-      const fadCodeAddress = '/cc_' + parseInt(i + 1) + '_increment'
-      const fadDefaultValueAddress = '/cc_' + parseInt(i + 1) + '_fad'
+      const fadNameAddress = '/cc_' + (i + 1) + '_text_display'
+      const fadCodeAddress = '/cc_' + (i + 1) + '_increment'
+      const fadDefaultValueAddress = '/cc_' + (i + 1) + '_fad'
       const fadName = fadListJsn[i].name // string | null
-      const fadAddress = fadListJsn[i].codeType // string | null
-      const fadCode = parseInt(fadListJsn[i].code) // number | null
-      const fadDefaultValue = parseInt(fadListJsn[i].default) // number | null
+      const fadAddress = fadListJsn[i].code_type // string | null
+      const fadCode = fadListJsn[i].code // number | null
+      const fadDefaultValue = fadListJsn[i].default // number | null
 
       // this populates the fader button with the appropriate data
       receive(fadNameAddress, fadName) // string | null
@@ -304,38 +249,38 @@ module.exports = {
       sendParameters('OSC4', fadAddress, fadCode, fadDefaultValue)
     }
     const artListJsn = [
-      ...items[trkNumb].artListTap,
-      ...items[trkNumb].artListTog
+      ...items[trkNumb].art_list_tap,
+      ...items[trkNumb].art_list_tog
     ]
 
-    const trkAllArtLayersJsn = items[trkNumb].artLayers // {}[]
-    const trkAllRanges = items[trkNumb].fullRange // {}[]
+    const trkAllArtLayersJsn = items[trkNumb].art_layers // {}[]
+    const trkAllRanges = items[trkNumb].full_ranges // {}[]
 
     for (let i = 0; i < artListJsn.length; i++) {
-      const artNameAddress = '/art_name_' + parseInt(i + 1)
-      const artAddressAddress = '/art_type_' + parseInt(i + 1)
-      const artCodeAddress = '/art_code_' + parseInt(i + 1)
-      const artInputBypassAddress = '/art_inpt_' + parseInt(i + 1)
-      const artDefaultValueAddress = '/art_deft_' + parseInt(i + 1)
-      const artOnValueAddress = '/art_on___' + parseInt(i + 1)
-      const artOffValueAddress = '/art_off__' + parseInt(i + 1)
-      const artColorAddress = '/art_colr_' + parseInt(i + 1)
-      const artAlphaFillOnAddress = '/art_mod_a_' + parseInt(i + 1)
-      const artAlphaFillOffAddress = '/art_mod_b_' + parseInt(i + 1)
-      const artModeAddress = '/art_mode_' + parseInt(i + 1)
-      const artRangeAddress = '/art_rang_' + parseInt(i + 1)
-      const artLayersAddress = '/art_layers_' + parseInt(i + 1)
+      const artNameAddress = '/art_name_' + (i + 1)
+      const artAddressAddress = '/art_type_' + (i + 1)
+      const artCodeAddress = '/art_code_' + (i + 1)
+      const artInputBypassAddress = '/art_inpt_' + (i + 1)
+      const artDefaultValueAddress = '/art_deft_' + (i + 1)
+      const artOnValueAddress = '/art_on___' + (i + 1)
+      const artOffValueAddress = '/art_off__' + (i + 1)
+      const artColorAddress = '/art_colr_' + (i + 1)
+      const artAlphaFillOnAddress = '/art_mod_a_' + (i + 1)
+      const artAlphaFillOffAddress = '/art_mod_b_' + (i + 1)
+      const artModeAddress = '/art_mode_' + (i + 1)
+      const artRangeAddress = '/art_rang_' + (i + 1)
+      const artLayersAddress = '/art_layers_' + (i + 1)
       const artId = artListJsn[i].id // string
       const artName = artListJsn[i].name // string
-      const artAddress = artListJsn[i].codeType // string
+      const artAddress = artListJsn[i].code_type // string
       const artMode = artListJsn[i].toggle // boolean
       const artDefaultValue = artListJsn[i].default // string | number | boolean | null
-      const artCode = parseInt(artListJsn[i].code) // number | null
-      const artOnValue = parseInt(artListJsn[i].on) // number | null
-      const artOffValue = parseInt(artListJsn[i].off) // number | null
+      const artCode = artListJsn[i].code // number | null
+      const artOnValue = artListJsn[i].on // number | null
+      const artOffValue = artListJsn[i].off // number | null
       const artDelayValue = artListJsn[i].delay // number | null
       const artRangeList = artListJsn[i].ranges // string[]
-      const artLayersList = JSON.parse(artListJsn[i].artLayers) // string[]
+      const artLayersList = JSON.parse(artListJsn[i].art_layers) // string[]
 
       if (!artName) {
         receive('/template_io_key_range_var_1', trkAllRanges) // {}[]
@@ -392,7 +337,7 @@ module.exports = {
 
           if (artLayersList.includes(layer.id)) {
             allLayersThisTrack.push(layer)
-            const layersFiltered = artListJsn[i].artLayers.replace('"",', '')
+            const layersFiltered = artListJsn[i].art_layers.replace('"",', '')
             const obj = JSON.parse(layersFiltered)
             const layersFilteredObj = obj.map((item) => {
               return item
@@ -451,6 +396,7 @@ module.exports = {
     return { address, args, host, port }
   },
 
+  /** @param {OscFilterData} data */
   oscOutFilter: function (data) {
     // this is to get an artificial track response for testing without having to open Cubase
     //send('midi', 'OSC3', '/key_pressure', 0, 1, 31)

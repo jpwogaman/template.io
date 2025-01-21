@@ -4,6 +4,7 @@ use crate::{
     FileItemRequest,
     FullTrackForExport,
     FullTrackWithCounts,
+    FullTrackListForExport,
   },
   services::fileitem_service,
 };
@@ -48,4 +49,10 @@ pub fn update_fileitem(data: FileItemRequest) {
 #[specta::specta]
 pub fn delete_fileitem_and_relations(id: String) {
   fileitem_service::delete_fileitem_and_relations(id)
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn list_all_fileitems_and_relations_for_json_export() -> FullTrackListForExport{
+  fileitem_service::list_all_fileitems_and_relations_for_json_export()
 }

@@ -41,6 +41,7 @@ async fn main() {
   let builder = Builder::<tauri::Wry>::new().commands(
     collect_commands![
       // fileitem_commands
+      list_all_fileitems_and_relations_for_json_export,
       list_all_fileitems_and_relation_counts,
       get_fileitem_and_relations,
       create_fileitem,
@@ -175,6 +176,7 @@ async fn main() {
     .invoke_handler(
       tauri::generate_handler![
         // fileitem_commands
+        list_all_fileitems_and_relations_for_json_export,
         list_all_fileitems_and_relation_counts,
         get_fileitem_and_relations,
         create_fileitem,

@@ -1,4 +1,4 @@
-# "Scratch paper" for scripts found in template_io-workfile.json 
+# "Scratch paper" for scripts found in template-io-workfile.json 
 
 ```js
 /////////////// This script is in every articulation button
