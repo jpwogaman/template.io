@@ -1,8 +1,7 @@
 'use client'
 
 import tw from '@/utils/tw'
-import { type FC } from 'react'
-import { ContextMenuOptions } from './contextMenuOptions'
+import { Fragment, type FC } from 'react'
 import {
   useMutations,
   useSelectedItem,
@@ -29,223 +28,282 @@ export const ContextMenu: FC = () => {
     if (art) return true
   }
 
-  const handleClick = (newMenuId: string) => {
-    close()
-
-    if (!contextMenuId?.includes(selectedItemId ?? '')) {
-      setSelectedItemId(contextMenuId)
-      return
-    }
-
-    if (newMenuId.includes('break')) return //should be redundant
-
-    if (newMenuId.includes('Track')) {
-      switch (newMenuId) {
-        case 'moveTrackUp':
-          console.log('moveTrackUp')
-          break
-        case 'moveTrackDown':
-          console.log('moveTrackDown')
-          break
-        case 'addTrackAbove':
-          console.log('addTrackAbove')
-          break
-        case 'addTrackBelow':
-          create.track(1)
-          break
-        case 'duplicateTrackAbove':
-          console.log('duplicateTrackAbove')
-          break
-        case 'duplicateTrackBelow':
-          console.log('duplicateTrackBelow')
-          break
-        case 'copyTrack':
-          setCopiedItemId(selectedItemId ?? '')
-          break
-        case 'pasteTrack':
-          if (!copiedItemId) return
-          paste.track({
-            destinationItemId: selectedItemId ?? '',
-            copiedItemId: copiedItemId ?? ''
-          })
-          break
-        case 'clearTrack':
-          clear.track(selectedItemId ?? '')
-          break
-        case 'deleteTrack':
-          del.track(selectedItemId ?? '')
-          break
-
-        default:
-          break
+  const ContextMenuOptions = {
+    move: {
+      moveItemUp: {
+        track: {
+          action: () => console.log('moveTrackUp')
+        },
+        range: {
+          action: () => console.log('moveRangeUp')
+        },
+        articulation: {
+          action: () => {}
+        },
+        layer: {
+          action: () => {}
+        },
+        fader: {
+          action: () => {}
+        },
+        label: 'Move Item Up',
+        icon1: 'fa-arrow-up',
+        icon2: null,
+        shortcut: null
+      },
+      moveItemDown: {
+        track: {
+          action: () => console.log('moveTrackDown')
+        },
+        range: {
+          action: () => console.log('moveRangeDown')
+        },
+        articulation: {
+          action: () => {}
+        },
+        layer: {
+          action: () => {}
+        },
+        fader: {
+          action: () => {}
+        },
+        label: 'Move Item Down',
+        icon1: 'fa-arrow-down',
+        icon2: null,
+        shortcut: null
       }
-    }
-    if (newMenuId.includes('Range')) {
-      switch (newMenuId) {
-        case 'moveRangeUp':
-          console.log('moveRangeUp')
-          break
-        case 'moveRangeDown':
-          console.log('moveRangeDown')
-          break
-        case 'addRangeAbove':
-          console.log('addRangeAbove')
-          break
-        case 'addRangeBelow':
-          create.fullRange({
-            fileitemsItemId: selectedItemId ?? '',
-            count: 1
-          })
-          break
-        case 'duplicateRangeAbove':
-          console.log('duplicateRangeAbove')
-          break
-        case 'duplicateRangeBelow':
-          console.log('duplicateRangeBelow')
-          break
-        case 'copyRange':
-          setCopiedSubItemId(contextMenuId ?? '')
-          break
-        case 'pasteRange':
-          console.log('pasteRange')
-          break
-        case 'clearRange':
-          console.log('clearRange')
-          break
-        case 'deleteRange':
-          del.fullRange({
-            id: contextMenuId ?? '',
-            fileitemsItemId: selectedItemId ?? ''
-          })
-          break
-
-        default:
-          break
-      }
-    }
-    if (newMenuId.includes('Articulation')) {
-      switch (newMenuId) {
-        case 'moveArticulationUp':
-          break
-        case 'moveArticulationDown':
-          break
-        case 'addArticulationAbove':
-          break
-        case 'addArticulationBelow':
-          if (isArtTog(contextMenuId ?? '')) {
-            create.artListTog({
+    },
+    add: {
+      addItemAbove: {
+        track: {
+          action: () => console.log('addTrackAbove')
+        },
+        range: {
+          action: () => console.log('addRangeAbove')
+        },
+        articulation: {
+          action: () => {}
+        },
+        layer: {
+          action: () => {}
+        },
+        fader: {
+          action: () => {}
+        },
+        label: 'Add Item Above (ctrl+shift+ArrowUp)',
+        icon1: 'fa-plus',
+        icon2: 'fa-arrow-up',
+        shortcut: 'ctrl+shift+ArrowUp'
+      },
+      addItemBelow: {
+        track: {
+          action: () => create.track(1)
+        },
+        range: {
+          action: () =>
+            create.fullRange({
               fileitemsItemId: selectedItemId ?? '',
               count: 1
             })
-          } else {
-            create.artListTap({
+        },
+        articulation: {
+          action: () => {
+            if (isArtTog(contextMenuId ?? '')) {
+              create.artListTog({
+                fileitemsItemId: selectedItemId ?? '',
+                count: 1
+              })
+            } else {
+              create.artListTap({
+                fileitemsItemId: selectedItemId ?? '',
+                count: 1
+              })
+            }
+          }
+        },
+        layer: {
+          action: () =>
+            create.artLayer({
               fileitemsItemId: selectedItemId ?? '',
               count: 1
             })
+        },
+        fader: {
+          action: () =>
+            create.fadList({
+              fileitemsItemId: selectedItemId ?? '',
+              count: 1
+            })
+        },
+        label: 'Add Item Below (ctrl+shift+ArrowDown)',
+        icon1: 'fa-plus',
+        icon2: 'fa-arrow-down',
+        shortcut: 'ctrl+shift+ArrowDown'
+      }
+    },
+    duplicate: {
+      duplicateItemAbove: {
+        track: {
+          action: () => console.log('duplicateTrackAbove')
+        },
+        range: {
+          action: () => console.log('duplicateRangeAbove')
+        },
+        articulation: {
+          action: () => {}
+        },
+        layer: {
+          action: () => {}
+        },
+        fader: {
+          action: () => {}
+        },
+        label: 'Duplicate Item Above (ctrl+shift+alt+ArrowUp)',
+        icon1: 'fa-copy',
+        icon2: 'fa-arrow-up',
+        shortcut: 'ctrl+shift+alt+ArrowUp'
+      },
+      duplicateItemBelow: {
+        track: {
+          action: () => console.log('duplicateTrackBelow')
+        },
+        range: {
+          action: () => console.log('duplicateRangeBelow')
+        },
+        articulation: {
+          action: () => {}
+        },
+        layer: {
+          action: () => {}
+        },
+        fader: {
+          action: () => {}
+        },
+        label: 'Duplicate Item Below (ctrl+shift+alt+ArrowDown)',
+        icon1: 'fa-copy',
+        icon2: 'fa-arrow-down',
+        shortcut: 'ctrl+shift+alt+ArrowDown'
+      }
+    },
+    copyPaste: {
+      copyItem: {
+        track: {
+          action: () => setCopiedItemId(selectedItemId ?? '')
+        },
+        range: {
+          action: () => setCopiedSubItemId(contextMenuId ?? '')
+        },
+        articulation: {
+          action: () => setCopiedSubItemId(contextMenuId ?? '')
+        },
+        layer: {
+          action: () => setCopiedSubItemId(contextMenuId ?? '')
+        },
+        fader: {
+          action: () => setCopiedSubItemId(contextMenuId ?? '')
+        },
+        label: 'Copy Item Settings',
+        icon1: 'fa-copy',
+        icon2: null,
+        shortcut: null
+      },
+      pasteItem: {
+        track: {
+          action: () => {
+            if (!copiedItemId) return
+            paste.track({
+              destinationItemId: selectedItemId ?? '',
+              copiedItemId: copiedItemId ?? ''
+            })
           }
-          break
-        case 'duplicateArticulationAbove':
-          break
-        case 'duplicateArticulationBelow':
-          break
-        case 'copyArticulation':
-          setCopiedSubItemId(contextMenuId ?? '')
-          break
-        case 'pasteArticulation':
-          break
-        case 'clearArticulation':
-          break
-        case 'deleteArticulation':
-          if (isArtTog(contextMenuId ?? '')) {
-            del.artListTog({
+        },
+        range: {
+          action: () => console.log('pasteRange')
+        },
+        articulation: {
+          action: () => {}
+        },
+        layer: {
+          action: () => {}
+        },
+        fader: {
+          action: () => {}
+        },
+        label: 'Paste Item Settings',
+        icon1: 'fa-paste',
+        icon2: null,
+        shortcut: null
+      }
+    },
+    clearDelete: {
+      clearItem: {
+        track: {
+          action: () => clear.track(selectedItemId ?? '')
+        },
+        range: {
+          action: () => console.log('clearRange')
+        },
+        articulation: {
+          action: () => {}
+        },
+        layer: {
+          action: () => {}
+        },
+        fader: {
+          action: () => {}
+        },
+        label: 'Clear Item',
+        icon1: 'fa-eraser',
+        icon2: null,
+        shortcut: null
+      },
+      deleteItem: {
+        track: {
+          action: () => del.track(selectedItemId ?? '')
+        },
+        range: {
+          action: () =>
+            del.fullRange({
               id: contextMenuId ?? '',
               fileitemsItemId: selectedItemId ?? ''
             })
-          } else {
-            del.artListTap({
+        },
+        articulation: {
+          action: () => {
+            if (isArtTog(contextMenuId ?? '')) {
+              del.artListTog({
+                id: contextMenuId ?? '',
+                fileitemsItemId: selectedItemId ?? ''
+              })
+            } else {
+              del.artListTap({
+                id: contextMenuId ?? '',
+                fileitemsItemId: selectedItemId ?? ''
+              })
+            }
+          }
+        },
+        layer: {
+          action: () =>
+            del.artLayer({
               id: contextMenuId ?? '',
               fileitemsItemId: selectedItemId ?? ''
             })
-          }
-          break
-
-        default:
-          break
+        },
+        fader: {
+          action: () =>
+            del.fadList({
+              id: contextMenuId ?? '',
+              fileitemsItemId: selectedItemId ?? ''
+            })
+        },
+        label: 'Delete Item (ctrl+del)',
+        icon1: 'fa-xmark',
+        icon2: null,
+        shortcut: 'ctrl+del'
       }
     }
-    if (newMenuId.includes('Layer')) {
-      switch (newMenuId) {
-        case 'moveLayerUp':
-          break
-        case 'moveLayerDown':
-          break
-        case 'addLayerAbove':
-          break
-        case 'addLayerBelow':
-          create.artLayer({
-            fileitemsItemId: selectedItemId ?? '',
-            count: 1
-          })
-          break
-        case 'duplicateLayerAbove':
-          break
-        case 'duplicateLayerBelow':
-          break
-        case 'copyLayer':
-          setCopiedSubItemId(contextMenuId ?? '')
-          break
-        case 'pasteLayer':
-          break
-        case 'clearLayer':
-          break
-        case 'deleteLayer':
-          del.artLayer({
-            id: contextMenuId ?? '',
-            fileitemsItemId: selectedItemId ?? ''
-          })
-          break
-
-        default:
-          break
-      }
-    }
-    if (newMenuId.includes('Fader')) {
-      switch (newMenuId) {
-        case 'moveFaderUp':
-          break
-        case 'moveFaderDown':
-          break
-        case 'addFaderAbove':
-          break
-        case 'addFaderBelow':
-          create.fadList({
-            fileitemsItemId: selectedItemId ?? '',
-            count: 1
-          })
-          break
-        case 'duplicateFaderAbove':
-          break
-        case 'duplicateFaderBelow':
-          break
-        case 'copyFader':
-          setCopiedSubItemId(contextMenuId ?? '')
-          break
-        case 'pasteFader':
-          break
-        case 'clearFader':
-          break
-        case 'deleteFader':
-          del.fadList({
-            id: contextMenuId ?? '',
-            fileitemsItemId: selectedItemId ?? ''
-          })
-          break
-
-        default:
-          break
-      }
-    }
-  }
+  } as const
 
   if (!isContextMenuOpen) return null
 
@@ -263,9 +321,7 @@ export const ContextMenu: FC = () => {
         }}>
         <h3
           className={tw(
-            !contextMenuId?.includes(selectedItemId ?? '')
-              ? 'text-red-400'
-              : '',
+            !contextMenuId.includes(selectedItemId) ? 'text-red-400' : '',
             'mx-auto'
           )}>{`Current Track: ${selectedItemId}`}</h3>
 
@@ -275,57 +331,68 @@ export const ContextMenu: FC = () => {
           contextMenuId?.includes('FL_')) && (
           <h3
             className={tw(
-              !contextMenuId?.includes(selectedSubItemId ?? '')
-                ? 'text-red-400'
-                : '',
+              !contextMenuId.includes(selectedSubItemId) ? 'text-red-400' : '',
               'mx-auto'
             )}>{`Current SubItem: ${selectedSubItemId}`}</h3>
         )}
         <h3 className='mx-auto'>{`Selected: ${contextMenuId}`}</h3>
-        <hr className='my-2' />
 
-        {ContextMenuOptions.map((item) => {
-          const { id: optionId, label, icon1, icon2 } = item
-
-          let newId = optionId.replace('Item', 'Track')
-          let newLabel = label?.replace('Item', 'Track')
-
-          if (contextMenuId.includes('FR_')) {
-            newId = optionId.replace('Item', 'Range')
-            newLabel = label?.replace('Item', 'Range')
-          }
-          if (contextMenuId.includes('AT_')) {
-            newId = optionId.replace('Item', 'Articulation')
-            newLabel = label?.replace('Item', 'Articulation')
-          }
-          if (contextMenuId.includes('AL_')) {
-            newId = optionId.replace('Item', 'Layer')
-            newLabel = label?.replace('Item', 'Layer')
-          }
-          if (contextMenuId.includes('FL_')) {
-            newId = optionId.replace('Item', 'Fader')
-            newLabel = label?.replace('Item', 'Fader')
-          }
-
-          if (optionId.includes('break'))
-            return (
-              <hr
-                key={newId}
-                className='my-2'
-              />
-            )
-
+        {Object.entries(ContextMenuOptions).map(([key, item]) => {
           return (
-            <button
-              key={newId}
-              onClick={() => {
-                handleClick(newId)
-              }}
-              className='flex items-end gap-2 whitespace-nowrap px-1 py-0.5 hover:bg-zinc-600'>
-              <p>{newLabel}</p>
-              <i className={`fa-solid ${icon1}`} />
-              {icon2 && <i className={`fa-solid ${icon2}`} />}
-            </button>
+            <Fragment key={key}>
+              <hr className='my-2' />
+
+              {Object.entries(item).map(([subKey, subItem]) => {
+                const {
+                  label,
+                  icon1,
+                  icon2,
+                  track,
+                  range,
+                  articulation,
+                  layer,
+                  fader
+                } = subItem
+
+                let contextMenuLabel = label.replace('Item', 'Track')
+                let action = track.action
+
+                if (contextMenuId?.includes('FR_')) {
+                  contextMenuLabel = label.replace('Item', 'Range')
+                  action = range.action
+                }
+                if (contextMenuId?.includes('AT_')) {
+                  contextMenuLabel = label.replace('Item', 'Articulation')
+                  action = articulation.action
+                }
+                if (contextMenuId?.includes('AL_')) {
+                  contextMenuLabel = label.replace('Item', 'Layer')
+                  action = layer.action
+                }
+                if (contextMenuId?.includes('FL_')) {
+                  contextMenuLabel = label.replace('Item', 'Fader')
+                  action = fader.action
+                }
+
+                return (
+                  <button
+                    key={subKey}
+                    onClick={() => {
+                      if (!contextMenuId.includes(selectedItemId)) {
+                        setSelectedItemId(contextMenuId)
+                        return
+                      }
+                      action()
+                      close()
+                    }}
+                    className='flex items-end gap-2 whitespace-nowrap px-1 py-0.5 hover:bg-zinc-600'>
+                    <p>{contextMenuLabel}</p>
+                    <i className={`fa-solid ${icon1}`} />
+                    {icon2 && <i className={`fa-solid ${icon2}`} />}
+                  </button>
+                )
+              })}
+            </Fragment>
           )
         })}
       </div>
