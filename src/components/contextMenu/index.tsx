@@ -1,7 +1,7 @@
 'use client'
 
 import tw from '@/utils/tw'
-import { Fragment, type FC } from 'react'
+import { Fragment, type FC, useState, type ChangeEvent, useEffect } from 'react'
 import {
   useMutations,
   useSelectedItem,
@@ -13,15 +13,33 @@ export const ContextMenu: FC = () => {
     selectedItemId,
     setSelectedItemId,
     selectedSubItemId,
-    copiedItemId,
     setCopiedItemId,
     setCopiedSubItemId
   } = useSelectedItem()
 
-  const { selectedItem, create, del, clear, paste } = useMutations()
+  const { selectedItem, create, del, clear, settings } = useMutations()
 
   const { contextMenuId, isContextMenuOpen, contextMenuPosition, close } =
     useContextMenu()
+
+  const [addCount, setAddCount] = useState<number | null>(null)
+  const [addSubCount, setAddSubCount] = useState<number | null>(null)
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      const result = settings.get()
+      if (result instanceof Promise) {
+        const data = await result
+        setAddCount(data.track_add_count)
+        setAddSubCount(data.sub_item_add_count)
+      } else {
+        setAddCount(1)
+        setAddSubCount(1)
+      }
+    }
+
+    fetchSettings()
+  }, [])
 
   const isArtTog = (artId: string) => {
     const art = selectedItem?.art_list_tog?.find((art) => art.id === artId)
@@ -32,19 +50,19 @@ export const ContextMenu: FC = () => {
     move: {
       moveItemUp: {
         track: {
-          action: () => console.log('moveTrackUp')
+          action: null
         },
         range: {
-          action: () => console.log('moveRangeUp')
+          action: null
         },
         articulation: {
-          action: () => {}
+          action: null
         },
         layer: {
-          action: () => {}
+          action: null
         },
         fader: {
-          action: () => {}
+          action: null
         },
         label: 'Move Item Up',
         icon1: 'fa-arrow-up',
@@ -53,19 +71,19 @@ export const ContextMenu: FC = () => {
       },
       moveItemDown: {
         track: {
-          action: () => console.log('moveTrackDown')
+          action: null
         },
         range: {
-          action: () => console.log('moveRangeDown')
+          action: null
         },
         articulation: {
-          action: () => {}
+          action: null
         },
         layer: {
-          action: () => {}
+          action: null
         },
         fader: {
-          action: () => {}
+          action: null
         },
         label: 'Move Item Down',
         icon1: 'fa-arrow-down',
@@ -76,47 +94,47 @@ export const ContextMenu: FC = () => {
     add: {
       addItemAbove: {
         track: {
-          action: () => console.log('addTrackAbove')
+          action: null
         },
         range: {
-          action: () => console.log('addRangeAbove')
+          action: null
         },
         articulation: {
-          action: () => {}
+          action: null
         },
         layer: {
-          action: () => {}
+          action: null
         },
         fader: {
-          action: () => {}
+          action: null
         },
         label: 'Add Item Above (ctrl+shift+ArrowUp)',
         icon1: 'fa-plus',
         icon2: 'fa-arrow-up',
-        shortcut: 'ctrl+shift+ArrowUp'
+        shortcut: 'CTRL_SHIFT_ARROWUP'
       },
-      addItemBelow: {
+      addItemAtEnd: {
         track: {
-          action: () => create.track(1)
+          action: () => create.track(addCount ?? 1)
         },
         range: {
           action: () =>
             create.fullRange({
-              fileitemsItemId: selectedItemId ?? '',
-              count: 1
+              fileitemsItemId: selectedItemId,
+              count: addSubCount ?? 1
             })
         },
         articulation: {
           action: () => {
-            if (isArtTog(contextMenuId ?? '')) {
+            if (isArtTog(contextMenuId)) {
               create.artListTog({
-                fileitemsItemId: selectedItemId ?? '',
-                count: 1
+                fileitemsItemId: selectedItemId,
+                count: addSubCount ?? 1
               })
             } else {
               create.artListTap({
-                fileitemsItemId: selectedItemId ?? '',
-                count: 1
+                fileitemsItemId: selectedItemId,
+                count: addSubCount ?? 1
               })
             }
           }
@@ -124,83 +142,83 @@ export const ContextMenu: FC = () => {
         layer: {
           action: () =>
             create.artLayer({
-              fileitemsItemId: selectedItemId ?? '',
-              count: 1
+              fileitemsItemId: selectedItemId,
+              count: addSubCount ?? 1
             })
         },
         fader: {
           action: () =>
             create.fadList({
-              fileitemsItemId: selectedItemId ?? '',
-              count: 1
+              fileitemsItemId: selectedItemId,
+              count: addSubCount ?? 1
             })
         },
-        label: 'Add Item Below (ctrl+shift+ArrowDown)',
+        label: 'Add Item At End (ctrl+shift+ArrowDown)',
         icon1: 'fa-plus',
         icon2: 'fa-arrow-down',
-        shortcut: 'ctrl+shift+ArrowDown'
+        shortcut: 'CTRL_SHIFT_ARROWDOWN'
       }
     },
     duplicate: {
       duplicateItemAbove: {
         track: {
-          action: () => console.log('duplicateTrackAbove')
+          action: null
         },
         range: {
-          action: () => console.log('duplicateRangeAbove')
+          action: null
         },
         articulation: {
-          action: () => {}
+          action: null
         },
         layer: {
-          action: () => {}
+          action: null
         },
         fader: {
-          action: () => {}
+          action: null
         },
         label: 'Duplicate Item Above (ctrl+shift+alt+ArrowUp)',
         icon1: 'fa-copy',
         icon2: 'fa-arrow-up',
-        shortcut: 'ctrl+shift+alt+ArrowUp'
+        shortcut: 'CTRL_SHIFT_ALT_ARROWUP'
       },
       duplicateItemBelow: {
         track: {
-          action: () => console.log('duplicateTrackBelow')
+          action: null
         },
         range: {
-          action: () => console.log('duplicateRangeBelow')
+          action: null
         },
         articulation: {
-          action: () => {}
+          action: null
         },
         layer: {
-          action: () => {}
+          action: null
         },
         fader: {
-          action: () => {}
+          action: null
         },
         label: 'Duplicate Item Below (ctrl+shift+alt+ArrowDown)',
         icon1: 'fa-copy',
         icon2: 'fa-arrow-down',
-        shortcut: 'ctrl+shift+alt+ArrowDown'
+        shortcut: 'CTRL_SHIFT_ALT_ARROWDOWN'
       }
     },
     copyPaste: {
       copyItem: {
         track: {
-          action: () => setCopiedItemId(selectedItemId ?? '')
+          action: () => setCopiedItemId(selectedItemId)
         },
         range: {
-          action: () => setCopiedSubItemId(contextMenuId ?? '')
+          action: () => setCopiedSubItemId(contextMenuId)
         },
         articulation: {
-          action: () => setCopiedSubItemId(contextMenuId ?? '')
+          action: () => setCopiedSubItemId(contextMenuId)
         },
         layer: {
-          action: () => setCopiedSubItemId(contextMenuId ?? '')
+          action: () => setCopiedSubItemId(contextMenuId)
         },
         fader: {
-          action: () => setCopiedSubItemId(contextMenuId ?? '')
+          action: () => setCopiedSubItemId(contextMenuId)
         },
         label: 'Copy Item Settings',
         icon1: 'fa-copy',
@@ -209,25 +227,19 @@ export const ContextMenu: FC = () => {
       },
       pasteItem: {
         track: {
-          action: () => {
-            if (!copiedItemId) return
-            paste.track({
-              destinationItemId: selectedItemId ?? '',
-              copiedItemId: copiedItemId ?? ''
-            })
-          }
+          action: null
         },
         range: {
-          action: () => console.log('pasteRange')
+          action: null
         },
         articulation: {
-          action: () => {}
+          action: null
         },
         layer: {
-          action: () => {}
+          action: null
         },
         fader: {
-          action: () => {}
+          action: null
         },
         label: 'Paste Item Settings',
         icon1: 'fa-paste',
@@ -238,19 +250,19 @@ export const ContextMenu: FC = () => {
     clearDelete: {
       clearItem: {
         track: {
-          action: () => clear.track(selectedItemId ?? '')
+          action: () => clear.track(selectedItemId)
         },
         range: {
-          action: () => console.log('clearRange')
+          action: null
         },
         articulation: {
-          action: () => {}
+          action: null
         },
         layer: {
-          action: () => {}
+          action: null
         },
         fader: {
-          action: () => {}
+          action: null
         },
         label: 'Clear Item',
         icon1: 'fa-eraser',
@@ -259,26 +271,26 @@ export const ContextMenu: FC = () => {
       },
       deleteItem: {
         track: {
-          action: () => del.track(selectedItemId ?? '')
+          action: () => del.track(selectedItemId)
         },
         range: {
           action: () =>
             del.fullRange({
-              id: contextMenuId ?? '',
-              fileitemsItemId: selectedItemId ?? ''
+              id: contextMenuId,
+              fileitemsItemId: selectedItemId
             })
         },
         articulation: {
           action: () => {
-            if (isArtTog(contextMenuId ?? '')) {
+            if (isArtTog(contextMenuId)) {
               del.artListTog({
-                id: contextMenuId ?? '',
-                fileitemsItemId: selectedItemId ?? ''
+                id: contextMenuId,
+                fileitemsItemId: selectedItemId
               })
             } else {
               del.artListTap({
-                id: contextMenuId ?? '',
-                fileitemsItemId: selectedItemId ?? ''
+                id: contextMenuId,
+                fileitemsItemId: selectedItemId
               })
             }
           }
@@ -286,26 +298,32 @@ export const ContextMenu: FC = () => {
         layer: {
           action: () =>
             del.artLayer({
-              id: contextMenuId ?? '',
-              fileitemsItemId: selectedItemId ?? ''
+              id: contextMenuId,
+              fileitemsItemId: selectedItemId
             })
         },
         fader: {
           action: () =>
             del.fadList({
-              id: contextMenuId ?? '',
-              fileitemsItemId: selectedItemId ?? ''
+              id: contextMenuId,
+              fileitemsItemId: selectedItemId
             })
         },
         label: 'Delete Item (ctrl+del)',
         icon1: 'fa-xmark',
         icon2: null,
-        shortcut: 'ctrl+del'
+        shortcut: 'CTRL_DELETE'
       }
     }
   } as const
 
   if (!isContextMenuOpen) return null
+
+  const contextMenuIsSubItem =
+    contextMenuId?.includes('FR_') ||
+    contextMenuId?.includes('AT_') ||
+    contextMenuId?.includes('AL_') ||
+    contextMenuId?.includes('FL_')
 
   return (
     <div className='absolute left-0 top-0 z-[100]'>
@@ -319,23 +337,62 @@ export const ContextMenu: FC = () => {
           top: contextMenuPosition.top,
           left: contextMenuPosition.left
         }}>
-        <h3
-          className={tw(
-            !contextMenuId.includes(selectedItemId) ? 'text-red-400' : '',
-            'mx-auto'
-          )}>{`Current Track: ${selectedItemId}`}</h3>
+        <div className='flex'>
+          <div className='w-3/4'>
+            <h3
+              className={tw(
+                !contextMenuId.includes(selectedItemId) ? 'text-red-400' : '',
+                'mx-auto'
+              )}>{`Current Track: ${selectedItemId}`}</h3>
 
-        {(contextMenuId?.includes('FR_') ||
-          contextMenuId?.includes('AT_') ||
-          contextMenuId?.includes('AL_') ||
-          contextMenuId?.includes('FL_')) && (
-          <h3
-            className={tw(
-              !contextMenuId.includes(selectedSubItemId) ? 'text-red-400' : '',
-              'mx-auto'
-            )}>{`Current SubItem: ${selectedSubItemId}`}</h3>
-        )}
-        <h3 className='mx-auto'>{`Selected: ${contextMenuId}`}</h3>
+            {contextMenuIsSubItem && (
+              <h3
+                className={tw(
+                  !contextMenuId.includes(selectedSubItemId)
+                    ? 'text-red-400'
+                    : '',
+                  'mx-auto'
+                )}>{`Current SubItem: ${selectedSubItemId}`}</h3>
+            )}
+            <h3 className='mx-auto'>{`Selected: ${contextMenuId}`}</h3>
+          </div>
+          <div className='flex w-1/4 justify-end'>
+            <input
+              type='number'
+              id='contextMenuCountInput'
+              max={10}
+              min={1}
+              value={
+                contextMenuIsSubItem ? (addSubCount ?? 1) : (addCount ?? 1)
+              }
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                e.stopPropagation()
+
+                e.preventDefault()
+                const newValue = parseInt(e.target.value) || 1
+                if (contextMenuIsSubItem) {
+                  setAddSubCount(newValue)
+                  settings.set({
+                    key: 'sub_item_add_count',
+                    value: addSubCount
+                  })
+                } else {
+                  setAddCount(newValue)
+                  settings.set({
+                    key: 'track_add_count',
+                    value: addCount
+                  })
+                }
+              }}
+              className={tw(
+                'h-full w-1/2',
+                'hover:cursor-text',
+                'rounded-sm bg-inherit p-1 outline-none',
+                'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-600'
+              )}
+            />
+          </div>
+        </div>
 
         {Object.entries(ContextMenuOptions).map(([key, item]) => {
           return (
@@ -354,30 +411,65 @@ export const ContextMenu: FC = () => {
                   fader
                 } = subItem
 
+                const contextMenuMap: Record<
+                  string,
+                  { label: string; action: any }
+                > = {
+                  FR_: { label: 'Range', action: range.action },
+                  AT_: { label: 'Articulation', action: articulation.action },
+                  AL_: { label: 'Layer', action: layer.action },
+                  FL_: { label: 'Fader', action: fader.action }
+                }
+
                 let contextMenuLabel = label.replace('Item', 'Track')
                 let action = track.action
 
-                if (contextMenuId?.includes('FR_')) {
-                  contextMenuLabel = label.replace('Item', 'Range')
-                  action = range.action
+                for (const [
+                  prefix,
+                  { label: mappedLabel, action: mappedAction }
+                ] of Object.entries(contextMenuMap)) {
+                  if (contextMenuId?.includes(prefix)) {
+                    contextMenuLabel = label.replace('Item', mappedLabel)
+                    action = mappedAction
+                    break
+                  }
                 }
-                if (contextMenuId?.includes('AT_')) {
-                  contextMenuLabel = label.replace('Item', 'Articulation')
-                  action = articulation.action
-                }
-                if (contextMenuId?.includes('AL_')) {
-                  contextMenuLabel = label.replace('Item', 'Layer')
-                  action = layer.action
-                }
-                if (contextMenuId?.includes('FL_')) {
-                  contextMenuLabel = label.replace('Item', 'Fader')
-                  action = fader.action
+
+                if (key === 'add') {
+                  const count = contextMenuIsSubItem ? addSubCount : addCount
+                  contextMenuLabel = contextMenuLabel.replace(
+                    'Add',
+                    `Add ${count ?? 1}`
+                  )
+
+                  if (count && count > 1) {
+                    const singularToPlural: Record<string, string> = {
+                      Range: 'Ranges',
+                      Track: 'Tracks',
+                      Articulation: 'Articulations',
+                      Layer: 'Layers',
+                      Fader: 'Faders'
+                    }
+
+                    for (const [singular, plural] of Object.entries(
+                      singularToPlural
+                    )) {
+                      if (contextMenuLabel.includes(singular)) {
+                        contextMenuLabel = contextMenuLabel.replace(
+                          singular,
+                          plural
+                        )
+                        break
+                      }
+                    }
+                  }
                 }
 
                 return (
                   <button
                     key={subKey}
                     onClick={() => {
+                      if (!action) return
                       if (!contextMenuId.includes(selectedItemId)) {
                         setSelectedItemId(contextMenuId)
                         return
@@ -385,7 +477,10 @@ export const ContextMenu: FC = () => {
                       action()
                       close()
                     }}
-                    className='flex items-end gap-2 whitespace-nowrap px-1 py-0.5 hover:bg-zinc-600'>
+                    className={tw(
+                      !action ? 'opacity-30' : '',
+                      'flex items-end gap-2 whitespace-nowrap px-1 py-0.5 hover:bg-zinc-600'
+                    )}>
                     <p>{contextMenuLabel}</p>
                     <i className={`fa-solid ${icon1}`} />
                     {icon2 && <i className={`fa-solid ${icon2}`} />}

@@ -74,6 +74,11 @@ details[open] summary ~ * {
   animation: sweep 1s ease-in-out;
 }
 
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {  
+   opacity: 1;   
+}
+
 @keyframes sweep {
   0% {
     opacity: 0;

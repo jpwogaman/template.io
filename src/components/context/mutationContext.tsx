@@ -83,6 +83,16 @@ interface MutationContextType {
   paste: {
     track: (data: pasteItemArgs) => void
   }
+  settings: {
+    get: () => Promise<Settings> | void
+    set: ({
+      key,
+      value
+    }: {
+      key: keyof Settings
+      value: Settings[keyof Settings]
+    }) => void
+  }
 }
 
 const mutationContextDefaultValues: MutationContextType = {
@@ -134,6 +144,11 @@ const mutationContextDefaultValues: MutationContextType = {
   paste: {
     /* eslint-disable @typescript-eslint/no-empty-function */
     track: () => {}
+  },
+  settings: {
+    /* eslint-disable @typescript-eslint/no-empty-function */
+    get: () => {},
+    set: () => {}
   }
 }
 
@@ -710,6 +725,14 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     [pasteSingleItemMutation]
   )
 
+  const settings = useMemo(
+    () => ({
+      get: getSettings,
+      set: updateSettings
+    }),
+    [getSettings, updateSettings]
+  )
+
   const value = useMemo(
     () => ({
       data,
@@ -727,7 +750,8 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       del,
       clear,
       renumber,
-      paste
+      paste,
+      settings
     }),
     [
       data,
@@ -745,7 +769,8 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       del,
       clear,
       renumber,
-      paste
+      paste,
+      settings
     ]
   )
 

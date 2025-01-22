@@ -19,10 +19,10 @@ interface ContextMenuType {
     left: number
   }
   close: () => void
-  open: () => void  
+  open: () => void
   setContextMenuId: (id: string) => void
   setIsContextMenuOpen: (isOpen: boolean) => void
-  setContextMenuPosition: (position: { top: number, left: number }) => void
+  setContextMenuPosition: (position: { top: number; left: number }) => void
 }
 
 const contextMenuContextDefaultValues: ContextMenuType = {
@@ -34,7 +34,7 @@ const contextMenuContextDefaultValues: ContextMenuType = {
   },
   /* eslint-disable @typescript-eslint/no-empty-function */
   close: () => {},
-  open: () => {},  
+  open: () => {},
   setContextMenuId: () => {},
   setIsContextMenuOpen: () => {},
   setContextMenuPosition: () => {}
@@ -49,7 +49,7 @@ interface ContextMenuProviderProps {
 }
 
 export const ContextMenuProvider: FC<ContextMenuProviderProps> = ({
-  children,
+  children
 }) => {
   const [isContextMenuOpen, setIsContextMenuOpen] = useState(false)
   const [contextMenuId, setContextMenuId] = useState('')
@@ -106,8 +106,9 @@ export const ContextMenuProvider: FC<ContextMenuProviderProps> = ({
       setContextMenuPositionHelper(e)
       open()
     }
-    const handleLeftClick = () => {
-      if (isContextMenuOpen) {
+    const handleLeftClick = (e: MouseEvent) => {
+      const contextMenu = document.getElementById('contextMenuCountInput')
+      if (contextMenu && !contextMenu.contains(e.target as Node)) {
         close()
       }
     }
@@ -129,7 +130,7 @@ export const ContextMenuProvider: FC<ContextMenuProviderProps> = ({
       contextMenuPosition,
       setContextMenuPosition,
       close,
-      open,
+      open
     }),
     [
       isContextMenuOpen,
@@ -139,11 +140,15 @@ export const ContextMenuProvider: FC<ContextMenuProviderProps> = ({
       contextMenuPosition,
       setContextMenuPosition,
       close,
-      open,
+      open
     ]
   )
 
-  return <ContextMenuContext.Provider value={value}>{children}</ContextMenuContext.Provider>
+  return (
+    <ContextMenuContext.Provider value={value}>
+      {children}
+    </ContextMenuContext.Provider>
+  )
 }
 
 export const useContextMenu = () => {
