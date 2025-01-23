@@ -62,16 +62,13 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.repeat) {
-        e.preventDefault()
-        return
-      }
-
       // FROM because we are using keydown, not keyup
-      const keyDownTarget_FROM = e.target as HTMLElement
+      const keyDownTarget_FROM = e.target as HTMLInputElement
       const command = commandSimplifier(e)
 
       const isSelect = keyDownTarget_FROM?.tagName === 'SELECT'
+      const isTextArea = keyDownTarget_FROM?.tagName === 'TEXTAREA'
+      const isInput = keyDownTarget_FROM?.type === 'text'
 
       ////////////////////////////////
       // Find out if selectedInput is in Track Options
@@ -98,6 +95,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       ////////////////////////////////
       // NAVIGATE TRACKS or ARTS or LAYERS or FADS
       if (command === 'ARROWUP') {
+        if (e.repeat && !isTextArea) return
         if (keyDownTarget_FROM?.id.includes('notes')) return
         if (keyDownTarget_FROM?.id.includes('changeLayout')) return
         e.preventDefault()
@@ -140,6 +138,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         setSelectedSubItemId(`${previousItemId}_notes`)
       }
       if (command === 'ARROWDOWN') {
+        if (e.repeat && !isTextArea) return
         if (keyDownTarget_FROM?.id.includes('notes')) return
         if (keyDownTarget_FROM?.id.includes('changeLayout')) return
 
@@ -182,6 +181,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         setSelectedSubItemId(`${nextItemId}_notes`)
       }
       if (command === 'SHIFT_ARROWUP') {
+        if (e.repeat) return
         if (!keyDownTarget_FROM?.id.includes('_FR_0')) return
         e.preventDefault()
         const nextInput = window.document.getElementById(
@@ -191,6 +191,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         nextInput?.focus()
       }
       if (command === 'SHIFT_ARROWDOWN') {
+        if (e.repeat) return
         if (!keyDownTarget_FROM?.id.includes('_notes')) return
         e.preventDefault()
 
@@ -203,11 +204,12 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       ////////////////////////////////
       // NAVIGATE BETWEEN TRACKLIST AND TRACK OPTIONS
       if (command === 'ARROWLEFT' || command === 'ARROWRIGHT') {
+        if (e.repeat && !(isTextArea || isInput)) return
         if (isSelect) e.preventDefault()
       }
       if (command === 'CTRL_ARROWRIGHT') {
+        if (e.repeat) return
         if (selectedInputIsInTrackOptions) return
-
         e.preventDefault()
         const trackOptionsNameInput = window.document.getElementById(
           `${selectedItemId}_notes`
@@ -216,6 +218,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         trackOptionsNameInput?.focus()
       }
       if (command === 'CTRL_ARROWLEFT') {
+        if (e.repeat) return
         if (!selectedInputIsInTrackOptions) return
 
         e.preventDefault()
@@ -227,12 +230,14 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       ////////////////////////////////
       // ADD NEW TRACK or ART or LAYER or FAD
       if (command === 'CTRL_SHIFT_ARROWUP') {
+        if (e.repeat) return
         if (keyDownTarget_FROM?.id.includes('notes')) return
         e.preventDefault()
         alert('Add new item above')
         //create.track()
       }
       if (command === 'CTRL_SHIFT_ARROWDOWN') {
+        if (e.repeat) return
         if (keyDownTarget_FROM?.id.includes('notes')) return
         e.preventDefault()
         alert('Add new item below')
@@ -241,11 +246,13 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       ////////////////////////////////
       // DUPLICATE TRACK or ART or LAYER or FAD
       if (command === 'CTRL_SHIFT_ALT_ARROWUP') {
+        if (e.repeat) return
         if (keyDownTarget_FROM?.id.includes('notes')) return
         e.preventDefault()
         alert('Duplicate selected item above')
       }
       if (command === 'CTRL_SHIFT_ALT_ARROWDOWN') {
+        if (e.repeat) return
         if (keyDownTarget_FROM?.id.includes('notes')) return
         e.preventDefault()
         alert('Duplicate selected item below')
@@ -253,6 +260,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       ////////////////////////////////
       // DELETE TRACK or ART or LAYER or FAD
       if (command === 'CTRL_DELETE') {
+        if (e.repeat) return
         e.preventDefault()
         if (selectedInputIsInTrackOptions) {
           switch (optionType) {
@@ -310,7 +318,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       commandSimplifier,
       create,
       del,
-      selectedItem?.art_list_tog,
+      selectedItem?.art_list_tog
     ]
   )
 
