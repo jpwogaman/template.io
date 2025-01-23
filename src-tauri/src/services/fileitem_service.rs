@@ -333,12 +333,13 @@ pub fn delete_fileitem_and_relations(id: String) {
     return;
   }
 
-  delete_fileitem(id.clone());
   delete_all_art_layers_for_fileitem(id.clone());
   delete_all_art_tap_for_fileitem(id.clone());
   delete_all_art_tog_for_fileitem(id.clone());
   delete_all_fad_for_fileitem(id.clone());
   delete_all_full_ranges_for_fileitem(id.clone());
+  delete_fileitem(id.clone());
+
 }
 
 pub fn clear_fileitem(id: String) {
