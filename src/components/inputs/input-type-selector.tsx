@@ -9,7 +9,6 @@ import {
 
 import { type TrackOptionsTableKeys } from '../utils/trackOptionsTableKeys'
 import { type TrackListTableKeys } from '../utils/trackListTableKeys'
-import { type SettingsTableKeys } from '../modal/settingsTableKeys'
 import tw from '@/utils/tw'
 import { InputColorPicker } from './input-color-picker'
 import { InputTextRich } from './input-text-rich'
@@ -34,7 +33,6 @@ type InputTypeSelectorProps = {
   keySingle:
     | TrackOptionsTableKeys[number]['keys'][number]
     | TrackListTableKeys['keys'][number]
-    | SettingsTableKeys['keys'][number]
   layoutConfigLabel?: string
   layoutDataSingle?:
     | ItemsFullRanges
@@ -198,7 +196,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
 
     const artLayerOptions =
       layoutConfigLabel === 'artListTap' || layoutConfigLabel === 'artListTog'
-    const layersOptions = key === 'artLayers' && artLayerOptions
+    const layersOptions = key === 'art_layers' && artLayerOptions
 
     const stringListFullArtLayerIds = JSON.stringify(
       selectedItem?.art_layers.map((artLayer: ItemsArtLayers) => artLayer.id) ??

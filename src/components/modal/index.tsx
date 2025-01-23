@@ -1,13 +1,18 @@
 'use client'
 // credit -> https://github.com/fireship-io/framer-demo/tree/framer-motion-demo/src
 
-import { type ReactNode } from 'react'
+import {
+  ChangeEvent,
+  Fragment,
+  useEffect,
+  useState,
+  type ReactNode
+} from 'react'
 import { LazyMotion } from 'framer-motion'
 import * as m from 'framer-motion/m'
-import { useModal } from '@/components/context'
-import SettingsTableKeys from './settingsTableKeys'
-import { InputTypeSelector, type OnChangeHelperArgsType } from '../inputs'
+import { useModal, useMutations } from '@/components/context'
 import Link from 'next/link'
+import { Settings } from '../backendCommands/backendCommands'
 
 const loadFeatures = () =>
   import('@/components/layout/motionFeatures').then((res) => res.default)
@@ -62,9 +67,72 @@ const dropIn = {
 export const Modal = () => {
   const { close, modalOpen, modalType } = useModal()
 
-  const onChangeHelper = ({ newValue, key }: OnChangeHelperArgsType) => {
-    localStorage.setItem(key, newValue as string)
+  const { settings } = useMutations()
+
+  const SettingsMenuOptions = {
+    outputs: {
+      vep_out_settings: {
+        label: 'Number of VEP Outs',
+        input: 'number',
+        max: 256
+      },
+      smp_out_settings: {
+        label: 'Number of Sampler Outs',
+        input: 'number',
+        max: 128
+      }
+    },
+    counts: {
+      default_range_count: {
+        label: 'Default Number of Ranges for a New Track',
+        input: 'number',
+        max: 10
+      },
+      default_art_tog_count: {
+        label: 'Default Number of Toggle Articulations for a New Track',
+        input: 'number',
+        max: 10
+      },
+      default_art_tap_count: {
+        label: 'Default Number of Tap Articulations for a New Track',
+        input: 'number',
+        max: 10
+      },
+      default_fad_tog_count: {
+        label: 'Default Number of Faders for a New Track',
+        input: 'number',
+        max: 10
+      }
+    },
+    additions: {
+      track_add_count: {
+        label: 'Number of Tracks to Add at a Time',
+        input: 'number',
+        max: 10
+      },
+      sub_item_add_count: {
+        label: 'Number of Ranges/Articulations/Faders to Add at a Time',
+        input: 'number',
+        max: 10
+      }
+    }
+  } as const
+
+  const [settingsState, setSettingsState] = useState<Settings | null>(null)
+
+  const fetchSettings = async () => {
+    const result = settings.get()
+    if (result instanceof Promise) {
+      const data = await result
+      return data
+    }
   }
+  useEffect(() => {
+    fetchSettings().then((data) => {
+      if (!data) return
+      setSettingsState(data)
+    })
+  }, [])
 
   if (!modalOpen) return null
   return (
@@ -77,7 +145,7 @@ export const Modal = () => {
           className='bg-main m-auto flex flex-col items-center rounded-xl px-8 py-0 dark:shadow-lg dark:shadow-zinc-600'
           style={{
             width: 'clamp(50%, 700px, 90%)',
-            height: 'min(50%, 300px)'
+            height: 'min(50%, 800px)'
           }}
           variants={dropIn}
           initial='hidden'
@@ -113,31 +181,63 @@ export const Modal = () => {
             <div className='text-main relative top-12 w-full'>
               <h3 className='text-center text-2xl'>Settings</h3>
               <div className='text-main mt-4 text-left font-mono text-base'>
-                {SettingsTableKeys.keys.map((keyActual) => {
-                  const { key, label } = keyActual
-
-                  if (key.includes('break')) {
-                    return (
-                      <hr
-                        key={key}
-                        className='my-2'
-                      />
-                    )
-                  }
-
+                {Object.entries(SettingsMenuOptions).map(([key, item]) => {
                   return (
-                    <div
-                      key={key}
-                      className='flex items-center'>
-                      <label className='mr-4'>{`${label}:`}</label>
-                      <div>
-                        <InputTypeSelector
-                          keySingle={keyActual}
-                          onChangeHelper={onChangeHelper}
-                          settingsModal
-                        />
-                      </div>
-                    </div>
+                    <Fragment key={key}>
+                      <hr className='my-2' />
+
+                      {Object.entries(item).map(([subKey, subItem]) => {
+                        const { label, input, max } = subItem
+
+                        return (
+                          <div
+                            key={subKey}
+                            className='flex items-center'>
+                            <label className='mr-4'>{`${label}:`}</label>
+                            <div className='w-[60px]'>
+                              {input === 'number' && (
+                                <input
+                                  type='number'
+                                  id='contextMenuCountInput'
+                                  max={max}
+                                  min={1}
+                                  value={
+                                    settingsState![subKey as keyof Settings] ??
+                                    ''
+                                  }
+                                  onChange={(
+                                    e: ChangeEvent<HTMLInputElement>
+                                  ) => {
+                                    e.stopPropagation()
+                                    e.preventDefault()
+                                    const newValue =
+                                      parseInt(e.target.value) || 1
+
+                                    setSettingsState((prev) => {
+                                      if (!prev) return null // Handle the case where prev is null
+                                      return {
+                                        ...prev,
+                                        [subKey]: newValue
+                                      }
+                                    })
+                                    settings.set({
+                                      key: subKey as keyof Settings,
+                                      value: newValue
+                                    })
+                                  }}
+                                  className={tw(
+                                    'h-full w-full',
+                                    'hover:cursor-text',
+                                    'rounded-sm bg-inherit p-1 outline-none',
+                                    'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-600'
+                                  )}
+                                />
+                              )}
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </Fragment>
                   )
                 })}
               </div>
