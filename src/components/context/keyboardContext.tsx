@@ -25,17 +25,21 @@ interface KeyboardProviderProps {
 
 export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
   const {
-    selectedItemId,
-    setSelectedItemId,
-    selectedSubItemId,
-    nextItemId,
-    previousItemId,
-    setSelectedSubItemId,
     selectedItemRangeCount,
     selectedItemArtCount,
     selectedItemLayerCount,
-    selectedItemFadCount
+    selectedItemFadCount,
+    settings,
+    updateSettings
   } = useSelectedItem()
+
+  const {
+    selected_item_id,
+    next_item_id,
+    previous_item_id,
+    selected_sub_item_id
+  } = settings
+
   const { selectedItem, create, del } = useMutations()
 
   const commandSimplifier = useCallback((e: KeyboardEvent) => {
@@ -103,19 +107,19 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         if (selectedInputIsInTrackOptions) {
           const nextNumber = parseInt(optionNumber ?? '0') - 1
 
-          let newInput = `${selectedItemId}_${optionType}_${nextNumber}_${optionField}`
+          let newInput = `${selected_item_id}_${optionType}_${nextNumber}_${optionField}`
 
           if (optionType === 'FR' && nextNumber < 0) {
             return
           }
           if (optionType === 'AT' && nextNumber < 0) {
-            newInput = `${selectedItemId}_FR_${selectedItemRangeCount - 1}_${optionField}`
+            newInput = `${selected_item_id}_FR_${selectedItemRangeCount - 1}_${optionField}`
           }
           if (optionType === 'AL' && nextNumber < 0) {
-            newInput = `${selectedItemId}_AT_${selectedItemArtCount - 1}_${optionField}`
+            newInput = `${selected_item_id}_AT_${selectedItemArtCount - 1}_${optionField}`
           }
           if (optionType === 'FL' && nextNumber < 0) {
-            newInput = `${selectedItemId}_AL_${selectedItemLayerCount - 1}_${optionField}`
+            newInput = `${selected_item_id}_AL_${selectedItemLayerCount - 1}_${optionField}`
           }
 
           const nextInput = window.document.getElementById(newInput ?? '')
@@ -124,18 +128,24 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
           return
         }
 
-        if (previousItemId === '') return
+        if (previous_item_id === '') return
 
         const newInput = keyDownTarget_FROM?.id.replace(
-          selectedItemId ?? '',
-          previousItemId ?? ''
+          selected_item_id ?? '',
+          previous_item_id ?? ''
         )
         const previousInput = window.document.getElementById(newInput ?? '')
 
         keyDownTarget_FROM?.blur()
         previousInput?.focus()
-        setSelectedItemId(previousItemId ?? '')
-        setSelectedSubItemId(`${previousItemId}_notes`)
+        updateSettings({
+          key: 'selected_item_id',
+          value: previous_item_id ?? ''
+        })
+        updateSettings({
+          key: 'selected_sub_item_id',
+          value: `${previous_item_id}_notes`
+        })
       }
       if (command === 'ARROWDOWN') {
         if (e.repeat && !isTextArea) return
@@ -147,16 +157,16 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         if (selectedInputIsInTrackOptions) {
           const nextNumber = parseInt(optionNumber ?? '0') + 1
 
-          let newInput = `${selectedItemId}_${optionType}_${nextNumber}_${optionField}`
+          let newInput = `${selected_item_id}_${optionType}_${nextNumber}_${optionField}`
 
           if (optionType === 'FR' && nextNumber > selectedItemRangeCount - 1) {
-            newInput = `${selectedItemId}_AT_0_name` // no like option-fields besides name for FR
+            newInput = `${selected_item_id}_AT_0_name` // no like option-fields besides name for FR
           }
           if (optionType === 'AT' && nextNumber > selectedItemArtCount - 1) {
-            newInput = `${selectedItemId}_AL_0_${optionField}`
+            newInput = `${selected_item_id}_AL_0_${optionField}`
           }
           if (optionType === 'AL' && nextNumber > selectedItemLayerCount - 1) {
-            newInput = `${selectedItemId}_FL_0_${optionField}`
+            newInput = `${selected_item_id}_FL_0_${optionField}`
           }
           if (optionType === 'FL' && nextNumber > selectedItemFadCount - 1) {
             return
@@ -168,26 +178,36 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
           return
         }
 
-        if (nextItemId === '') return
+        if (next_item_id === '') return
 
         const newInput = keyDownTarget_FROM?.id.replace(
-          selectedItemId ?? '',
-          nextItemId ?? ''
+          selected_item_id ?? '',
+          next_item_id ?? ''
         )
         const nextInput = window.document.getElementById(newInput ?? '')
 
         nextInput?.focus()
-        setSelectedItemId(nextItemId ?? '')
-        setSelectedSubItemId(`${nextItemId}_notes`)
+        updateSettings({
+          key: 'selected_item_id',
+          value: next_item_id ?? ''
+        })
+        updateSettings({
+          key: 'selected_sub_item_id',
+          value: `${next_item_id}_notes`
+        })
       }
       if (command === 'SHIFT_ARROWUP') {
         if (e.repeat) return
         if (!keyDownTarget_FROM?.id.includes('_FR_0')) return
         e.preventDefault()
         const nextInput = window.document.getElementById(
-          `${selectedItemId}_notes`
+          `${selected_item_id}_notes`
         )
-        setSelectedSubItemId(`${selectedItemId}_notes`)
+        updateSettings({
+          key: 'selected_sub_item_id',
+          value: `${selected_item_id}_notes`
+        })
+
         nextInput?.focus()
       }
       if (command === 'SHIFT_ARROWDOWN') {
@@ -196,9 +216,13 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         e.preventDefault()
 
         const nextInput = window.document.getElementById(
-          `${selectedItemId}_FR_0_name`
+          `${selected_item_id}_FR_0_name`
         )
-        setSelectedSubItemId(`${selectedItemId}_FR_0`)
+        updateSettings({
+          key: 'selected_sub_item_id',
+          value: `${selected_item_id}_FR_0`
+        })
+
         nextInput?.focus()
       }
       ////////////////////////////////
@@ -212,9 +236,13 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         if (selectedInputIsInTrackOptions) return
         e.preventDefault()
         const trackOptionsNameInput = window.document.getElementById(
-          `${selectedItemId}_notes`
+          `${selected_item_id}_notes`
         )
-        setSelectedSubItemId(`${selectedItemId}_notes`)
+        updateSettings({
+          key: 'selected_sub_item_id',
+          value: `${selected_item_id}_notes`
+        })
+
         trackOptionsNameInput?.focus()
       }
       if (command === 'CTRL_ARROWLEFT') {
@@ -223,7 +251,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
 
         e.preventDefault()
         const trackListNameInput = window.document.getElementById(
-          `${selectedItemId}_name`
+          `${selected_item_id}_name`
         )
         trackListNameInput?.focus()
       }
@@ -267,33 +295,33 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
             case 'FR':
               del.fullRange({
                 id: optionNumber ?? '',
-                fileitemsItemId: selectedItemId ?? ''
+                fileitemsItemId: selected_item_id ?? ''
               })
               break
             case 'AT':
-              if (isArtTog(selectedSubItemId)) {
+              if (isArtTog(selected_sub_item_id ?? '')) {
                 del.artListTog({
-                  id: selectedSubItemId,
-                  fileitemsItemId: selectedItemId ?? ''
+                  id: selected_sub_item_id ?? '',
+                  fileitemsItemId: selected_item_id ?? ''
                 })
               }
-              if (!isArtTog(selectedSubItemId)) {
+              if (!isArtTog(selected_sub_item_id ?? '')) {
                 del.artListTap({
-                  id: selectedSubItemId,
-                  fileitemsItemId: selectedItemId ?? ''
+                  id: selected_sub_item_id ?? '',
+                  fileitemsItemId: selected_item_id ?? ''
                 })
               }
               break
             case 'AL':
               del.artLayer({
                 id: optionNumber ?? '',
-                fileitemsItemId: selectedItemId ?? ''
+                fileitemsItemId: selected_item_id ?? ''
               })
               break
             case 'FL':
               del.fadList({
                 id: optionNumber ?? '',
-                fileitemsItemId: selectedItemId ?? ''
+                fileitemsItemId: selected_item_id ?? ''
               })
               break
             default:
@@ -305,12 +333,9 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       ////////////////////////////////
     },
     [
-      selectedItemId,
-      setSelectedItemId,
-      selectedSubItemId,
-      nextItemId,
-      previousItemId,
-      setSelectedSubItemId,
+      selected_item_id,
+      next_item_id,
+      previous_item_id,
       selectedItemRangeCount,
       selectedItemArtCount,
       selectedItemLayerCount,

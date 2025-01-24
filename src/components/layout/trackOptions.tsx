@@ -25,11 +25,10 @@ import {
 } from '../backendCommands/backendCommands'
 
 export const TrackOptions: FC = () => {
-  const { selectedItemId, selectedSubItemId, setSelectedSubItemId } =
-    useSelectedItem()
-
   const { setIsContextMenuOpen, setContextMenuId } = useContextMenu()
   const { selectedItem, update } = useMutations()
+  const { settings, updateSettings } = useSelectedItem()
+  const { selected_item_id, selected_sub_item_id } = settings
 
   //////////////////////////////////////////
   // This logic is used to disable individual components in the artTap, artTog, and fadList tables.
@@ -41,7 +40,7 @@ export const TrackOptions: FC = () => {
   const [artTogIndividualComponentLocked, setArtTogIndividualComponentLocked] =
     useState([
       {
-        id: selectedItemId + 'AT_0',
+        id: selected_item_id + 'AT_0',
         code: false
       }
     ])
@@ -49,7 +48,7 @@ export const TrackOptions: FC = () => {
   const [artTapIndividualComponentLocked, setArtTapIndividualComponentLocked] =
     useState([
       {
-        id: selectedItemId + 'AT_1',
+        id: selected_item_id + 'AT_1',
         on: false
       }
     ])
@@ -57,14 +56,14 @@ export const TrackOptions: FC = () => {
   const [fadIndividualComponentLocked, setFadIndividualComponentLocked] =
     useState([
       {
-        id: selectedItemId + 'FL_0',
+        id: selected_item_id + 'FL_0',
         code: false
       }
     ])
 
   const [artTapOneDefaultOnly, setArtTapOneDefaultOnly] = useState([
     {
-      id: selectedItemId + 'AL_1',
+      id: selected_item_id + 'AL_1',
       default: true
     }
   ])
@@ -74,7 +73,7 @@ export const TrackOptions: FC = () => {
     setArtLayerIndividualComponentLocked
   ] = useState([
     {
-      id: selectedItemId + 'AL_0',
+      id: selected_item_id + 'AL_0',
       code: false
     }
   ])
@@ -250,10 +249,10 @@ export const TrackOptions: FC = () => {
 
   const locked = selectedItem?.locked ?? false
   //const notesId = selectedItem?.id + '_notes'
-  //const notesSelectedLocked = locked && selectedSubItemId === notesId
-  //const notesSelectedUnlocked = !locked && selectedSubItemId === notesId
-  //const notesUnselectedLocked = locked && selectedSubItemId !== notesId
-  //const notesUnselectedUnlocked = !locked && selectedSubItemId !== notesId
+  //const notesSelectedLocked = locked && selected_sub_item_id === notesId
+  //const notesSelectedUnlocked = !locked && selected_sub_item_id === notesId
+  //const notesUnselectedLocked = locked && selected_sub_item_id !== notesId
+  //const notesUnselectedUnlocked = !locked && selected_sub_item_id !== notesId
 
   //////////////////////////////////////////
   return (
@@ -364,20 +363,28 @@ export const TrackOptions: FC = () => {
                     const layoutDataSingleId = layoutDataSingle.id
 
                     const selectedLocked =
-                      locked && selectedSubItemId === layoutDataSingleId
+                      locked && selected_sub_item_id === layoutDataSingleId
                     const selectedUnlocked =
-                      !locked && selectedSubItemId === layoutDataSingleId
+                      !locked && selected_sub_item_id === layoutDataSingleId
                     const unselectedLocked =
-                      locked && selectedSubItemId !== layoutDataSingleId
+                      locked && selected_sub_item_id !== layoutDataSingleId
                     const unselectedUnlocked =
-                      !locked && selectedSubItemId !== layoutDataSingleId
+                      !locked && selected_sub_item_id !== layoutDataSingleId
 
                     return (
                       <tr
-                        onClick={() => setSelectedSubItemId(layoutDataSingleId)}
-                        onKeyUpCapture={() => {
-                          setSelectedSubItemId(layoutDataSingleId)
-                        }}
+                        onClick={() =>
+                          updateSettings({
+                            key: 'selected_sub_item_id',
+                            value: layoutDataSingleId
+                          })
+                        }
+                        onKeyUpCapture={() =>
+                          updateSettings({
+                            key: 'selected_sub_item_id',
+                            value: layoutDataSingleId
+                          })
+                        }
                         onContextMenu={() => {
                           setIsContextMenuOpen(true)
                           setContextMenuId(layoutDataSingleId)
@@ -438,10 +445,18 @@ export const TrackOptions: FC = () => {
                   const layoutDataSingleId = layoutDataSingle.id
                   return (
                     <table
-                      onClick={() => setSelectedSubItemId(layoutDataSingleId)}
-                      onKeyUpCapture={() => {
-                        setSelectedSubItemId(layoutDataSingleId)
-                      }}
+                      onClick={() =>
+                        updateSettings({
+                          key: 'selected_sub_item_id',
+                          value: layoutDataSingleId
+                        })
+                      }
+                      onKeyUpCapture={() =>
+                        updateSettings({
+                          key: 'selected_sub_item_id',
+                          value: layoutDataSingleId
+                        })
+                      }
                       onContextMenu={() => {
                         setIsContextMenuOpen(true)
                         setContextMenuId(layoutDataSingleId)

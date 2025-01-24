@@ -1,18 +1,12 @@
 'use client'
 // credit -> https://github.com/fireship-io/framer-demo/tree/framer-motion-demo/src
 
-import {
-  ChangeEvent,
-  Fragment,
-  useEffect,
-  useState,
-  type ReactNode
-} from 'react'
+import { ChangeEvent, Fragment, type ReactNode } from 'react'
 import { LazyMotion } from 'framer-motion'
 import * as m from 'framer-motion/m'
-import { useModal, useMutations } from '@/components/context'
+import { useModal, useSelectedItem } from '@/components/context'
 import Link from 'next/link'
-import { Settings } from '../backendCommands/backendCommands'
+import { type Settings } from '../backendCommands/backendCommands'
 
 const loadFeatures = () =>
   import('@/components/layout/motionFeatures').then((res) => res.default)
@@ -66,8 +60,7 @@ const dropIn = {
 
 export const Modal = () => {
   const { close, modalOpen, modalType } = useModal()
-
-  const { settings } = useMutations()
+  const { settings, updateSettings } = useSelectedItem()
 
   const SettingsMenuOptions = {
     outputs: {
@@ -98,7 +91,7 @@ export const Modal = () => {
         input: 'number',
         max: 10
       },
-      default_fad_tog_count: {
+      default_fad_count: {
         label: 'Default Number of Faders for a New Track',
         input: 'number',
         max: 10
@@ -118,22 +111,6 @@ export const Modal = () => {
     }
   } as const
 
-  const [settingsState, setSettingsState] = useState<Settings | null>(null)
-
-  const fetchSettings = async () => {
-    const result = settings.get()
-    if (result instanceof Promise) {
-      const data = await result
-      return data
-    }
-  }
-  useEffect(() => {
-    fetchSettings().then((data) => {
-      if (!data) return
-      setSettingsState(data)
-    })
-  }, [])
-
   if (!modalOpen) return null
   return (
     <Backdrop onClick={close}>
@@ -145,7 +122,7 @@ export const Modal = () => {
           className='bg-main m-auto flex flex-col items-center rounded-xl px-8 py-0 dark:shadow-lg dark:shadow-zinc-600'
           style={{
             width: 'clamp(50%, 700px, 90%)',
-            height: 'min(50%, 800px)'
+            height: 'min(60%, 800px)'
           }}
           variants={dropIn}
           initial='hidden'
@@ -187,6 +164,8 @@ export const Modal = () => {
                       <hr className='my-2' />
 
                       {Object.entries(item).map(([subKey, subItem]) => {
+                        type subKey = Partial<keyof Settings>
+
                         const { label, input, max } = subItem
 
                         return (
@@ -201,10 +180,7 @@ export const Modal = () => {
                                   id='contextMenuCountInput'
                                   max={max}
                                   min={1}
-                                  value={
-                                    settingsState![subKey as keyof Settings] ??
-                                    ''
-                                  }
+                                  value={settings[subKey as subKey] ?? ''}
                                   onChange={(
                                     e: ChangeEvent<HTMLInputElement>
                                   ) => {
@@ -213,15 +189,8 @@ export const Modal = () => {
                                     const newValue =
                                       parseInt(e.target.value) || 1
 
-                                    setSettingsState((prev) => {
-                                      if (!prev) return null // Handle the case where prev is null
-                                      return {
-                                        ...prev,
-                                        [subKey]: newValue
-                                      }
-                                    })
-                                    settings.set({
-                                      key: subKey as keyof Settings,
+                                    updateSettings({
+                                      key: subKey as subKey,
                                       value: newValue
                                     })
                                   }}

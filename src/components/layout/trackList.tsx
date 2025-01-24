@@ -14,12 +14,10 @@ import {
 import { type FullTrackForExport } from '../backendCommands/backendCommands'
 
 export const TrackList: FC = () => {
-  const { selectedItemId, setSelectedItemId, setSelectedSubItemId } =
-    useSelectedItem()
-
   const { setIsContextMenuOpen, setContextMenuId } = useContextMenu()
-
   const { data, update } = useMutations()
+  const { settings, updateSettings } = useSelectedItem()
+  const { selected_item_id } = settings
 
   const onChangeHelper = ({
     newValue,
@@ -89,10 +87,10 @@ export const TrackList: FC = () => {
           {data?.map((item) => {
             const { id, locked, _count } = item
 
-            const selectedLocked = locked && selectedItemId === id
-            const selectedUnlocked = !locked && selectedItemId === id
-            const unselectedLocked = locked && selectedItemId !== id
-            const unselectedUnlocked = !locked && selectedItemId !== id
+            const selectedLocked = locked && selected_item_id === id
+            const selectedUnlocked = !locked && selected_item_id === id
+            const unselectedLocked = locked && selected_item_id !== id
+            const unselectedUnlocked = !locked && selected_item_id !== id
 
             return (
               <tr
@@ -103,12 +101,18 @@ export const TrackList: FC = () => {
                   setContextMenuId(id)
                 }}
                 onKeyUpCapture={() => {
-                  setSelectedItemId(id)
-                  setSelectedSubItemId(id + '_notes')
+                  updateSettings({ key: 'selected_item_id', value: id })
+                  updateSettings({
+                    key: 'selected_sub_item_id',
+                    value: id + '_notes'
+                  })
                 }}
                 onClick={() => {
-                  setSelectedItemId(id)
-                  setSelectedSubItemId(id + '_notes')
+                  updateSettings({ key: 'selected_item_id', value: id })
+                  updateSettings({
+                    key: 'selected_sub_item_id',
+                    value: id + '_notes'
+                  })
                 }}
                 className={tw(
                   selectedUnlocked

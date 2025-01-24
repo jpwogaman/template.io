@@ -1,7 +1,7 @@
 'use client'
 
 import tw from '@/utils/tw'
-import { Fragment, type FC, useState, type ChangeEvent, useEffect } from 'react'
+import { Fragment, type FC, type ChangeEvent } from 'react'
 import {
   useMutations,
   useSelectedItem,
@@ -9,37 +9,17 @@ import {
 } from '@/components/context'
 
 export const ContextMenu: FC = () => {
-  const {
-    selectedItemId,
-    setSelectedItemId,
-    selectedSubItemId,
-    setCopiedItemId,
-    setCopiedSubItemId
-  } = useSelectedItem()
-
-  const { selectedItem, create, del, clear, settings } = useMutations()
-
   const { contextMenuId, isContextMenuOpen, contextMenuPosition, close } =
     useContextMenu()
-
-  const [addCount, setAddCount] = useState<number | null>(null)
-  const [addSubCount, setAddSubCount] = useState<number | null>(null)
-
-  useEffect(() => {
-    const fetchSettings = async () => {
-      const result = settings.get()
-      if (result instanceof Promise) {
-        const data = await result
-        setAddCount(data.track_add_count)
-        setAddSubCount(data.sub_item_add_count)
-      } else {
-        setAddCount(1)
-        setAddSubCount(1)
-      }
-    }
-
-    fetchSettings()
-  }, [])
+  const { setCopiedItemId, setCopiedSubItemId } = useSelectedItem()
+  const { selectedItem, create, del, clear } = useMutations()
+  const { settings, updateSettings } = useSelectedItem()
+  const {
+    selected_item_id,
+    selected_sub_item_id,
+    track_add_count,
+    sub_item_add_count
+  } = settings
 
   const isArtTog = (artId: string) => {
     const art = selectedItem?.art_list_tog?.find((art) => art.id === artId)
@@ -115,26 +95,26 @@ export const ContextMenu: FC = () => {
       },
       addItemAtEnd: {
         track: {
-          action: () => create.track(addCount ?? 1)
+          action: () => create.track(track_add_count ?? 1)
         },
         range: {
           action: () =>
             create.fullRange({
-              fileitemsItemId: selectedItemId,
-              count: addSubCount ?? 1
+              fileitemsItemId: selected_item_id ?? '',
+              count: sub_item_add_count ?? 1
             })
         },
         articulation: {
           action: () => {
             if (isArtTog(contextMenuId)) {
               create.artListTog({
-                fileitemsItemId: selectedItemId,
-                count: addSubCount ?? 1
+                fileitemsItemId: selected_item_id ?? '',
+                count: sub_item_add_count ?? 1
               })
             } else {
               create.artListTap({
-                fileitemsItemId: selectedItemId,
-                count: addSubCount ?? 1
+                fileitemsItemId: selected_item_id ?? '',
+                count: sub_item_add_count ?? 1
               })
             }
           }
@@ -142,15 +122,15 @@ export const ContextMenu: FC = () => {
         layer: {
           action: () =>
             create.artLayer({
-              fileitemsItemId: selectedItemId,
-              count: addSubCount ?? 1
+              fileitemsItemId: selected_item_id ?? '',
+              count: sub_item_add_count ?? 1
             })
         },
         fader: {
           action: () =>
             create.fadList({
-              fileitemsItemId: selectedItemId,
-              count: addSubCount ?? 1
+              fileitemsItemId: selected_item_id ?? '',
+              count: sub_item_add_count ?? 1
             })
         },
         label: 'Add Item At End (ctrl+shift+ArrowDown)',
@@ -206,7 +186,7 @@ export const ContextMenu: FC = () => {
     copyPaste: {
       copyItem: {
         track: {
-          action: () => setCopiedItemId(selectedItemId)
+          action: () => setCopiedItemId(selected_item_id ?? '')
         },
         range: {
           action: () => setCopiedSubItemId(contextMenuId)
@@ -250,7 +230,7 @@ export const ContextMenu: FC = () => {
     clearDelete: {
       clearItem: {
         track: {
-          action: () => clear.track(selectedItemId)
+          action: () => clear.track(selected_item_id ?? '')
         },
         range: {
           action: null
@@ -271,13 +251,13 @@ export const ContextMenu: FC = () => {
       },
       deleteItem: {
         track: {
-          action: () => del.track(selectedItemId)
+          action: () => del.track(selected_item_id ?? '')
         },
         range: {
           action: () =>
             del.fullRange({
               id: contextMenuId,
-              fileitemsItemId: selectedItemId
+              fileitemsItemId: selected_item_id ?? ''
             })
         },
         articulation: {
@@ -285,12 +265,12 @@ export const ContextMenu: FC = () => {
             if (isArtTog(contextMenuId)) {
               del.artListTog({
                 id: contextMenuId,
-                fileitemsItemId: selectedItemId
+                fileitemsItemId: selected_item_id ?? ''
               })
             } else {
               del.artListTap({
                 id: contextMenuId,
-                fileitemsItemId: selectedItemId
+                fileitemsItemId: selected_item_id ?? ''
               })
             }
           }
@@ -299,14 +279,14 @@ export const ContextMenu: FC = () => {
           action: () =>
             del.artLayer({
               id: contextMenuId,
-              fileitemsItemId: selectedItemId
+              fileitemsItemId: selected_item_id ?? ''
             })
         },
         fader: {
           action: () =>
             del.fadList({
               id: contextMenuId,
-              fileitemsItemId: selectedItemId
+              fileitemsItemId: selected_item_id ?? ''
             })
         },
         label: 'Delete Item (ctrl+del)',
@@ -341,18 +321,20 @@ export const ContextMenu: FC = () => {
           <div className='w-3/4'>
             <h3
               className={tw(
-                !contextMenuId.includes(selectedItemId) ? 'text-red-400' : '',
+                !contextMenuId.includes(selected_item_id ?? '')
+                  ? 'text-red-400'
+                  : '',
                 'mx-auto'
-              )}>{`Current Track: ${selectedItemId}`}</h3>
+              )}>{`Current Track: ${selected_item_id}`}</h3>
 
             {contextMenuIsSubItem && (
               <h3
                 className={tw(
-                  !contextMenuId.includes(selectedSubItemId)
+                  !contextMenuId.includes(selected_sub_item_id ?? '')
                     ? 'text-red-400'
                     : '',
                   'mx-auto'
-                )}>{`Current SubItem: ${selectedSubItemId}`}</h3>
+                )}>{`Current SubItem: ${selected_sub_item_id}`}</h3>
             )}
             <h3 className='mx-auto'>{`Selected: ${contextMenuId}`}</h3>
           </div>
@@ -363,25 +345,18 @@ export const ContextMenu: FC = () => {
               max={10}
               min={1}
               value={
-                contextMenuIsSubItem ? (addSubCount ?? 1) : (addCount ?? 1)
+                contextMenuIsSubItem
+                  ? (sub_item_add_count ?? 1)
+                  : (track_add_count ?? 1)
               }
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 e.stopPropagation()
-
                 e.preventDefault()
                 const newValue = parseInt(e.target.value) || 1
                 if (contextMenuIsSubItem) {
-                  setAddSubCount(newValue)
-                  settings.set({
-                    key: 'sub_item_add_count',
-                    value: addSubCount
-                  })
+                  updateSettings({ key: 'sub_item_add_count', value: newValue })
                 } else {
-                  setAddCount(newValue)
-                  settings.set({
-                    key: 'track_add_count',
-                    value: addCount
-                  })
+                  updateSettings({ key: 'track_add_count', value: newValue })
                 }
               }}
               className={tw(
@@ -436,7 +411,9 @@ export const ContextMenu: FC = () => {
                 }
 
                 if (key === 'add') {
-                  const count = contextMenuIsSubItem ? addSubCount : addCount
+                  const count = contextMenuIsSubItem
+                    ? sub_item_add_count
+                    : track_add_count
                   contextMenuLabel = contextMenuLabel.replace(
                     'Add',
                     `Add ${count ?? 1}`
@@ -470,8 +447,11 @@ export const ContextMenu: FC = () => {
                     key={subKey}
                     onClick={() => {
                       if (!action) return
-                      if (!contextMenuId.includes(selectedItemId)) {
-                        setSelectedItemId(contextMenuId)
+                      if (!contextMenuId.includes(selected_item_id ?? '')) {
+                        updateSettings({
+                          key: 'selected_item_id',
+                          value: contextMenuId
+                        })
                         return
                       }
                       action()

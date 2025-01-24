@@ -12,41 +12,37 @@ import {
   useCallback,
   useEffect
 } from 'react'
-import { invoke } from '@tauri-apps/api/core'
-import { type Settings } from '../backendCommands/backendCommands'
+import { type Settings, commands } from '../backendCommands/backendCommands'
+
+type updateSettings = {
+  key: keyof Settings
+  value: Settings[keyof Settings]
+}
 
 interface SelectedItemContextType {
-  selectedItemId: string
-  selectedSubItemId: string
-  copiedItemId: string | null | undefined
-  copiedSubItemId: string | null | undefined
-  nextItemId: string | null | undefined
-  previousItemId: string | null | undefined
+  copiedItemId: string | null
+  copiedSubItemId: string | null
+
   selectedItemRangeCount: number
   selectedItemArtTogCount: number
   selectedItemArtTapCount: number
   selectedItemArtCount: number
   selectedItemLayerCount: number
   selectedItemFadCount: number
-  setSelectedItemId: Dispatch<SetStateAction<string>>
-  setSelectedSubItemId: Dispatch<SetStateAction<string>>
-  setNextItemId: Dispatch<SetStateAction<string | null | undefined>>
-  setPreviousItemId: Dispatch<SetStateAction<string | null | undefined>>
+
   setSelectedItemRangeCount: Dispatch<SetStateAction<number>>
   setSelectedItemArtTogCount: Dispatch<SetStateAction<number>>
   setSelectedItemArtTapCount: Dispatch<SetStateAction<number>>
   setSelectedItemArtCount: Dispatch<SetStateAction<number>>
   setSelectedItemLayerCount: Dispatch<SetStateAction<number>>
   setSelectedItemFadCount: Dispatch<SetStateAction<number>>
-  setCopiedItemId: Dispatch<SetStateAction<string | null | undefined>>
-  setCopiedSubItemId: Dispatch<SetStateAction<string | null | undefined>>
+  setCopiedItemId: Dispatch<SetStateAction<string | null>>
+  setCopiedSubItemId: Dispatch<SetStateAction<string | null>>
+  settings: Settings
+  updateSettings: ({ key, value }: updateSettings) => Promise<void>
 }
 
 const selectedItemContextDefaultValues: SelectedItemContextType = {
-  selectedItemId: 'T_0',
-  selectedSubItemId: 'T_0_notes',
-  nextItemId: 'T_1',
-  previousItemId: null,
   copiedItemId: null,
   copiedSubItemId: null,
   selectedItemRangeCount: 0,
@@ -56,10 +52,7 @@ const selectedItemContextDefaultValues: SelectedItemContextType = {
   selectedItemLayerCount: 0,
   selectedItemFadCount: 0,
   /* eslint-disable @typescript-eslint/no-empty-function */
-  setSelectedItemId: () => {},
-  setSelectedSubItemId: () => {},
-  setNextItemId: () => {},
-  setPreviousItemId: () => {},
+
   setSelectedItemRangeCount: () => {},
   setSelectedItemArtTogCount: () => {},
   setSelectedItemArtTapCount: () => {},
@@ -67,7 +60,23 @@ const selectedItemContextDefaultValues: SelectedItemContextType = {
   setSelectedItemLayerCount: () => {},
   setSelectedItemFadCount: () => {},
   setCopiedItemId: () => {},
-  setCopiedSubItemId: () => {}
+  setCopiedSubItemId: () => {},
+  settings: {
+    vep_out_settings: 128,
+    smp_out_settings: 32,
+    default_range_count: 1,
+    default_art_tog_count: 2,
+    default_art_tap_count: 4,
+    default_fad_count: 4,
+    track_add_count: 1,
+    sub_item_add_count: 1,
+    selected_item_id: 'T_0',
+    selected_sub_item_id: 'T_0_notes',
+    previous_item_id: null,
+    next_item_id: null
+  },
+  /* eslint-disable @typescript-eslint/no-empty-function */
+  updateSettings: async () => {}
 }
 
 export const SelectedItemContext = createContext<SelectedItemContextType>(
@@ -81,20 +90,8 @@ interface SelectedItemProviderProps {
 export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
   children
 }) => {
-  const [selectedItemId, setSelectedItemId] = useState('T_0')
-  const [selectedSubItemId, setSelectedSubItemId] = useState('T_0_notes')
-  const [copiedItemId, setCopiedItemId] = useState<string | null | undefined>(
-    null
-  )
-  const [copiedSubItemId, setCopiedSubItemId] = useState<
-    string | null | undefined
-  >(null)
-
-  const [previousItemId, setPreviousItemId] = useState<
-    string | null | undefined
-  >(null)
-  const [nextItemId, setNextItemId] = useState<string | null | undefined>('T_1')
-
+  const [copiedItemId, setCopiedItemId] = useState<string | null>(null)
+  const [copiedSubItemId, setCopiedSubItemId] = useState<string | null>(null)
   const [selectedItemRangeCount, setSelectedItemRangeCount] = useState(0)
   const [selectedItemArtTogCount, setSelectedItemArtTogCount] = useState(0)
   const [selectedItemArtTapCount, setSelectedItemArtTapCount] = useState(0)
@@ -103,31 +100,179 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
   const [selectedItemFadCount, setSelectedItemFadCount] = useState(0)
   const [mounted, setMounted] = useState(false)
 
+  const [settings, setSettings] = useState<Settings>({
+    vep_out_settings: 128,
+    smp_out_settings: 32,
+    default_range_count: 1,
+    default_art_tog_count: 2,
+    default_art_tap_count: 4,
+    default_fad_count: 4,
+    track_add_count: 1,
+    sub_item_add_count: 1,
+    selected_item_id: 'T_0',
+    selected_sub_item_id: 'T_0_notes',
+    previous_item_id: null,
+    next_item_id: null
+  })
+
+  const updateSettings = useCallback(
+    async ({ key, value }: updateSettings) => {
+      setSettings((prevSettings) => {
+        const updatedSettings = { ...prevSettings, [key]: value }
+        void commands.setSettings(updatedSettings)
+        return updatedSettings
+      })
+    },
+    [commands.setSettings]
+  )
+
+  const getData = useCallback(
+    async () =>
+      await commands.getSettings().then((data: Settings) => {
+        updateSettings({
+          key: 'vep_out_settings',
+          value: data.vep_out_settings
+        })
+        updateSettings({
+          key: 'smp_out_settings',
+          value: data.smp_out_settings
+        })
+        updateSettings({
+          key: 'default_range_count',
+          value: data.default_range_count
+        })
+        updateSettings({
+          key: 'default_art_tog_count',
+          value: data.default_art_tog_count
+        })
+        updateSettings({
+          key: 'default_art_tap_count',
+          value: data.default_art_tap_count
+        })
+        updateSettings({
+          key: 'default_fad_count',
+          value: data.default_fad_count
+        })
+        updateSettings({
+          key: 'track_add_count',
+          value: data.track_add_count
+        })
+        updateSettings({
+          key: 'sub_item_add_count',
+          value: data.sub_item_add_count
+        })
+        updateSettings({
+          key: 'selected_item_id',
+          value: data.selected_item_id
+        })
+        updateSettings({
+          key: 'selected_sub_item_id',
+          value: data.selected_sub_item_id
+        })
+        updateSettings({
+          key: 'previous_item_id',
+          value: data.previous_item_id
+        })
+        updateSettings({
+          key: 'next_item_id',
+          value: data.next_item_id
+        })
+      }),
+    []
+  )
+
+  useEffect(() => {
+    updateSettings({
+      key: 'vep_out_settings',
+      value: settings.vep_out_settings
+    })
+  }, [settings.vep_out_settings])
+
+  useEffect(() => {
+    updateSettings({
+      key: 'smp_out_settings',
+      value: settings.smp_out_settings
+    })
+  }, [settings.smp_out_settings])
+
+  useEffect(() => {
+    updateSettings({
+      key: 'default_range_count',
+      value: settings.default_range_count
+    })
+  }, [settings.default_range_count])
+
+  useEffect(() => {
+    updateSettings({
+      key: 'default_art_tog_count',
+      value: settings.default_art_tog_count
+    })
+  }, [settings.default_art_tog_count])
+
+  useEffect(() => {
+    updateSettings({
+      key: 'default_art_tap_count',
+      value: settings.default_art_tap_count
+    })
+  }, [settings.default_art_tap_count])
+
+  useEffect(() => {
+    updateSettings({
+      key: 'default_fad_count',
+      value: settings.default_fad_count
+    })
+  }, [settings.default_fad_count])
+
+  useEffect(() => {
+    updateSettings({
+      key: 'track_add_count',
+      value: settings.track_add_count
+    })
+  }, [settings.track_add_count])
+
+  useEffect(() => {
+    updateSettings({
+      key: 'sub_item_add_count',
+      value: settings.sub_item_add_count
+    })
+  }, [settings.sub_item_add_count])
+
+  useEffect(() => {
+    updateSettings({
+      key: 'selected_item_id',
+      value: settings.selected_item_id
+    })
+  }, [settings.selected_item_id])
+
+  useEffect(() => {
+    updateSettings({
+      key: 'selected_sub_item_id',
+      value: settings.selected_sub_item_id
+    })
+  }, [settings.selected_sub_item_id])
+
+  useEffect(() => {
+    updateSettings({
+      key: 'previous_item_id',
+      value: settings.previous_item_id
+    })
+  }, [settings.previous_item_id])
+
+  useEffect(() => {
+    updateSettings({
+      key: 'next_item_id',
+      value: settings.next_item_id
+    })
+  }, [settings.next_item_id])
+
   useEffect(() => {
     setMounted(true)
     getData().catch((e) => console.error(e))
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [])
 
-  const getData = useCallback(
-    async () =>
-      await invoke('get_settings').then((data) => {
-        const settings = data as Settings
-
-        setSelectedItemId(settings.selected_item_id)
-        setSelectedSubItemId(settings.selected_sub_item_id)
-        setPreviousItemId(settings.previous_item_id)
-        setNextItemId(settings.next_item_id)
-      }),
-    []
-  )
-
   const value = useMemo(
     () => ({
-      selectedItemId,
-      selectedSubItemId,
-      nextItemId,
-      previousItemId,
       selectedItemRangeCount,
       selectedItemArtTogCount,
       selectedItemArtTapCount,
@@ -136,10 +281,6 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
       selectedItemFadCount,
       copiedItemId,
       copiedSubItemId,
-      setSelectedItemId,
-      setSelectedSubItemId,
-      setNextItemId,
-      setPreviousItemId,
       setSelectedItemRangeCount,
       setSelectedItemArtTogCount,
       setSelectedItemArtTapCount,
@@ -147,13 +288,12 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
       setSelectedItemLayerCount,
       setSelectedItemFadCount,
       setCopiedItemId,
-      setCopiedSubItemId
+      setCopiedSubItemId,
+      /////
+      settings,
+      updateSettings
     }),
     [
-      selectedItemId,
-      selectedSubItemId,
-      nextItemId,
-      previousItemId,
       selectedItemRangeCount,
       selectedItemArtTogCount,
       selectedItemArtTapCount,
@@ -162,10 +302,6 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
       selectedItemFadCount,
       copiedItemId,
       copiedSubItemId,
-      setSelectedItemId,
-      setSelectedSubItemId,
-      setNextItemId,
-      setPreviousItemId,
       setSelectedItemRangeCount,
       setSelectedItemArtTogCount,
       setSelectedItemArtTapCount,
@@ -173,7 +309,10 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
       setSelectedItemLayerCount,
       setSelectedItemFadCount,
       setCopiedItemId,
-      setCopiedSubItemId
+      setCopiedSubItemId,
+      /////
+      settings,
+      updateSettings
     ]
   )
 

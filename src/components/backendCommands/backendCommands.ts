@@ -109,7 +109,7 @@ export type ItemsFadList = { id: string; name: string; code_type: string; code: 
 export type ItemsFadListRequest = { id: string; name?: string | null; code_type?: string | null; code?: number | null; default?: number | null; change_type?: string | null; fileitems_item_id?: string | null }
 export type ItemsFullRanges = { id: string; name: string; low: string; high: string; white_keys_only: boolean; fileitems_item_id: string }
 export type ItemsFullRangesRequest = { id: string; name?: string | null; low?: string | null; high?: string | null; white_keys_only?: boolean | null; fileitems_item_id?: string | null }
-export type Settings = { vep_out_settings: number; smp_out_settings: number; default_range_count: number; default_art_tog_count: number; default_art_tap_count: number; default_fad_tog_count: number; track_add_count: number; sub_item_add_count: number; selected_item_id: string; selected_sub_item_id: string; previous_item_id?: string | null; next_item_id: string }
+export type Settings = { vep_out_settings: number; smp_out_settings: number; default_range_count: number; default_art_tog_count: number; default_art_tap_count: number; default_fad_count: number; track_add_count: number; sub_item_add_count: number; selected_item_id: string; selected_sub_item_id: string; previous_item_id?: string | null; next_item_id?: string | null }
 
 /** tauri-specta globals **/
 
