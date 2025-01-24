@@ -100,18 +100,18 @@ export const ContextMenu: FC = () => {
         range: {
           action: () =>
             create.fullRange({
-              fileitemsItemId: selected_item_id ?? ''
+              fileitemsItemId: selected_item_id
             })
         },
         articulation: {
           action: () => {
             if (isArtTog(contextMenuId)) {
               create.artListTog({
-                fileitemsItemId: selected_item_id ?? ''
+                fileitemsItemId: selected_item_id
               })
             } else {
               create.artListTap({
-                fileitemsItemId: selected_item_id ?? ''
+                fileitemsItemId: selected_item_id
               })
             }
           }
@@ -119,13 +119,13 @@ export const ContextMenu: FC = () => {
         layer: {
           action: () =>
             create.artLayer({
-              fileitemsItemId: selected_item_id ?? ''
+              fileitemsItemId: selected_item_id
             })
         },
         fader: {
           action: () =>
             create.fadList({
-              fileitemsItemId: selected_item_id ?? ''
+              fileitemsItemId: selected_item_id
             })
         },
         label: 'Add Item At End (ctrl+shift+ArrowDown)',
@@ -181,7 +181,7 @@ export const ContextMenu: FC = () => {
     copyPaste: {
       copyItem: {
         track: {
-          action: () => setCopiedItemId(selected_item_id ?? '')
+          action: () => setCopiedItemId(selected_item_id)
         },
         range: {
           action: () => setCopiedSubItemId(contextMenuId)
@@ -225,7 +225,7 @@ export const ContextMenu: FC = () => {
     clearDelete: {
       clearItem: {
         track: {
-          action: () => clear.track(selected_item_id ?? '')
+          action: () => clear.track(selected_item_id)
         },
         range: {
           action: null
@@ -246,13 +246,13 @@ export const ContextMenu: FC = () => {
       },
       deleteItem: {
         track: {
-          action: () => del.track(selected_item_id ?? '')
+          action: () => del.track(selected_item_id)
         },
         range: {
           action: () =>
             del.fullRange({
               id: contextMenuId,
-              fileitemsItemId: selected_item_id ?? ''
+              fileitemsItemId: selected_item_id
             })
         },
         articulation: {
@@ -260,12 +260,12 @@ export const ContextMenu: FC = () => {
             if (isArtTog(contextMenuId)) {
               del.artListTog({
                 id: contextMenuId,
-                fileitemsItemId: selected_item_id ?? ''
+                fileitemsItemId: selected_item_id
               })
             } else {
               del.artListTap({
                 id: contextMenuId,
-                fileitemsItemId: selected_item_id ?? ''
+                fileitemsItemId: selected_item_id
               })
             }
           }
@@ -274,14 +274,14 @@ export const ContextMenu: FC = () => {
           action: () =>
             del.artLayer({
               id: contextMenuId,
-              fileitemsItemId: selected_item_id ?? ''
+              fileitemsItemId: selected_item_id
             })
         },
         fader: {
           action: () =>
             del.fadList({
               id: contextMenuId,
-              fileitemsItemId: selected_item_id ?? ''
+              fileitemsItemId: selected_item_id
             })
         },
         label: 'Delete Item (ctrl+del)',
@@ -316,16 +316,14 @@ export const ContextMenu: FC = () => {
           <div className='w-3/4'>
             <h3
               className={tw(
-                !contextMenuId.includes(selected_item_id ?? '')
-                  ? 'text-red-400'
-                  : '',
+                !contextMenuId.includes(selected_item_id) ? 'text-red-400' : '',
                 'mx-auto'
               )}>{`Current Track: ${selected_item_id}`}</h3>
 
             {contextMenuIsSubItem && (
               <h3
                 className={tw(
-                  !contextMenuId.includes(selected_sub_item_id ?? '')
+                  !contextMenuId.includes(selected_sub_item_id)
                     ? 'text-red-400'
                     : '',
                   'mx-auto'
@@ -442,7 +440,7 @@ export const ContextMenu: FC = () => {
                     key={subKey}
                     onClick={() => {
                       if (!action) return
-                      if (!contextMenuId.includes(selected_item_id ?? '')) {
+                      if (!contextMenuId.includes(selected_item_id)) {
                         updateSettings({
                           key: 'selected_item_id',
                           value: contextMenuId
