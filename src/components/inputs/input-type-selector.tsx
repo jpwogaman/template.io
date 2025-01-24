@@ -122,7 +122,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
   if (settingsModal) {
     const inputPropsHelper = {
       id: `${key}`,
-      defaultValue: localStorage.getItem(key) ?? '',
+      //defaultValue: localStorage.getItem(key) ?? '',
       onChangeFunction: (event: ChangeEventHelper) =>
         onChangeHelper({
           newValue: event.target.value,
