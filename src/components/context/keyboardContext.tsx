@@ -269,7 +269,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         if (keyDownTarget_FROM?.id.includes('notes')) return
         e.preventDefault()
         alert('Add new item below')
-        create.track(1)
+        //create.track()
       }
       ////////////////////////////////
       // DUPLICATE TRACK or ART or LAYER or FAD

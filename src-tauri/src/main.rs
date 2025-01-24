@@ -133,7 +133,7 @@ async fn main() {
           }
           "delete_all" => {
             fileitem_service::delete_all_fileitems_and_relations();
-            fileitem_service::create_fileitem(1);
+            fileitem_service::create_fileitem();
             app.emit("refresh", "refresh").unwrap();
           }
           "quit" => {

@@ -56,9 +56,17 @@ use crate::{
       delete_all_art_layers,
       delete_all_art_layers_for_fileitem,
     },
+    settings_services::{ Settings },
+  },
+  commands::{
+    items_artlist_tap_commands::{ create_art_tap },
+    items_artlist_tog_commands::{ create_art_tog },
+    items_art_layers_commands::{ create_art_layer },
+    items_fadlist_commands::{ create_fad },
+    items_full_ranges_commands::{ create_full_range },
   },
 };
-use diesel::prelude::*;
+use diesel::{ prelude::* };
 use serde_json::Value;
 
 pub fn init() {
@@ -68,10 +76,12 @@ pub fn init() {
     return;
   }
 
-  create_fileitem(1);
+  create_fileitem();
 }
 
-pub fn create_fileitem(count: i32) {
+pub fn create_fileitem() {
+  let settings = Settings::get();
+
   // id's are T_0, T_1, T_2, etc. so we need to find the highest id and increment it
   let fileitems = list_fileitems();
 
@@ -87,23 +97,19 @@ pub fn create_fileitem(count: i32) {
   }
 
   let mut i = 0;
-  while i < count {
-    let new_id = find_highest_id(&fileitems) + 1 + i;
+  while i < settings.track_add_count {
+    let new_id = (find_highest_id(&fileitems) + 1 + i).to_string();
 
-    let fileitem = init_fileitem(new_id.to_string());
-    let default_full_range = init_full_range(new_id.to_string());
-    let default_fad = init_fad(new_id.to_string());
-    let default_art_tog = init_art_tog(new_id.to_string());
-    let default_art_tap = init_art_tap(new_id.to_string());
-    let default_art_layer = init_art_layer(new_id.to_string());
+    let fileitem = init_fileitem(new_id.clone());
+    let new_fileitem_id = fileitem.id.clone();
 
     store_new_item(&fileitem);
-    store_new_full_range(&default_full_range);
-    store_new_fad(&default_fad);
-    store_new_art_tog(&default_art_tog);
-    store_new_art_tap(&default_art_tap);
-    store_new_art_layer(&default_art_layer);
 
+    create_full_range(new_fileitem_id.clone());
+    create_art_tog(new_fileitem_id.clone());
+    create_art_tap(new_fileitem_id.clone());
+    create_art_layer(new_fileitem_id.clone());
+    create_fad(new_fileitem_id.clone());
     i += 1;
   }
 }
@@ -262,7 +268,6 @@ pub fn store_new_item(new_item: &FileItem) {
 
   diesel
     ::insert_into(fileitems_dsl::fileitems)
-
     .values(new_item)
     .execute(connection)
     .expect("Error saving new fileitem");
@@ -339,7 +344,6 @@ pub fn delete_fileitem_and_relations(id: String) {
   delete_all_fad_for_fileitem(id.clone());
   delete_all_full_ranges_for_fileitem(id.clone());
   delete_fileitem(id.clone());
-
 }
 
 pub fn clear_fileitem(id: String) {

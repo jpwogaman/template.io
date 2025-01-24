@@ -26,7 +26,6 @@ import {
 
 type createSubItemArgs = {
   fileitemsItemId: string
-  count: number
 }
 
 type deleteSubItemArgs = {
@@ -50,7 +49,7 @@ interface MutationContextType {
   refetchSelected: () => void
   //////////////////////////////////////////
   create: {
-    track: (count: number) => void
+    track: () => void
     fullRange: (data: createSubItemArgs) => void
     artListTog: (data: createSubItemArgs) => void
     artListTap: (data: createSubItemArgs) => void
@@ -307,24 +306,21 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   }, [selected_item_id, data])
   //////////////////////////////////////////
   // CREATE mutations
-  const createSingleItemMutation = useCallback(
-    async (count: number) => {
-      await commands
-        .createFileitem(count)
-        .then(() => {
-          refetchAll()
-          refetchSelected()
-        })
-        .catch((error) => {
-          console.log('createFileitem error', error)
-        })
-    },
-    [refetchAll, refetchSelected]
-  )
+  const createSingleItemMutation = useCallback(async () => {
+    await commands
+      .createFileitem()
+      .then(() => {
+        refetchAll()
+        refetchSelected()
+      })
+      .catch((error) => {
+        console.log('createFileitem error', error)
+      })
+  }, [refetchAll, refetchSelected])
   const createSingleFullRangeMutation = useCallback(
-    async ({ fileitemsItemId, count }: createSubItemArgs) => {
+    async ({ fileitemsItemId }: createSubItemArgs) => {
       await commands
-        .createFullRange(fileitemsItemId, count)
+        .createFullRange(fileitemsItemId)
         .then(() => {
           refetchAll()
           refetchSelected()
@@ -336,9 +332,9 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     [refetchAll, refetchSelected]
   )
   const createSingleArtListTogMutation = useCallback(
-    async ({ fileitemsItemId, count }: createSubItemArgs) => {
+    async ({ fileitemsItemId }: createSubItemArgs) => {
       await commands
-        .createArtTog(fileitemsItemId, count)
+        .createArtTog(fileitemsItemId)
         .then(() => {
           refetchAll()
           refetchSelected()
@@ -350,9 +346,9 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     [refetchAll, refetchSelected]
   )
   const createSingleArtListTapMutation = useCallback(
-    async ({ fileitemsItemId, count }: createSubItemArgs) => {
+    async ({ fileitemsItemId }: createSubItemArgs) => {
       await commands
-        .createArtTap(fileitemsItemId, count)
+        .createArtTap(fileitemsItemId)
         .then(() => {
           refetchAll()
           refetchSelected()
@@ -364,9 +360,9 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     [refetchAll, refetchSelected]
   )
   const createSingleArtLayerMutation = useCallback(
-    async ({ fileitemsItemId, count }: createSubItemArgs) => {
+    async ({ fileitemsItemId }: createSubItemArgs) => {
       await commands
-        .createArtLayer(fileitemsItemId, count)
+        .createArtLayer(fileitemsItemId)
         .then(() => {
           refetchAll()
           refetchSelected()
@@ -378,9 +374,9 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     [refetchAll, refetchSelected]
   )
   const createSingleFadListMutation = useCallback(
-    async ({ fileitemsItemId, count }: createSubItemArgs) => {
+    async ({ fileitemsItemId }: createSubItemArgs) => {
       await commands
-        .createFad(fileitemsItemId, count)
+        .createFad(fileitemsItemId)
         .then(() => {
           refetchAll()
           refetchSelected()

@@ -95,26 +95,23 @@ export const ContextMenu: FC = () => {
       },
       addItemAtEnd: {
         track: {
-          action: () => create.track(track_add_count ?? 1)
+          action: () => create.track()
         },
         range: {
           action: () =>
             create.fullRange({
-              fileitemsItemId: selected_item_id ?? '',
-              count: sub_item_add_count ?? 1
+              fileitemsItemId: selected_item_id ?? ''
             })
         },
         articulation: {
           action: () => {
             if (isArtTog(contextMenuId)) {
               create.artListTog({
-                fileitemsItemId: selected_item_id ?? '',
-                count: sub_item_add_count ?? 1
+                fileitemsItemId: selected_item_id ?? ''
               })
             } else {
               create.artListTap({
-                fileitemsItemId: selected_item_id ?? '',
-                count: sub_item_add_count ?? 1
+                fileitemsItemId: selected_item_id ?? ''
               })
             }
           }
@@ -122,15 +119,13 @@ export const ContextMenu: FC = () => {
         layer: {
           action: () =>
             create.artLayer({
-              fileitemsItemId: selected_item_id ?? '',
-              count: sub_item_add_count ?? 1
+              fileitemsItemId: selected_item_id ?? ''
             })
         },
         fader: {
           action: () =>
             create.fadList({
-              fileitemsItemId: selected_item_id ?? '',
-              count: sub_item_add_count ?? 1
+              fileitemsItemId: selected_item_id ?? ''
             })
         },
         label: 'Add Item At End (ctrl+shift+ArrowDown)',

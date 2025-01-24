@@ -14,8 +14,8 @@ async listAllFileitemsAndRelationCounts() : Promise<FullTrackWithCounts[]> {
 async getFileitemAndRelations(id: string) : Promise<FullTrackForExport | null> {
     return await TAURI_INVOKE("get_fileitem_and_relations", { id });
 },
-async createFileitem(count: number) : Promise<void> {
-    await TAURI_INVOKE("create_fileitem", { count });
+async createFileitem() : Promise<void> {
+    await TAURI_INVOKE("create_fileitem");
 },
 async clearFileitem(id: string) : Promise<void> {
     await TAURI_INVOKE("clear_fileitem", { id });
@@ -29,8 +29,8 @@ async deleteFileitemAndRelations(id: string) : Promise<void> {
 async updateFileitem(data: FileItemRequest) : Promise<void> {
     await TAURI_INVOKE("update_fileitem", { data });
 },
-async createFullRange(fileitemsItemId: string, count: number) : Promise<void> {
-    await TAURI_INVOKE("create_full_range", { fileitemsItemId, count });
+async createFullRange(fileitemsItemId: string) : Promise<void> {
+    await TAURI_INVOKE("create_full_range", { fileitemsItemId });
 },
 async deleteFullRangeByFileitem(id: string, fileitemsItemId: string) : Promise<void> {
     await TAURI_INVOKE("delete_full_range_by_fileitem", { id, fileitemsItemId });
@@ -38,8 +38,8 @@ async deleteFullRangeByFileitem(id: string, fileitemsItemId: string) : Promise<v
 async updateFullRange(data: ItemsFullRangesRequest) : Promise<void> {
     await TAURI_INVOKE("update_full_range", { data });
 },
-async createFad(fileitemsItemId: string, count: number) : Promise<void> {
-    await TAURI_INVOKE("create_fad", { fileitemsItemId, count });
+async createFad(fileitemsItemId: string) : Promise<void> {
+    await TAURI_INVOKE("create_fad", { fileitemsItemId });
 },
 async deleteFadByFileitem(id: string, fileitemsItemId: string) : Promise<void> {
     await TAURI_INVOKE("delete_fad_by_fileitem", { id, fileitemsItemId });
@@ -47,8 +47,8 @@ async deleteFadByFileitem(id: string, fileitemsItemId: string) : Promise<void> {
 async updateFad(data: ItemsFadListRequest) : Promise<void> {
     await TAURI_INVOKE("update_fad", { data });
 },
-async createArtTog(fileitemsItemId: string, count: number) : Promise<void> {
-    await TAURI_INVOKE("create_art_tog", { fileitemsItemId, count });
+async createArtTog(fileitemsItemId: string) : Promise<void> {
+    await TAURI_INVOKE("create_art_tog", { fileitemsItemId });
 },
 async deleteArtTogByFileitem(id: string, fileitemsItemId: string) : Promise<void> {
     await TAURI_INVOKE("delete_art_tog_by_fileitem", { id, fileitemsItemId });
@@ -56,8 +56,8 @@ async deleteArtTogByFileitem(id: string, fileitemsItemId: string) : Promise<void
 async updateArtTog(data: ItemsArtListTogRequest) : Promise<void> {
     await TAURI_INVOKE("update_art_tog", { data });
 },
-async createArtTap(fileitemsItemId: string, count: number) : Promise<void> {
-    await TAURI_INVOKE("create_art_tap", { fileitemsItemId, count });
+async createArtTap(fileitemsItemId: string) : Promise<void> {
+    await TAURI_INVOKE("create_art_tap", { fileitemsItemId });
 },
 async deleteArtTapByFileitem(id: string, fileitemsItemId: string) : Promise<void> {
     await TAURI_INVOKE("delete_art_tap_by_fileitem", { id, fileitemsItemId });
@@ -65,8 +65,8 @@ async deleteArtTapByFileitem(id: string, fileitemsItemId: string) : Promise<void
 async updateArtTap(data: ItemsArtListTapRequest) : Promise<void> {
     await TAURI_INVOKE("update_art_tap", { data });
 },
-async createArtLayer(fileitemsItemId: string, count: number) : Promise<void> {
-    await TAURI_INVOKE("create_art_layer", { fileitemsItemId, count });
+async createArtLayer(fileitemsItemId: string) : Promise<void> {
+    await TAURI_INVOKE("create_art_layer", { fileitemsItemId });
 },
 async deleteArtLayerByFileitem(id: string, fileitemsItemId: string) : Promise<void> {
     await TAURI_INVOKE("delete_art_layer_by_fileitem", { id, fileitemsItemId });
@@ -109,7 +109,7 @@ export type ItemsFadList = { id: string; name: string; code_type: string; code: 
 export type ItemsFadListRequest = { id: string; name?: string | null; code_type?: string | null; code?: number | null; default?: number | null; change_type?: string | null; fileitems_item_id?: string | null }
 export type ItemsFullRanges = { id: string; name: string; low: string; high: string; white_keys_only: boolean; fileitems_item_id: string }
 export type ItemsFullRangesRequest = { id: string; name?: string | null; low?: string | null; high?: string | null; white_keys_only?: boolean | null; fileitems_item_id?: string | null }
-export type Settings = { vep_out_settings: number; smp_out_settings: number; default_range_count: number; default_art_tog_count: number; default_art_tap_count: number; default_fad_count: number; track_add_count: number; sub_item_add_count: number; selected_item_id: string; selected_sub_item_id: string; previous_item_id?: string | null; next_item_id?: string | null }
+export type Settings = { vep_out_settings: number; smp_out_settings: number; default_range_count: number; default_art_tog_count: number; default_art_tap_count: number; default_art_layer_count: number; default_fad_count: number; track_add_count: number; sub_item_add_count: number; selected_item_id: string; selected_sub_item_id: string; previous_item_id?: string | null; next_item_id?: string | null }
 
 /** tauri-specta globals **/
 

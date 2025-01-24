@@ -29,8 +29,8 @@ pub fn get_fileitem_and_relations(id: String) -> Option<FullTrackForExport> {
 
 #[tauri::command]
 #[specta::specta]
-pub fn create_fileitem(count: i32) {
-  fileitem_service::create_fileitem(count)
+pub fn create_fileitem() {
+  fileitem_service::create_fileitem()
 }
 
 #[tauri::command]
