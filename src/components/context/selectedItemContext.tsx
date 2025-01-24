@@ -67,6 +67,7 @@ const selectedItemContextDefaultValues: SelectedItemContextType = {
     default_range_count: 1,
     default_art_tog_count: 2,
     default_art_tap_count: 4,
+    default_art_layer_count: 1,
     default_fad_count: 4,
     track_add_count: 1,
     sub_item_add_count: 1,
@@ -106,6 +107,7 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
     default_range_count: 1,
     default_art_tog_count: 2,
     default_art_tap_count: 4,
+    default_art_layer_count: 1,
     default_fad_count: 4,
     track_add_count: 1,
     sub_item_add_count: 1,
@@ -123,7 +125,7 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
         return updatedSettings
       })
     },
-    [commands.setSettings]
+    [commands, setSettings]
   )
 
   const getData = useCallback(
@@ -180,90 +182,6 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
       }),
     []
   )
-
-  useEffect(() => {
-    updateSettings({
-      key: 'vep_out_settings',
-      value: settings.vep_out_settings
-    })
-  }, [settings.vep_out_settings])
-
-  useEffect(() => {
-    updateSettings({
-      key: 'smp_out_settings',
-      value: settings.smp_out_settings
-    })
-  }, [settings.smp_out_settings])
-
-  useEffect(() => {
-    updateSettings({
-      key: 'default_range_count',
-      value: settings.default_range_count
-    })
-  }, [settings.default_range_count])
-
-  useEffect(() => {
-    updateSettings({
-      key: 'default_art_tog_count',
-      value: settings.default_art_tog_count
-    })
-  }, [settings.default_art_tog_count])
-
-  useEffect(() => {
-    updateSettings({
-      key: 'default_art_tap_count',
-      value: settings.default_art_tap_count
-    })
-  }, [settings.default_art_tap_count])
-
-  useEffect(() => {
-    updateSettings({
-      key: 'default_fad_count',
-      value: settings.default_fad_count
-    })
-  }, [settings.default_fad_count])
-
-  useEffect(() => {
-    updateSettings({
-      key: 'track_add_count',
-      value: settings.track_add_count
-    })
-  }, [settings.track_add_count])
-
-  useEffect(() => {
-    updateSettings({
-      key: 'sub_item_add_count',
-      value: settings.sub_item_add_count
-    })
-  }, [settings.sub_item_add_count])
-
-  useEffect(() => {
-    updateSettings({
-      key: 'selected_item_id',
-      value: settings.selected_item_id
-    })
-  }, [settings.selected_item_id])
-
-  useEffect(() => {
-    updateSettings({
-      key: 'selected_sub_item_id',
-      value: settings.selected_sub_item_id
-    })
-  }, [settings.selected_sub_item_id])
-
-  useEffect(() => {
-    updateSettings({
-      key: 'previous_item_id',
-      value: settings.previous_item_id
-    })
-  }, [settings.previous_item_id])
-
-  useEffect(() => {
-    updateSettings({
-      key: 'next_item_id',
-      value: settings.next_item_id
-    })
-  }, [settings.next_item_id])
 
   useEffect(() => {
     setMounted(true)
