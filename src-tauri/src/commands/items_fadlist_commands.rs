@@ -36,7 +36,6 @@ pub fn create_fad(fileitems_item_id: String) {
 
   let mut i = 0;
   while i < count {
-    println!("{}", count.to_string());
     let new_id = find_highest_id(&items_fadlist) + 1 + i;
 
     let fad = ItemsFadList {

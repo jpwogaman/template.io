@@ -75,7 +75,7 @@ pub fn delete_all_art_layers_for_fileitem(fileitems_item_id: String) {
       dsl::items_art_layers.filter(dsl::fileitems_item_id.eq(fileitems_item_id))
     )
     .execute(connection)
-    .expect("Error deleting fad");
+    .expect("Error deleting layer");
 }
 
 pub fn delete_all_art_layers() {
@@ -84,7 +84,7 @@ pub fn delete_all_art_layers() {
   diesel
     ::delete(dsl::items_art_layers)
     .execute(connection)
-    .expect("Error deleting fad");
+    .expect("Error deleting layer");
 }
 
 pub fn update_art_layer(data: ItemsArtLayersRequest) {
@@ -110,5 +110,5 @@ pub fn update_art_layer(data: ItemsArtLayersRequest) {
     ::update(dsl::items_art_layers.filter(dsl::id.eq(data.id)))
     .set(&new_art_layer)
     .execute(connection)
-    .expect("Error updating fad");
+    .expect("Error updating layer");
 }
