@@ -22,7 +22,7 @@ pub fn create_art_tog(fileitems_item_id: String) {
     ::list_items_artlist_tap(fileitems_item_id.clone())
     .len();
 
-  let count = if items_artlist_tog_len < 1 && items_artlist_tap_len < 1 {
+  let count = if items_artlist_tog_len < 1 {
     settings.default_art_tog_count as i32
   } else {
     settings.sub_item_add_count as i32
