@@ -91,6 +91,11 @@ export const Modal = () => {
         input: 'number',
         max: 10
       },
+      default_art_layer_count: {
+        label: 'Default Number of Articulation Layers for a New Track',
+        input: 'number',
+        max: 10
+      },
       default_fad_count: {
         label: 'Default Number of Faders for a New Track',
         input: 'number',
