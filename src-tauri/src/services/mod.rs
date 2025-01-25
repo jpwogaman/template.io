@@ -7,3 +7,4 @@ pub mod items_fadlist_service;
 pub mod items_artlist_service;
 pub mod import_export_service;
 pub mod settings_services;
+pub mod resize_service;

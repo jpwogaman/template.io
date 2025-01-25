@@ -21,7 +21,12 @@ use commands::{
   items_artlist_tap_commands::*,
   items_art_layers_commands::*,
 };
-use services::{ settings_services, fileitem_service, import_export_service };
+use services::{
+  settings_services,
+  fileitem_service,
+  import_export_service,
+  resize_service,
+};
 use tauri::{
   Manager,
   Emitter,
@@ -103,6 +108,8 @@ async fn main() {
         fileitem_service::init();
       });
 
+      let resize_handle = app.handle();
+      resize_service::init(resize_handle.clone());
       /////
       builder.mount_events(app);
       /////
