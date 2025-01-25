@@ -225,7 +225,9 @@ export const ContextMenu: FC = () => {
     clearDelete: {
       clearItem: {
         track: {
-          action: () => clear.track(selected_item_id)
+          action: () => {
+            clear.track(selected_item_id)
+          }
         },
         range: {
           action: null

@@ -278,7 +278,6 @@ pub fn delete_fileitem(id: String) {
 
   diesel
     ::delete(fileitems_dsl::fileitems.filter(fileitems_dsl::id.eq(id)))
-
     .execute(connection)
     .expect("Error deleting fileitem");
 }
@@ -370,17 +369,11 @@ pub fn clear_fileitem(id: String) {
   delete_all_fad_for_fileitem(id.clone());
   delete_all_full_ranges_for_fileitem(id.clone());
 
-  let default_full_range = init_full_range(id.clone());
-  let default_fad = init_fad(id.clone());
-  let default_art_tog = init_art_tog(id.clone());
-  let default_art_tap = init_art_tap(id.clone());
-  let default_art_layer = init_art_layer(id.clone());
-
-  store_new_full_range(&default_full_range);
-  store_new_fad(&default_fad);
-  store_new_art_tog(&default_art_tog);
-  store_new_art_tap(&default_art_tap);
-  store_new_art_layer(&default_art_layer);
+  create_full_range(id.clone());
+  create_art_tog(id.clone());
+  create_art_tap(id.clone());
+  create_art_layer(id.clone());
+  create_fad(id.clone());
 }
 
 pub fn renumber_all_fileitems() -> Vec<FileItem> {

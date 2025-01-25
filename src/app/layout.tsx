@@ -28,8 +28,8 @@ export default function RootLayout({
           <MutationProvider>
             <KeyboardProvider>
               <ModalProvider>
-                <TauriListenersProvider>
-                  <ContextMenuProvider>
+                <ContextMenuProvider>
+                  <TauriListenersProvider>
                     <ThemeProvider
                       storageKey='theme'
                       attribute='class'
@@ -40,8 +40,8 @@ export default function RootLayout({
                       <ContextMenu />
                       {children}
                     </ThemeProvider>
-                  </ContextMenuProvider>
-                </TauriListenersProvider>
+                  </TauriListenersProvider>
+                </ContextMenuProvider>
               </ModalProvider>
             </KeyboardProvider>
           </MutationProvider>

@@ -1,6 +1,8 @@
-import { type FC, type ChangeEvent } from 'react'
+import { type FC, type ChangeEvent, useEffect, useState } from 'react'
 import { type InputComponentProps } from './index'
 import tw from '@/utils/tw'
+import { useMutations } from '../context'
+import { itemInitKeyBoolean } from './item-init-helpers'
 
 export const InputCheckBox: FC<InputComponentProps> = ({
   id,
@@ -8,16 +10,42 @@ export const InputCheckBox: FC<InputComponentProps> = ({
   defaultValue,
   onChangeFunction
 }) => {
-  const isChecked =
+  const [isChecked, setIsChecked] = useState(
     typeof defaultValue === 'boolean' ? defaultValue : defaultValue === 'true'
+  )
 
   const valChange = (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
-    if (codeFullLocked) return
-    if (!onChangeFunction) return
-    onChangeFunction(event)
+    if (!codeFullLocked) {
+      if (onChangeFunction) {
+        onChangeFunction(event)
+      }
+
+      setIsChecked(!isChecked)
+    }
   }
+
+  ////////
+  const { clearState, setClearState } = useMutations()
+
+  useEffect(() => {
+    if (typeof clearState !== 'string') return
+
+    if (id.includes(clearState + '_')) {
+      itemInitKeyBoolean({
+        id,
+        clearState,
+        setValue: setIsChecked
+      })
+    }
+
+    return () => {
+      setClearState(null)
+    }
+  }, [clearState])
+  ///////
+
   return (
     <label
       htmlFor={id}

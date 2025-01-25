@@ -1,6 +1,8 @@
-import { type FC, type ChangeEvent, useState } from 'react'
+import { type FC, type ChangeEvent, useState, useEffect } from 'react'
 import { selectArrays, type InputComponentProps } from './index'
 import tw from '@/utils/tw'
+import { useMutations } from '../context'
+import { itemInitKeyBoolean } from './item-init-helpers'
 
 export const InputCheckBoxSwitch: FC<InputComponentProps> = ({
   id,
@@ -32,6 +34,26 @@ export const InputCheckBoxSwitch: FC<InputComponentProps> = ({
       setIsChecked(!isChecked)
     }
   }
+
+  ////////
+  const { clearState, setClearState } = useMutations()
+
+  useEffect(() => {
+    if (typeof clearState !== 'string') return
+
+    if (id.includes(clearState + '_')) {
+      itemInitKeyBoolean({
+        id,
+        clearState,
+        setValue: setIsChecked
+      })
+    }
+
+    return () => {
+      setClearState(null)
+    }
+  }, [clearState])
+  ///////
 
   return (
     <div className='flex items-center justify-evenly'>

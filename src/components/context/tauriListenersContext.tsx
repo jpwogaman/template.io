@@ -6,7 +6,9 @@ import {
   type ReactNode,
   type FC,
   useEffect,
-  useState
+  Dispatch,
+  SetStateAction,
+  useMemo
 } from 'react'
 
 import { listen } from '@tauri-apps/api/event'
@@ -28,36 +30,57 @@ interface TauriListenersProviderProps {
 export const TauriListenersProvider: FC<TauriListenersProviderProps> = ({
   children
 }) => {
-  const [mounted, setMounted] = useState(false)
   const { modalOpen, close, open, setModalType } = useModal()
+
   useEffect(() => {
-    setMounted(true)
+    const refresh = listen('refresh', () => {
+      location.reload()
+    }).catch((e) => console.error(e))
+    /////
+    const aboutModal = listen('about', () => {
+      if (modalOpen) {
+        close()
+      } else {
+        open()
+        setModalType('about')
+      }
+    }).catch((e) => console.error(e))
+    /////
+    const settingsModal = listen('settings', () => {
+      if (modalOpen) {
+        close()
+      } else {
+        open()
+        setModalType('settings')
+      }
+    }).catch((e) => console.error(e))
+
+    return () => {
+      refresh
+        .then((value) => {
+          if (typeof value === 'function') {
+            value()
+          }
+        })
+        .catch((e) => console.error(e))
+      aboutModal
+        .then((value) => {
+          if (typeof value === 'function') {
+            value()
+            close()
+          }
+        })
+        .catch((e) => console.error(e))
+      settingsModal
+        .then((value) => {
+          if (typeof value === 'function') {
+            value()
+            close()
+          }
+        })
+        .catch((e) => console.error(e))
+    }
   }, [])
-
-  if (!mounted) {
-    return null
-  }
-
-  listen('refresh', () => {
-    location.reload()
-  }).catch((e) => console.error(e))
-
-  listen('about', () => {
-    if (modalOpen) {
-      close()
-    } else {
-      open()
-      setModalType('about')
-    }
-  }).catch((e) => console.error(e))
-  listen('settings', () => {
-    if (modalOpen) {
-      close()
-    } else {
-      open()
-      setModalType('settings')
-    }
-  }).catch((e) => console.error(e))
 
   return (
     <TauriListenersContext.Provider value>

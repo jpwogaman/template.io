@@ -128,7 +128,7 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
     [commands, setSettings]
   )
 
-  const getData = useCallback(
+  const getSettings = useCallback(
     async () =>
       await commands.getSettings().then((data: Settings) => {
         updateSettings({
@@ -185,7 +185,7 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
 
   useEffect(() => {
     setMounted(true)
-    getData().catch((e) => console.error(e))
+    getSettings().catch((e) => console.error(e))
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [])
 

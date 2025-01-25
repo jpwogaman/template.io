@@ -1,6 +1,8 @@
-import React, { type FC, type ChangeEvent, useState } from 'react'
+import React, { type FC, type ChangeEvent, useState, useEffect } from 'react'
 import tw from '@/utils/tw'
 import { type InputComponentProps } from './index'
+import { useMutations } from '../context'
+import { itemInitKeyStringOrNumber } from './item-init-helpers'
 
 export const InputText: FC<InputComponentProps> = ({
   id,
@@ -17,7 +19,25 @@ export const InputText: FC<InputComponentProps> = ({
     setValue(event.target.value)
     onChangeFunction(event)
   }
+  ////////
+  const { clearState, setClearState } = useMutations()
 
+  useEffect(() => {
+    if (typeof clearState !== 'string') return
+
+    if (id.includes(clearState + '_')) {
+      itemInitKeyStringOrNumber({
+        id,
+        clearState,
+        setValue
+      })
+    }
+
+    return () => {
+      setClearState(null)
+    }
+  }, [clearState])
+  ///////
   return (
     <input
       id={id}
@@ -26,12 +46,9 @@ export const InputText: FC<InputComponentProps> = ({
       value={value}
       title={id + '_currentValue: ' + value}
       placeholder={placeholder as string}
-      //onChange={(event) => {
-      //  setQuery(event.target.value)
-      //}}
       onChange={nameChange}
       className={tw(
-        codeFullLocked ?? codeDisabled
+        (codeFullLocked ?? codeDisabled)
           ? 'text-gray-400 hover:cursor-not-allowed hover:placeholder-zinc-400 dark:hover:placeholder-zinc-500'
           : 'hover:cursor-text hover:placeholder-zinc-200 dark:hover:placeholder-zinc-600',
         'w-full rounded-sm bg-inherit p-1 placeholder-zinc-400 outline-none transition-all duration-200 dark:placeholder-zinc-500',

@@ -8,7 +8,9 @@ import {
   type ReactNode,
   type FC,
   useEffect,
-  useState
+  useState,
+  Dispatch,
+  SetStateAction
 } from 'react'
 
 import { useSelectedItem } from './selectedItemContext'
@@ -23,6 +25,7 @@ import {
   type ItemsArtLayersRequest,
   type ItemsFadListRequest
 } from '../backendCommands/backendCommands'
+import TrackListTableKeys from '../utils/trackListTableKeys'
 
 type createSubItemArgs = {
   fileitemsItemId: string
@@ -45,8 +48,10 @@ interface MutationContextType {
   vepSamplerCount: number
   vepInstanceCount: number
   nonVepSamplerCount: number
-  refetchAll: () => void
-  refetchSelected: () => void
+  clearState: string | null
+  setClearState: Dispatch<SetStateAction<string | null>>
+  getData: () => void
+  getSelectedItem: () => void
   //////////////////////////////////////////
   create: {
     track: () => void
@@ -90,9 +95,11 @@ const mutationContextDefaultValues: MutationContextType = {
   vepSamplerCount: 0,
   vepInstanceCount: 0,
   nonVepSamplerCount: 0,
+  clearState: null,
   /* eslint-disable @typescript-eslint/no-empty-function */
-  refetchAll: () => {},
-  refetchSelected: () => {},
+  setClearState: () => {},
+  getData: () => {},
+  getSelectedItem: () => {},
   //////////////////////////////////////////
   create: {
     /* eslint-disable @typescript-eslint/no-empty-function */
@@ -183,7 +190,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     } catch (error) {
       console.error('Error fetching data:', error)
     }
-  }, [])
+  }, [commands.listAllFileitemsAndRelationCounts, setData])
 
   const getSelectedItem = useCallback(async () => {
     if (!selected_item_id) return
@@ -193,16 +200,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     } catch (error) {
       console.error('Error fetching selected item:', error)
     }
-  }, [selected_item_id])
-
-  const refetchAll = useCallback(() => {
-    void getData()
-  }, [getData])
-
-  const refetchSelected = useCallback(() => {
-    void getSelectedItem()
-  }, [getSelectedItem])
-
+  }, [selected_item_id, commands.getFileitemAndRelations, setSelectedItem])
   //////////////////////////////////////////
   // logic to count vep samplers and instances
   const dataLength = data?.length ?? 0
@@ -301,7 +299,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     setSelectedItemLayerCount(data[index]?._count?.art_layers ?? 0)
     setSelectedItemFadCount(data[index]?._count?.fad_list ?? 0)
 
-    refetchSelected()
+    getSelectedItem()
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [selected_item_id, data])
   //////////////////////////////////////////
@@ -310,82 +308,82 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     await commands
       .createFileitem()
       .then(() => {
-        refetchAll()
-        refetchSelected()
+        getData()
+        getSelectedItem()
       })
       .catch((error) => {
         console.log('createFileitem error', error)
       })
-  }, [refetchAll, refetchSelected])
+  }, [getData, getSelectedItem])
   const createSingleFullRangeMutation = useCallback(
     async ({ fileitemsItemId }: createSubItemArgs) => {
       await commands
         .createFullRange(fileitemsItemId)
         .then(() => {
-          refetchAll()
-          refetchSelected()
+          getData()
+          getSelectedItem()
         })
         .catch((error) => {
           console.log('createFullRange error', error)
         })
     },
-    [refetchAll, refetchSelected]
+    [getData, getSelectedItem]
   )
   const createSingleArtListTogMutation = useCallback(
     async ({ fileitemsItemId }: createSubItemArgs) => {
       await commands
         .createArtTog(fileitemsItemId)
         .then(() => {
-          refetchAll()
-          refetchSelected()
+          getData()
+          getSelectedItem()
         })
         .catch((error) => {
           console.log('createArtTog error', error)
         })
     },
-    [refetchAll, refetchSelected]
+    [getData, getSelectedItem]
   )
   const createSingleArtListTapMutation = useCallback(
     async ({ fileitemsItemId }: createSubItemArgs) => {
       await commands
         .createArtTap(fileitemsItemId)
         .then(() => {
-          refetchAll()
-          refetchSelected()
+          getData()
+          getSelectedItem()
         })
         .catch((error) => {
           console.log('createArtTap error', error)
         })
     },
-    [refetchAll, refetchSelected]
+    [getData, getSelectedItem]
   )
   const createSingleArtLayerMutation = useCallback(
     async ({ fileitemsItemId }: createSubItemArgs) => {
       await commands
         .createArtLayer(fileitemsItemId)
         .then(() => {
-          refetchAll()
-          refetchSelected()
+          getData()
+          getSelectedItem()
         })
         .catch((error) => {
           console.log('createArtLayer error', error)
         })
     },
-    [refetchAll, refetchSelected]
+    [getData, getSelectedItem]
   )
   const createSingleFadListMutation = useCallback(
     async ({ fileitemsItemId }: createSubItemArgs) => {
       await commands
         .createFad(fileitemsItemId)
         .then(() => {
-          refetchAll()
-          refetchSelected()
+          getData()
+          getSelectedItem()
         })
         .catch((error) => {
           console.log('createFad error', error)
         })
     },
-    [refetchAll, refetchSelected]
+    [getData, getSelectedItem]
   )
   ////////////////////////////////////////////
   //// UPDATE mutations
@@ -394,84 +392,53 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       await commands
         .updateFileitem(data)
         .then(() => {
-          refetchAll()
-          refetchSelected()
+          getSelectedItem()
         })
         .catch((error) => {
           console.log('updateFileItem error', error)
         })
     },
-    [refetchAll, refetchSelected]
+    [getSelectedItem]
   )
   const updateSingleFullRangeMutation = useCallback(
     async (data: ItemsFullRangesRequest) => {
-      await commands
-        .updateFullRange(data)
-        .then(() => {
-          refetchAll()
-          refetchSelected()
-        })
-        .catch((error) => {
-          console.log('updateFullRange error', error)
-        })
+      await commands.updateFullRange(data).catch((error) => {
+        console.log('updateFullRange error', error)
+      })
     },
-    [refetchAll, refetchSelected]
+    []
   )
   const updateSingleArtListTogMutation = useCallback(
     async (data: ItemsArtListTogRequest) => {
-      await commands
-        .updateArtTog(data)
-        .then(() => {
-          refetchAll()
-          refetchSelected()
-        })
-        .catch((error) => {
-          console.log('updateArtTog error', error)
-        })
+      await commands.updateArtTog(data).catch((error) => {
+        console.log('updateArtTog error', error)
+      })
     },
-    [refetchAll, refetchSelected]
+    []
   )
   const updateSingleArtListTapMutation = useCallback(
     async (data: ItemsArtListTapRequest) => {
-      await commands
-        .updateArtTap(data)
-        .then(() => {
-          refetchAll()
-          refetchSelected()
-        })
-        .catch((error) => {
-          console.log('updateArtTap error', error)
-        })
+      await commands.updateArtTap(data).catch((error) => {
+        console.log('updateArtTap error', error)
+      })
     },
-    [refetchAll, refetchSelected]
+    []
   )
   const updateSingleArtLayerMutation = useCallback(
     async (data: ItemsArtLayersRequest) => {
-      await commands
-        .updateArtLayer(data)
-        .then(() => {
-          refetchAll()
-          refetchSelected()
-        })
-        .catch((error) => {
-          console.log('updateArtLayer error', error)
-        })
+      await commands.updateArtLayer(data).catch((error) => {
+        console.log('updateArtLayer error', error)
+      })
     },
-    [refetchAll, refetchSelected]
+    []
   )
   const updateSingleFadListMutation = useCallback(
     async (data: ItemsFadListRequest) => {
-      await commands
-        .updateFad(data)
-        .then(() => {
-          refetchAll()
-          refetchSelected()
-        })
-        .catch((error) => {
-          console.log('updateFad error', error)
-        })
+      await commands.updateFad(data).catch((error) => {
+        console.log('updateFad error', error)
+      })
     },
-    [refetchAll, refetchSelected]
+    []
   )
   ////////////////////////////////////////////
   //// DELETE mutations
@@ -480,7 +447,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       await commands
         .deleteFileitemAndRelations(id)
         .then(() => {
-          refetchAll()
+          getData()
           if (!previous_item_id) return
           updateSettings({ key: 'selected_item_id', value: previous_item_id })
         })
@@ -488,93 +455,96 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
           console.log('deleteFileitemAndRelations error', error)
         })
     },
-    [refetchAll, updateSettings, previous_item_id]
+    [getData, updateSettings, previous_item_id]
   )
   const deleteSingleFullRangeMutation = useCallback(
     async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
       await commands
         .deleteFullRangeByFileitem(id, fileitemsItemId)
         .then(() => {
-          refetchAll()
-          refetchSelected()
+          getData()
+          getSelectedItem()
         })
         .catch((error) => {
           console.log('deleteFullRangeByFileitem error', error)
         })
     },
-    [refetchAll, refetchSelected]
+    [getData, getSelectedItem]
   )
   const deleteSingleArtListTogMutation = useCallback(
     async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
       await commands
         .deleteArtTogByFileitem(id, fileitemsItemId)
         .then(() => {
-          refetchAll()
-          refetchSelected()
+          getData()
+          getSelectedItem()
         })
         .catch((error) => {
           console.log('deleteArtTogByFileitem error', error)
         })
     },
-    [refetchAll, refetchSelected]
+    [getData, getSelectedItem]
   )
   const deleteSingleArtListTapMutation = useCallback(
     async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
       await commands
         .deleteArtTapByFileitem(id, fileitemsItemId)
         .then(() => {
-          refetchAll()
-          refetchSelected()
+          getData()
+          getSelectedItem()
         })
         .catch((error) => {
           console.log('deleteArtTogByFileitem error', error)
         })
     },
-    [refetchAll, refetchSelected]
+    [getData, getSelectedItem]
   )
   const deleteSingleArtLayerMutation = useCallback(
     async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
       await commands
         .deleteArtLayerByFileitem(id, fileitemsItemId)
         .then(() => {
-          refetchAll()
-          refetchSelected()
+          getData()
+          getSelectedItem()
         })
         .catch((error) => {
           console.log('deleteArtLayerByFileitem error', error)
         })
     },
-    [refetchAll, refetchSelected]
+    [getData, getSelectedItem]
   )
   const deleteSingleFadListMutation = useCallback(
     async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
       await commands
         .deleteFadByFileitem(id, fileitemsItemId)
         .then(() => {
-          refetchAll()
-          refetchSelected()
+          getData()
+          getSelectedItem()
         })
         .catch((error) => {
           console.log('deleteFadByFileitem error', error)
         })
     },
-    [refetchAll, refetchSelected]
+    [getData, getSelectedItem]
   )
   ////////////////////////////////////////////
+  const [clearState, setClearState] = useState<string | null>(null)
+
   //// CLEAR mutations
   const clearSingleItemMutation = useCallback(
     async (id: string) => {
       await commands
         .clearFileitem(id)
         .then(() => {
-          refetchAll()
-          refetchSelected()
+          getSelectedItem().then(() => {
+            setClearState(id)
+          })
         })
         .catch((error) => {
           console.log('clearFileitem error', error)
         })
     },
-    [refetchAll, refetchSelected]
+    [getSelectedItem, setClearState, commands.clearFileitem]
   )
   ////////////////////////////////////////////
   //// RENUMBER/REORDER mutations
@@ -582,13 +552,13 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     await commands
       .renumberAllFileitems()
       .then(() => {
-        refetchAll()
-        refetchSelected()
+        getData()
+        getSelectedItem()
       })
       .catch((error) => {
         console.log('renumberAllItemsMutation error', error)
       })
-  }, [refetchAll, refetchSelected])
+  }, [getData, getSelectedItem])
   ////////////////////////////////////////////
   //// PASTE/DUPLICATE mutations
   const pasteSingleItemMutation = useCallback((data: pasteItemArgs) => {
@@ -676,8 +646,10 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     () => ({
       data,
       dataLength,
-      refetchAll,
-      refetchSelected,
+      getData,
+      getSelectedItem,
+      clearState,
+      setClearState,
       vepSamplerCount,
       vepInstanceCount,
       nonVepSamplerCount,
@@ -694,8 +666,10 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     [
       data,
       dataLength,
-      refetchAll,
-      refetchSelected,
+      getData,
+      getSelectedItem,
+      clearState,
+      setClearState,
       vepSamplerCount,
       vepInstanceCount,
       nonVepSamplerCount,
