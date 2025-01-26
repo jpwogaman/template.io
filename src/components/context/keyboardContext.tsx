@@ -9,7 +9,6 @@ import {
   useCallback
 } from 'react'
 import { useMutations, useSelectedItem } from '@/components/context'
-
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface KeyboardType {}
 
@@ -294,34 +293,34 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
           switch (optionType) {
             case 'FR':
               del.fullRange({
-                id: optionNumber ?? '',
-                fileitemsItemId: selected_item_id ?? ''
+                id: selected_sub_item_id,
+                fileitemsItemId: selected_item_id
               })
               break
             case 'AT':
-              if (isArtTog(selected_sub_item_id ?? '')) {
+              if (isArtTog(selected_sub_item_id)) {
                 del.artListTog({
-                  id: selected_sub_item_id ?? '',
-                  fileitemsItemId: selected_item_id ?? ''
+                  id: selected_sub_item_id,
+                  fileitemsItemId: selected_item_id
                 })
               }
-              if (!isArtTog(selected_sub_item_id ?? '')) {
+              if (!isArtTog(selected_sub_item_id)) {
                 del.artListTap({
-                  id: selected_sub_item_id ?? '',
-                  fileitemsItemId: selected_item_id ?? ''
+                  id: selected_sub_item_id,
+                  fileitemsItemId: selected_item_id
                 })
               }
               break
             case 'AL':
               del.artLayer({
-                id: optionNumber ?? '',
-                fileitemsItemId: selected_item_id ?? ''
+                id: selected_sub_item_id,
+                fileitemsItemId: selected_item_id
               })
               break
             case 'FL':
               del.fadList({
-                id: optionNumber ?? '',
-                fileitemsItemId: selected_item_id ?? ''
+                id: selected_sub_item_id,
+                fileitemsItemId: selected_item_id
               })
               break
             default:

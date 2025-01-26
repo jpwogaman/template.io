@@ -8,26 +8,32 @@ import {
   type ReactNode,
   type FC,
   useEffect,
-  useState
+  useState,
+  Dispatch,
+  SetStateAction
 } from 'react'
+
+import { type FileItemId, type SubItemId } from './selectedItemContext'
+
+type contextMenuType = FileItemId | SubItemId<FileItemId> | null
 
 interface ContextMenuType {
   isContextMenuOpen: boolean
-  contextMenuId: string
+  contextMenuId: contextMenuType
   contextMenuPosition: {
     top: number
     left: number
   }
   close: () => void
   open: () => void
-  setContextMenuId: (id: string) => void
+  setContextMenuId: Dispatch<SetStateAction<contextMenuType>>
   setIsContextMenuOpen: (isOpen: boolean) => void
   setContextMenuPosition: (position: { top: number; left: number }) => void
 }
 
 const contextMenuContextDefaultValues: ContextMenuType = {
   isContextMenuOpen: false,
-  contextMenuId: '',
+  contextMenuId: null,
   contextMenuPosition: {
     top: 0,
     left: 0
@@ -52,7 +58,7 @@ export const ContextMenuProvider: FC<ContextMenuProviderProps> = ({
   children
 }) => {
   const [isContextMenuOpen, setIsContextMenuOpen] = useState(false)
-  const [contextMenuId, setContextMenuId] = useState('')
+  const [contextMenuId, setContextMenuId] = useState<contextMenuType>(null)
   const [contextMenuPosition, setContextMenuPosition] = useState({
     top: 0,
     left: 0

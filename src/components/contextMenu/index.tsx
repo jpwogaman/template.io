@@ -5,7 +5,9 @@ import { Fragment, type FC, type ChangeEvent } from 'react'
 import {
   useMutations,
   useSelectedItem,
-  useContextMenu
+  useContextMenu,
+  type FileItemId,
+  type SubItemId
 } from '@/components/context'
 
 export const ContextMenu: FC = () => {
@@ -21,7 +23,7 @@ export const ContextMenu: FC = () => {
     sub_item_add_count
   } = settings
 
-  const isArtTog = (artId: string) => {
+  const isArtTog = (artId: SubItemId<FileItemId>) => {
     const art = selectedItem?.art_list_tog?.find((art) => art.id === artId)
     if (art) return true
   }
@@ -105,7 +107,7 @@ export const ContextMenu: FC = () => {
         },
         articulation: {
           action: () => {
-            if (isArtTog(contextMenuId)) {
+            if (isArtTog(contextMenuId as SubItemId<FileItemId>)) {
               create.artListTog({
                 fileitemsItemId: selected_item_id
               })
@@ -184,16 +186,20 @@ export const ContextMenu: FC = () => {
           action: () => setCopiedItemId(selected_item_id)
         },
         range: {
-          action: () => setCopiedSubItemId(contextMenuId)
+          action: () =>
+            setCopiedSubItemId(contextMenuId as SubItemId<FileItemId>)
         },
         articulation: {
-          action: () => setCopiedSubItemId(contextMenuId)
+          action: () =>
+            setCopiedSubItemId(contextMenuId as SubItemId<FileItemId>)
         },
         layer: {
-          action: () => setCopiedSubItemId(contextMenuId)
+          action: () =>
+            setCopiedSubItemId(contextMenuId as SubItemId<FileItemId>)
         },
         fader: {
-          action: () => setCopiedSubItemId(contextMenuId)
+          action: () =>
+            setCopiedSubItemId(contextMenuId as SubItemId<FileItemId>)
         },
         label: 'Copy Item Settings',
         icon1: 'fa-copy',
@@ -253,20 +259,20 @@ export const ContextMenu: FC = () => {
         range: {
           action: () =>
             del.fullRange({
-              id: contextMenuId,
+              id: contextMenuId as SubItemId<FileItemId>,
               fileitemsItemId: selected_item_id
             })
         },
         articulation: {
           action: () => {
-            if (isArtTog(contextMenuId)) {
+            if (isArtTog(contextMenuId as SubItemId<FileItemId>)) {
               del.artListTog({
-                id: contextMenuId,
+                id: contextMenuId as SubItemId<FileItemId>,
                 fileitemsItemId: selected_item_id
               })
             } else {
               del.artListTap({
-                id: contextMenuId,
+                id: contextMenuId as SubItemId<FileItemId>,
                 fileitemsItemId: selected_item_id
               })
             }
@@ -275,14 +281,14 @@ export const ContextMenu: FC = () => {
         layer: {
           action: () =>
             del.artLayer({
-              id: contextMenuId,
+              id: contextMenuId as SubItemId<FileItemId>,
               fileitemsItemId: selected_item_id
             })
         },
         fader: {
           action: () =>
             del.fadList({
-              id: contextMenuId,
+              id: contextMenuId as SubItemId<FileItemId>,
               fileitemsItemId: selected_item_id
             })
         },
@@ -318,14 +324,16 @@ export const ContextMenu: FC = () => {
           <div className='w-3/4'>
             <h3
               className={tw(
-                !contextMenuId.includes(selected_item_id) ? 'text-red-400' : '',
+                !contextMenuId?.includes(selected_item_id)
+                  ? 'text-red-400'
+                  : '',
                 'mx-auto'
               )}>{`Current Track: ${selected_item_id}`}</h3>
 
             {contextMenuIsSubItem && (
               <h3
                 className={tw(
-                  !contextMenuId.includes(selected_sub_item_id)
+                  !contextMenuId?.includes(selected_sub_item_id)
                     ? 'text-red-400'
                     : '',
                   'mx-auto'
@@ -442,7 +450,7 @@ export const ContextMenu: FC = () => {
                     key={subKey}
                     onClick={() => {
                       if (!action) return
-                      if (!contextMenuId.includes(selected_item_id)) {
+                      if (!contextMenuId?.includes(selected_item_id)) {
                         updateSettings({
                           key: 'selected_item_id',
                           value: contextMenuId

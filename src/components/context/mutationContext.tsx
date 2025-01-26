@@ -13,7 +13,11 @@ import {
   SetStateAction
 } from 'react'
 
-import { useSelectedItem } from './selectedItemContext'
+import {
+  useSelectedItem,
+  type FileItemId,
+  type SubItemId
+} from './selectedItemContext'
 import {
   commands,
   type FullTrackWithCounts,
@@ -25,20 +29,19 @@ import {
   type ItemsArtLayersRequest,
   type ItemsFadListRequest
 } from '../backendCommands/backendCommands'
-import TrackListTableKeys from '../utils/trackListTableKeys'
 
 type createSubItemArgs = {
-  fileitemsItemId: string
+  fileitemsItemId: FileItemId
 }
 
 type deleteSubItemArgs = {
-  id: string
-  fileitemsItemId: string
+  id: SubItemId<FileItemId>
+  fileitemsItemId: FileItemId
 }
 
 type pasteItemArgs = {
-  destinationItemId: string
-  copiedItemId: string
+  destinationItemId: FileItemId | SubItemId<FileItemId>
+  copiedItemId: FileItemId | SubItemId<FileItemId>
 }
 
 interface MutationContextType {
@@ -48,8 +51,8 @@ interface MutationContextType {
   vepSamplerCount: number
   vepInstanceCount: number
   nonVepSamplerCount: number
-  clearState: string | null
-  setClearState: Dispatch<SetStateAction<string | null>>
+  clearState: FileItemId | null
+  setClearState: Dispatch<SetStateAction<FileItemId | null>>
   getData: () => void
   getSelectedItem: () => void
   //////////////////////////////////////////
@@ -70,7 +73,7 @@ interface MutationContextType {
     fadList: (data: ItemsFadListRequest) => void
   }
   del: {
-    track: (id: string) => void
+    track: (id: FileItemId) => void
     fullRange: (data: deleteSubItemArgs) => void
     artListTog: (data: deleteSubItemArgs) => void
     artListTap: (data: deleteSubItemArgs) => void
@@ -78,7 +81,7 @@ interface MutationContextType {
     fadList: (data: deleteSubItemArgs) => void
   }
   clear: {
-    track: (id: string) => void
+    track: (id: FileItemId) => void
   }
   renumber: {
     allTracks: () => void
@@ -443,7 +446,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   ////////////////////////////////////////////
   //// DELETE mutations
   const deleteSingleItemMutation = useCallback(
-    async (id: string) => {
+    async (id: FileItemId) => {
       await commands
         .deleteFileitemAndRelations(id)
         .then(() => {
@@ -528,11 +531,11 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     [getData, getSelectedItem]
   )
   ////////////////////////////////////////////
-  const [clearState, setClearState] = useState<string | null>(null)
+  const [clearState, setClearState] = useState<FileItemId | null>(null)
 
   //// CLEAR mutations
   const clearSingleItemMutation = useCallback(
-    async (id: string) => {
+    async (id: FileItemId) => {
       await commands
         .clearFileitem(id)
         .then(() => {

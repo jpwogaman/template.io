@@ -110,11 +110,13 @@ export const initItemsFadListNoId: Omit<
   change_type: 'Value 2'
 }
 
+import { type FileItemId } from '../context'
+
 export type fadInitKeys = keyof Omit<ItemsFadList, 'id' | 'fileitems_item_id'>
 
 export type itemInitKeyStringOrNumber = {
   id: string
-  clearState: string
+  clearState: FileItemId
   setValue: Dispatch<SetStateAction<string | number>>
 }
 
