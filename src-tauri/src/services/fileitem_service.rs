@@ -87,6 +87,9 @@ pub fn create_fileitem() {
 
   fn find_highest_id(fileitems: &Vec<FileItem>) -> i32 {
     let mut highest_id = 0;
+    if fileitems.len() < 1 {
+      return -1;
+    }
     for fileitem in fileitems {
       let id = fileitem.id.split("_").nth(1).unwrap().parse::<i32>().unwrap();
       if id > highest_id {

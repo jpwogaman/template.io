@@ -141,6 +141,13 @@ async fn main() {
           "delete_all" => {
             fileitem_service::delete_all_fileitems_and_relations();
             fileitem_service::create_fileitem();
+            let mut settings = settings_services::Settings::get();
+
+            settings.selected_item_id = "T_0".to_string();
+            settings.selected_sub_item_id = "T_0_notes".to_string();
+
+            settings_services::Settings::set(&settings);
+
             app.emit("refresh", "refresh").unwrap();
           }
           "quit" => {
