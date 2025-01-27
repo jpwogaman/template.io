@@ -12,7 +12,8 @@ import TrackOptionsTableKeys from '../utils/trackOptionsTableKeys'
 import {
   useMutations,
   useSelectedItem,
-  useContextMenu
+  useContextMenu,
+  contextMenuType
 } from '@/components/context'
 
 import {
@@ -188,7 +189,7 @@ export const TrackOptions: FC = () => {
     key,
     label
   }: OnChangeHelperArgsType) => {
-    if (label === 'fullRange') {
+    if (label === 'full_ranges') {
       if (key === 'whiteKeysOnly') {
         update.fullRange({
           id: layoutDataSingleId ?? '',
@@ -220,13 +221,13 @@ export const TrackOptions: FC = () => {
         [key]: newValue
       })
     }
-    if (label === 'artLayers') {
+    if (label === 'art_layers') {
       update.artLayer({
         id: layoutDataSingleId ?? '',
         [key]: newValue
       })
     }
-    if (label === 'fadList') {
+    if (label === 'fad_list') {
       update.fadList({
         id: layoutDataSingleId ?? '',
         [key]: newValue
@@ -387,7 +388,9 @@ export const TrackOptions: FC = () => {
                         }
                         onContextMenu={() => {
                           setIsContextMenuOpen(true)
-                          setContextMenuId(layoutDataSingleId)
+                          setContextMenuId(
+                            layoutDataSingleId as contextMenuType
+                          )
                         }}
                         key={layoutDataSingleId}
                         className={tw(
@@ -459,7 +462,7 @@ export const TrackOptions: FC = () => {
                       }
                       onContextMenu={() => {
                         setIsContextMenuOpen(true)
-                        setContextMenuId(layoutDataSingleId)
+                        setContextMenuId(layoutDataSingleId as contextMenuType)
                       }}
                       key={layoutDataSingleId}
                       className='w-max table-auto border-separate border-spacing-0 text-left text-xs'>

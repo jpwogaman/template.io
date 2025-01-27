@@ -26,14 +26,14 @@ export type OnChangeHelperArgsType = {
   newValue?: string | number | boolean
   layoutDataSingleId?: string
   key: string
-  label?: string
+  label?: TrackOptionsTableKeys[number]['label']
 }
 
 type InputTypeSelectorProps = {
   keySingle:
     | TrackOptionsTableKeys[number]['keys'][number]
     | TrackListTableKeys['keys'][number]
-  layoutConfigLabel?: string
+  layoutConfigLabel?: TrackOptionsTableKeys[number]['label']
   layoutDataSingle?:
     | ItemsFullRanges
     | ItemsArtListTog
@@ -195,7 +195,8 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
     }
 
     const artLayerOptions =
-      layoutConfigLabel === 'artListTap' || layoutConfigLabel === 'artListTog'
+      layoutConfigLabel === 'art_list_tap' ||
+      layoutConfigLabel === 'art_list_tog'
     const layersOptions = key === 'art_layers' && artLayerOptions
 
     const stringListFullArtLayerIds = JSON.stringify(
@@ -204,7 +205,8 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
     )
 
     const artRangeOptions =
-      layoutConfigLabel === 'artListTap' || layoutConfigLabel === 'artListTog'
+      layoutConfigLabel === 'art_list_tap' ||
+      layoutConfigLabel === 'art_list_tog'
     const rangeOptions = key === 'ranges' && artRangeOptions
 
     const stringListOfFullRangeIds = JSON.stringify(
@@ -237,27 +239,27 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
     )
 
     const artTogLockedHelper =
-      layoutConfigLabel === 'artListTog' &&
+      layoutConfigLabel === 'art_list_tog' &&
       key === 'code' &&
       thisArtTog?.code === true
 
     const artTapLockedHelper =
-      layoutConfigLabel === 'artListTap' &&
+      layoutConfigLabel === 'art_list_tap' &&
       key === 'on' &&
       thisArtTap?.on === true
 
     const artLayerLockedHelper =
-      layoutConfigLabel === 'artLayers' &&
+      layoutConfigLabel === 'art_layers' &&
       key === 'code' &&
       thisArtLayer?.code === true
 
     const fadLockedHelper =
-      layoutConfigLabel === 'fadList' &&
+      layoutConfigLabel === 'fad_list' &&
       key === 'code' &&
       thisFad?.code === true
 
     const artTapDefaultHelper =
-      layoutConfigLabel === 'artListTap' && key === 'default'
+      layoutConfigLabel === 'art_list_tap' && key === 'default'
 
     const checkBoxSwitchValueHelper = () => {
       if (layoutDataSingle[key as 'id'] === 'Value 2') {

@@ -8,7 +8,8 @@ import { type OnChangeHelperArgsType, InputTypeSelector } from '../inputs'
 import {
   useMutations,
   useSelectedItem,
-  useContextMenu
+  useContextMenu,
+  contextMenuType
 } from '@/components/context'
 
 import { type FullTrackForExport } from '../backendCommands/backendCommands'
@@ -98,7 +99,7 @@ export const TrackList: FC = () => {
                 key={id}
                 onContextMenu={() => {
                   setIsContextMenuOpen(true)
-                  setContextMenuId(id)
+                  setContextMenuId(id as contextMenuType)
                 }}
                 onKeyUpCapture={() => {
                   updateSettings({ key: 'selected_item_id', value: id })
