@@ -21,7 +21,8 @@
     "deps": "ncu --interactive --format group",
     "tauri": "tauri",
     "count": "count-lines-in-repo.bat",
-    "bindings": "cd src-tauri && cargo test && cargo run --bin bindings_custom_types"
+    "bindings": "cd src-tauri && cargo test && cargo run --bin bindings_custom_types",
+    "full_clean": "cd src-tauri && cargo clean && cd.. && rm -rf node_modules/ && rm -rf dist/ && rm -rf .next/ && pnpm install && pnpm tauri dev"
   },
   "ct3aMetadata": {
     "initVersion": "6.11.2"
