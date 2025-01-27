@@ -58,9 +58,12 @@ pub struct ItemsArtLayersRequest {
   pub fileitems_item_id: Option<String>,
 }
 
-pub fn init_art_layer(id: String) -> ItemsArtLayers {
+pub fn init_art_layer(
+  fileitems_item_id: String,
+  new_layer_id: String
+) -> ItemsArtLayers {
   ItemsArtLayers {
-    id: format!("T_{}_AL_0", id),
+    id: format!("{}_AL_{}", fileitems_item_id, new_layer_id),
     name: "".to_string(),
     code_type: "/control".to_string(),
     code: 0,
@@ -68,6 +71,6 @@ pub fn init_art_layer(id: String) -> ItemsArtLayers {
     off: 0,
     default: "Off".to_string(),
     change_type: "Value 2".to_string(),
-    fileitems_item_id: format!("T_{}", id),
+    fileitems_item_id: fileitems_item_id,
   }
 }

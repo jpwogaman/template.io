@@ -1,5 +1,5 @@
 use crate::{
-  models::items_artlist_tap::{ ItemsArtListTap, ItemsArtListTapRequest },
+  models::items_artlist_tap::{ ItemsArtListTapRequest, init_art_tap },
   services::{
     items_artlist_tog_service,
     items_artlist_tap_service,
@@ -36,22 +36,7 @@ pub fn create_art_tap(fileitems_item_id: String) {
       (items_artlist_tog_len + items_artlist_tap_len + (i as usize)) as i32
     };
 
-    let art = ItemsArtListTap {
-      id: format!("{}_AT_{}", fileitems_item_id.clone(), new_id),
-      name: "".to_string(),
-      toggle: false,
-      code_type: "/control".to_string(),
-      code: 0,
-      on: 127,
-      off: 0,
-      default: false,
-      delay: 0,
-      change_type: "Value 2".to_string(),
-      ranges: format!("[\"{}_FR_0\"]", new_id),
-      art_layers: "[\"\"]".to_string(),
-      fileitems_item_id: fileitems_item_id.clone(),
-    };
-
+    let art = init_art_tap(fileitems_item_id.clone(), new_id.to_string());
     items_artlist_tap_service::store_new_art_tap(&art);
     i += 1;
   }

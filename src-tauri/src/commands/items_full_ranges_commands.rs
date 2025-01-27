@@ -1,5 +1,5 @@
 use crate::{
-  models::items_full_ranges::{ ItemsFullRanges, ItemsFullRangesRequest },
+  models::items_full_ranges::{ ItemsFullRanges, ItemsFullRangesRequest, init_full_range },
   services::{ items_full_ranges_service, settings_services::{ Settings } },
 };
 
@@ -41,16 +41,7 @@ pub fn create_full_range(fileitems_item_id: String) {
   let mut i = 0;
   while i < count {
     let new_id = find_highest_id(&items_full_ranges) + 1 + i;
-
-    let full_range = ItemsFullRanges {
-      id: format!("{}_FR_{}", fileitems_item_id.clone(), new_id),
-      name: "".to_string(),
-      low: "C-2".to_string(),
-      high: "B8".to_string(),
-      white_keys_only: false,
-      fileitems_item_id: fileitems_item_id.clone(),
-    };
-
+    let full_range = init_full_range(fileitems_item_id.clone(), new_id.to_string());
     items_full_ranges_service::store_new_full_range(&full_range);
 
     i += 1;

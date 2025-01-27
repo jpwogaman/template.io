@@ -1,5 +1,5 @@
 use crate::{
-  models::items_fadlist::{ ItemsFadList, ItemsFadListRequest },
+  models::items_fadlist::{ ItemsFadList, ItemsFadListRequest, init_fad },
   services::{ items_fadlist_service, settings_services::{ Settings } },
 };
 
@@ -37,17 +37,7 @@ pub fn create_fad(fileitems_item_id: String) {
   let mut i = 0;
   while i < count {
     let new_id = find_highest_id(&items_fadlist) + 1 + i;
-
-    let fad = ItemsFadList {
-      id: format!("{}_FL_{}", fileitems_item_id.clone(), new_id),
-      name: "".to_string(),
-      code_type: "/control".to_string(),
-      code: 0,
-      default: 0,
-      change_type: "Value 2".to_string(),
-      fileitems_item_id: fileitems_item_id.clone(),
-    };
-
+    let fad = init_fad(fileitems_item_id.clone(), new_id.to_string());
     items_fadlist_service::store_new_fad(&fad);
     i += 1;
   }

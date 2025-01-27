@@ -70,10 +70,13 @@ pub struct ItemsArtListTogRequest {
   pub fileitems_item_id: Option<String>,
 }
 
-pub fn init_art_tog(id: String) -> ItemsArtListTog {
+pub fn init_art_tog(
+  fileitems_item_id: String,
+  new_art_tog_id: String
+) -> ItemsArtListTog {
   ItemsArtListTog {
-    // art_tog is T_{}_AT_0, art_tap is T_{}_AT_1 
-    id: format!("T_{}_AT_0", id),
+    // art_tog is T_{}_AT_0, art_tap is T_{}_AT_1
+    id: format!("{}_AT_{}", fileitems_item_id, new_art_tog_id),
     name: "".to_string(),
     toggle: true,
     code_type: "/control".to_string(),
@@ -83,8 +86,8 @@ pub fn init_art_tog(id: String) -> ItemsArtListTog {
     default: "On".to_string(),
     delay: 0,
     change_type: "Value 2".to_string(),
-    ranges: format!("[\"T_{}_FR_0\"]", id),
+    ranges: format!("[\"{}_FR_0\"]", fileitems_item_id),
     art_layers: "[\"\"]".to_string(),
-    fileitems_item_id: format!("T_{}", id),
+    fileitems_item_id: fileitems_item_id,
   }
 }

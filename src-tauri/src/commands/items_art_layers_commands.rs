@@ -1,5 +1,9 @@
 use crate::{
-  models::items_art_layers::{ ItemsArtLayers, ItemsArtLayersRequest },
+  models::items_art_layers::{
+    ItemsArtLayers,
+    ItemsArtLayersRequest,
+    init_art_layer,
+  },
   services::{ items_art_layers_service, settings_services::{ Settings } },
 };
 
@@ -41,19 +45,7 @@ pub fn create_art_layer(fileitems_item_id: String) {
   let mut i = 0;
   while i < count {
     let new_id = find_highest_id(&items_art_layers) + 1 + i;
-
-    let layer = ItemsArtLayers {
-      id: format!("{}_AL_{}", fileitems_item_id.clone(), new_id),
-      name: "".to_string(),
-      code_type: "/control".to_string(),
-      code: 0,
-      on: 127,
-      off: 0,
-      default: "Off".to_string(),
-      change_type: "Value 2".to_string(),
-      fileitems_item_id: fileitems_item_id.clone(),
-    };
-
+    let layer = init_art_layer(fileitems_item_id.clone(), new_id.to_string());
     items_art_layers_service::store_new_art_layer(&layer);
     i += 1;
   }

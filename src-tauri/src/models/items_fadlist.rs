@@ -52,14 +52,14 @@ pub struct ItemsFadListRequest {
   pub fileitems_item_id: Option<String>,
 }
 
-pub fn init_fad(id: String) -> ItemsFadList {
+pub fn init_fad(fileitems_item_id: String, new_fad_id: String) -> ItemsFadList {
   ItemsFadList {
-    id: format!("T_{}_FL_0", id),
+    id: format!("{}_FL_{}", fileitems_item_id, new_fad_id),
     name: "".to_string(),
     code_type: "/control".to_string(),
     code: 0,
     default: 0,
     change_type: "Value 2".to_string(),
-    fileitems_item_id: format!("T_{}", id),
+    fileitems_item_id: fileitems_item_id,
   }
 }

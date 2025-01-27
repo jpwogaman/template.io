@@ -49,13 +49,16 @@ pub struct ItemsFullRangesRequest {
   pub fileitems_item_id: Option<String>,
 }
 
-pub fn init_full_range(id: String) -> ItemsFullRanges {
+pub fn init_full_range(
+  fileitems_item_id: String,
+  new_range_id: String
+) -> ItemsFullRanges {
   ItemsFullRanges {
-    id: format!("T_{}_FR_0", id),
+    id: format!("{}_FR_{}", fileitems_item_id,new_range_id ),
     name: "".to_string(),
     low: "C-2".to_string(),
     high: "G8".to_string(),
     white_keys_only: false,
-    fileitems_item_id: format!("T_{}", id),
+    fileitems_item_id: fileitems_item_id,
   }
 }
