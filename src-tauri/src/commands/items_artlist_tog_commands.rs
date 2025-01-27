@@ -46,12 +46,25 @@ pub fn create_art_tog(fileitems_item_id: String) {
 
 #[tauri::command]
 #[specta::specta]
-pub fn delete_art_tog_by_fileitem(id: String, fileitems_item_id: String) {
-  items_artlist_tog_service::delete_art_tog_by_fileitem(
-    id,
-    fileitems_item_id.clone()
-  );
-  items_artlist_service::renumber_all_arts(fileitems_item_id.clone());
+pub fn delete_art_tog_by_fileitem(
+  id: String,
+  fileitems_item_id: String
+) -> Result<(), String> {
+  match
+    items_artlist_tog_service::delete_art_tog_by_fileitem(
+      id,
+      fileitems_item_id.clone()
+    )
+  {
+    Ok(_) => {
+      items_artlist_service::renumber_all_arts(fileitems_item_id);
+      Ok(())
+    }
+    Err(err) => {
+      println!("Error: {}", err);
+      Err(err.to_string())
+    }
+  }
 }
 
 #[tauri::command]

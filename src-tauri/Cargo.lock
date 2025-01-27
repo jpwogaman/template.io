@@ -5224,6 +5224,7 @@ dependencies = [
  "tauri-plugin-process",
  "tauri-plugin-shell",
  "tauri-specta",
+ "thiserror 2.0.11",
  "tokio",
  "tracing",
  "tracing-subscriber",

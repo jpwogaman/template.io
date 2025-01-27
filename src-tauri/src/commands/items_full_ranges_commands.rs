@@ -1,5 +1,9 @@
 use crate::{
-  models::items_full_ranges::{ ItemsFullRanges, ItemsFullRangesRequest, init_full_range },
+  models::items_full_ranges::{
+    ItemsFullRanges,
+    ItemsFullRangesRequest,
+    init_full_range,
+  },
   services::{ items_full_ranges_service, settings_services::{ Settings } },
 };
 
@@ -41,7 +45,10 @@ pub fn create_full_range(fileitems_item_id: String) {
   let mut i = 0;
   while i < count {
     let new_id = find_highest_id(&items_full_ranges) + 1 + i;
-    let full_range = init_full_range(fileitems_item_id.clone(), new_id.to_string());
+    let full_range = init_full_range(
+      fileitems_item_id.clone(),
+      new_id.to_string()
+    );
     items_full_ranges_service::store_new_full_range(&full_range);
 
     i += 1;
@@ -50,11 +57,22 @@ pub fn create_full_range(fileitems_item_id: String) {
 
 #[tauri::command]
 #[specta::specta]
-pub fn delete_full_range_by_fileitem(id: String, fileitems_item_id: String) {
-  items_full_ranges_service::delete_full_range_by_fileitem(
-    id,
-    fileitems_item_id
-  )
+pub fn delete_full_range_by_fileitem(
+  id: String,
+  fileitems_item_id: String
+) -> Result<(), String> {
+  match
+    items_full_ranges_service::delete_full_range_by_fileitem(
+      id,
+      fileitems_item_id.clone()
+    )
+  {
+    Ok(_) => { Ok(()) }
+    Err(err) => {
+      println!("Error: {}", err);
+      Err(err.to_string())
+    }
+  }
 }
 
 #[tauri::command]

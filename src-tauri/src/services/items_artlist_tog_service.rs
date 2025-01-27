@@ -1,11 +1,16 @@
 use crate::{
   db::establish_db_connection,
-  models::items_artlist_tog::{ ItemsArtListTog, ItemsArtListTogRequest },
+  models::{
+    custom_errors::MyCustomError,
+    items_artlist_tog::{ ItemsArtListTog, ItemsArtListTogRequest },
+  },
   schema::items_artlist_tog::dsl,
 };
 use diesel::prelude::*;
 
-pub fn list_items_artlist_tog(fileitems_item_id: String) -> Vec<ItemsArtListTog> {
+pub fn list_items_artlist_tog(
+  fileitems_item_id: String
+) -> Vec<ItemsArtListTog> {
   let connection = &mut establish_db_connection();
 
   let mut items_artlist_tog = dsl::items_artlist_tog
@@ -49,7 +54,10 @@ pub fn store_new_art_tog(new_art_tog: &ItemsArtListTog) {
     .expect("Error saving new fad");
 }
 
-pub fn delete_art_tog_by_fileitem(id: String, fileitems_item_id: String) {
+pub fn delete_art_tog_by_fileitem(
+  id: String,
+  fileitems_item_id: String
+) -> Result<(), MyCustomError> {
   let connection = &mut establish_db_connection();
 
   let must_have_one = dsl::items_artlist_tog
@@ -58,13 +66,15 @@ pub fn delete_art_tog_by_fileitem(id: String, fileitems_item_id: String) {
     .expect("Error loading art_tog");
 
   if must_have_one.len() <= 1 {
-    return;
+    return Err(MyCustomError::MinArtTogError);
   }
 
   diesel
     ::delete(dsl::items_artlist_tog.filter(dsl::id.eq(id)))
     .execute(connection)
     .expect("Error deleting art_tog");
+
+  Ok(())
 }
 
 pub fn delete_all_art_tog_for_fileitem(fileitems_item_id: String) {
@@ -72,7 +82,9 @@ pub fn delete_all_art_tog_for_fileitem(fileitems_item_id: String) {
 
   diesel
     ::delete(
-      dsl::items_artlist_tog.filter(dsl::fileitems_item_id.eq(fileitems_item_id))
+      dsl::items_artlist_tog.filter(
+        dsl::fileitems_item_id.eq(fileitems_item_id)
+      )
     )
     .execute(connection)
     .expect("Error deleting art_tog");

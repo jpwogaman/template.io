@@ -53,8 +53,22 @@ pub fn create_art_layer(fileitems_item_id: String) {
 
 #[tauri::command]
 #[specta::specta]
-pub fn delete_art_layer_by_fileitem(id: String, fileitems_item_id: String) {
-  items_art_layers_service::delete_art_layer_by_fileitem(id, fileitems_item_id)
+pub fn delete_art_layer_by_fileitem(
+  id: String,
+  fileitems_item_id: String
+) -> Result<(), String> {
+  match
+    items_art_layers_service::delete_art_layer_by_fileitem(
+      id,
+      fileitems_item_id.clone()
+    )
+  {
+    Ok(_) => { Ok(()) }
+    Err(err) => {
+      println!("Error: {}", err);
+      Err(err.to_string())
+    }
+  }
 }
 
 #[tauri::command]

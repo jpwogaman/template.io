@@ -32,8 +32,13 @@ async updateFileitem(data: FileItemRequest) : Promise<void> {
 async createFullRange(fileitemsItemId: string) : Promise<void> {
     await TAURI_INVOKE("create_full_range", { fileitemsItemId });
 },
-async deleteFullRangeByFileitem(id: string, fileitemsItemId: string) : Promise<void> {
-    await TAURI_INVOKE("delete_full_range_by_fileitem", { id, fileitemsItemId });
+async deleteFullRangeByFileitem(id: string, fileitemsItemId: string) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("delete_full_range_by_fileitem", { id, fileitemsItemId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
 },
 async updateFullRange(data: ItemsFullRangesRequest) : Promise<void> {
     await TAURI_INVOKE("update_full_range", { data });
@@ -41,8 +46,13 @@ async updateFullRange(data: ItemsFullRangesRequest) : Promise<void> {
 async createFad(fileitemsItemId: string) : Promise<void> {
     await TAURI_INVOKE("create_fad", { fileitemsItemId });
 },
-async deleteFadByFileitem(id: string, fileitemsItemId: string) : Promise<void> {
-    await TAURI_INVOKE("delete_fad_by_fileitem", { id, fileitemsItemId });
+async deleteFadByFileitem(id: string, fileitemsItemId: string) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("delete_fad_by_fileitem", { id, fileitemsItemId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
 },
 async updateFad(data: ItemsFadListRequest) : Promise<void> {
     await TAURI_INVOKE("update_fad", { data });
@@ -50,8 +60,13 @@ async updateFad(data: ItemsFadListRequest) : Promise<void> {
 async createArtTog(fileitemsItemId: string) : Promise<void> {
     await TAURI_INVOKE("create_art_tog", { fileitemsItemId });
 },
-async deleteArtTogByFileitem(id: string, fileitemsItemId: string) : Promise<void> {
-    await TAURI_INVOKE("delete_art_tog_by_fileitem", { id, fileitemsItemId });
+async deleteArtTogByFileitem(id: string, fileitemsItemId: string) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("delete_art_tog_by_fileitem", { id, fileitemsItemId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
 },
 async updateArtTog(data: ItemsArtListTogRequest) : Promise<void> {
     await TAURI_INVOKE("update_art_tog", { data });
@@ -59,8 +74,13 @@ async updateArtTog(data: ItemsArtListTogRequest) : Promise<void> {
 async createArtTap(fileitemsItemId: string) : Promise<void> {
     await TAURI_INVOKE("create_art_tap", { fileitemsItemId });
 },
-async deleteArtTapByFileitem(id: string, fileitemsItemId: string) : Promise<void> {
-    await TAURI_INVOKE("delete_art_tap_by_fileitem", { id, fileitemsItemId });
+async deleteArtTapByFileitem(id: string, fileitemsItemId: string) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("delete_art_tap_by_fileitem", { id, fileitemsItemId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
 },
 async updateArtTap(data: ItemsArtListTapRequest) : Promise<void> {
     await TAURI_INVOKE("update_art_tap", { data });
@@ -68,8 +88,13 @@ async updateArtTap(data: ItemsArtListTapRequest) : Promise<void> {
 async createArtLayer(fileitemsItemId: string) : Promise<void> {
     await TAURI_INVOKE("create_art_layer", { fileitemsItemId });
 },
-async deleteArtLayerByFileitem(id: string, fileitemsItemId: string) : Promise<void> {
-    await TAURI_INVOKE("delete_art_layer_by_fileitem", { id, fileitemsItemId });
+async deleteArtLayerByFileitem(id: string, fileitemsItemId: string) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("delete_art_layer_by_fileitem", { id, fileitemsItemId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
 },
 async updateArtLayer(data: ItemsArtLayersRequest) : Promise<void> {
     await TAURI_INVOKE("update_art_layer", { data });

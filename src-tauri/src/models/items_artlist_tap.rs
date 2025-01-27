@@ -73,7 +73,8 @@ pub struct ItemsArtListTapRequest {
 
 pub fn init_art_tap(
   fileitems_item_id: String,
-  new_art_tap_id: String
+  new_art_tap_id: String,
+  art_default: bool
 ) -> ItemsArtListTap {
   ItemsArtListTap {
     // art_tog is T_{}_AT_0, art_tap is T_{}_AT_1
@@ -84,7 +85,7 @@ pub fn init_art_tap(
     code: 0,
     on: 127,
     off: 0,
-    default: false,
+    default: art_default,
     delay: 0,
     change_type: "Value 2".to_string(),
     ranges: format!("[\"{}_FR_0\"]", fileitems_item_id),

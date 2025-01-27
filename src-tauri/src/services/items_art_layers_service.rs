@@ -1,6 +1,9 @@
 use crate::{
   db::establish_db_connection,
-  models::items_art_layers::{ ItemsArtLayers, ItemsArtLayersRequest },
+  models::{
+    custom_errors::MyCustomError,
+    items_art_layers::{ ItemsArtLayers, ItemsArtLayersRequest },
+  },
   schema::items_art_layers::dsl,
 };
 use diesel::prelude::*;
@@ -49,7 +52,10 @@ pub fn store_new_art_layer(new_art_layer: &ItemsArtLayers) {
     .expect("Error saving new fad");
 }
 
-pub fn delete_art_layer_by_fileitem(id: String, fileitems_item_id: String) {
+pub fn delete_art_layer_by_fileitem(
+  id: String,
+  fileitems_item_id: String
+) -> Result<(), MyCustomError> {
   let connection = &mut establish_db_connection();
 
   let must_have_one = dsl::items_art_layers
@@ -58,13 +64,15 @@ pub fn delete_art_layer_by_fileitem(id: String, fileitems_item_id: String) {
     .expect("Error loading layer");
 
   if must_have_one.len() <= 1 {
-    return;
+    return Err(MyCustomError::MinArtLayerError);
   }
 
   diesel
     ::delete(dsl::items_art_layers.filter(dsl::id.eq(id)))
     .execute(connection)
     .expect("Error deleting layer");
+
+  Ok(())
 }
 
 pub fn delete_all_art_layers_for_fileitem(fileitems_item_id: String) {

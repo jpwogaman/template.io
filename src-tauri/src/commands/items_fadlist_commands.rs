@@ -45,8 +45,19 @@ pub fn create_fad(fileitems_item_id: String) {
 
 #[tauri::command]
 #[specta::specta]
-pub fn delete_fad_by_fileitem(id: String, fileitems_item_id: String) {
-  items_fadlist_service::delete_fad_by_fileitem(id, fileitems_item_id)
+pub fn delete_fad_by_fileitem(
+  id: String,
+  fileitems_item_id: String
+) -> Result<(), String> {
+  match
+    items_fadlist_service::delete_fad_by_fileitem(id, fileitems_item_id.clone())
+  {
+    Ok(_) => { Ok(()) }
+    Err(err) => {
+      println!("Error: {}", err);
+      Err(err.to_string())
+    }
+  }
 }
 
 #[tauri::command]

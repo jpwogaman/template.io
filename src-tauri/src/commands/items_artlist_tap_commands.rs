@@ -28,6 +28,12 @@ pub fn create_art_tap(fileitems_item_id: String) {
     settings.sub_item_add_count as i32
   };
 
+  let mut first_art_default = if items_artlist_tap_len < 1 {
+    true
+  } else {
+    false
+  };
+
   let mut i = 0;
   while i < count {
     let new_id = if items_artlist_tog_len < 1 && items_artlist_tap_len < 1 {
@@ -36,9 +42,14 @@ pub fn create_art_tap(fileitems_item_id: String) {
       (items_artlist_tog_len + items_artlist_tap_len + (i as usize)) as i32
     };
 
-    let art = init_art_tap(fileitems_item_id.clone(), new_id.to_string());
+    let art = init_art_tap(
+      fileitems_item_id.clone(),
+      new_id.to_string(),
+      first_art_default
+    );
     items_artlist_tap_service::store_new_art_tap(&art);
     i += 1;
+    first_art_default = false;
   }
 
   items_artlist_service::renumber_all_arts(fileitems_item_id.clone());
@@ -46,12 +57,25 @@ pub fn create_art_tap(fileitems_item_id: String) {
 
 #[tauri::command]
 #[specta::specta]
-pub fn delete_art_tap_by_fileitem(id: String, fileitems_item_id: String) {
-  items_artlist_tap_service::delete_art_tap_by_fileitem(
-    id,
-    fileitems_item_id.clone()
-  );
-  items_artlist_service::renumber_all_arts(fileitems_item_id.clone());
+pub fn delete_art_tap_by_fileitem(
+  id: String,
+  fileitems_item_id: String
+) -> Result<(), String> {
+  match
+    items_artlist_tap_service::delete_art_tap_by_fileitem(
+      id,
+      fileitems_item_id.clone()
+    )
+  {
+    Ok(_) => {
+      items_artlist_service::renumber_all_arts(fileitems_item_id);
+      Ok(())
+    }
+    Err(err) => {
+      println!("Error: {}", err);
+      Err(err.to_string())
+    }
+  }
 }
 
 #[tauri::command]

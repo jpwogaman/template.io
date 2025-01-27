@@ -1,6 +1,9 @@
 use crate::{
   db::establish_db_connection,
-  models::items_fadlist::{ ItemsFadList, ItemsFadListRequest },
+  models::{
+    custom_errors::MyCustomError,
+    items_fadlist::{ ItemsFadList, ItemsFadListRequest },
+  },
   schema::items_fadlist::dsl,
 };
 use diesel::prelude::*;
@@ -49,7 +52,10 @@ pub fn store_new_fad(new_fad: &ItemsFadList) {
     .expect("Error saving new fad");
 }
 
-pub fn delete_fad_by_fileitem(id: String, fileitems_item_id: String) {
+pub fn delete_fad_by_fileitem(
+  id: String,
+  fileitems_item_id: String
+) -> Result<(), MyCustomError> {
   let connection = &mut establish_db_connection();
 
   let must_have_one = dsl::items_fadlist
@@ -58,13 +64,15 @@ pub fn delete_fad_by_fileitem(id: String, fileitems_item_id: String) {
     .expect("Error loading fad");
 
   if must_have_one.len() <= 1 {
-    return;
+    return Err(MyCustomError::MinFadError);
   }
 
   diesel
     ::delete(dsl::items_fadlist.filter(dsl::id.eq(id)))
     .execute(connection)
     .expect("Error deleting fad");
+
+  Ok(())
 }
 
 pub fn delete_all_fad_for_fileitem(fileitems_item_id: String) {

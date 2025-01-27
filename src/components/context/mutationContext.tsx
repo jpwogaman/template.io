@@ -462,73 +462,120 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   )
   const deleteSingleFullRangeMutation = useCallback(
     async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
-      await commands
-        .deleteFullRangeByFileitem(id, fileitemsItemId)
-        .then(() => {
+      try {
+        const result = await commands.deleteFullRangeByFileitem(
+          id,
+          fileitemsItemId
+        )
+
+        if (result.status === 'ok') {
           getData()
           getSelectedItem()
-        })
-        .catch((error) => {
-          console.log('deleteFullRangeByFileitem error', error)
-        })
+        } else {
+          console.error(`Error deleting Full Range: ${result.error}`)
+          alert(`Error deleting Full Range: ${result.error}`)
+        }
+      } catch (error) {
+        console.error(
+          `Error: ${error instanceof Error ? error.message : error}`
+        )
+        alert(`Error: ${error instanceof Error ? error.message : error}`)
+      }
     },
-    [getData, getSelectedItem]
+    [getData, getSelectedItem, commands.deleteFullRangeByFileitem]
   )
   const deleteSingleArtListTogMutation = useCallback(
     async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
-      await commands
-        .deleteArtTogByFileitem(id, fileitemsItemId)
-        .then(() => {
+      try {
+        const result = await commands.deleteArtTogByFileitem(
+          id,
+          fileitemsItemId
+        )
+
+        if (result.status === 'ok') {
           getData()
           getSelectedItem()
-        })
-        .catch((error) => {
-          console.log('deleteArtTogByFileitem error', error)
-        })
+        } else {
+          console.error(`Error deleting Toggle Articulation: ${result.error}`)
+          alert(`Error deleting Toggle Articulation: ${result.error}`)
+        }
+      } catch (error) {
+        console.error(
+          `Error: ${error instanceof Error ? error.message : error}`
+        )
+        alert(`Error: ${error instanceof Error ? error.message : error}`)
+      }
     },
-    [getData, getSelectedItem]
+    [getData, getSelectedItem, commands.deleteArtTogByFileitem]
   )
   const deleteSingleArtListTapMutation = useCallback(
     async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
-      await commands
-        .deleteArtTapByFileitem(id, fileitemsItemId)
-        .then(() => {
+      try {
+        const result = await commands.deleteArtTapByFileitem(
+          id,
+          fileitemsItemId
+        )
+
+        if (result.status === 'ok') {
           getData()
           getSelectedItem()
-        })
-        .catch((error) => {
-          console.log('deleteArtTogByFileitem error', error)
-        })
+        } else {
+          console.error(`Error deleting Tap Articulation: ${result.error}`)
+          alert(`Error deleting Tap Articulation: ${result.error}`)
+        }
+      } catch (error) {
+        console.error(
+          `Error: ${error instanceof Error ? error.message : error}`
+        )
+        alert(`Error: ${error instanceof Error ? error.message : error}`)
+      }
     },
-    [getData, getSelectedItem]
+    [getData, getSelectedItem, commands.deleteArtTapByFileitem]
   )
   const deleteSingleArtLayerMutation = useCallback(
     async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
-      await commands
-        .deleteArtLayerByFileitem(id, fileitemsItemId)
-        .then(() => {
+      try {
+        const result = await commands.deleteArtLayerByFileitem(
+          id,
+          fileitemsItemId
+        )
+
+        if (result.status === 'ok') {
           getData()
           getSelectedItem()
-        })
-        .catch((error) => {
-          console.log('deleteArtLayerByFileitem error', error)
-        })
+        } else {
+          console.error(`Error deleting Articulation Layer: ${result.error}`)
+          alert(`Error deleting Articulation Layer: ${result.error}`)
+        }
+      } catch (error) {
+        console.error(
+          `Error: ${error instanceof Error ? error.message : error}`
+        )
+        alert(`Error: ${error instanceof Error ? error.message : error}`)
+      }
     },
-    [getData, getSelectedItem]
+    [getData, getSelectedItem, commands.deleteArtLayerByFileitem]
   )
   const deleteSingleFadListMutation = useCallback(
     async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
-      await commands
-        .deleteFadByFileitem(id, fileitemsItemId)
-        .then(() => {
+      try {
+        const result = await commands.deleteFadByFileitem(id, fileitemsItemId)
+
+        if (result.status === 'ok') {
           getData()
           getSelectedItem()
-        })
-        .catch((error) => {
-          console.log('deleteFadByFileitem error', error)
-        })
+        } else {
+          console.error(`Error deleting Fader: ${result.error}`)
+          alert(`Error deleting Fader: ${result.error}`)
+        }
+      } catch (error) {
+        console.error(
+          `Error: ${error instanceof Error ? error.message : error}`
+        )
+        alert(`Error: ${error instanceof Error ? error.message : error}`)
+      }
     },
-    [getData, getSelectedItem]
+    [getData, getSelectedItem, commands.deleteFadByFileitem]
   )
   ////////////////////////////////////////////
   const [clearState, setClearState] = useState<FileItemId | null>(null)

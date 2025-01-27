@@ -1,6 +1,9 @@
 use crate::{
   db::establish_db_connection,
-  models::items_full_ranges::{ ItemsFullRanges, ItemsFullRangesRequest },
+  models::{
+    custom_errors::MyCustomError,
+    items_full_ranges::{ ItemsFullRanges, ItemsFullRangesRequest },
+  },
   schema::items_full_ranges::dsl,
 };
 use diesel::prelude::*;
@@ -51,7 +54,10 @@ pub fn store_new_full_range(new_full_range: &ItemsFullRanges) {
     .expect("Error saving new range");
 }
 
-pub fn delete_full_range_by_fileitem(id: String, fileitems_item_id: String) {
+pub fn delete_full_range_by_fileitem(
+  id: String,
+  fileitems_item_id: String
+) -> Result<(), MyCustomError> {
   let connection = &mut establish_db_connection();
 
   let must_have_one = dsl::items_full_ranges
@@ -60,13 +66,15 @@ pub fn delete_full_range_by_fileitem(id: String, fileitems_item_id: String) {
     .expect("Error loading range");
 
   if must_have_one.len() <= 1 {
-    return;
+    return Err(MyCustomError::MinFullRangeError);
   }
 
   diesel
     ::delete(dsl::items_full_ranges.filter(dsl::id.eq(id)))
     .execute(connection)
     .expect("Error deleting range");
+
+  Ok(())
 }
 
 pub fn delete_all_full_ranges_for_fileitem(fileitems_item_id: String) {

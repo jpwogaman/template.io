@@ -1,6 +1,9 @@
 use crate::{
   db::establish_db_connection,
-  models::items_artlist_tap::{ ItemsArtListTap, ItemsArtListTapRequest },
+  models::{
+    custom_errors::MyCustomError,
+    items_artlist_tap::{ ItemsArtListTap, ItemsArtListTapRequest },
+  },
   schema::items_artlist_tap::dsl,
 };
 use diesel::prelude::*;
@@ -51,7 +54,10 @@ pub fn store_new_art_tap(new_art_tap: &ItemsArtListTap) {
     .expect("Error saving new fad");
 }
 
-pub fn delete_art_tap_by_fileitem(id: String, fileitems_item_id: String) {
+pub fn delete_art_tap_by_fileitem(
+  id: String,
+  fileitems_item_id: String
+) -> Result<(), MyCustomError> {
   let connection = &mut establish_db_connection();
 
   let must_have_one = dsl::items_artlist_tap
@@ -60,13 +66,15 @@ pub fn delete_art_tap_by_fileitem(id: String, fileitems_item_id: String) {
     .expect("Error loading art_tap");
 
   if must_have_one.len() <= 1 {
-    return;
+    return Err(MyCustomError::MinArtTapError);
   }
 
   diesel
     ::delete(dsl::items_artlist_tap.filter(dsl::id.eq(id)))
     .execute(connection)
     .expect("Error deleting art_tap");
+
+  Ok(())
 }
 
 pub fn delete_all_art_tap_for_fileitem(fileitems_item_id: String) {
