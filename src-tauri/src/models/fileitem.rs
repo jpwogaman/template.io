@@ -13,6 +13,9 @@ use crate::{
 use diesel::{ Insertable, Queryable, AsChangeset, Identifiable };
 use serde::{ Serialize, Deserialize };
 
+// ANY changes to ANY of the structs/types in this file will cause Specta to automatically export to the frontend
+// depending on the change, template.io/src-tauri/src/bin/bindings_custom_types.rs, may need to be updated as well
+
 #[derive(
   Queryable,
   Serialize,
@@ -27,7 +30,7 @@ use serde::{ Serialize, Deserialize };
 )]
 #[diesel(table_name = fileitems)]
 pub struct FileItem {
-  pub id: String,
+  pub id: String, // manually changed to FileItemId
   pub locked: bool,
   pub name: String,
   pub notes: String,
@@ -43,7 +46,7 @@ pub struct FileItem {
 
 #[derive(Deserialize, Serialize, specta::Type)]
 pub struct FileItemRequest {
-  pub id: String,
+  pub id: String, // manually changed to FileItemId
   #[specta(optional)]
   pub locked: Option<bool>,
   #[specta(optional)]

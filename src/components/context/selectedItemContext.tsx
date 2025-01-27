@@ -15,10 +15,9 @@ import {
 import { type Settings, commands } from '../backendCommands/backendCommands'
 
 export type FileItemId = `T_${number}`
-export type SubItemInnerString = 'FR' | 'AT' | 'AL' | 'FL'
-export type SubItemId<T extends FileItemId> =
-  | `${T}_${SubItemInnerString}_${number}`
-  | `${T}_notes`
+export type SubItemId =
+  | `T_${number}_${'FR' | 'AT' | 'AL' | 'FL'}_${number}`
+  | `T_${number}_notes`
 
 type updateSettings = {
   key: keyof Settings
@@ -27,7 +26,7 @@ type updateSettings = {
 
 interface SelectedItemContextType {
   copiedItemId: FileItemId | null
-  copiedSubItemId: SubItemId<FileItemId> | null
+  copiedSubItemId: SubItemId | null
 
   selectedItemRangeCount: number
   selectedItemArtTogCount: number
@@ -43,7 +42,7 @@ interface SelectedItemContextType {
   setSelectedItemLayerCount: Dispatch<SetStateAction<number>>
   setSelectedItemFadCount: Dispatch<SetStateAction<number>>
   setCopiedItemId: Dispatch<SetStateAction<FileItemId | null>>
-  setCopiedSubItemId: Dispatch<SetStateAction<SubItemId<FileItemId> | null>>
+  setCopiedSubItemId: Dispatch<SetStateAction<SubItemId | null>>
   settings: Settings
   updateSettings: ({ key, value }: updateSettings) => Promise<void>
 }
@@ -98,8 +97,7 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
   children
 }) => {
   const [copiedItemId, setCopiedItemId] = useState<FileItemId | null>(null)
-  const [copiedSubItemId, setCopiedSubItemId] =
-    useState<SubItemId<FileItemId> | null>(null)
+  const [copiedSubItemId, setCopiedSubItemId] = useState<SubItemId | null>(null)
 
   const [selectedItemRangeCount, setSelectedItemRangeCount] = useState(0)
   const [selectedItemArtTogCount, setSelectedItemArtTogCount] = useState(0)

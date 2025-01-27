@@ -121,25 +121,25 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
             newInput = `${selected_item_id}_AL_${selectedItemLayerCount - 1}_${optionField}`
           }
 
-          const nextInput = window.document.getElementById(newInput ?? '')
+          const nextInput = window.document.getElementById(newInput)
 
           nextInput?.focus()
           return
         }
 
-        if (previous_item_id === '') return
+        if (!previous_item_id) return
 
         const newInput = keyDownTarget_FROM?.id.replace(
-          selected_item_id ?? '',
-          previous_item_id ?? ''
+          selected_item_id,
+          previous_item_id
         )
-        const previousInput = window.document.getElementById(newInput ?? '')
+        const previousInput = window.document.getElementById(newInput)
 
         keyDownTarget_FROM?.blur()
         previousInput?.focus()
         updateSettings({
           key: 'selected_item_id',
-          value: previous_item_id ?? ''
+          value: previous_item_id
         })
         updateSettings({
           key: 'selected_sub_item_id',
@@ -177,18 +177,18 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
           return
         }
 
-        if (next_item_id === '') return
+        if (!next_item_id) return
 
         const newInput = keyDownTarget_FROM?.id.replace(
-          selected_item_id ?? '',
-          next_item_id ?? ''
+          selected_item_id,
+          next_item_id
         )
-        const nextInput = window.document.getElementById(newInput ?? '')
+        const nextInput = window.document.getElementById(newInput)
 
         nextInput?.focus()
         updateSettings({
           key: 'selected_item_id',
-          value: next_item_id ?? ''
+          value: next_item_id
         })
         updateSettings({
           key: 'selected_sub_item_id',

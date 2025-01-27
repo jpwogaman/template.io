@@ -23,7 +23,7 @@ export const ContextMenu: FC = () => {
     sub_item_add_count
   } = settings
 
-  const isArtTog = (artId: SubItemId<FileItemId>) => {
+  const isArtTog = (artId: SubItemId) => {
     const art = selectedItem?.art_list_tog?.find((art) => art.id === artId)
     if (art) return true
   }
@@ -107,7 +107,7 @@ export const ContextMenu: FC = () => {
         },
         articulation: {
           action: () => {
-            if (isArtTog(contextMenuId as SubItemId<FileItemId>)) {
+            if (isArtTog(contextMenuId as SubItemId)) {
               create.artListTog({
                 fileitemsItemId: selected_item_id
               })
@@ -186,20 +186,16 @@ export const ContextMenu: FC = () => {
           action: () => setCopiedItemId(selected_item_id)
         },
         range: {
-          action: () =>
-            setCopiedSubItemId(contextMenuId as SubItemId<FileItemId>)
+          action: () => setCopiedSubItemId(contextMenuId as SubItemId)
         },
         articulation: {
-          action: () =>
-            setCopiedSubItemId(contextMenuId as SubItemId<FileItemId>)
+          action: () => setCopiedSubItemId(contextMenuId as SubItemId)
         },
         layer: {
-          action: () =>
-            setCopiedSubItemId(contextMenuId as SubItemId<FileItemId>)
+          action: () => setCopiedSubItemId(contextMenuId as SubItemId)
         },
         fader: {
-          action: () =>
-            setCopiedSubItemId(contextMenuId as SubItemId<FileItemId>)
+          action: () => setCopiedSubItemId(contextMenuId as SubItemId)
         },
         label: 'Copy Item Settings',
         icon1: 'fa-copy',
@@ -259,20 +255,20 @@ export const ContextMenu: FC = () => {
         range: {
           action: () =>
             del.fullRange({
-              id: contextMenuId as SubItemId<FileItemId>,
+              id: contextMenuId as SubItemId,
               fileitemsItemId: selected_item_id
             })
         },
         articulation: {
           action: () => {
-            if (isArtTog(contextMenuId as SubItemId<FileItemId>)) {
+            if (isArtTog(contextMenuId as SubItemId)) {
               del.artListTog({
-                id: contextMenuId as SubItemId<FileItemId>,
+                id: contextMenuId as SubItemId,
                 fileitemsItemId: selected_item_id
               })
             } else {
               del.artListTap({
-                id: contextMenuId as SubItemId<FileItemId>,
+                id: contextMenuId as SubItemId,
                 fileitemsItemId: selected_item_id
               })
             }
@@ -281,14 +277,14 @@ export const ContextMenu: FC = () => {
         layer: {
           action: () =>
             del.artLayer({
-              id: contextMenuId as SubItemId<FileItemId>,
+              id: contextMenuId as SubItemId,
               fileitemsItemId: selected_item_id
             })
         },
         fader: {
           action: () =>
             del.fadList({
-              id: contextMenuId as SubItemId<FileItemId>,
+              id: contextMenuId as SubItemId,
               fileitemsItemId: selected_item_id
             })
         },

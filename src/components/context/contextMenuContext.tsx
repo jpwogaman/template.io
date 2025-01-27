@@ -15,7 +15,7 @@ import {
 
 import { type FileItemId, type SubItemId } from './selectedItemContext'
 
-export type contextMenuType = FileItemId | SubItemId<FileItemId> | null
+export type contextMenuType = FileItemId | SubItemId | null
 
 interface ContextMenuType {
   isContextMenuOpen: boolean

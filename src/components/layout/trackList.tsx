@@ -9,7 +9,9 @@ import {
   useMutations,
   useSelectedItem,
   useContextMenu,
-  contextMenuType
+  contextMenuType,
+  FileItemId,
+  SubItemId
 } from '@/components/context'
 
 import { type FullTrackForExport } from '../backendCommands/backendCommands'
@@ -25,11 +27,8 @@ export const TrackList: FC = () => {
     layoutDataSingleId: id,
     key
   }: OnChangeHelperArgsType) => {
-    //I need to throttle this so it doesn't fire on every keypress, only when the user stops typing for a second or so.
-
-    if (!id) return
     update.track({
-      id,
+      id: id as FileItemId,
       [key]: newValue
     })
   }
@@ -105,14 +104,14 @@ export const TrackList: FC = () => {
                   updateSettings({ key: 'selected_item_id', value: id })
                   updateSettings({
                     key: 'selected_sub_item_id',
-                    value: id + '_notes'
+                    value: (id + '_notes') as SubItemId
                   })
                 }}
                 onClick={() => {
                   updateSettings({ key: 'selected_item_id', value: id })
                   updateSettings({
                     key: 'selected_sub_item_id',
-                    value: id + '_notes'
+                    value: (id + '_notes') as SubItemId
                   })
                 }}
                 className={tw(

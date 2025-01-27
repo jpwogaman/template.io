@@ -13,7 +13,9 @@ import {
   useMutations,
   useSelectedItem,
   useContextMenu,
-  contextMenuType
+  contextMenuType,
+  FileItemId,
+  SubItemId
 } from '@/components/context'
 
 import {
@@ -178,7 +180,7 @@ export const TrackOptions: FC = () => {
     //I need to throttle this so it doesn't fire on every keypress, only when the user stops typing for a second or so.
     if (!id) return
     update.track({
-      id: id,
+      id: id as FileItemId,
       [key]: newValue
     })
   }
@@ -192,44 +194,44 @@ export const TrackOptions: FC = () => {
     if (label === 'full_ranges') {
       if (key === 'whiteKeysOnly') {
         update.fullRange({
-          id: layoutDataSingleId ?? '',
+          id: layoutDataSingleId as SubItemId,
           white_keys_only: newValue === 'true'
         })
       } else {
         update.fullRange({
-          id: layoutDataSingleId ?? '',
+          id: layoutDataSingleId as SubItemId,
           [key]: newValue
         })
       }
     }
     if (label === 'art_list_tog') {
       update.artListTog({
-        id: layoutDataSingleId ?? '',
+        id: layoutDataSingleId as SubItemId,
         [key]: newValue
       })
     }
     if (label === 'art_list_tap') {
       if (key === 'default') {
         update.artListTap({
-          id: layoutDataSingleId ?? '',
+          id: layoutDataSingleId as SubItemId,
           default: newValue === 'true'
         })
         return
       }
       update.artListTap({
-        id: layoutDataSingleId ?? '',
+        id: layoutDataSingleId as SubItemId,
         [key]: newValue
       })
     }
     if (label === 'art_layers') {
       update.artLayer({
-        id: layoutDataSingleId ?? '',
+        id: layoutDataSingleId as SubItemId,
         [key]: newValue
       })
     }
     if (label === 'fad_list') {
       update.fadList({
-        id: layoutDataSingleId ?? '',
+        id: layoutDataSingleId as SubItemId,
         [key]: newValue
       })
     }

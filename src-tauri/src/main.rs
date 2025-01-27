@@ -6,6 +6,8 @@
 mod db;
 mod schema;
 
+mod bin;
+
 mod commands;
 mod models;
 mod services;
@@ -108,6 +110,7 @@ async fn main() {
         fileitem_service::init();
       });
 
+      bin::bindings_custom_types::main();
       let resize_handle = app.handle();
       resize_service::init(resize_handle.clone());
       /////

@@ -35,13 +35,13 @@ type createSubItemArgs = {
 }
 
 type deleteSubItemArgs = {
-  id: SubItemId<FileItemId>
+  id: SubItemId
   fileitemsItemId: FileItemId
 }
 
 type pasteItemArgs = {
-  destinationItemId: FileItemId | SubItemId<FileItemId>
-  copiedItemId: FileItemId | SubItemId<FileItemId>
+  destinationItemId: FileItemId | SubItemId
+  copiedItemId: FileItemId | SubItemId
 }
 
 interface MutationContextType {
@@ -288,9 +288,12 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
 
     updateSettings({
       key: 'previous_item_id',
-      value: data[index - 1]?.id ?? ''
+      value: data[index - 1]?.id as FileItemId
     })
-    updateSettings({ key: 'next_item_id', value: data[index + 1]?.id ?? '' })
+    updateSettings({
+      key: 'next_item_id',
+      value: data[index + 1]?.id as FileItemId
+    })
 
     setSelectedItemRangeCount(data[index]?._count?.full_ranges ?? 0)
     setSelectedItemArtTogCount(data[index]?._count?.art_list_tog ?? 0)

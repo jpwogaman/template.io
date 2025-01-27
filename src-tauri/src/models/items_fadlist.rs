@@ -9,6 +9,9 @@ use diesel::{
 };
 use serde::{ Serialize, Deserialize };
 
+// ANY changes to ANY of the structs/types in this file will cause Specta to automatically export to the frontend
+// depending on the change, template.io/src-tauri/src/bin/bindings_custom_types.rs, may need to be updated as well
+
 #[derive(
   Queryable,
   Serialize,
@@ -26,18 +29,18 @@ use serde::{ Serialize, Deserialize };
 #[diesel(belongs_to(FileItem, foreign_key = fileitems_item_id))]
 #[diesel(table_name = items_fadlist)]
 pub struct ItemsFadList {
-  pub id: String,
+  pub id: String, // manually changed to SubItemId
   pub name: String,
   pub code_type: String,
   pub code: i32,
   pub default: i32,
   pub change_type: String,
-  pub fileitems_item_id: String,
+  pub fileitems_item_id: String, // manually changed to FileItemId
 }
 
 #[derive(Deserialize, Serialize, specta::Type)]
 pub struct ItemsFadListRequest {
-  pub id: String,
+  pub id: String, // manually changed to SubItemId
   #[specta(optional)]
   pub name: Option<String>,
   #[specta(optional)]
@@ -49,7 +52,7 @@ pub struct ItemsFadListRequest {
   #[specta(optional)]
   pub change_type: Option<String>,
   #[specta(optional)]
-  pub fileitems_item_id: Option<String>,
+  pub fileitems_item_id: Option<String>, // manually changed to FileItemId
 }
 
 pub fn init_fad(fileitems_item_id: String, new_fad_id: String) -> ItemsFadList {

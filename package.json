@@ -20,7 +20,8 @@
     "start": "next start",
     "deps": "ncu --interactive --format group",
     "tauri": "tauri",
-    "count": "count-lines-in-repo.bat"
+    "count": "count-lines-in-repo.bat",
+    "bindings": "cd src-tauri && cargo test && cargo run --bin bindings_custom_types"
   },
   "ct3aMetadata": {
     "initVersion": "6.11.2"

@@ -22,12 +22,21 @@ import {
   type ItemsFadList
 } from '../backendCommands/backendCommands'
 
+import { type FileItemId, SubItemId } from '../context'
+
 export type OnChangeHelperArgsType = {
   newValue?: string | number | boolean
-  layoutDataSingleId?: string
+  layoutDataSingleId?: FileItemId | SubItemId
   key: string
   label?: TrackOptionsTableKeys[number]['label']
 }
+
+type layoutDataSingleKeys =
+  | keyof ItemsFullRanges
+  | keyof ItemsArtLayers
+  | keyof ItemsArtListTap
+  | keyof ItemsArtListTog
+  | keyof ItemsFadList
 
 type InputTypeSelectorProps = {
   keySingle:
@@ -262,9 +271,10 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
       layoutConfigLabel === 'art_list_tap' && key === 'default'
 
     const checkBoxSwitchValueHelper = () => {
-      if (layoutDataSingle[key as 'id'] === 'Value 2') {
-        return 'b'
-      }
+      if (!layoutDataSingle)
+        if (layoutDataSingle[key as layoutDataSingleKeys] === 'Value 2') {
+          return 'b'
+        }
       return 'a'
     }
 
