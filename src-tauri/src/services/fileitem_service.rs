@@ -366,11 +366,12 @@ pub fn clear_fileitem(id: String) {
 
   update_fileitem(fileitem);
 
-  delete_all_art_layers_for_fileitem(id.clone());
-  delete_all_art_tap_for_fileitem(id.clone());
-  delete_all_art_tog_for_fileitem(id.clone());
-  delete_all_fad_for_fileitem(id.clone());
   delete_all_full_ranges_for_fileitem(id.clone());
+  delete_all_art_tog_for_fileitem(id.clone());
+  delete_all_art_tap_for_fileitem(id.clone());
+  delete_all_art_layers_for_fileitem(id.clone());
+  delete_all_fad_for_fileitem(id.clone());
+  
 
   create_full_range(id.clone());
   create_art_tog(id.clone());
