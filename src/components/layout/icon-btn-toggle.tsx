@@ -1,7 +1,7 @@
 'use client'
 
 import { type FC, useState } from 'react'
-import tw from '@/utils/tw'
+import tw from '@/components/utils/tw'
 
 interface IconBtnToggleProps {
   id: string

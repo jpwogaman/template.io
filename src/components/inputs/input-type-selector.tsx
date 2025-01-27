@@ -9,7 +9,7 @@ import {
 
 import { type TrackOptionsTableKeys } from '../utils/trackOptionsTableKeys'
 import { type TrackListTableKeys } from '../utils/trackListTableKeys'
-import tw from '@/utils/tw'
+import tw from '@/components/utils/tw'
 import { InputColorPicker } from './input-color-picker'
 import { InputTextRich } from './input-text-rich'
 

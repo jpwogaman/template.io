@@ -1,5 +1,5 @@
 import React, { type FC, type ChangeEvent, useState, useEffect } from 'react'
-import tw from '@/utils/tw'
+import tw from '@/components/utils/tw'
 import { type InputComponentProps } from './index'
 import { useMutations } from '../context'
 import { itemInitKeyStringOrNumber } from './item-init-helpers'

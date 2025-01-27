@@ -1,6 +1,6 @@
 import { type FC, type ChangeEvent, useState } from 'react'
 import { type InputComponentProps } from './index'
-import tw from '@/utils/tw'
+import tw from '@/components/utils/tw'
 
 export const InputColorPicker: FC<InputComponentProps> = ({
   id,

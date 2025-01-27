@@ -1,6 +1,6 @@
 import { type FC, type ChangeEvent } from 'react'
 import { selectArrays, type InputComponentProps } from './index'
-import tw from '@/utils/tw'
+import tw from '@/components/utils/tw'
 
 export const InputSelectMultiple: FC<InputComponentProps> = ({
   id,

@@ -1,6 +1,6 @@
 'use client'
 
-import tw from '@/utils/tw'
+import tw from '@/components/utils/tw'
 import { Fragment, type FC, type ChangeEvent } from 'react'
 import {
   useMutations,

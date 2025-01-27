@@ -1,6 +1,6 @@
 import { type FC, type ChangeEvent, useState, useEffect } from 'react'
 import { selectArrays, type InputComponentProps } from './index'
-import tw from '@/utils/tw'
+import tw from '@/components/utils/tw'
 import { useMutations } from '../context'
 import { itemInitKeyStringOrNumber } from './item-init-helpers'
 
