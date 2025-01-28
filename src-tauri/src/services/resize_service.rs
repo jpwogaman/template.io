@@ -1,8 +1,8 @@
 // credit -> https://github.com/dolev146 in https://github.com/tauri-apps/tauri/issues/6394#issuecomment-2353218042
 
-use tauri::{ AppHandle, Manager, PhysicalPosition, PhysicalSize };
+use tauri::{ App, Manager, PhysicalPosition, PhysicalSize };
 
-pub fn init(app: AppHandle) {
+pub fn init(app: &App) -> tauri::Result<()> {
   // Get available monitors
   let win = app.get_webview_window("main").unwrap();
   let available_monitors = win
@@ -44,4 +44,6 @@ pub fn init(app: AppHandle) {
 
   // Show the window after positioning
   win.show().expect("Failed to show window");
+
+    Ok(())
 }

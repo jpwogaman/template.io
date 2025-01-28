@@ -1,4 +1,6 @@
 use std::{ fs::{ File }, io::{ self, Read, Write } };
+use log::{info, error};
+use colored::Colorize;
 
 pub fn replace_multiple_in_ts_file(
   file_path: &str,
@@ -119,8 +121,8 @@ pub fn main() {
   ];
 
   if let Err(e) = replace_multiple_in_ts_file(ts_file_path, &replacements) {
-    eprintln!("Error replacing in file: {}", e);
+    error!("{}", format!("Error replacing in file: {}", e).red().bold());
   } else {
-    println!("Replacements applied to {}", ts_file_path);
+    info!("{}", format!("Replacements applied to {}", ts_file_path).cyan().bold());
   }
 }

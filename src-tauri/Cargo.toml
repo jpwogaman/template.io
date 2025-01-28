@@ -48,6 +48,7 @@ specta = "=2.0.0-rc.22"
 specta-typescript = "0.0.9"
 tauri-specta = { version = "=2.0.0-rc.21", features = ["derive", "typescript"] }
 thiserror = "2.0.11"
+colored = "3.0.0"
 
 [features]
 # by default Tauri runs in production mode
