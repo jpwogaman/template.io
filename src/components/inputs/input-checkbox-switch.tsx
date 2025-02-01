@@ -15,7 +15,7 @@ export const InputCheckBoxSwitch: FC<InputComponentProps> = ({
   const valChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (codeFullLocked) return
     onChangeFunction(event)
-    setIsChecked(!isChecked)
+    setIsChecked((prev) => !prev)
   }
 
   ////////
@@ -49,7 +49,7 @@ export const InputCheckBoxSwitch: FC<InputComponentProps> = ({
           type='checkbox'
           checked={isChecked}
           disabled={codeFullLocked}
-          value={isChecked ? 'Value 2' : 'Value 1'}
+          value={isChecked ? 'Value 1' : 'Value 2'} // this needs to be opposite
           onChange={(event) => valChange(event)}
           className='peer sr-only'
         />

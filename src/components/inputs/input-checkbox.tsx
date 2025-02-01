@@ -15,7 +15,7 @@ export const InputCheckBox: FC<InputComponentProps> = ({
   const valChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (codeFullLocked) return
     onChangeFunction(event)
-    setIsChecked(!isChecked)
+    setIsChecked((prev) => !prev)
   }
 
   ////////
