@@ -1,5 +1,5 @@
 import { type FC, type ChangeEvent, useState, useEffect } from 'react'
-import { selectArrays, type InputComponentProps } from './index'
+import { type InputComponentProps } from './index'
 import tw from '@/components/utils/tw'
 import { useMutations } from '../context'
 import { itemInitKeyBoolean } from './item-init-helpers'
@@ -8,31 +8,14 @@ export const InputCheckBoxSwitch: FC<InputComponentProps> = ({
   id,
   codeFullLocked,
   defaultValue,
-  options,
   onChangeFunction
 }) => {
-  const [isChecked, setIsChecked] = useState<boolean>(defaultValue === 'b')
-  let inputSelectOptionElements: string[] = ['a', 'b']
+  const [isChecked, setIsChecked] = useState(defaultValue === 'Value 2')
 
-  for (const array in selectArrays) {
-    if (options === selectArrays[array]?.name) {
-      inputSelectOptionElements = selectArrays[array]?.array as string[]
-    }
-  }
-
-  const a = inputSelectOptionElements[0]
-  const b = inputSelectOptionElements[1]
-
-  const valChange = (
-    event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
-  ) => {
-    if (!codeFullLocked) {
-      if (onChangeFunction) {
-        onChangeFunction(event)
-      }
-
-      setIsChecked(!isChecked)
-    }
+  const valChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (codeFullLocked) return
+    onChangeFunction(event)
+    setIsChecked(!isChecked)
   }
 
   ////////
@@ -59,14 +42,14 @@ export const InputCheckBoxSwitch: FC<InputComponentProps> = ({
     <div className='flex items-center justify-evenly'>
       <label
         htmlFor={id}
-        title={id + '_currentValue: ' + (isChecked ? b : a)}
+        title={id + '_currentValue: ' + (isChecked ? 'Value 2' : 'Value 1')}
         className='relative inline-flex items-center'>
         <input
           id={id}
           type='checkbox'
           checked={isChecked}
           disabled={codeFullLocked}
-          value={isChecked ? a : b}
+          value={isChecked ? 'Value 2' : 'Value 1'}
           onChange={(event) => valChange(event)}
           className='peer sr-only'
         />

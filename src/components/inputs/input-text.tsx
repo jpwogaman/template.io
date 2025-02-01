@@ -10,13 +10,23 @@ export const InputText: FC<InputComponentProps> = ({
   codeFullLocked,
   defaultValue,
   placeholder,
-  onChangeFunction
+  onChangeFunction,
+  textTypeValidator
 }) => {
   const [value, setValue] = useState<string | number>(
-    (defaultValue as unknown as string | number) ?? ''
+    textTypeValidator === 'string'
+      ? (defaultValue as string)
+      : textTypeValidator === 'number'
+        ? (defaultValue as number)
+        : ''
   )
   const nameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value)
+    if (textTypeValidator === 'string') {
+      setValue(event.target.value)
+    } else {
+      setValue(parseInt(event.target.value))
+    }
+
     onChangeFunction(event)
   }
   ////////

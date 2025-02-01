@@ -10,20 +10,12 @@ export const InputCheckBox: FC<InputComponentProps> = ({
   defaultValue,
   onChangeFunction
 }) => {
-  const [isChecked, setIsChecked] = useState(
-    typeof defaultValue === 'boolean' ? defaultValue : defaultValue === 'true'
-  )
+  const [isChecked, setIsChecked] = useState(defaultValue as boolean)
 
-  const valChange = (
-    event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
-  ) => {
-    if (!codeFullLocked) {
-      if (onChangeFunction) {
-        onChangeFunction(event)
-      }
-
-      setIsChecked(!isChecked)
-    }
+  const valChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (codeFullLocked) return
+    onChangeFunction(event)
+    setIsChecked(!isChecked)
   }
 
   ////////

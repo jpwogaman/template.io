@@ -10,10 +10,15 @@ export const InputSelectSingle: FC<InputComponentProps> = ({
   codeFullLocked,
   defaultValue,
   options,
-  onChangeFunction
+  onChangeFunction,
+  textTypeValidator
 }) => {
   const [value, setValue] = useState<string | number>(
-    (defaultValue as unknown as string | number) ?? ''
+    textTypeValidator === 'string'
+      ? (defaultValue as string)
+      : textTypeValidator === 'number'
+        ? (defaultValue as number)
+        : ''
   )
 
   let inputSelectOptionElements:
@@ -22,22 +27,20 @@ export const InputSelectSingle: FC<InputComponentProps> = ({
     | number[]
     | undefined = selectArrays.valNoneList?.array
 
-  //if (!codeDisabled) {
   for (const array in selectArrays) {
     if (options === selectArrays[array]?.name) {
       inputSelectOptionElements = selectArrays[array]?.array
     }
   }
-  //}
 
-  const valChange = (
-    event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
-  ) => {
-    setValue(event.target.value)
-
-    if (onChangeFunction) {
-      onChangeFunction(event)
+  const valChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    if (textTypeValidator === 'string') {
+      setValue(event.target.value)
+    } else {
+      setValue(parseInt(event.target.value))
     }
+
+    onChangeFunction(event)
   }
   ////////
   const { clearState, setClearState } = useMutations()

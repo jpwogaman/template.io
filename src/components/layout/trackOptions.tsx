@@ -35,15 +35,10 @@ export const TrackOptions: FC = () => {
 
   //////////////////////////////////////////
   // This logic is used to disable individual components in the artTap, artTog, and fadList tables.
-  const allArtTogs = selectedItem?.art_list_tog
-  const allArtTaps = selectedItem?.art_list_tap
-  const allArtLayers = selectedItem?.art_layers
-  const allFads = selectedItem?.fad_list
-
   const [artTogIndividualComponentLocked, setArtTogIndividualComponentLocked] =
     useState([
       {
-        id: selected_item_id + 'AT_0',
+        id: selected_item_id + '_AT_0',
         code: false
       }
     ])
@@ -51,41 +46,41 @@ export const TrackOptions: FC = () => {
   const [artTapIndividualComponentLocked, setArtTapIndividualComponentLocked] =
     useState([
       {
-        id: selected_item_id + 'AT_1',
+        id: selected_item_id + '_AT_1',
         on: false
-      }
-    ])
-
-  const [fadIndividualComponentLocked, setFadIndividualComponentLocked] =
-    useState([
-      {
-        id: selected_item_id + 'FL_0',
-        code: false
       }
     ])
 
   const [artTapOneDefaultOnly, setArtTapOneDefaultOnly] = useState([
     {
-      id: selected_item_id + 'AL_1',
+      id: selected_item_id + '_At_1',
       default: true
     }
   ])
+
+  const [fadIndividualComponentLocked, setFadIndividualComponentLocked] =
+    useState([
+      {
+        id: selected_item_id + '_FL_0',
+        code: false
+      }
+    ])
 
   const [
     artLayerIndividualComponentLocked,
     setArtLayerIndividualComponentLocked
   ] = useState([
     {
-      id: selected_item_id + 'AL_0',
+      id: selected_item_id + '_AL_0',
       code: false
     }
   ])
 
   useEffect(() => {
-    if (!allArtTogs) return
-
+    if (!selectedItem?.art_list_tog) return
+    console.log('togs')
     setArtTogIndividualComponentLocked(
-      allArtTogs.map((artTog) => {
+      selectedItem?.art_list_tog.map((artTog) => {
         const V1 = artTog.change_type === 'Value 1'
         return {
           id: artTog.id,
@@ -93,12 +88,12 @@ export const TrackOptions: FC = () => {
         }
       })
     )
-  }, [allArtTogs])
+  }, [selectedItem?.art_list_tog])
 
   useEffect(() => {
-    if (!allArtTaps) return
+    if (!selectedItem?.art_list_tap) return
     setArtTapIndividualComponentLocked(
-      allArtTaps.map((artTap) => {
+      selectedItem?.art_list_tap.map((artTap) => {
         const V1 = artTap.change_type === 'Value 1'
         return {
           id: artTap.id,
@@ -108,31 +103,31 @@ export const TrackOptions: FC = () => {
       })
     )
     setArtTapOneDefaultOnly(
-      allArtTaps.map((artTap) => {
+      selectedItem?.art_list_tap.map((artTap) => {
         return {
           id: artTap.id,
-          default: artTap.default ?? false
+          default: artTap.default
         }
       })
     )
-  }, [allArtTaps])
+  }, [selectedItem?.art_list_tap])
 
   useEffect(() => {
-    if (!allArtLayers) return
+    if (!selectedItem?.art_layers) return
     setArtLayerIndividualComponentLocked(
-      allArtLayers.map((artLayer) => {
+      selectedItem?.art_layers.map((artLayer) => {
         return {
           id: artLayer.id,
           code: false
         }
       })
     )
-  }, [allArtLayers])
+  }, [selectedItem?.art_layers])
 
   useEffect(() => {
-    if (!allFads) return
+    if (!selectedItem?.fad_list) return
     setFadIndividualComponentLocked(
-      allFads.map((fad) => {
+      selectedItem?.fad_list.map((fad) => {
         const V1 = fad.change_type === 'Value 1'
         return {
           id: fad.id,
@@ -140,7 +135,7 @@ export const TrackOptions: FC = () => {
         }
       })
     )
-  }, [allFads])
+  }, [selectedItem?.fad_list])
 
   //if (artTap) {
   //  V1 = 'the ON value relates to the CODE itself (i.e. ON = CC18)'
@@ -192,7 +187,7 @@ export const TrackOptions: FC = () => {
     label
   }: OnChangeHelperArgsType) => {
     if (label === 'full_ranges') {
-      if (key === 'whiteKeysOnly') {
+      if (key === 'white_keys_only') {
         update.fullRange({
           id: layoutDataSingleId as SubItemId,
           white_keys_only: newValue === 'true'
@@ -290,7 +285,7 @@ export const TrackOptions: FC = () => {
             } as unknown as TrackListTableKeys['keys'][number]
           }
           onChangeHelper={onChangeHelperTrack}
-          selectedItem={selectedItem as unknown as FullTrackForExport}
+          selectedItem={selectedItem as FullTrackForExport}
         />
       </div>
       {TrackOptionsTableKeys.map((layoutConfig) => {
@@ -299,23 +294,22 @@ export const TrackOptions: FC = () => {
           | ItemsArtListTog[]
           | ItemsArtListTap[]
           | ItemsArtLayers[]
-          | ItemsFadList[]
-          | undefined = []
+          | ItemsFadList[] = []
 
         if (layoutConfig.label === 'full_ranges') {
-          layoutDataArray = selectedItem?.full_ranges
+          layoutDataArray = selectedItem?.full_ranges!
         }
         if (layoutConfig.label === 'art_list_tog') {
-          layoutDataArray = selectedItem?.art_list_tog
+          layoutDataArray = selectedItem?.art_list_tog!
         }
         if (layoutConfig.label === 'art_list_tap') {
-          layoutDataArray = selectedItem?.art_list_tap
+          layoutDataArray = selectedItem?.art_list_tap!
         }
         if (layoutConfig.label === 'art_layers') {
-          layoutDataArray = selectedItem?.art_layers
+          layoutDataArray = selectedItem?.art_layers!
         }
         if (layoutConfig.label === 'fad_list') {
-          layoutDataArray = selectedItem?.fad_list
+          layoutDataArray = selectedItem?.fad_list!
         }
 
         const table = trackOptionsLayouts[layoutConfig.label] === 'table'

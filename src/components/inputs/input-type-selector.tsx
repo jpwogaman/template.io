@@ -93,7 +93,7 @@ export type InputComponentProps = {
   options?: string
   children?: ReactNode
   textTypeValidator?: string
-  onChangeFunction: (event: ChangeEventHelper) => void | undefined
+  onChangeFunction: (event: ChangeEventHelper) => void
 }
 
 export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
@@ -131,12 +131,22 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
   if (settingsModal) {
     const inputPropsHelper = {
       id: `${key}`,
-      //defaultValue: localStorage.getItem(key) ?? '',
-      onChangeFunction: (event: ChangeEventHelper) =>
+      onChangeFunction: (event: ChangeEventHelper) => {
+        let typedValue: string | number | boolean = event.target.value
+
+        if (typeof key === 'string') {
+          typedValue = event.target.value
+        } else if (typeof key === 'number') {
+          typedValue = parseInt(event.target.value)
+        } else if (typeof key === 'boolean') {
+          typedValue = event.target.value === 'true'
+        }
+
         onChangeHelper({
-          newValue: event.target.value,
+          newValue: typedValue,
           key
         })
+      }
     }
     const inputComponent = (
       <>
@@ -158,12 +168,22 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
       defaultValue: selectedItem[key as 'id'],
       options: selectArray ?? '',
       textTypeValidator: typeof selectedItem[key as 'id'],
-      onChangeFunction: (event: ChangeEventHelper) =>
+      onChangeFunction: (event: ChangeEventHelper) => {
+        let typedValue: string | number | boolean = event.target.value
+
+        if (typeof selectedItem[key as 'id'] === 'string') {
+          typedValue = event.target.value
+        } else if (typeof selectedItem[key as 'id'] === 'number') {
+          typedValue = parseInt(event.target.value)
+        } else if (typeof selectedItem[key as 'id'] === 'boolean') {
+          typedValue = event.target.value === 'true'
+        }
         onChangeHelper({
-          newValue: event.target.value,
+          newValue: typedValue,
           layoutDataSingleId: selectedItem.id,
           key
         })
+      }
     }
     const inputComponent = (
       <>
@@ -209,8 +229,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
     const layersOptions = key === 'art_layers' && artLayerOptions
 
     const stringListFullArtLayerIds = JSON.stringify(
-      selectedItem?.art_layers.map((artLayer: ItemsArtLayers) => artLayer.id) ??
-        ''
+      selectedItem?.art_layers.map((artLayer: ItemsArtLayers) => artLayer.id)
     )
 
     const artRangeOptions =
@@ -238,9 +257,6 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
       (artLayerIndividualComponentLocked) =>
         artLayerIndividualComponentLocked.id === layoutDataSingle.id
     )
-    const thisArtTapDefault = artTapOneDefaultOnly?.find(
-      (artTapOneDefaultOnly) => artTapOneDefaultOnly.id === layoutDataSingle.id
-    )
 
     const thisFad = fadIndividualComponentLocked?.find(
       (fadIndividualComponentLocked) =>
@@ -267,43 +283,39 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
       key === 'code' &&
       thisFad?.code === true
 
-    const artTapDefaultHelper =
-      layoutConfigLabel === 'art_list_tap' && key === 'default'
-
-    const checkBoxSwitchValueHelper = () => {
-      if (!layoutDataSingle)
-        if (layoutDataSingle[key as layoutDataSingleKeys] === 'Value 2') {
-          return 'b'
-        }
-      return 'a'
-    }
-
     const inputPropsHelper = {
       id: `${layoutDataSingle.id}_${key}`,
       codeFullLocked: selectedItem?.locked,
       codeDisabled:
-        artTogLockedHelper || //NOSONAR
-        artTapLockedHelper || //NOSONAR
-        artLayerLockedHelper || //NOSONAR
+        artTogLockedHelper ||
+        artTapLockedHelper ||
+        artLayerLockedHelper ||
         fadLockedHelper,
-      defaultValue: inputCheckBoxSwitch
-        ? checkBoxSwitchValueHelper()
-        : artTapDefaultHelper
-          ? thisArtTapDefault?.default
-          : layoutDataSingle[key as 'id'],
+      defaultValue: layoutDataSingle[key as 'id'],
       options: rangeOptions
         ? stringListOfFullRangeIds
         : layersOptions
           ? stringListFullArtLayerIds
           : (selectArray ?? ''),
       textTypeValidator: typeof layoutDataSingle[key as 'id'],
-      onChangeFunction: (event: ChangeEventHelper) =>
+      onChangeFunction: (event: ChangeEventHelper) => {
+        let typedValue: string | number | boolean = event.target.value
+
+        if (typeof layoutDataSingle[key as 'id'] === 'string') {
+          typedValue = event.target.value
+        } else if (typeof layoutDataSingle[key as 'id'] === 'number') {
+          typedValue = parseInt(event.target.value)
+        } else if (typeof layoutDataSingle[key as 'id'] === 'boolean') {
+          typedValue = event.target.value === 'true'
+        }
+
         onChangeHelper({
-          newValue: event.target.value,
+          newValue: typedValue,
           layoutDataSingleId: layoutDataSingle.id,
           key,
           label: layoutConfigLabel
         })
+      }
     }
     const inputComponent = (
       <>
