@@ -27,7 +27,7 @@ const Backdrop = ({ children, onClick }: BackdropProps) => {
       strict>
       <m.div
         onClick={onClick}
-        className='sticky left-0 top-0 z-[50] flex h-screen w-full items-center justify-center overflow-y-hidden bg-black bg-opacity-50'
+        className='absolute left-0 top-0 z-[100] flex h-screen w-full items-center justify-center overflow-y-hidden bg-black bg-opacity-60'
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}>
