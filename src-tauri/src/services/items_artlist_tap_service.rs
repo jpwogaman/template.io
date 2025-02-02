@@ -99,7 +99,9 @@ pub fn delete_all_art_tap() {
     .expect("Error deleting art_tap");
 }
 
-pub fn update_art_tap(data: ItemsArtListTapRequest) {
+pub fn update_art_tap(
+  data: ItemsArtListTapRequest
+) -> Result<(), MyCustomError> {
   let connection = &mut establish_db_connection();
 
   let original_art_tap = get_art_tap(data.id.clone()).unwrap();
@@ -111,30 +113,6 @@ pub fn update_art_tap(data: ItemsArtListTapRequest) {
     ranges
   };
 
-  let all_art_tap_for_fileitem = list_items_artlist_tap(
-    original_art_tap.fileitems_item_id.clone()
-  );
-
-  let one_art_must_be_default = |default: bool| -> bool {
-    if default == true {
-      for art_tap in all_art_tap_for_fileitem {
-        if art_tap.id != data.id && art_tap.default == true {
-          let new_art_tap = ItemsArtListTap {
-            default: false,
-            ..art_tap.clone()
-          };
-
-          diesel
-            ::update(dsl::items_artlist_tap.filter(dsl::id.eq(art_tap.id)))
-            .set(&new_art_tap)
-            .execute(connection)
-            .expect("Error updating art_tap");
-        }
-      }
-    }
-    default
-  };
-
   let new_art_tap = ItemsArtListTap {
     id: data.id.clone(),
     name: data.name.unwrap_or(original_art_tap.name),
@@ -143,9 +121,7 @@ pub fn update_art_tap(data: ItemsArtListTapRequest) {
     code: data.code.unwrap_or(original_art_tap.code),
     on: data.on.unwrap_or(original_art_tap.on),
     off: data.off.unwrap_or(original_art_tap.off),
-    default: one_art_must_be_default(
-      data.default.unwrap_or(original_art_tap.default)
-    ),
+    default: data.default.unwrap_or(original_art_tap.default),
     delay: data.delay.unwrap_or(original_art_tap.delay),
     change_type: data.change_type.unwrap_or(original_art_tap.change_type),
     ranges: must_have_one_range(
@@ -153,13 +129,50 @@ pub fn update_art_tap(data: ItemsArtListTapRequest) {
     ),
     art_layers: data.art_layers.unwrap_or(original_art_tap.art_layers),
     fileitems_item_id: data.fileitems_item_id.unwrap_or(
-      original_art_tap.fileitems_item_id
+      original_art_tap.fileitems_item_id.clone()
     ),
   };
+
+  let all_art_tap_for_fileitem = list_items_artlist_tap(
+    original_art_tap.fileitems_item_id.clone()
+  );
+
+  if data.default == Some(true) {
+
+    for art_tap in all_art_tap_for_fileitem {
+      if art_tap.id != data.id && art_tap.default == true {
+        let new_art_tap_2 = ItemsArtListTap {
+          default: false,
+          ..art_tap.clone()
+        };
+
+        diesel
+          ::update(dsl::items_artlist_tap.filter(dsl::id.eq(art_tap.id)))
+          .set(&new_art_tap_2)
+          .execute(connection)
+          .expect("Error updating art_tap");
+      }
+    }
+  } else if data.default == Some(false) {
+    let mut there_is_one = false;
+
+    for art_tap in all_art_tap_for_fileitem {
+      if art_tap.id != data.id && art_tap.default == true {
+        there_is_one = true;
+        break
+      }
+    }
+
+    if !there_is_one {
+      return Err(MyCustomError::MinDefaultArtTap);
+    }
+  }
 
   diesel
     ::update(dsl::items_artlist_tap.filter(dsl::id.eq(data.id)))
     .set(&new_art_tap)
     .execute(connection)
-    .expect("Error updating fad");
+    .expect("Error updating art_tap");
+
+  Ok(())
 }

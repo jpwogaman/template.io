@@ -80,6 +80,12 @@ pub fn delete_art_tap_by_fileitem(
 
 #[tauri::command]
 #[specta::specta]
-pub fn update_art_tap(data: ItemsArtListTapRequest) {
-  items_artlist_tap_service::update_art_tap(data);
+pub fn update_art_tap(data: ItemsArtListTapRequest) -> Result<(), String> {
+  match items_artlist_tap_service::update_art_tap(data) {
+    Ok(_) => { Ok(()) }
+    Err(err) => {
+      println!("Error: {}", err);
+      Err(err.to_string())
+    }
+  }
 }

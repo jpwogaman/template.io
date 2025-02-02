@@ -12,6 +12,8 @@ pub enum MyCustomError {
   MinArtLayerError,
   #[error("There must be at least one Fader!")]
   MinFadError,
+  #[error("There must be at least one default Tap Articulation!")]
+  MinDefaultArtTap,
 }
 
 impl serde::Serialize for MyCustomError {

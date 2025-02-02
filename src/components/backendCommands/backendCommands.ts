@@ -82,8 +82,13 @@ async deleteArtTapByFileitem(id: string, fileitemsItemId: string) : Promise<Resu
     else return { status: "error", error: e  as any };
 }
 },
-async updateArtTap(data: ItemsArtListTapRequest) : Promise<void> {
-    await TAURI_INVOKE("update_art_tap", { data });
+async updateArtTap(data: ItemsArtListTapRequest) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("update_art_tap", { data }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
 },
 async createArtLayer(fileitemsItemId: string) : Promise<void> {
     await TAURI_INVOKE("create_art_layer", { fileitemsItemId });
