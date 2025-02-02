@@ -185,9 +185,9 @@ export const TrackOptions: FC = () => {
         update.fullRange(
           {
             id,
-            [key]: newValue === 'true'
+            [key]: newValue as boolean
           },
-          refetch
+          (refetch = true)
         )
       } else {
         update.fullRange(
