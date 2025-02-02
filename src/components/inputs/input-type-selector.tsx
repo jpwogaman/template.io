@@ -185,7 +185,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
     typeof layoutConfigLabel !== 'undefined'
 
   if (settingsModal) {
-    const inputPropsHelper = {
+    const inputPropsHelper: InputComponentProps = {
       id: `${key}`,
       onChangeFunction: (event: ChangeEventHelper) => {
         let typedValue: string | number | boolean = event.target.value
@@ -218,9 +218,9 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
   }
 
   if (MainComponentLevel) {
-    const inputPropsHelper = {
+    const inputPropsHelper: InputComponentProps = {
       id: `${selectedItem.id}_${key}`,
-      codeDisabled: selectedItem?.locked,
+      codeFullLocked: selectedItem?.locked,
       defaultValue: selectedItem[key as keyof FileItem],
       options: selectArray,
       textTypeValidator: typeof selectedItem[key as keyof FileItem],
@@ -339,7 +339,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
       key as LayoutDataSingleHelper<typeof layoutConfigLabel>
     )
 
-    const inputPropsHelper = {
+    const inputPropsHelper: InputComponentProps = {
       id: `${layoutDataSingle.id}_${key}`,
       codeFullLocked: selectedItem?.locked,
       codeDisabled:
