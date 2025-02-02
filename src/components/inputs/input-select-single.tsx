@@ -13,6 +13,7 @@ export const InputSelectSingle: FC<InputComponentProps> = ({
   onChangeFunction,
   textTypeValidator
 }) => {
+
   const [value, setValue] = useState<string | number>(
     textTypeValidator === 'string'
       ? (defaultValue as string)
@@ -20,18 +21,6 @@ export const InputSelectSingle: FC<InputComponentProps> = ({
         ? (defaultValue as number)
         : ''
   )
-
-  let inputSelectOptionElements:
-    | React.JSX.Element
-    | string[]
-    | number[]
-    | undefined = selectArrays.valNoneList?.array
-
-  for (const array in selectArrays) {
-    if (options === selectArrays[array]?.name) {
-      inputSelectOptionElements = selectArrays[array]?.array
-    }
-  }
 
   const valChange = (event: ChangeEvent<HTMLSelectElement>) => {
     if (textTypeValidator === 'string') {
@@ -65,18 +54,20 @@ export const InputSelectSingle: FC<InputComponentProps> = ({
   return (
     <select
       id={id}
-      disabled={codeFullLocked ?? codeDisabled}
+      disabled={codeFullLocked || codeDisabled}
       title={id + '_currentValue: ' + value}
-      value={(codeFullLocked ?? codeDisabled) ? undefined : value}
+      value={value}
       onChange={valChange}
       className={tw(
         'w-full overflow-scroll rounded-sm bg-inherit p-1',
         'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-600',
-        codeFullLocked || codeDisabled //NOSONAR
+        codeFullLocked || codeDisabled
           ? 'cursor-not-allowed text-gray-400'
           : 'cursor-pointer'
       )}>
-      {inputSelectOptionElements}
+      {codeDisabled
+        ? selectArrays.valNoneList
+        : options && selectArrays[options]}
     </select>
   )
 }

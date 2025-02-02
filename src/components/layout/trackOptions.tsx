@@ -7,7 +7,7 @@ import tw from '@/components/utils/tw'
 import { type OnChangeHelperArgsType, InputTypeSelector } from '../inputs'
 
 import { type TrackListTableKeys } from '../utils/trackListTableKeys'
-import TrackOptionsTableKeys from '../utils/trackOptionsTableKeys'
+import { TrackOptionsTableKeys } from '../utils/trackOptionsTableKeys'
 
 import {
   useMutations,
@@ -47,16 +47,11 @@ export const TrackOptions: FC = () => {
     useState([
       {
         id: selected_item_id + '_AT_1',
-        on: false
+        code: false,
+        on: false,
+        default: true
       }
     ])
-
-  const [artTapOneDefaultOnly, setArtTapOneDefaultOnly] = useState([
-    {
-      id: selected_item_id + '_At_1',
-      default: true
-    }
-  ])
 
   const [fadIndividualComponentLocked, setFadIndividualComponentLocked] =
     useState([
@@ -78,7 +73,6 @@ export const TrackOptions: FC = () => {
 
   useEffect(() => {
     if (!selectedItem?.art_list_tog) return
-    console.log('togs')
     setArtTogIndividualComponentLocked(
       selectedItem?.art_list_tog.map((artTog) => {
         const V1 = artTog.change_type === 'Value 1'
@@ -98,14 +92,7 @@ export const TrackOptions: FC = () => {
         return {
           id: artTap.id,
           code: false,
-          on: V1
-        }
-      })
-    )
-    setArtTapOneDefaultOnly(
-      selectedItem?.art_list_tap.map((artTap) => {
-        return {
-          id: artTap.id,
+          on: V1,
           default: artTap.default
         }
       })
@@ -116,9 +103,10 @@ export const TrackOptions: FC = () => {
     if (!selectedItem?.art_layers) return
     setArtLayerIndividualComponentLocked(
       selectedItem?.art_layers.map((artLayer) => {
+        const V1 = artLayer.change_type === 'Value 1'
         return {
           id: artLayer.id,
-          code: false
+          code: V1
         }
       })
     )
@@ -172,12 +160,15 @@ export const TrackOptions: FC = () => {
     layoutDataSingleId: id,
     key
   }: OnChangeHelperArgsType) => {
-    //I need to throttle this so it doesn't fire on every keypress, only when the user stops typing for a second or so.
     if (!id) return
-    update.track({
-      id: id as FileItemId,
-      [key]: newValue
-    })
+    const refetch = false
+    update.track(
+      {
+        id: id as FileItemId,
+        [key]: newValue
+      },
+      refetch
+    )
   }
   //////////////////////////////////////////
   const onChangeHelper = ({
@@ -187,12 +178,13 @@ export const TrackOptions: FC = () => {
     label
   }: OnChangeHelperArgsType) => {
     let refetch = false
+    const id = layoutDataSingleId as SubItemId
 
     if (label === 'full_ranges') {
       if (key === 'white_keys_only') {
         update.fullRange(
           {
-            id: layoutDataSingleId as SubItemId,
+            id,
             [key]: newValue === 'true'
           },
           refetch
@@ -200,7 +192,7 @@ export const TrackOptions: FC = () => {
       } else {
         update.fullRange(
           {
-            id: layoutDataSingleId as SubItemId,
+            id,
             [key]: newValue
           },
           refetch
@@ -211,7 +203,7 @@ export const TrackOptions: FC = () => {
       if (key === 'change_type') {
         update.artListTog(
           {
-            id: layoutDataSingleId as SubItemId,
+            id,
             [key]: newValue as string
           },
           (refetch = true)
@@ -219,7 +211,7 @@ export const TrackOptions: FC = () => {
       } else {
         update.artListTog(
           {
-            id: layoutDataSingleId as SubItemId,
+            id,
             [key]: newValue
           },
           refetch
@@ -230,15 +222,15 @@ export const TrackOptions: FC = () => {
       if (key === 'default') {
         update.artListTap(
           {
-            id: layoutDataSingleId as SubItemId,
-            [key]: newValue === 'true'
+            id,
+            [key]: newValue as boolean
           },
           (refetch = true)
         )
       } else if (key === 'change_type') {
         update.artListTap(
           {
-            id: layoutDataSingleId as SubItemId,
+            id,
             [key]: newValue as string
           },
           (refetch = true)
@@ -246,7 +238,7 @@ export const TrackOptions: FC = () => {
       } else {
         update.artListTap(
           {
-            id: layoutDataSingleId as SubItemId,
+            id,
             [key]: newValue
           },
           refetch
@@ -257,7 +249,7 @@ export const TrackOptions: FC = () => {
       if (key === 'change_type') {
         update.artLayer(
           {
-            id: layoutDataSingleId as SubItemId,
+            id,
             [key]: newValue as string
           },
           (refetch = true)
@@ -265,7 +257,7 @@ export const TrackOptions: FC = () => {
       } else {
         update.artLayer(
           {
-            id: layoutDataSingleId as SubItemId,
+            id,
             [key]: newValue
           },
           refetch
@@ -276,7 +268,7 @@ export const TrackOptions: FC = () => {
       if (key === 'change_type') {
         update.fadList(
           {
-            id: layoutDataSingleId as SubItemId,
+            id,
             [key]: newValue as string
           },
           (refetch = true)
@@ -284,7 +276,7 @@ export const TrackOptions: FC = () => {
       } else {
         update.fadList(
           {
-            id: layoutDataSingleId as SubItemId,
+            id,
             [key]: newValue
           },
           refetch
@@ -409,7 +401,7 @@ export const TrackOptions: FC = () => {
                         <td
                           key={key.key}
                           title={key.key}
-                          className={tw(trackTh, key.className)}>
+                          className={tw(trackTh, key.className ?? '')}>
                           {key.label}
                         </td>
                       )
@@ -482,7 +474,6 @@ export const TrackOptions: FC = () => {
                                 fadIndividualComponentLocked={
                                   fadIndividualComponentLocked
                                 }
-                                artTapOneDefaultOnly={artTapOneDefaultOnly}
                                 layoutConfigLabel={layoutConfig.label}
                                 layoutDataSingle={layoutDataSingle}
                                 onChangeHelper={onChangeHelper}
@@ -552,7 +543,6 @@ export const TrackOptions: FC = () => {
                                   fadIndividualComponentLocked={
                                     fadIndividualComponentLocked
                                   }
-                                  artTapOneDefaultOnly={artTapOneDefaultOnly}
                                   layoutConfigLabel={layoutConfig.label}
                                   layoutDataSingle={layoutDataSingle}
                                   onChangeHelper={onChangeHelper}

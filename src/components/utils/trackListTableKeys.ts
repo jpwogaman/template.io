@@ -1,4 +1,26 @@
-const TrackListTableKeys = {
+import { type selectArray } from '../inputs'
+import { FileItem } from '../backendCommands/backendCommands'
+
+export type TrackListTableKeys = {
+  label: 'Tracks'
+  keys: {
+    className?: string
+    show: boolean
+    key: keyof FileItem
+    input?:
+      | 'text'
+      | 'select'
+      | 'checkbox'
+      | 'checkbox-switch'
+      | 'select-multiple'
+      | 'text-rich'
+      | 'color-picker'
+    selectArray?: keyof selectArray
+    label?: string
+  }[]
+}
+
+export const TrackListTableKeys: TrackListTableKeys = {
   label: 'Tracks',
   keys: [
     {
@@ -10,7 +32,7 @@ const TrackListTableKeys = {
       label: 'ID'
     },
     {
-      className: null,
+      className: undefined,
       show: false,
       key: 'locked',
       input: undefined,
@@ -82,7 +104,7 @@ const TrackListTableKeys = {
       label: 'Avg. Delay'
     },
     {
-      className: null,
+      className: undefined,
       show: false,
       key: 'color',
       input: 'color-picker',
@@ -90,7 +112,7 @@ const TrackListTableKeys = {
       label: undefined
     },
     {
-      className: null,
+      className: undefined,
       show: false,
       key: 'notes',
       input: 'text-rich',
@@ -98,8 +120,4 @@ const TrackListTableKeys = {
       label: undefined
     }
   ]
-} as const
-
-export default TrackListTableKeys
-
-export type TrackListTableKeys = typeof TrackListTableKeys
+}

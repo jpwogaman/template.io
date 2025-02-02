@@ -1,4 +1,38 @@
-const TrackOptionsTableKeys = [
+import { type selectArray } from '../inputs'
+import {
+  type FullTrackForExport,
+  type FullTrackCounts
+} from '../backendCommands/backendCommands'
+
+export type TrackOptionsTableKeys<T extends keyof FullTrackCounts> = {
+  title: string
+  label: T
+  layout: 'card' | 'table'
+  keys: {
+    className?: string
+    show: boolean
+    key: T extends keyof FullTrackForExport
+      ? FullTrackForExport[T] extends Array<infer U>
+        ? keyof U
+        : keyof FullTrackForExport[T]
+      : never
+    input?:
+      | 'text'
+      | 'number'
+      | 'select'
+      | 'checkbox'
+      | 'checkbox-switch'
+      | 'select-multiple'
+      | 'text-rich'
+      | 'color-picker'
+    selectArray?: keyof selectArray
+    label: string
+  }[]
+}[]
+
+export const TrackOptionsTableKeys: TrackOptionsTableKeys<
+  keyof FullTrackCounts
+> = [
   {
     title: 'Instrument Ranges',
     label: 'full_ranges',
@@ -9,7 +43,7 @@ const TrackOptionsTableKeys = [
         show: true,
         key: 'id',
         input: undefined,
-        selectArray: null,
+        selectArray: undefined,
         label: 'ID'
       },
       {
@@ -17,7 +51,7 @@ const TrackOptionsTableKeys = [
         show: true,
         key: 'name',
         input: 'text',
-        selectArray: null,
+        selectArray: undefined,
         label: 'Name'
       },
       {
@@ -41,7 +75,7 @@ const TrackOptionsTableKeys = [
         show: true,
         key: 'white_keys_only',
         input: 'checkbox',
-        selectArray: null,
+        selectArray: undefined,
         label: 'WKO'
       }
     ]
@@ -56,7 +90,7 @@ const TrackOptionsTableKeys = [
         show: true,
         key: 'id',
         input: undefined,
-        selectArray: null,
+        selectArray: undefined,
         label: 'ID'
       },
       {
@@ -64,7 +98,7 @@ const TrackOptionsTableKeys = [
         show: true,
         key: 'name',
         input: 'text',
-        selectArray: null,
+        selectArray: undefined,
         label: 'Name'
       },
       {
@@ -72,7 +106,7 @@ const TrackOptionsTableKeys = [
         show: false,
         key: 'toggle',
         input: 'checkbox',
-        selectArray: null,
+        selectArray: undefined,
         label: 'Toggle'
       },
       {
@@ -120,7 +154,7 @@ const TrackOptionsTableKeys = [
         show: true,
         key: 'delay',
         input: 'text',
-        selectArray: null,
+        selectArray: undefined,
         label: 'Delay'
       },
       {
@@ -159,7 +193,7 @@ const TrackOptionsTableKeys = [
         show: true,
         key: 'id',
         input: undefined,
-        selectArray: null,
+        selectArray: undefined,
         label: 'ID'
       },
       {
@@ -167,7 +201,7 @@ const TrackOptionsTableKeys = [
         show: true,
         key: 'name',
         input: 'text',
-        selectArray: null,
+        selectArray: undefined,
         label: 'Name'
       },
       {
@@ -175,7 +209,7 @@ const TrackOptionsTableKeys = [
         show: false,
         key: 'toggle',
         input: 'checkbox',
-        selectArray: null,
+        selectArray: undefined,
         label: 'Toggle'
       },
       {
@@ -223,7 +257,7 @@ const TrackOptionsTableKeys = [
         show: true,
         key: 'delay',
         input: 'text',
-        selectArray: null,
+        selectArray: undefined,
         label: 'Delay'
       },
       {
@@ -262,7 +296,7 @@ const TrackOptionsTableKeys = [
         show: true,
         key: 'id',
         input: undefined,
-        selectArray: null,
+        selectArray: undefined,
         label: 'ID'
       },
       {
@@ -270,7 +304,7 @@ const TrackOptionsTableKeys = [
         show: true,
         key: 'name',
         input: 'text',
-        selectArray: null,
+        selectArray: undefined,
         label: 'Name'
       },
       {
@@ -333,7 +367,7 @@ const TrackOptionsTableKeys = [
         show: true,
         key: 'id',
         input: undefined,
-        selectArray: null,
+        selectArray: undefined,
         label: 'ID'
       },
       {
@@ -341,7 +375,7 @@ const TrackOptionsTableKeys = [
         show: true,
         key: 'name',
         input: 'text',
-        selectArray: null,
+        selectArray: undefined,
         label: 'Name'
       },
       {
@@ -379,7 +413,3 @@ const TrackOptionsTableKeys = [
     ]
   }
 ] as const
-
-export default TrackOptionsTableKeys
-
-export type TrackOptionsTableKeys = typeof TrackOptionsTableKeys

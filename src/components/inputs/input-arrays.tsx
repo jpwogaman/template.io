@@ -136,68 +136,24 @@ export const SelectList: FC<SelectListProps> = ({ numbers, valName }) => {
   )
 }
 
-// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
-export const selectArrays: {
-  [index: string]: {
-    name: string
-    array?: React.JSX.Element | string[] | number[]
-  }
-} = {
-  setOutsList: {
-    name: 'setOutsList',
-    array: <SelectList numbers={setOutsArray} />
-  },
-  setNoteList: {
-    name: 'setNoteList',
-    array: <SelectList numbers={setNoteArray} />
-  },
-  chnMidiList: {
-    name: 'chnMidiList',
-    array: <SelectList numbers={chnMidiArray} />
-  },
-  smpTypeList: {
-    name: 'smpTypeList',
-    array: <SelectList numbers={smpTypeArray} />
-  },
-  smpOutsList: {
-    name: 'smpOutsList',
-    array: <SelectList numbers={smpOutsArray} />
-  },
-  vepOutsList: {
-    name: 'vepOutsList',
-    array: <SelectList numbers={vepOutsArray} />
-  },
-  vepInstList: {
-    name: 'vepInstList',
-    array: <SelectList numbers={vepInstanceArray} />
-  },
-  valAddrList: {
-    name: 'valAddrList',
-    array: <SelectList valName={valAddrArray} />
-  },
-  valMidiList: {
-    name: 'valMidiList',
-    array: <SelectList numbers={valMidiArray} />
-  },
-  valChngList: {
-    name: 'valChngList',
-    array: ['Value 1', 'Value 2']
-  },
-  valNoteList: {
-    name: 'valNoteList',
-    array: <SelectList numbers={valNoteArray} />
-  },
-  valPtchList: {
-    name: 'valPtchList',
-    array: <SelectList numbers={valPtchArray} />
-  },
-  valDeftList: {
-    name: 'valDeftList',
-    array: <SelectList numbers={valDeftArray} />
-  },
-  valNoneList: { name: 'valNoneList', array: <option>N/A</option> },
-  allNoteList: {
-    name: 'allNoteList',
-    array: <SelectList numbers={allNoteArray} />
-  }
-}
+export const selectArrays = {
+  setOutsList: <SelectList numbers={setOutsArray} />,
+  setNoteList: <SelectList numbers={setNoteArray} />,
+  chnMidiList: <SelectList numbers={chnMidiArray} />,
+  smpTypeList: <SelectList numbers={smpTypeArray} />,
+  smpOutsList: <SelectList numbers={smpOutsArray} />,
+  vepOutsList: <SelectList numbers={vepOutsArray} />,
+  vepInstList: <SelectList numbers={vepInstanceArray} />,
+  valAddrList: <SelectList valName={valAddrArray} />,
+  valMidiList: <SelectList numbers={valMidiArray} />,
+  valChngList: ['Value 1', 'Value 2'],
+  valNoteList: <SelectList numbers={valNoteArray} />,
+  valPtchList: <SelectList numbers={valPtchArray} />,
+  valDeftList: <SelectList numbers={valDeftArray} />,
+  valNoneList: <option>N/A</option>,
+  allNoteList: <SelectList numbers={allNoteArray} />,
+  artRngsArray: <option>FIX ME</option>,
+  artLayersArray: <option>FIX ME</option>
+} as const
+
+export type selectArray = typeof selectArrays

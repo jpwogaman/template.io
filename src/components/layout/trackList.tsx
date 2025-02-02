@@ -2,7 +2,7 @@
 import React, { type FC } from 'react'
 import { IconBtnToggle } from '@/components/layout/icon-btn-toggle'
 import tw from '@/components/utils/tw'
-import TrackListTableKeys from '../utils/trackListTableKeys'
+import { TrackListTableKeys } from '../utils/trackListTableKeys'
 import { type OnChangeHelperArgsType, InputTypeSelector } from '../inputs'
 
 import {
@@ -27,10 +27,14 @@ export const TrackList: FC = () => {
     layoutDataSingleId: id,
     key
   }: OnChangeHelperArgsType) => {
-    update.track({
-      id: id as FileItemId,
-      [key]: newValue
-    })
+    const refetch = false
+    update.track(
+      {
+        id: id as FileItemId,
+        [key]: newValue
+      },
+      refetch
+    )
   }
 
   const trackTh = `border-[1.5px]
@@ -63,7 +67,7 @@ export const TrackList: FC = () => {
               return (
                 <td
                   key={key}
-                  className={tw(trackTh, 'sticky z-50', className)}
+                  className={tw(trackTh, 'sticky z-50', className ?? '')}
                   title={key}>
                   {key === 'id' && (
                     <div className='flex gap-1'>
@@ -156,18 +160,26 @@ export const TrackList: FC = () => {
                     a='fa-solid fa-lock-open'
                     b='fa-solid fa-lock'
                     defaultIcon={locked ? 'b' : 'a'}
-                    onToggleA={() =>
-                      update.track({
-                        id: id,
-                        locked: true
-                      })
-                    }
-                    onToggleB={() =>
-                      update.track({
-                        id: id,
-                        locked: false
-                      })
-                    }
+                    onToggleA={() => {
+                      const refetch = true
+                      update.track(
+                        {
+                          id: id,
+                          locked: true
+                        },
+                        refetch
+                      )
+                    }}
+                    onToggleB={() => {
+                      const refetch = true
+                      update.track(
+                        {
+                          id: id,
+                          locked: false
+                        },
+                        refetch
+                      )
+                    }}
                   />
                 </td>
                 {/* OTHER CELLS */}

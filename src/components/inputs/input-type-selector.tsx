@@ -4,7 +4,8 @@ import {
   InputSelectSingle,
   InputSelectMultiple,
   InputCheckBox,
-  InputCheckBoxSwitch
+  InputCheckBoxSwitch,
+  type selectArray
 } from './index'
 
 import { type TrackOptionsTableKeys } from '../utils/trackOptionsTableKeys'
@@ -15,24 +16,18 @@ import { InputTextRich } from './input-text-rich'
 
 import {
   type FullTrackForExport,
+  type FullTrackCounts,
   type ItemsFullRanges,
   type ItemsArtLayers,
   type ItemsArtListTap,
   type ItemsArtListTog,
   type ItemsFadList,
-  FileItem
+  type FileItem
 } from '../backendCommands/backendCommands'
 
 import { type FileItemId, SubItemId } from '../context'
 
-export type OnChangeHelperArgsType = {
-  newValue?: string | number | boolean
-  layoutDataSingleId?: FileItemId | SubItemId
-  key: layoutDataSingleKeys
-  label?: TrackOptionsTableKeys[number]['label']
-}
-
-type layoutDataSingleKeys =
+export type layoutDataSingleKeys =
   | keyof FileItem
   | keyof ItemsFullRanges
   | keyof ItemsArtLayers
@@ -40,11 +35,18 @@ type layoutDataSingleKeys =
   | keyof ItemsArtListTog
   | keyof ItemsFadList
 
-type InputTypeSelectorProps = {
+export type OnChangeHelperArgsType = {
+  newValue?: string | number | boolean
+  layoutDataSingleId?: FileItemId | SubItemId
+  key: layoutDataSingleKeys
+  label?: keyof FullTrackCounts
+}
+
+export type InputTypeSelectorProps = {
   keySingle:
-    | TrackOptionsTableKeys[number]['keys'][number]
+    | TrackOptionsTableKeys<keyof FullTrackCounts>[number]['keys'][number]
     | TrackListTableKeys['keys'][number]
-  layoutConfigLabel?: TrackOptionsTableKeys[number]['label']
+  layoutConfigLabel?: keyof FullTrackCounts
   layoutDataSingle?:
     | ItemsFullRanges
     | ItemsArtListTog
@@ -63,7 +65,9 @@ type InputTypeSelectorProps = {
   }[]
   artTapIndividualComponentLocked?: {
     id: string
+    code: boolean
     on: boolean
+    default: boolean
   }[]
   artLayerIndividualComponentLocked?: {
     id: string
@@ -72,10 +76,6 @@ type InputTypeSelectorProps = {
   fadIndividualComponentLocked?: {
     id: string
     code: boolean
-  }[]
-  artTapOneDefaultOnly?: {
-    id: string
-    default: boolean
   }[]
   selectedItem?: FullTrackForExport
   settingsModal?: boolean
@@ -92,7 +92,7 @@ export type InputComponentProps = {
   codeFullLocked?: boolean
   defaultValue?: string | number | boolean
   placeholder?: string | number
-  options?: string
+  options?: keyof selectArray
   children?: ReactNode
   textTypeValidator?: string
   onChangeFunction: (event: ChangeEventHelper) => void
@@ -107,7 +107,6 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
   artTapIndividualComponentLocked,
   artLayerIndividualComponentLocked,
   fadIndividualComponentLocked,
-  artTapOneDefaultOnly,
   selectedItem,
   settingsModal
 }) => {
@@ -168,7 +167,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
       id: `${selectedItem.id}_${key}`,
       codeDisabled: selectedItem?.locked,
       defaultValue: selectedItem[key as 'id'],
-      options: selectArray ?? '',
+      options: selectArray,
       textTypeValidator: typeof selectedItem[key as 'id'],
       onChangeFunction: (event: ChangeEventHelper) => {
         let typedValue: string | number | boolean = event.target.value
@@ -266,24 +265,18 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
     )
 
     const artTogLockedHelper =
-      layoutConfigLabel === 'art_list_tog' &&
-      key === 'code' &&
-      thisArtTog?.code === true
+      layoutConfigLabel === 'art_list_tog' && key === 'code' && thisArtTog?.code
 
     const artTapLockedHelper =
       layoutConfigLabel === 'art_list_tap' &&
-      key === 'on' &&
-      thisArtTap?.on === true
+      ((key === 'on' && thisArtTap?.on) ||
+        (key === 'default' && thisArtTap?.default))
 
     const artLayerLockedHelper =
-      layoutConfigLabel === 'art_layers' &&
-      key === 'code' &&
-      thisArtLayer?.code === true
+      layoutConfigLabel === 'art_layers' && key === 'code' && thisArtLayer?.code
 
     const fadLockedHelper =
-      layoutConfigLabel === 'fad_list' &&
-      key === 'code' &&
-      thisFad?.code === true
+      layoutConfigLabel === 'fad_list' && key === 'code' && thisFad?.code
 
     const inputPropsHelper = {
       id: `${layoutDataSingle.id}_${key}`,
@@ -294,11 +287,12 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
         artLayerLockedHelper ||
         fadLockedHelper,
       defaultValue: layoutDataSingle[key as 'id'],
-      options: rangeOptions
-        ? stringListOfFullRangeIds
-        : layersOptions
-          ? stringListFullArtLayerIds
-          : (selectArray ?? ''),
+      //options: rangeOptions
+      //  ? stringListOfFullRangeIds
+      //  : layersOptions
+      //    ? stringListFullArtLayerIds
+      //    : selectArray,
+      options: selectArray,
       textTypeValidator: typeof layoutDataSingle[key as 'id'],
       onChangeFunction: (event: ChangeEventHelper) => {
         let typedValue: string | number | boolean = event.target.value
