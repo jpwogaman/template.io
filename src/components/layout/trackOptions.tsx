@@ -186,49 +186,110 @@ export const TrackOptions: FC = () => {
     key,
     label
   }: OnChangeHelperArgsType) => {
+    let refetch = false
+
     if (label === 'full_ranges') {
       if (key === 'white_keys_only') {
-        update.fullRange({
-          id: layoutDataSingleId as SubItemId,
-          white_keys_only: newValue === 'true'
-        })
+        update.fullRange(
+          {
+            id: layoutDataSingleId as SubItemId,
+            [key]: newValue === 'true'
+          },
+          refetch
+        )
       } else {
-        update.fullRange({
-          id: layoutDataSingleId as SubItemId,
-          [key]: newValue
-        })
+        update.fullRange(
+          {
+            id: layoutDataSingleId as SubItemId,
+            [key]: newValue
+          },
+          refetch
+        )
       }
     }
     if (label === 'art_list_tog') {
-      update.artListTog({
-        id: layoutDataSingleId as SubItemId,
-        [key]: newValue
-      })
+      if (key === 'change_type') {
+        update.artListTog(
+          {
+            id: layoutDataSingleId as SubItemId,
+            [key]: newValue as string
+          },
+          (refetch = true)
+        )
+      } else {
+        update.artListTog(
+          {
+            id: layoutDataSingleId as SubItemId,
+            [key]: newValue
+          },
+          refetch
+        )
+      }
     }
     if (label === 'art_list_tap') {
       if (key === 'default') {
-        update.artListTap({
-          id: layoutDataSingleId as SubItemId,
-          default: newValue === 'true'
-        })
-        return
+        update.artListTap(
+          {
+            id: layoutDataSingleId as SubItemId,
+            [key]: newValue === 'true'
+          },
+          (refetch = true)
+        )
+      } else if (key === 'change_type') {
+        update.artListTap(
+          {
+            id: layoutDataSingleId as SubItemId,
+            [key]: newValue as string
+          },
+          (refetch = true)
+        )
+      } else {
+        update.artListTap(
+          {
+            id: layoutDataSingleId as SubItemId,
+            [key]: newValue
+          },
+          refetch
+        )
       }
-      update.artListTap({
-        id: layoutDataSingleId as SubItemId,
-        [key]: newValue
-      })
     }
     if (label === 'art_layers') {
-      update.artLayer({
-        id: layoutDataSingleId as SubItemId,
-        [key]: newValue
-      })
+      if (key === 'change_type') {
+        update.artLayer(
+          {
+            id: layoutDataSingleId as SubItemId,
+            [key]: newValue as string
+          },
+          (refetch = true)
+        )
+      } else {
+        update.artLayer(
+          {
+            id: layoutDataSingleId as SubItemId,
+            [key]: newValue
+          },
+          refetch
+        )
+      }
     }
     if (label === 'fad_list') {
-      update.fadList({
-        id: layoutDataSingleId as SubItemId,
-        [key]: newValue
-      })
+      if (key === 'change_type') {
+        update.fadList(
+          {
+            id: layoutDataSingleId as SubItemId,
+            [key]: newValue as string
+          },
+          (refetch = true)
+        )
+      } else {
+        update.fadList(
+          {
+            id: layoutDataSingleId as SubItemId,
+            [key]: newValue
+          },
+          refetch
+        )
+      }
     }
   }
 

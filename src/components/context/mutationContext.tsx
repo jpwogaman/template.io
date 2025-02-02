@@ -66,11 +66,11 @@ interface MutationContextType {
   }
   update: {
     track: (data: FileItemRequest) => void
-    fullRange: (data: ItemsFullRangesRequest) => void
-    artListTog: (data: ItemsArtListTogRequest) => void
-    artListTap: (data: ItemsArtListTapRequest) => void
-    artLayer: (data: ItemsArtLayersRequest) => void
-    fadList: (data: ItemsFadListRequest) => void
+    fullRange: (data: ItemsFullRangesRequest, refetch: boolean) => void
+    artListTog: (data: ItemsArtListTogRequest, refetch: boolean) => void
+    artListTap: (data: ItemsArtListTapRequest, refetch: boolean) => void
+    artLayer: (data: ItemsArtLayersRequest, refetch: boolean) => void
+    fadList: (data: ItemsFadListRequest, refetch: boolean) => void
   }
   del: {
     track: (id: FileItemId) => void
@@ -407,44 +407,79 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     [getSelectedItem]
   )
   const updateSingleFullRangeMutation = useCallback(
-    async (data: ItemsFullRangesRequest) => {
-      await commands.updateFullRange(data).catch((error) => {
-        console.log('updateFullRange error', error)
-      })
+    async (data: ItemsFullRangesRequest, refetch: boolean) => {
+      await commands
+        .updateFullRange(data)
+        .then(() => {
+          if (refetch) {
+            getSelectedItem()
+          }
+        })
+        .catch((error) => {
+          console.log('updateFullRange error', error)
+        })
     },
-    []
+    [getSelectedItem]
   )
   const updateSingleArtListTogMutation = useCallback(
-    async (data: ItemsArtListTogRequest) => {
-      await commands.updateArtTog(data).catch((error) => {
-        console.log('updateArtTog error', error)
-      })
+    async (data: ItemsArtListTogRequest, refetch: boolean) => {
+      await commands
+        .updateArtTog(data)
+        .then(() => {
+          if (refetch) {
+            getSelectedItem()
+          }
+        })
+        .catch((error) => {
+          console.log('updateArtTog error', error)
+        })
     },
-    []
+    [getSelectedItem]
   )
   const updateSingleArtListTapMutation = useCallback(
-    async (data: ItemsArtListTapRequest) => {
-      await commands.updateArtTap(data).catch((error) => {
-        console.log('updateArtTap error', error)
-      })
+    async (data: ItemsArtListTapRequest, refetch: boolean) => {
+      await commands
+        .updateArtTap(data)
+        .then(() => {
+          if (refetch) {
+            getSelectedItem()
+          }
+        })
+        .catch((error) => {
+          console.log('updateArtTap error', error)
+        })
     },
-    []
+    [getSelectedItem]
   )
   const updateSingleArtLayerMutation = useCallback(
-    async (data: ItemsArtLayersRequest) => {
-      await commands.updateArtLayer(data).catch((error) => {
-        console.log('updateArtLayer error', error)
-      })
+    async (data: ItemsArtLayersRequest, refetch: boolean) => {
+      await commands
+        .updateArtLayer(data)
+        .then(() => {
+          if (refetch) {
+            getSelectedItem()
+          }
+        })
+        .catch((error) => {
+          console.log('updateArtLayer error', error)
+        })
     },
-    []
+    [getSelectedItem]
   )
   const updateSingleFadListMutation = useCallback(
-    async (data: ItemsFadListRequest) => {
-      await commands.updateFad(data).catch((error) => {
-        console.log('updateFad error', error)
-      })
+    async (data: ItemsFadListRequest, refetch: boolean) => {
+      await commands
+        .updateFad(data)
+        .then(() => {
+          if (refetch) {
+            getSelectedItem()
+          }
+        })
+        .catch((error) => {
+          console.log('updateFad error', error)
+        })
     },
-    []
+    [getSelectedItem]
   )
   ////////////////////////////////////////////
   //// DELETE mutations

@@ -19,7 +19,8 @@ import {
   type ItemsArtLayers,
   type ItemsArtListTap,
   type ItemsArtListTog,
-  type ItemsFadList
+  type ItemsFadList,
+  FileItem
 } from '../backendCommands/backendCommands'
 
 import { type FileItemId, SubItemId } from '../context'
@@ -27,11 +28,12 @@ import { type FileItemId, SubItemId } from '../context'
 export type OnChangeHelperArgsType = {
   newValue?: string | number | boolean
   layoutDataSingleId?: FileItemId | SubItemId
-  key: string
+  key: layoutDataSingleKeys
   label?: TrackOptionsTableKeys[number]['label']
 }
 
 type layoutDataSingleKeys =
+  | keyof FileItem
   | keyof ItemsFullRanges
   | keyof ItemsArtLayers
   | keyof ItemsArtListTap
