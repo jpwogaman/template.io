@@ -27,8 +27,59 @@ import {
 
 import { type FileItemId, SubItemId } from '../context'
 
+function safeGet<T extends object, K extends keyof T>(obj: T, key: K): T[K] {
+  if (key in obj) {
+    return obj[key]
+  }
+  return undefined as any
+}
+function isItemsFullRanges(obj: any): obj is ItemsFullRanges {
+  return obj && obj.hasOwnProperty('id')
+}
+function isItemsArtListTog(obj: any): obj is ItemsArtListTog {
+  return obj && obj.hasOwnProperty('id')
+}
+function isItemsArtListTap(obj: any): obj is ItemsArtListTap {
+  return obj && obj.hasOwnProperty('id')
+}
+function isItemsArtLayers(obj: any): obj is ItemsArtLayers {
+  return obj && obj.hasOwnProperty('id')
+}
+function isItemsFadList(obj: any): obj is ItemsFadList {
+  return obj && obj.hasOwnProperty('id')
+}
+
+function getLayoutData<T extends keyof FullTrackCounts>(
+  layoutDataSingle: layoutDataSingle,
+  key: LayoutDataSingleHelper<T>
+) {
+  if (isItemsFullRanges(layoutDataSingle)) {
+    return safeGet(layoutDataSingle, key as keyof ItemsFullRanges)
+  } else if (isItemsArtListTog(layoutDataSingle)) {
+    return safeGet(layoutDataSingle, key as keyof ItemsArtListTog)
+  } else if (isItemsArtListTap(layoutDataSingle)) {
+    return safeGet(layoutDataSingle, key as keyof ItemsArtListTap)
+  } else if (isItemsArtLayers(layoutDataSingle)) {
+    return safeGet(layoutDataSingle, key as keyof ItemsArtLayers)
+  } else if (isItemsFadList(layoutDataSingle)) {
+    return safeGet(layoutDataSingle, key as keyof ItemsFadList)
+  }
+}
+type layoutDataSingle =
+  | ItemsFullRanges
+  | ItemsArtListTog
+  | ItemsArtListTap
+  | ItemsArtLayers
+  | ItemsFadList
+
+export type LayoutDataSingleHelper<T extends keyof FullTrackCounts> =
+  T extends keyof FullTrackForExport
+    ? FullTrackForExport[T] extends Array<infer U>
+      ? keyof U
+      : keyof FullTrackForExport[T]
+    : never
+
 export type layoutDataSingleKeys =
-  | keyof FileItem
   | keyof ItemsFullRanges
   | keyof ItemsArtLayers
   | keyof ItemsArtListTap
@@ -38,7 +89,7 @@ export type layoutDataSingleKeys =
 export type OnChangeHelperArgsType = {
   newValue?: string | number | boolean
   layoutDataSingleId?: FileItemId | SubItemId
-  key: layoutDataSingleKeys
+  key: layoutDataSingleKeys | keyof FileItem
   label?: keyof FullTrackCounts
 }
 
@@ -46,38 +97,42 @@ export type InputTypeSelectorProps = {
   keySingle:
     | TrackOptionsTableKeys<keyof FullTrackCounts>[number]['keys'][number]
     | TrackListTableKeys['keys'][number]
+
   layoutConfigLabel?: keyof FullTrackCounts
-  layoutDataSingle?:
-    | ItemsFullRanges
-    | ItemsArtListTog
-    | ItemsArtListTap
-    | ItemsArtLayers
-    | ItemsFadList
+
+  layoutDataSingle?: layoutDataSingle
+
   onChangeHelper: ({
     newValue,
     layoutDataSingleId,
     key,
     label
   }: OnChangeHelperArgsType) => void | undefined
+
   artTogIndividualComponentLocked?: {
     id: string
     code: boolean
   }[]
+
   artTapIndividualComponentLocked?: {
     id: string
     code: boolean
     on: boolean
     default: boolean
   }[]
+
   artLayerIndividualComponentLocked?: {
     id: string
     code: boolean
   }[]
+
   fadIndividualComponentLocked?: {
     id: string
     code: boolean
   }[]
+
   selectedItem?: FullTrackForExport
+
   settingsModal?: boolean
 }
 
@@ -166,17 +221,17 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
     const inputPropsHelper = {
       id: `${selectedItem.id}_${key}`,
       codeDisabled: selectedItem?.locked,
-      defaultValue: selectedItem[key as 'id'],
+      defaultValue: selectedItem[key as keyof FileItem],
       options: selectArray,
-      textTypeValidator: typeof selectedItem[key as 'id'],
+      textTypeValidator: typeof selectedItem[key as keyof FileItem],
       onChangeFunction: (event: ChangeEventHelper) => {
         let typedValue: string | number | boolean = event.target.value
 
-        if (typeof selectedItem[key as 'id'] === 'string') {
+        if (typeof selectedItem[key as keyof FileItem] === 'string') {
           typedValue = event.target.value
-        } else if (typeof selectedItem[key as 'id'] === 'number') {
+        } else if (typeof selectedItem[key as keyof FileItem] === 'number') {
           typedValue = parseInt(event.target.value)
-        } else if (typeof selectedItem[key as 'id'] === 'boolean') {
+        } else if (typeof selectedItem[key as keyof FileItem] === 'boolean') {
           typedValue = event.target.value === 'true'
         }
         onChangeHelper({
@@ -198,13 +253,13 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
                   '_' +
                   key +
                   '_currentValue: ' +
-                  `${selectedItem[key as 'id']}`
+                  `${selectedItem[key as keyof FileItem]}`
             }
             className={tw(
               'cursor-default overflow-hidden p-1',
               selectedItem?.locked && key != 'id' ? 'text-gray-400' : ''
             )}>
-            {selectedItem[key as 'id']}
+            {selectedItem[key as keyof FileItem]}
           </p>
         )}
         {inputSelectSingle && <InputSelectSingle {...inputPropsHelper} />}
@@ -227,6 +282,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
     const artLayerOptions =
       layoutConfigLabel === 'art_list_tap' ||
       layoutConfigLabel === 'art_list_tog'
+
     const layersOptions = key === 'art_layers' && artLayerOptions
 
     const stringListFullArtLayerIds = JSON.stringify(
@@ -278,6 +334,11 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
     const fadLockedHelper =
       layoutConfigLabel === 'fad_list' && key === 'code' && thisFad?.code
 
+    const safeValue = getLayoutData(
+      layoutDataSingle,
+      key as LayoutDataSingleHelper<typeof layoutConfigLabel>
+    )
+
     const inputPropsHelper = {
       id: `${layoutDataSingle.id}_${key}`,
       codeFullLocked: selectedItem?.locked,
@@ -286,22 +347,17 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
         artTapLockedHelper ||
         artLayerLockedHelper ||
         fadLockedHelper,
-      defaultValue: layoutDataSingle[key as 'id'],
-      //options: rangeOptions
-      //  ? stringListOfFullRangeIds
-      //  : layersOptions
-      //    ? stringListFullArtLayerIds
-      //    : selectArray,
+      defaultValue: safeValue,
       options: selectArray,
-      textTypeValidator: typeof layoutDataSingle[key as 'id'],
+      textTypeValidator: typeof safeValue,
       onChangeFunction: (event: ChangeEventHelper) => {
         let typedValue: string | number | boolean = event.target.value
 
-        if (typeof layoutDataSingle[key as 'id'] === 'string') {
+        if (typeof safeValue === 'string') {
           typedValue = event.target.value
-        } else if (typeof layoutDataSingle[key as 'id'] === 'number') {
+        } else if (typeof safeValue === 'number') {
           typedValue = parseInt(event.target.value)
-        } else if (typeof layoutDataSingle[key as 'id'] === 'boolean') {
+        } else if (typeof safeValue === 'boolean') {
           typedValue = event.target.value === 'true'
         }
 
@@ -315,14 +371,15 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
     }
     const inputComponent = (
       <>
-        {!input && (
+        {!input && key === 'id' && (
           <p
             id={`${layoutDataSingle.id}_${key}`}
             title={layoutDataSingle.id}
             className='cursor-default p-1'>
-            {shortenedSubComponentId(layoutDataSingle[key as 'id'])}
+            {shortenedSubComponentId(layoutDataSingle.id)}
           </p>
         )}
+
         {inputSelectSingle && <InputSelectSingle {...inputPropsHelper} />}
         {inputSelectMultiple && <InputSelectMultiple {...inputPropsHelper} />}
         {inputText && <InputText {...inputPropsHelper} />}
