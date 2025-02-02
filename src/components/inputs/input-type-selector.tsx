@@ -256,7 +256,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
                   `${selectedItem[key as keyof FileItem]}`
             }
             className={tw(
-              'cursor-default overflow-hidden p-1',
+              'cursor-default overflow-hidden p-1 transition-all duration-200',
               selectedItem?.locked && key != 'id' ? 'text-gray-400' : ''
             )}>
             {selectedItem[key as keyof FileItem]}
@@ -375,7 +375,7 @@ export const InputTypeSelector: FC<InputTypeSelectorProps> = ({
           <p
             id={`${layoutDataSingle.id}_${key}`}
             title={layoutDataSingle.id}
-            className='cursor-default p-1'>
+            className='cursor-default p-1 transition-all duration-200'>
             {shortenedSubComponentId(layoutDataSingle.id)}
           </p>
         )}

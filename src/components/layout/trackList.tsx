@@ -132,7 +132,7 @@ export const TrackList: FC = () => {
                 {/* COLOR PICKER CELL */}
                 <td
                   id={id + '_color_' + 'cell'}
-                  className='h-[30px]'>
+                  className='h-[30px] transition-all duration-200'>
                   <InputTypeSelector
                     keySingle={
                       {
@@ -151,7 +151,7 @@ export const TrackList: FC = () => {
                 {/* LOCK CELL */}
                 <td
                   id={id + '_lock_' + 'cell'}
-                  className='px-1 py-0.5 text-center'>
+                  className='px-1 py-0.5 text-center transition-all duration-200'>
                   <IconBtnToggle
                     classes={''}
                     titleA={id + '_locked_currentValue: ' + locked}
@@ -202,7 +202,10 @@ export const TrackList: FC = () => {
                 {/* ART COUNT CELL */}
                 <td
                   id={id + '_artCount_' + 'cell'}
-                  className={tw('p-0.5', locked ? 'text-gray-400' : '')}>
+                  className={tw(
+                    'p-0.5 transition-all duration-200',
+                    locked ? 'text-gray-400' : ''
+                  )}>
                   {_count?.art_list_tog + _count?.art_list_tap}
                 </td>
               </tr>

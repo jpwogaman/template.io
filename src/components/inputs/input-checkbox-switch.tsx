@@ -34,7 +34,7 @@ export const InputCheckBoxSwitch: FC<InputComponentProps> = ({
         />
         <div
           className={tw(
-            'h-4 w-8 rounded-full bg-blue-600 dark:bg-blue-800',
+            'h-4 w-8 rounded-full bg-blue-600 transition-all duration-200 dark:bg-blue-800',
             "after:absolute after:left-[0px] after:top-[0px] after:h-4 after:w-4 after:rounded-full after:border after:transition-all after:content-['']",
             codeFullLocked
               ? 'cursor-not-allowed after:border-gray-400 after:bg-gray-400'
