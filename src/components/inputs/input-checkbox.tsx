@@ -7,13 +7,14 @@ import { itemInitKeyBoolean } from './item-init-helpers'
 export const InputCheckBox: FC<InputComponentProps> = ({
   id,
   codeFullLocked,
+  codeDisabled,
   defaultValue,
   onChangeFunction
 }) => {
   const [isChecked, setIsChecked] = useState(defaultValue as boolean)
 
   const valChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (codeFullLocked) return
+    if (codeFullLocked || codeDisabled) return
     onChangeFunction(event)
     setIsChecked((prev) => !prev)
   }
@@ -47,12 +48,14 @@ export const InputCheckBox: FC<InputComponentProps> = ({
         id={id}
         type='checkbox'
         checked={isChecked}
-        disabled={codeFullLocked}
+        disabled={codeFullLocked || codeDisabled}
         value={isChecked ? 'false' : 'true'}
         onChange={(event) => valChange(event)}
         className={tw(
           'w-full p-1 text-zinc-900',
-          codeFullLocked ? 'cursor-not-allowed bg-zinc-300' : 'cursor-pointer'
+          codeFullLocked || codeDisabled
+            ? 'cursor-not-allowed bg-zinc-300'
+            : 'cursor-pointer'
         )}
       />
     </label>

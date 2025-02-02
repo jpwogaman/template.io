@@ -65,7 +65,7 @@ interface MutationContextType {
     fadList: (data: createSubItemArgs) => void
   }
   update: {
-    track: (data: FileItemRequest) => void
+    track: (data: FileItemRequest, refetch: boolean) => void
     fullRange: (data: ItemsFullRangesRequest, refetch: boolean) => void
     artListTog: (data: ItemsArtListTogRequest, refetch: boolean) => void
     artListTap: (data: ItemsArtListTapRequest, refetch: boolean) => void
@@ -394,17 +394,20 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   ////////////////////////////////////////////
   //// UPDATE mutations
   const updateSingleItemMutation = useCallback(
-    async (data: FileItemRequest) => {
+    async (data: FileItemRequest, refetch: boolean) => {
       await commands
         .updateFileitem(data)
         .then(() => {
+          if (refetch) {
+            getData()
+          }
           getSelectedItem()
         })
         .catch((error) => {
           console.log('updateFileItem error', error)
         })
     },
-    [getSelectedItem]
+    [getData, getSelectedItem]
   )
   const updateSingleFullRangeMutation = useCallback(
     async (data: ItemsFullRangesRequest, refetch: boolean) => {
@@ -438,18 +441,25 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   )
   const updateSingleArtListTapMutation = useCallback(
     async (data: ItemsArtListTapRequest, refetch: boolean) => {
-      await commands
-        .updateArtTap(data)
-        .then(() => {
+      try {
+        const result = await commands.updateArtTap(data)
+
+        if (result.status === 'ok') {
           if (refetch) {
             getSelectedItem()
           }
-        })
-        .catch((error) => {
-          console.log('updateArtTap error', error)
-        })
+        } else {
+          console.error(`Error updating Tap Articulation: ${result.error}`)
+          alert(`Error updating Tap Articulation: ${result.error}`)
+        }
+      } catch (error) {
+        console.error(
+          `Error: ${error instanceof Error ? error.message : error}`
+        )
+        alert(`Error: ${error instanceof Error ? error.message : error}`)
+      }
     },
-    [getSelectedItem]
+    [getSelectedItem, commands.updateArtTap]
   )
   const updateSingleArtLayerMutation = useCallback(
     async (data: ItemsArtLayersRequest, refetch: boolean) => {
