@@ -1,8 +1,6 @@
-import { type FC, type ChangeEvent, useState, useEffect } from 'react'
+import { type FC, type ChangeEvent } from 'react'
 import { type InputComponentProps } from './index'
 import tw from '@/components/utils/tw'
-import { useMutations } from '../context'
-import { itemInitKeyBoolean } from './item-init-helpers'
 
 export const InputCheckBoxSwitch: FC<InputComponentProps> = ({
   id,
@@ -10,46 +8,27 @@ export const InputCheckBoxSwitch: FC<InputComponentProps> = ({
   defaultValue,
   onChangeFunction
 }) => {
-  const [isChecked, setIsChecked] = useState(defaultValue === 'Value 2')
-
   const valChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (codeFullLocked) return
     onChangeFunction(event)
-    setIsChecked((prev) => !prev)
   }
-
-  ////////
-  const { clearState, setClearState } = useMutations()
-
-  useEffect(() => {
-    if (typeof clearState !== 'string') return
-
-    if (id.includes(clearState + '_')) {
-      itemInitKeyBoolean({
-        id,
-        clearState,
-        setValue: setIsChecked
-      })
-    }
-
-    return () => {
-      setClearState(null)
-    }
-  }, [clearState])
-  ///////
 
   return (
     <div className='flex items-center justify-evenly'>
       <label
         htmlFor={id}
-        title={id + '_currentValue: ' + (isChecked ? 'Value 2' : 'Value 1')}
+        title={
+          id +
+          '_currentValue: ' +
+          (defaultValue === 'Value 2' ? 'Value 2' : 'Value 1')
+        }
         className='relative inline-flex items-center'>
         <input
           id={id}
           type='checkbox'
-          checked={isChecked}
+          checked={defaultValue === 'Value 2'}
           disabled={codeFullLocked}
-          value={isChecked ? 'Value 1' : 'Value 2'} // this needs to be opposite
+          value={defaultValue === 'Value 2' ? 'Value 1' : 'Value 2'} // this needs to be opposite
           onChange={(event) => valChange(event)}
           className='peer sr-only'
         />
