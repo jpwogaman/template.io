@@ -123,3 +123,39 @@ pub fn update_full_range(data: ItemsFullRangesRequest) {
     .execute(connection)
     .expect("Error updating range");
 }
+
+pub fn renumber_full_ranges(fileitems_item_id: String) {
+  let connection = &mut establish_db_connection();
+
+  let items_full_ranges = list_items_full_ranges(
+    fileitems_item_id.clone()
+  );
+
+  let new_full_ranges = items_full_ranges
+    .iter()
+    .enumerate()
+    .map(|(i, layer)| {
+      ItemsFullRanges {
+        id: format!("{}_FR_{}", fileitems_item_id.clone(), i),
+        name: layer.name.clone(),
+        low: layer.low.clone(),
+        high: layer.high.clone(),
+        white_keys_only: layer.white_keys_only,
+        fileitems_item_id: layer.fileitems_item_id.clone(),
+      }
+    })
+    .collect::<Vec<ItemsFullRanges>>();
+
+  diesel
+    ::delete(
+      dsl::items_full_ranges.filter(
+        dsl::fileitems_item_id.eq(fileitems_item_id.clone())
+      )
+    )
+    .execute(connection)
+    .expect("Error deleting items_full_ranges");
+
+  for range in new_full_ranges {
+    store_new_full_range(&range);
+  }
+}

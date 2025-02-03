@@ -52,7 +52,9 @@ pub fn delete_fad_by_fileitem(
   match
     items_fadlist_service::delete_fad_by_fileitem(id, fileitems_item_id.clone())
   {
-    Ok(_) => { Ok(()) }
+    Ok(_) => { 
+      items_fadlist_service::renumber_fadlist(fileitems_item_id);
+      Ok(()) }
     Err(err) => {
       println!("Error: {}", err);
       Err(err.to_string())

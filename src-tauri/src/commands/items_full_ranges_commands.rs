@@ -67,7 +67,9 @@ pub fn delete_full_range_by_fileitem(
       fileitems_item_id.clone()
     )
   {
-    Ok(_) => { Ok(()) }
+    Ok(_) => { 
+      items_full_ranges_service::renumber_full_ranges(fileitems_item_id);
+      Ok(()) }
     Err(err) => {
       println!("Error: {}", err);
       Err(err.to_string())

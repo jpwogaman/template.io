@@ -59,11 +59,13 @@ pub fn delete_art_layer_by_fileitem(
 ) -> Result<(), String> {
   match
     items_art_layers_service::delete_art_layer_by_fileitem(
-      id,
+      id.clone(),
       fileitems_item_id.clone()
     )
   {
-    Ok(_) => { Ok(()) }
+    Ok(_) => { 
+      items_art_layers_service::renumber_art_layers(fileitems_item_id);
+      Ok(()) }
     Err(err) => {
       println!("Error: {}", err);
       Err(err.to_string())

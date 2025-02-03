@@ -118,3 +118,40 @@ pub fn update_fad(data: ItemsFadListRequest) {
     .execute(connection)
     .expect("Error updating fad");
 }
+
+pub fn renumber_fadlist(fileitems_item_id: String) {
+  let connection = &mut establish_db_connection();
+
+  let items_fadlist = list_items_fadlist(
+    fileitems_item_id.clone()
+  );
+
+  let new_fad_list = items_fadlist
+    .iter()
+    .enumerate()
+    .map(|(i, layer)| {
+      ItemsFadList {
+        id: format!("{}_FL_{}", fileitems_item_id.clone(), i),
+        name: layer.name.clone(),
+        code_type: layer.code_type.clone(),
+        code: layer.code,
+        default: layer.default.clone(),
+        change_type: layer.change_type.clone(),
+        fileitems_item_id: layer.fileitems_item_id.clone(),
+      }
+    })
+    .collect::<Vec<ItemsFadList>>();
+
+  diesel
+    ::delete(
+      dsl::items_fadlist.filter(
+        dsl::fileitems_item_id.eq(fileitems_item_id.clone())
+      )
+    )
+    .execute(connection)
+    .expect("Error deleting items_fadlist");
+
+  for fad in new_fad_list {
+    store_new_fad(&fad);
+  }
+}

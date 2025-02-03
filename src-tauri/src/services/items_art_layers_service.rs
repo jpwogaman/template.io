@@ -120,3 +120,42 @@ pub fn update_art_layer(data: ItemsArtLayersRequest) {
     .execute(connection)
     .expect("Error updating layer");
 }
+
+pub fn renumber_art_layers(fileitems_item_id: String) {
+  let connection = &mut establish_db_connection();
+
+  let items_art_layers = list_items_art_layers(
+    fileitems_item_id.clone()
+  );
+
+  let new_art_layers = items_art_layers
+    .iter()
+    .enumerate()
+    .map(|(i, layer)| {
+      ItemsArtLayers {
+        id: format!("{}_AL_{}", fileitems_item_id.clone(), i),
+        name: layer.name.clone(),
+        code_type: layer.code_type.clone(),
+        code: layer.code,
+        on: layer.on,
+        off: layer.off,
+        default: layer.default.clone(),
+        change_type: layer.change_type.clone(),
+        fileitems_item_id: layer.fileitems_item_id.clone(),
+      }
+    })
+    .collect::<Vec<ItemsArtLayers>>();
+
+  diesel
+    ::delete(
+      dsl::items_art_layers.filter(
+        dsl::fileitems_item_id.eq(fileitems_item_id.clone())
+      )
+    )
+    .execute(connection)
+    .expect("Error deleting items_art_layers");
+
+  for layer in new_art_layers {
+    store_new_art_layer(&layer);
+  }
+}
