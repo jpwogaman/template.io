@@ -45,7 +45,7 @@ pub struct ItemsArtListTap {
   pub fileitems_item_id: String, // manually changed to FileItemId
 }
 
-#[derive(Deserialize, Serialize, specta::Type)]
+#[derive(Deserialize, Serialize, Default, Clone, specta::Type)]
 pub struct ItemsArtListTapRequest {
   pub id: String, // manually changed to SubItemId
   #[specta(optional)]
@@ -72,6 +72,30 @@ pub struct ItemsArtListTapRequest {
   pub art_layers: Option<String>,
   #[specta(optional)]
   pub fileitems_item_id: Option<String>, // manually changed to FileItemId
+}
+
+impl ItemsArtListTap {
+  pub fn update_from(&self, updates: ItemsArtListTapRequest) -> Self {
+    Self {
+      id: updates.id.clone(), // ONLY ART_LIST_TOG AND ART_LIST_TAP CAN EXPOSE ID UPDATES
+      name: updates.name.unwrap_or_else(|| self.name.clone()),
+      toggle: updates.toggle.unwrap_or(self.toggle),
+      code_type: updates.code_type.unwrap_or_else(|| self.code_type.clone()),
+      code: updates.code.unwrap_or(self.code),
+      on: updates.on.unwrap_or(self.on),
+      off: updates.off.unwrap_or(self.off),
+      default: updates.default.unwrap_or(self.default),
+      delay: updates.delay.unwrap_or(self.delay),
+      change_type: updates.change_type.unwrap_or_else(||
+        self.change_type.clone()
+      ),
+      ranges: updates.ranges.unwrap_or_else(|| self.ranges.clone()),
+      art_layers: updates.art_layers.unwrap_or_else(|| self.art_layers.clone()),
+      fileitems_item_id: updates.fileitems_item_id.unwrap_or_else(||
+        self.fileitems_item_id.clone()
+      ),
+    }
+  }
 }
 
 pub fn init_art_tap(

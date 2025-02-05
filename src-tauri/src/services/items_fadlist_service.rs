@@ -99,18 +99,7 @@ pub fn update_fad(data: ItemsFadListRequest) {
   let connection = &mut establish_db_connection();
 
   let original_fad = get_fad(data.id.clone()).unwrap();
-
-  let new_fad = ItemsFadList {
-    id: data.id.clone(),
-    name: data.name.unwrap_or(original_fad.name),
-    code_type: data.code_type.unwrap_or(original_fad.code_type),
-    code: data.code.unwrap_or(original_fad.code),
-    default: data.default.unwrap_or(original_fad.default),
-    change_type: data.change_type.unwrap_or(original_fad.change_type),
-    fileitems_item_id: data.fileitems_item_id.unwrap_or(
-      original_fad.fileitems_item_id
-    ),
-  };
+  let new_fad = original_fad.update_from(data.clone());
 
   diesel
     ::update(dsl::items_fadlist.filter(dsl::id.eq(data.id)))
@@ -122,9 +111,7 @@ pub fn update_fad(data: ItemsFadListRequest) {
 pub fn renumber_fadlist(fileitems_item_id: String) {
   let connection = &mut establish_db_connection();
 
-  let items_fadlist = list_items_fadlist(
-    fileitems_item_id.clone()
-  );
+  let items_fadlist = list_items_fadlist(fileitems_item_id.clone());
 
   let new_fad_list = items_fadlist
     .iter()

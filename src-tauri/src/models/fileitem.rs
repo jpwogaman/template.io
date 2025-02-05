@@ -44,7 +44,7 @@ pub struct FileItem {
   pub color: String,
 }
 
-#[derive(Deserialize, Serialize, specta::Type)]
+#[derive(Deserialize, Serialize, Default, Clone, specta::Type)]
 pub struct FileItemRequest {
   pub id: String, // manually changed to FileItemId
   #[specta(optional)]
@@ -69,6 +69,27 @@ pub struct FileItemRequest {
   pub smp_out: Option<String>,
   #[specta(optional)]
   pub color: Option<String>,
+}
+
+impl FileItem {
+  pub fn update_from(&self, updates: FileItemRequest) -> Self {
+    Self {
+      id: self.id.clone(), // ONLY ART_LIST_TOG AND ART_LIST_TAP CAN EXPOSE ID UPDATES
+      locked: updates.locked.unwrap_or(self.locked),
+      name: updates.name.unwrap_or_else(|| self.name.clone()),
+      notes: updates.notes.unwrap_or_else(|| self.notes.clone()),
+      channel: updates.channel.unwrap_or(self.channel),
+      base_delay: updates.base_delay.unwrap_or(self.base_delay),
+      avg_delay: updates.avg_delay.unwrap_or(self.avg_delay),
+      vep_out: updates.vep_out.unwrap_or_else(|| self.vep_out.clone()),
+      vep_instance: updates.vep_instance.unwrap_or_else(||
+        self.vep_instance.clone()
+      ),
+      smp_number: updates.smp_number.unwrap_or_else(|| self.smp_number.clone()),
+      smp_out: updates.smp_out.unwrap_or_else(|| self.smp_out.clone()),
+      color: updates.color.unwrap_or_else(|| self.color.clone()),
+    }
+  }
 }
 
 pub fn init_fileitem(id: String) -> FileItem {

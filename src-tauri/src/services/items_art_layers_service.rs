@@ -99,20 +99,7 @@ pub fn update_art_layer(data: ItemsArtLayersRequest) {
   let connection = &mut establish_db_connection();
 
   let original_art_layer = get_art_layer(data.id.clone()).unwrap();
-
-  let new_art_layer = ItemsArtLayers {
-    id: data.id.clone(),
-    name: data.name.unwrap_or(original_art_layer.name),
-    code_type: data.code_type.unwrap_or(original_art_layer.code_type),
-    code: data.code.unwrap_or(original_art_layer.code),
-    on: data.on.unwrap_or(original_art_layer.on),
-    off: data.off.unwrap_or(original_art_layer.off),
-    default: data.default.unwrap_or(original_art_layer.default),
-    change_type: data.change_type.unwrap_or(original_art_layer.change_type),
-    fileitems_item_id: data.fileitems_item_id.unwrap_or(
-      original_art_layer.fileitems_item_id
-    ),
-  };
+  let new_art_layer = original_art_layer.update_from(data.clone());
 
   diesel
     ::update(dsl::items_art_layers.filter(dsl::id.eq(data.id)))

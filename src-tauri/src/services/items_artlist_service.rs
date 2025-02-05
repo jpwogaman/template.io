@@ -1,8 +1,8 @@
 use crate::{
   db::establish_db_connection,
   models::{
-    items_artlist_tap::{ ItemsArtListTap },
-    items_artlist_tog::{ ItemsArtListTog },
+    items_artlist_tap::{ ItemsArtListTap, ItemsArtListTapRequest },
+    items_artlist_tog::{ ItemsArtListTog, ItemsArtListTogRequest },
   },
   schema::{
     items_artlist_tog::dsl as tog_dsl,
@@ -27,21 +27,12 @@ pub fn renumber_all_arts(fileitems_item_id: String) {
     .iter()
     .enumerate()
     .map(|(i, art)| {
-      ItemsArtListTog {
+      let request = ItemsArtListTogRequest {
         id: format!("{}_AT_{}", fileitems_item_id.clone(), i),
-        name: art.name.clone(),
-        toggle: art.toggle,
-        code_type: art.code_type.clone(),
-        code: art.code,
-        on: art.on,
-        off: art.off,
-        default: art.default.clone(),
-        delay: art.delay,
-        change_type: art.change_type.clone(),
-        ranges: art.ranges.clone(),
-        art_layers: art.art_layers.clone(),
-        fileitems_item_id: art.fileitems_item_id.clone(),
-      }
+        ..Default::default()
+      };
+ 
+      art.update_from(request)
     })
     .collect::<Vec<ItemsArtListTog>>();
 
@@ -49,25 +40,16 @@ pub fn renumber_all_arts(fileitems_item_id: String) {
     .iter()
     .enumerate()
     .map(|(i, art)| {
-      ItemsArtListTap {
+      let request = ItemsArtListTapRequest {
         id: format!(
           "{}_AT_{}",
           fileitems_item_id.clone(),
           (i as usize) + items_artlist_tog.len()
         ),
-        name: art.name.clone(),
-        toggle: art.toggle,
-        code_type: art.code_type.clone(),
-        code: art.code,
-        on: art.on,
-        off: art.off,
-        default: art.default,
-        delay: art.delay,
-        change_type: art.change_type.clone(),
-        ranges: art.ranges.clone(),
-        art_layers: art.art_layers.clone(),
-        fileitems_item_id: art.fileitems_item_id.clone(),
-      }
+        ..Default::default()
+      };
+
+      art.update_from(request)
     })
     .collect::<Vec<ItemsArtListTap>>();
 

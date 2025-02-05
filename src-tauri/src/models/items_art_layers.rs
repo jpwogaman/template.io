@@ -40,7 +40,7 @@ pub struct ItemsArtLayers {
   pub fileitems_item_id: String, // manually changed to FileItemId
 }
 
-#[derive(Deserialize, Serialize, specta::Type)]
+#[derive(Deserialize, Serialize, Default, Clone, specta::Type)]
 pub struct ItemsArtLayersRequest {
   pub id: String, // manually changed to SubItemId
   #[specta(optional)]
@@ -59,6 +59,26 @@ pub struct ItemsArtLayersRequest {
   pub change_type: Option<String>,
   #[specta(optional)]
   pub fileitems_item_id: Option<String>, // manually changed to FileItemId
+}
+
+impl ItemsArtLayers {
+  pub fn update_from(&self, updates: ItemsArtLayersRequest) -> Self {
+    Self {
+      id: self.id.clone(), // ONLY ART_LIST_TOG AND ART_LIST_TAP CAN EXPOSE ID UPDATES
+      name: updates.name.unwrap_or_else(|| self.name.clone()),
+      code_type: updates.code_type.unwrap_or_else(|| self.code_type.clone()),
+      code: updates.code.unwrap_or(self.code),
+      on: updates.on.unwrap_or(self.on),
+      off: updates.off.unwrap_or(self.off),
+      default: updates.default.unwrap_or_else(|| self.default.clone()),
+      change_type: updates.change_type.unwrap_or_else(||
+        self.change_type.clone()
+      ),
+      fileitems_item_id: updates.fileitems_item_id.unwrap_or_else(||
+        self.fileitems_item_id.clone()
+      ),
+    }
+  }
 }
 
 pub fn init_art_layer(

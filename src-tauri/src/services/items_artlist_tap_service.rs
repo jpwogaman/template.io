@@ -60,13 +60,32 @@ pub fn delete_art_tap_by_fileitem(
 ) -> Result<(), MyCustomError> {
   let connection = &mut establish_db_connection();
 
-  let must_have_one = dsl::items_artlist_tap
-    .filter(dsl::fileitems_item_id.eq(fileitems_item_id.clone()))
-    .load::<ItemsArtListTap>(connection)
-    .expect("Error loading art_tap");
+  let items_artlist_tap = list_items_artlist_tap(fileitems_item_id.clone());
+  let first_art_tap = &items_artlist_tap[0];
+  let second_art_tap = &items_artlist_tap[1];
+  let this_art_tap = get_art_tap(id.clone()).unwrap();
 
-  if must_have_one.len() <= 1 {
+  if items_artlist_tap.len() <= 1 {
     return Err(MyCustomError::MinArtTapError);
+  }
+
+  if first_art_tap.id == id.clone() && this_art_tap.default == true {
+    let temp_request = ItemsArtListTapRequest {
+      id: format!("{}", second_art_tap.id),
+      default: Some(true),
+      ..Default::default()
+    };
+
+    let _ = update_art_tap(temp_request);
+
+  } else if first_art_tap.id != id.clone() && this_art_tap.default == true {
+    let temp_request = ItemsArtListTapRequest {
+      id: format!("{}", first_art_tap.id),
+      default: Some(true),
+      ..Default::default()
+    };
+
+    let _ = update_art_tap(temp_request);
   }
 
   diesel
@@ -105,40 +124,21 @@ pub fn update_art_tap(
   let connection = &mut establish_db_connection();
 
   let original_art_tap = get_art_tap(data.id.clone()).unwrap();
+  let new_art_tap = original_art_tap.update_from(data.clone());
 
-  let must_have_one_range = |ranges: String| -> String {
-    if ranges == "[]" {
-      return original_art_tap.ranges.clone();
-    }
-    ranges
-  };
+  //let must_have_one_range = |ranges: String| -> String {
+  //  if ranges == "[]" {
+  //    return original_art_tap.ranges.clone();
+  //  }
+  //  ranges
+  //};
 
-  let new_art_tap = ItemsArtListTap {
-    id: data.id.clone(),
-    name: data.name.unwrap_or(original_art_tap.name),
-    toggle: data.toggle.unwrap_or(original_art_tap.toggle),
-    code_type: data.code_type.unwrap_or(original_art_tap.code_type),
-    code: data.code.unwrap_or(original_art_tap.code),
-    on: data.on.unwrap_or(original_art_tap.on),
-    off: data.off.unwrap_or(original_art_tap.off),
-    default: data.default.unwrap_or(original_art_tap.default),
-    delay: data.delay.unwrap_or(original_art_tap.delay),
-    change_type: data.change_type.unwrap_or(original_art_tap.change_type),
-    ranges: must_have_one_range(
-      data.ranges.unwrap_or(original_art_tap.ranges.clone())
-    ),
-    art_layers: data.art_layers.unwrap_or(original_art_tap.art_layers),
-    fileitems_item_id: data.fileitems_item_id.unwrap_or(
-      original_art_tap.fileitems_item_id.clone()
-    ),
-  };
 
   let all_art_tap_for_fileitem = list_items_artlist_tap(
     original_art_tap.fileitems_item_id.clone()
   );
 
   if data.default == Some(true) {
-
     for art_tap in all_art_tap_for_fileitem {
       if art_tap.id != data.id && art_tap.default == true {
         let new_art_tap_2 = ItemsArtListTap {
@@ -159,7 +159,7 @@ pub fn update_art_tap(
     for art_tap in all_art_tap_for_fileitem {
       if art_tap.id != data.id && art_tap.default == true {
         there_is_one = true;
-        break
+        break;
       }
     }
 

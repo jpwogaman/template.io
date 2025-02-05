@@ -103,19 +103,7 @@ pub fn update_full_range(data: ItemsFullRangesRequest) {
   let connection = &mut establish_db_connection();
 
   let original_full_range = get_full_range(data.id.clone()).unwrap();
-
-  let new_full_range = ItemsFullRanges {
-    id: data.id.clone(),
-    name: data.name.unwrap_or(original_full_range.name),
-    low: data.low.unwrap_or(original_full_range.low),
-    high: data.high.unwrap_or(original_full_range.high),
-    white_keys_only: data.white_keys_only.unwrap_or(
-      original_full_range.white_keys_only
-    ),
-    fileitems_item_id: data.fileitems_item_id.unwrap_or(
-      original_full_range.fileitems_item_id
-    ),
-  };
+  let new_full_range = original_full_range.update_from(data.clone());
 
   diesel
     ::update(dsl::items_full_ranges.filter(dsl::id.eq(data.id)))

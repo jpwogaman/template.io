@@ -103,33 +103,15 @@ pub fn update_art_tog(data: ItemsArtListTogRequest) {
   let connection = &mut establish_db_connection();
 
   let original_art_tog = get_art_tog(data.id.clone()).unwrap();
+  let new_art_tog = original_art_tog.update_from(data.clone());
 
-  let must_have_one_range = |ranges: String| -> String {
-    if ranges == "[]" {
-      return original_art_tog.ranges.clone();
-    }
-    ranges
-  };
+  //let must_have_one_range = |ranges: String| -> String {
+  //  if ranges == "[]" {
+  //    return original_art_tog.ranges.clone();
+  //  }
+  //  ranges
+  //};
 
-  let new_art_tog = ItemsArtListTog {
-    id: data.id.clone(),
-    name: data.name.unwrap_or(original_art_tog.name),
-    toggle: data.toggle.unwrap_or(original_art_tog.toggle),
-    code_type: data.code_type.unwrap_or(original_art_tog.code_type),
-    code: data.code.unwrap_or(original_art_tog.code),
-    on: data.on.unwrap_or(original_art_tog.on),
-    off: data.off.unwrap_or(original_art_tog.off),
-    default: data.default.unwrap_or(original_art_tog.default),
-    delay: data.delay.unwrap_or(original_art_tog.delay),
-    change_type: data.change_type.unwrap_or(original_art_tog.change_type),
-    ranges: must_have_one_range(
-      data.ranges.unwrap_or(original_art_tog.ranges.clone())
-    ),
-    art_layers: data.art_layers.unwrap_or(original_art_tog.art_layers),
-    fileitems_item_id: data.fileitems_item_id.unwrap_or(
-      original_art_tog.fileitems_item_id
-    ),
-  };
 
   diesel
     ::update(dsl::items_artlist_tog.filter(dsl::id.eq(data.id)))

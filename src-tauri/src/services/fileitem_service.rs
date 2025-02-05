@@ -298,23 +298,7 @@ pub fn update_fileitem(data: FileItemRequest) {
   let connection = &mut establish_db_connection();
 
   let original_fileitem = get_fileitem(data.id.clone()).unwrap();
-
-  let new_fileitem = FileItem {
-    id: data.id.clone(),
-    locked: data.locked.unwrap_or(original_fileitem.locked),
-    name: data.name.clone().unwrap_or(original_fileitem.name),
-    notes: data.notes.clone().unwrap_or(original_fileitem.notes),
-    channel: data.channel.unwrap_or(original_fileitem.channel),
-    base_delay: data.base_delay.unwrap_or(original_fileitem.base_delay),
-    avg_delay: data.avg_delay.unwrap_or(original_fileitem.avg_delay),
-    vep_out: data.vep_out.clone().unwrap_or(original_fileitem.vep_out),
-    vep_instance: data.vep_instance
-      .clone()
-      .unwrap_or(original_fileitem.vep_instance),
-    smp_number: data.smp_number.clone().unwrap_or(original_fileitem.smp_number),
-    smp_out: data.smp_out.clone().unwrap_or(original_fileitem.smp_out),
-    color: data.color.clone().unwrap_or(original_fileitem.color),
-  };
+  let new_fileitem = original_fileitem.update_from(data.clone());
 
   diesel
     ::update(fileitems_dsl::fileitems.filter(fileitems_dsl::id.eq(data.id)))

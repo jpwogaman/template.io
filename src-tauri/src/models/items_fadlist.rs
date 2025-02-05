@@ -38,7 +38,7 @@ pub struct ItemsFadList {
   pub fileitems_item_id: String, // manually changed to FileItemId
 }
 
-#[derive(Deserialize, Serialize, specta::Type)]
+#[derive(Deserialize, Serialize, Default, Clone, specta::Type)]
 pub struct ItemsFadListRequest {
   pub id: String, // manually changed to SubItemId
   #[specta(optional)]
@@ -53,6 +53,24 @@ pub struct ItemsFadListRequest {
   pub change_type: Option<String>,
   #[specta(optional)]
   pub fileitems_item_id: Option<String>, // manually changed to FileItemId
+}
+
+impl ItemsFadList {
+  pub fn update_from(&self, updates: ItemsFadListRequest) -> Self {
+    Self {
+      id: self.id.clone(), // ONLY ART_LIST_TOG AND ART_LIST_TAP CAN EXPOSE ID UPDATES
+      name: updates.name.unwrap_or_else(|| self.name.clone()),
+      code_type: updates.code_type.unwrap_or_else(|| self.code_type.clone()),
+      code: updates.code.unwrap_or(self.code),
+      default: updates.default.unwrap_or_else(|| self.default.clone()),
+      change_type: updates.change_type.unwrap_or_else(||
+        self.change_type.clone()
+      ),
+      fileitems_item_id: updates.fileitems_item_id.unwrap_or_else(||
+        self.fileitems_item_id.clone()
+      ),
+    }
+  }
 }
 
 pub fn init_fad(fileitems_item_id: String, new_fad_id: String) -> ItemsFadList {
