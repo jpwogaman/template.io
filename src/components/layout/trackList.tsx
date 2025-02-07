@@ -3,7 +3,18 @@ import React, { type FC } from 'react'
 import { IconBtnToggle } from '@/components/layout/icon-btn-toggle'
 import tw from '@/components/utils/tw'
 import { TrackListTableKeys } from '../utils/trackListTableKeys'
-import { type OnChangeHelperArgsType, InputTypeSelector } from '../inputs'
+import {
+  InputCheckBox,
+  InputCheckBoxSwitch,
+  InputSelectMultiple,
+  InputSelectSingle,
+  InputText,
+  InputTextRich,
+  InputColorPicker,
+  type ChangeEventHelper,
+  type OnChangeHelperArgsType,
+  type InputComponentProps
+} from '../inputs'
 
 import {
   useMutations,
@@ -13,8 +24,6 @@ import {
   FileItemId,
   SubItemId
 } from '@/components/context'
-
-import { type FullTrackForExport } from '../backendCommands/backendCommands'
 
 export const TrackList: FC = () => {
   const { setIsContextMenuOpen, setContextMenuId } = useContextMenu()
@@ -133,19 +142,20 @@ export const TrackList: FC = () => {
                 <td
                   id={id + '_color_' + 'cell'}
                   className='h-[30px] transition-all duration-200'>
-                  <InputTypeSelector
-                    keySingle={
-                      {
-                        className: 'w-[00%]',
-                        show: false,
-                        key: 'color',
-                        input: 'color-picker',
-                        selectArray: undefined,
-                        label: undefined
-                      } as unknown as (typeof TrackListTableKeys)['keys'][number]
-                    }
-                    onChangeHelper={onChangeHelper}
-                    selectedItem={item as unknown as FullTrackForExport}
+                  <InputColorPicker
+                    id={`${item?.id}_color`}
+                    codeFullLocked={item?.locked}
+                    defaultValue={item?.color}
+                    onChangeFunction={(event: ChangeEventHelper) => {
+                      const refetch = false
+                      update.track(
+                        {
+                          id: item?.id,
+                          color: event.target.value
+                        },
+                        refetch
+                      )
+                    }}
                   />
                 </td>
                 {/* LOCK CELL */}
@@ -184,18 +194,77 @@ export const TrackList: FC = () => {
                 </td>
                 {/* OTHER CELLS */}
                 {TrackListTableKeys.keys.map((keyActual) => {
-                  const { key, show } = keyActual
+                  const { key, show, input, selectArray } = keyActual
                   if (!show) return
+
+                  const inputPropsHelper: InputComponentProps = {
+                    id: `${item.id}_${key}`,
+                    codeFullLocked: item?.locked,
+                    defaultValue: item[key],
+                    options: selectArray,
+                    textTypeValidator: typeof item[key],
+                    onChangeFunction: (event: ChangeEventHelper) => {
+                      let typedValue: string | number | boolean =
+                        event.target.value
+
+                      if (typeof item[key] === 'string') {
+                        typedValue = event.target.value
+                      } else if (typeof item[key] === 'number') {
+                        typedValue = parseInt(event.target.value)
+                      } else if (typeof item[key] === 'boolean') {
+                        typedValue = event.target.value === 'true'
+                      }
+                      onChangeHelper({
+                        newValue: typedValue,
+                        layoutDataSingleId: item.id,
+                        key
+                      })
+                    }
+                  }
+
                   return (
                     <td
                       id={id + '_' + key + '_' + 'cell'}
                       key={key}
                       className='p-0.5'>
-                      <InputTypeSelector
-                        keySingle={keyActual}
-                        onChangeHelper={onChangeHelper}
-                        selectedItem={item as unknown as FullTrackForExport}
-                      />
+                      {!input && (
+                        <p
+                          id={`${item.id}_${key}`}
+                          title={
+                            key === 'id'
+                              ? item.id
+                              : item.id +
+                                '_' +
+                                key +
+                                '_currentValue: ' +
+                                `${item[key]}`
+                          }
+                          className={tw(
+                            'cursor-default overflow-hidden p-1 transition-all duration-200',
+                            item?.locked && key != 'id' ? 'text-gray-400' : ''
+                          )}>
+                          {item[key]}
+                        </p>
+                      )}
+                      {input === 'select-multiple' && (
+                        <InputSelectMultiple {...inputPropsHelper} />
+                      )}
+                      {input === 'select' && (
+                        <InputSelectSingle {...inputPropsHelper} />
+                      )}
+                      {input === 'checkbox-switch' && (
+                        <InputCheckBoxSwitch {...inputPropsHelper} />
+                      )}
+                      {input === 'checkbox' && (
+                        <InputCheckBox {...inputPropsHelper} />
+                      )}
+                      {input === 'color-picker' && (
+                        <InputColorPicker {...inputPropsHelper} />
+                      )}
+                      {input === 'text' && <InputText {...inputPropsHelper} />}
+                      {input === 'text-rich' && (
+                        <InputTextRich {...inputPropsHelper} />
+                      )}
                     </td>
                   )
                 })}

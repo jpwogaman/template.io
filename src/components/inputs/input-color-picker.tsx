@@ -4,7 +4,7 @@ import tw from '@/components/utils/tw'
 
 export const InputColorPicker: FC<InputComponentProps> = ({
   id,
-  codeDisabled,
+  codeFullLocked,
   defaultValue,
   onChangeFunction
 }) => {
@@ -14,7 +14,7 @@ export const InputColorPicker: FC<InputComponentProps> = ({
   const valChange = (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
-    if (codeDisabled) return
+    if (codeFullLocked) return
     if (!onChangeFunction) return
     onChangeFunction(event)
   }
@@ -42,7 +42,7 @@ export const InputColorPicker: FC<InputComponentProps> = ({
       style={{
         backgroundColor: isFocused
           ? defaultValueToRgb(defaultValue as string)
-          : codeDisabled
+          : codeFullLocked
             ? defaultValueToRgb(defaultValue as string)
             : (defaultValue as string)
       }}
@@ -54,7 +54,7 @@ export const InputColorPicker: FC<InputComponentProps> = ({
         <div
           className={tw(
             'h-[22px] w-full rounded-sm transition-all duration-200',
-            codeDisabled ? 'cursor-not-allowed' : 'cursor-pointer',
+            codeFullLocked ? 'cursor-not-allowed' : 'cursor-pointer',
             isFocused
               ? 'outline-none ring-4 ring-indigo-600'
               : 'ring-4 ring-transparent'
@@ -63,7 +63,7 @@ export const InputColorPicker: FC<InputComponentProps> = ({
         <input
           id={id}
           type='color'
-          disabled={codeDisabled}
+          disabled={codeFullLocked}
           defaultValue={defaultValue as string}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}

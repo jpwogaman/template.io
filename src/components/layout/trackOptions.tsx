@@ -1,12 +1,25 @@
 'use client'
 
-import { type FC, Fragment, useState, useEffect } from 'react'
+import { type FC, Fragment, useState } from 'react'
 
 import { IconBtnToggle } from '@/components/layout/icon-btn-toggle'
 import tw from '@/components/utils/tw'
-import { type OnChangeHelperArgsType, InputTypeSelector } from '../inputs'
+import {
+  InputCheckBox,
+  InputCheckBoxSwitch,
+  InputSelectMultiple,
+  InputSelectSingle,
+  InputText,
+  InputTextRich,
+  InputColorPicker,
+  type layoutDataArray,
+  type layoutDataSingle,
+  type ChangeEventHelper,
+  type LayoutDataSingleHelper,
+  type OnChangeHelperArgsType,
+  type InputComponentProps
+} from '../inputs'
 
-import { type TrackListTableKeys } from '../utils/trackListTableKeys'
 import { TrackOptionsTableKeys } from '../utils/trackOptionsTableKeys'
 
 import {
@@ -14,129 +27,23 @@ import {
   useSelectedItem,
   useContextMenu,
   contextMenuType,
-  FileItemId,
-  SubItemId
+  type SubItemId
 } from '@/components/context'
 
 import {
-  type FullTrackForExport,
   type ItemsFullRanges,
   type ItemsArtLayers,
   type ItemsArtListTap,
   type ItemsArtListTog,
-  type ItemsFadList
+  type ItemsFadList,
+  type FullTrackCounts
 } from '../backendCommands/backendCommands'
 
 export const TrackOptions: FC = () => {
   const { setIsContextMenuOpen, setContextMenuId } = useContextMenu()
   const { selectedItem, update } = useMutations()
   const { settings, updateSettings } = useSelectedItem()
-  const { selected_item_id, selected_sub_item_id } = settings
-
-  //////////////////////////////////////////
-  // This logic is used to disable individual components in the artTap, artTog, and fadList tables.
-  const [artTogIndividualComponentLocked, setArtTogIndividualComponentLocked] =
-    useState([
-      {
-        id: selected_item_id + '_AT_0',
-        code: false
-      }
-    ])
-
-  const [artTapIndividualComponentLocked, setArtTapIndividualComponentLocked] =
-    useState([
-      {
-        id: selected_item_id + '_AT_1',
-        code: false,
-        on: false,
-        default: true
-      }
-    ])
-
-  const [fadIndividualComponentLocked, setFadIndividualComponentLocked] =
-    useState([
-      {
-        id: selected_item_id + '_FL_0',
-        code: false
-      }
-    ])
-
-  const [
-    artLayerIndividualComponentLocked,
-    setArtLayerIndividualComponentLocked
-  ] = useState([
-    {
-      id: selected_item_id + '_AL_0',
-      code: false
-    }
-  ])
-
-  useEffect(() => {
-    if (!selectedItem?.art_list_tog) return
-    setArtTogIndividualComponentLocked(
-      selectedItem?.art_list_tog.map((artTog) => {
-        const V1 = artTog.change_type === 'Value 1'
-        return {
-          id: artTog.id,
-          code: V1
-        }
-      })
-    )
-  }, [selectedItem?.art_list_tog])
-
-  useEffect(() => {
-    if (!selectedItem?.art_list_tap) return
-    setArtTapIndividualComponentLocked(
-      selectedItem?.art_list_tap.map((artTap) => {
-        const V1 = artTap.change_type === 'Value 1'
-        return {
-          id: artTap.id,
-          code: false,
-          on: V1,
-          default: artTap.default
-        }
-      })
-    )
-  }, [selectedItem?.art_list_tap])
-
-  useEffect(() => {
-    if (!selectedItem?.art_layers) return
-    setArtLayerIndividualComponentLocked(
-      selectedItem?.art_layers.map((artLayer) => {
-        const V1 = artLayer.change_type === 'Value 1'
-        return {
-          id: artLayer.id,
-          code: V1
-        }
-      })
-    )
-  }, [selectedItem?.art_layers])
-
-  useEffect(() => {
-    if (!selectedItem?.fad_list) return
-    setFadIndividualComponentLocked(
-      selectedItem?.fad_list.map((fad) => {
-        const V1 = fad.change_type === 'Value 1'
-        return {
-          id: fad.id,
-          code: V1
-        }
-      })
-    )
-  }, [selectedItem?.fad_list])
-
-  //if (artTap) {
-  //  V1 = 'the ON value relates to the CODE itself (i.e. ON = CC18)'
-  //  V2 = 'the ON value relates to the CODE's second Value (i.e. CODE = C#3, ON = Velocity 20)'
-  //}
-  //if (artTog) {
-  //  V1 = 'the ON and OFF values relate to the CODE itself (i.e. ON = CC18, OFF = CC35)'
-  //  V2 = 'the ON and OFF values relate to the CODE's second Value (i.e. CODE = C#3, ON = Velocity 20, OFF = Velocity 21)'
-  //}
-  // if (fad) {
-  //  V1 = 'the DEFAULT value relates to the CODE itself (i.e. DEFAULT = CC11)'
-  //  V2 = 'the DEFAULT value relates to the CODE's second Value (i.e. CODE = C#3, DEFAULT = Velocity 20)'
-  //}
+  const { selected_sub_item_id } = settings
 
   //////////////////////////////////////////
   //This could be a user-setting in local storage, but for now, it's hard-coded.
@@ -153,22 +60,6 @@ export const TrackOptions: FC = () => {
       ...prevState,
       [layoutKey]: layout
     }))
-  }
-  //////////////////////////////////////////
-  const onChangeHelperTrack = ({
-    newValue,
-    layoutDataSingleId: id,
-    key
-  }: OnChangeHelperArgsType) => {
-    if (!id) return
-    const refetch = false
-    update.track(
-      {
-        id: id as FileItemId,
-        [key]: newValue
-      },
-      refetch
-    )
   }
   //////////////////////////////////////////
   const onChangeHelper = ({
@@ -286,6 +177,105 @@ export const TrackOptions: FC = () => {
   }
 
   //////////////////////////////////////////
+  function isItemsFullRanges(obj: any): obj is ItemsFullRanges {
+    return obj && obj.hasOwnProperty('id')
+  }
+  function isItemsArtListTog(obj: any): obj is ItemsArtListTog {
+    return obj && obj.hasOwnProperty('id')
+  }
+  function isItemsArtListTap(obj: any): obj is ItemsArtListTap {
+    return obj && obj.hasOwnProperty('id')
+  }
+  function isItemsArtLayers(obj: any): obj is ItemsArtLayers {
+    return obj && obj.hasOwnProperty('id')
+  }
+  function isItemsFadList(obj: any): obj is ItemsFadList {
+    return obj && obj.hasOwnProperty('id')
+  }
+
+  function safeGet<T extends object, K extends keyof T>(obj: T, key: K): T[K] {
+    if (key in obj) {
+      return obj[key]
+    }
+    return undefined as any
+  }
+
+  function getLayoutData<T extends keyof FullTrackCounts>(
+    layoutDataSingle: layoutDataSingle,
+    key: LayoutDataSingleHelper<T>
+  ) {
+    if (isItemsFullRanges(layoutDataSingle)) {
+      return safeGet(layoutDataSingle, key as keyof ItemsFullRanges)
+    } else if (isItemsArtListTog(layoutDataSingle)) {
+      return safeGet(layoutDataSingle, key as keyof ItemsArtListTog)
+    } else if (isItemsArtListTap(layoutDataSingle)) {
+      return safeGet(layoutDataSingle, key as keyof ItemsArtListTap)
+    } else if (isItemsArtLayers(layoutDataSingle)) {
+      return safeGet(layoutDataSingle, key as keyof ItemsArtLayers)
+    } else if (isItemsFadList(layoutDataSingle)) {
+      return safeGet(layoutDataSingle, key as keyof ItemsFadList)
+    }
+  }
+  //////////////////////////////////////////
+  // This logic is used to disable individual components in the artTap, artTog, and fadList tables.
+
+  //if (artTap) {
+  //  V1 = 'the ON value relates to the CODE itself (i.e. ON = CC18)'
+  //  V2 = 'the ON value relates to the CODE's second Value (i.e. CODE = C#3, ON = Velocity 20)'
+  //}
+  //if (artTog) {
+  //  V1 = 'the ON and OFF values relate to the CODE itself (i.e. ON = CC18, OFF = CC35)'
+  //  V2 = 'the ON and OFF values relate to the CODE's second Value (i.e. CODE = C#3, ON = Velocity 20, OFF = Velocity 21)'
+  //}
+  // if (fad) {
+  //  V1 = 'the DEFAULT value relates to the CODE itself (i.e. DEFAULT = CC11)'
+  //  V2 = 'the DEFAULT value relates to the CODE's second Value (i.e. CODE = C#3, DEFAULT = Velocity 20)'
+  //}
+
+  const isSubKeyInputDisabled = (
+    label: keyof FullTrackCounts,
+    item: layoutDataSingle,
+    subKey: TrackOptionsTableKeys<
+      keyof FullTrackCounts
+    >[number]['keys'][number]['key']
+  ) => {
+    const artTogLockedHelper =
+      label === 'art_list_tog' &&
+      isItemsArtListTog(item) &&
+      item.change_type === 'Value 1' &&
+      subKey === 'code'
+
+    const artTapLockedHelper =
+      label === 'art_list_tap' &&
+      isItemsArtListTap(item) &&
+      ((subKey === 'on' && item.change_type === 'Value 1') ||
+        (subKey === 'default' && item.default))
+
+    const artLayerLockedHelper =
+      label === 'art_layers' &&
+      isItemsArtLayers(item) &&
+      item.change_type === 'Value 1' &&
+      subKey === 'code'
+
+    const fadLockedHelper =
+      label === 'fad_list' &&
+      isItemsFadList(item) &&
+      item.change_type === 'Value 1' &&
+      subKey === 'code'
+
+    if (
+      artTogLockedHelper ||
+      artTapLockedHelper ||
+      artLayerLockedHelper ||
+      fadLockedHelper
+    ) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  //////////////////////////////////////////
   const trackTh = `border-[1.5px]
   border-b-transparent
   border-zinc-100
@@ -305,7 +295,6 @@ export const TrackOptions: FC = () => {
   //const notesUnselectedLocked = locked && selected_sub_item_id !== notesId
   //const notesUnselectedUnlocked = !locked && selected_sub_item_id !== notesId
 
-  //////////////////////////////////////////
   return (
     <div className='h-full w-1/2 overflow-y-scroll'>
       <h1
@@ -326,28 +315,25 @@ export const TrackOptions: FC = () => {
           //        ? 'hover:bg-zinc-500 hover:text-zinc-50 dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
           //        : ''
         )}>
-        <InputTypeSelector
-          keySingle={
-            {
-              className: null,
-              show: false,
-              key: 'notes',
-              input: 'text-rich',
-              selectArray: undefined,
-              label: undefined
-            } as unknown as TrackListTableKeys['keys'][number]
-          }
-          onChangeHelper={onChangeHelperTrack}
-          selectedItem={selectedItem as FullTrackForExport}
+        <InputTextRich
+          id={`${selectedItem?.id}_notes`}
+          codeFullLocked={selectedItem?.locked}
+          defaultValue={selectedItem?.notes}
+          onChangeFunction={(event: ChangeEventHelper) => {
+            if (!selectedItem?.id) return
+            const refetch = false
+            update.track(
+              {
+                id: selectedItem?.id,
+                notes: event.target.value
+              },
+              refetch
+            )
+          }}
         />
       </div>
       {TrackOptionsTableKeys.map((layoutConfig) => {
-        let layoutDataArray:
-          | ItemsFullRanges[]
-          | ItemsArtListTog[]
-          | ItemsArtListTap[]
-          | ItemsArtLayers[]
-          | ItemsFadList[] = []
+        let layoutDataArray: layoutDataArray = []
 
         if (layoutConfig.label === 'full_ranges') {
           layoutDataArray = selectedItem?.full_ranges!
@@ -453,32 +439,89 @@ export const TrackOptions: FC = () => {
                                   ? 'bg-zinc-200 hover:bg-zinc-500 hover:text-zinc-50 dark:bg-zinc-600 dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
                                   : ''
                         )}>
-                        {layoutConfig.keys.map((key) => {
-                          if (!key.show) return
+                        {layoutConfig.keys.map((subKey) => {
+                          if (!subKey.show) return
+                          //const artLayerOrRangeOptions =
+                          //  layoutConfig.label === 'art_list_tap' ||
+                          //  layoutConfig.label === 'art_list_tog'
+
+                          //const layersOptions =
+                          //  key.key === 'art_layers' && artLayerOrRangeOptions
+
+                          //const stringListFullArtLayerIds = JSON.stringify(
+                          //  selectedItem?.art_layers.map(
+                          //    (artLayer: ItemsArtLayers) => artLayer.id
+                          //  )
+                          //)
+
+                          //const rangeOptions =
+                          //  key.key === 'ranges' && artLayerOrRangeOptions
+
+                          //const stringListOfFullRangeIds = JSON.stringify(
+                          //  selectedItem?.full_ranges.map(
+                          //    (fullRange: Ite msFullRanges) => fullRange.id
+                          //  )
+                          //)
+
+                          const safeValue = getLayoutData(
+                            layoutDataSingle,
+                            subKey.key
+                          )
+
+                          const inputPropsHelper: InputComponentProps = {
+                            id: `${layoutDataSingle.id}_${subKey.key}`,
+                            codeFullLocked: selectedItem?.locked,
+                            codeDisabled: isSubKeyInputDisabled(
+                              layoutConfig.label,
+                              layoutDataSingle,
+                              subKey.key
+                            ),
+                            defaultValue: safeValue,
+                            options: subKey.selectArray,
+                            textTypeValidator: typeof safeValue,
+                            onChangeFunction: (event: ChangeEventHelper) => {
+                              onChangeHelper({
+                                newValue: event.target.value,
+                                layoutDataSingleId: layoutDataSingle.id,
+                                key: subKey.key,
+                                label: layoutConfig.label
+                              })
+                            }
+                          }
                           return (
                             <td
-                              key={key.key}
+                              key={subKey.key}
                               title={layoutDataSingleId}
                               className={'p-0.5'}>
-                              <InputTypeSelector
-                                keySingle={key}
-                                artTogIndividualComponentLocked={
-                                  artTogIndividualComponentLocked
-                                }
-                                artTapIndividualComponentLocked={
-                                  artTapIndividualComponentLocked
-                                }
-                                artLayerIndividualComponentLocked={
-                                  artLayerIndividualComponentLocked
-                                }
-                                fadIndividualComponentLocked={
-                                  fadIndividualComponentLocked
-                                }
-                                layoutConfigLabel={layoutConfig.label}
-                                layoutDataSingle={layoutDataSingle}
-                                onChangeHelper={onChangeHelper}
-                                selectedItem={selectedItem!}
-                              />
+                              {!subKey.input && subKey.key === 'id' && (
+                                <p
+                                  id={`${layoutDataSingle.id}_${subKey.key}`}
+                                  title={layoutDataSingle.id}
+                                  className='cursor-default p-1 transition-all duration-200'>
+                                  {`${layoutDataSingle.id.split('_')[2]}_${parseInt(layoutDataSingle.id.split('_')[3]!)}`}
+                                </p>
+                              )}
+                              {subKey.input === 'select-multiple' && (
+                                <InputSelectMultiple {...inputPropsHelper} />
+                              )}
+                              {subKey.input === 'select' && (
+                                <InputSelectSingle {...inputPropsHelper} />
+                              )}
+                              {subKey.input === 'checkbox-switch' && (
+                                <InputCheckBoxSwitch {...inputPropsHelper} />
+                              )}
+                              {subKey.input === 'checkbox' && (
+                                <InputCheckBox {...inputPropsHelper} />
+                              )}
+                              {subKey.input === 'color-picker' && (
+                                <InputColorPicker {...inputPropsHelper} />
+                              )}
+                              {subKey.input === 'text' && (
+                                <InputText {...inputPropsHelper} />
+                              )}
+                              {subKey.input === 'text-rich' && (
+                                <InputTextRich {...inputPropsHelper} />
+                              )}
                             </td>
                           )
                         })}
@@ -523,31 +566,90 @@ export const TrackOptions: FC = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {layoutConfig.keys.map((key) => {
-                          if (!key.show) return
+                        {layoutConfig.keys.map((subKey) => {
+                          if (!subKey.show) return
+                          //const artLayerOrRangeOptions =
+                          //  layoutConfig.label === 'art_list_tap' ||
+                          //  layoutConfig.label === 'art_list_tog'
 
+                          //const layersOptions =
+                          //  key.key === 'art_layers' && artLayerOrRangeOptions
+
+                          //const stringListFullArtLayerIds = JSON.stringify(
+                          //  selectedItem?.art_layers.map(
+                          //    (artLayer: ItemsArtLayers) => artLayer.id
+                          //  )
+                          //)
+
+                          //const rangeOptions =
+                          //  key.key === 'ranges' && artLayerOrRangeOptions
+
+                          //const stringListOfFullRangeIds = JSON.stringify(
+                          //  selectedItem?.full_ranges.map(
+                          //    (fullRange: Ite msFullRanges) => fullRange.id
+                          //  )
+                          //)
+
+                          const safeValue = getLayoutData(
+                            layoutDataSingle,
+                            subKey.key
+                          )
+
+                          const inputPropsHelper: InputComponentProps = {
+                            id: `${layoutDataSingle.id}_${subKey.key}`,
+                            codeFullLocked: selectedItem?.locked,
+                            codeDisabled: isSubKeyInputDisabled(
+                              layoutConfig.label,
+                              layoutDataSingle,
+                              subKey.key
+                            ),
+                            defaultValue: safeValue,
+                            options: subKey.selectArray,
+                            textTypeValidator: typeof safeValue,
+                            onChangeFunction: (event: ChangeEventHelper) => {
+                              onChangeHelper({
+                                newValue: event.target.value,
+                                layoutDataSingleId: layoutDataSingle.id,
+                                key: subKey.key,
+                                label: layoutConfig.label
+                              })
+                            }
+                          }
                           return (
                             <tr
-                              key={key.key}
+                              key={subKey.key}
                               className='bg-zinc-300 dark:bg-zinc-600'>
-                              <td className={'p-0.5'}>{key.label}</td>
+                              <td className={'p-0.5'}>{subKey.label}</td>
                               <td className={'p-0.5'}>
-                                <InputTypeSelector
-                                  keySingle={key}
-                                  artTapIndividualComponentLocked={
-                                    artTapIndividualComponentLocked
-                                  }
-                                  artTogIndividualComponentLocked={
-                                    artTogIndividualComponentLocked
-                                  }
-                                  fadIndividualComponentLocked={
-                                    fadIndividualComponentLocked
-                                  }
-                                  layoutConfigLabel={layoutConfig.label}
-                                  layoutDataSingle={layoutDataSingle}
-                                  onChangeHelper={onChangeHelper}
-                                  selectedItem={selectedItem!}
-                                />
+                                {!subKey.input && subKey.key === 'id' && (
+                                  <p
+                                    id={`${layoutDataSingle.id}_${subKey.key}`}
+                                    title={layoutDataSingle.id}
+                                    className='cursor-default p-1 transition-all duration-200'>
+                                    {`${layoutDataSingle.id.split('_')[2]}_${parseInt(layoutDataSingle.id.split('_')[3]!)}`}
+                                  </p>
+                                )}
+                                {subKey.input === 'select-multiple' && (
+                                  <InputSelectMultiple {...inputPropsHelper} />
+                                )}
+                                {subKey.input === 'select' && (
+                                  <InputSelectSingle {...inputPropsHelper} />
+                                )}
+                                {subKey.input === 'checkbox-switch' && (
+                                  <InputCheckBoxSwitch {...inputPropsHelper} />
+                                )}
+                                {subKey.input === 'checkbox' && (
+                                  <InputCheckBox {...inputPropsHelper} />
+                                )}
+                                {subKey.input === 'color-picker' && (
+                                  <InputColorPicker {...inputPropsHelper} />
+                                )}
+                                {subKey.input === 'text' && (
+                                  <InputText {...inputPropsHelper} />
+                                )}
+                                {subKey.input === 'text-rich' && (
+                                  <InputTextRich {...inputPropsHelper} />
+                                )}
                               </td>
                             </tr>
                           )
