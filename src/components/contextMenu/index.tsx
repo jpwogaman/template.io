@@ -6,9 +6,19 @@ import {
   useMutations,
   useSelectedItem,
   useContextMenu,
-  type FileItemId,
   type SubItemId
 } from '@/components/context'
+
+import {
+  HiOutlineArrowUp,
+  HiOutlineArrowDown,
+  HiOutlinePlus,
+  HiOutlineClipboardDocumentList,
+  HiOutlineDocumentDuplicate,
+  HiOutlineClipboardDocumentCheck,
+  HiOutlineXMark,
+  HiOutlineArrowUturnLeft
+} from 'react-icons/hi2'
 
 export const ContextMenu: FC = () => {
   const { contextMenuId, isContextMenuOpen, contextMenuPosition, close } =
@@ -47,7 +57,7 @@ export const ContextMenu: FC = () => {
           action: null
         },
         label: 'Move Item Up',
-        icon1: 'fa-arrow-up',
+        icon1: <HiOutlineArrowUp className='h-3 w-3' />,
         icon2: null,
         shortcut: null
       },
@@ -68,7 +78,7 @@ export const ContextMenu: FC = () => {
           action: null
         },
         label: 'Move Item Down',
-        icon1: 'fa-arrow-down',
+        icon1: <HiOutlineArrowDown className='h-3 w-3' />,
         icon2: null,
         shortcut: null
       }
@@ -91,8 +101,8 @@ export const ContextMenu: FC = () => {
           action: null
         },
         label: 'Add Item Above (ctrl+shift+ArrowUp)',
-        icon1: 'fa-plus',
-        icon2: 'fa-arrow-up',
+        icon1: <HiOutlinePlus className='h-3 w-3' />,
+        icon2: <HiOutlineArrowUp className='h-3 w-3' />,
         shortcut: 'CTRL_SHIFT_ARROWUP'
       },
       addItemAtEnd: {
@@ -131,8 +141,8 @@ export const ContextMenu: FC = () => {
             })
         },
         label: 'Add Item At End (ctrl+shift+ArrowDown)',
-        icon1: 'fa-plus',
-        icon2: 'fa-arrow-down',
+        icon1: <HiOutlinePlus className='h-3 w-3' />,
+        icon2: <HiOutlineArrowDown className='h-3 w-3' />,
         shortcut: 'CTRL_SHIFT_ARROWDOWN'
       }
     },
@@ -154,8 +164,8 @@ export const ContextMenu: FC = () => {
           action: null
         },
         label: 'Duplicate Item Above (ctrl+shift+alt+ArrowUp)',
-        icon1: 'fa-copy',
-        icon2: 'fa-arrow-up',
+        icon1: <HiOutlineDocumentDuplicate className='h-3 w-3' />,
+        icon2: <HiOutlineArrowUp className='h-3 w-3' />,
         shortcut: 'CTRL_SHIFT_ALT_ARROWUP'
       },
       duplicateItemBelow: {
@@ -175,8 +185,8 @@ export const ContextMenu: FC = () => {
           action: null
         },
         label: 'Duplicate Item Below (ctrl+shift+alt+ArrowDown)',
-        icon1: 'fa-copy',
-        icon2: 'fa-arrow-down',
+        icon1: <HiOutlineDocumentDuplicate className='h-3 w-3' />,
+        icon2: <HiOutlineArrowDown className='h-3 w-3' />,
         shortcut: 'CTRL_SHIFT_ALT_ARROWDOWN'
       }
     },
@@ -198,7 +208,7 @@ export const ContextMenu: FC = () => {
           action: () => setCopiedSubItemId(contextMenuId as SubItemId)
         },
         label: 'Copy Item Settings',
-        icon1: 'fa-copy',
+        icon1: <HiOutlineClipboardDocumentList className='h-3 w-3' />,
         icon2: null,
         shortcut: null
       },
@@ -219,7 +229,7 @@ export const ContextMenu: FC = () => {
           action: null
         },
         label: 'Paste Item Settings',
-        icon1: 'fa-paste',
+        icon1: <HiOutlineClipboardDocumentCheck className='h-3 w-3' />,
         icon2: null,
         shortcut: null
       }
@@ -244,7 +254,7 @@ export const ContextMenu: FC = () => {
           action: null
         },
         label: 'Clear Item',
-        icon1: 'fa-eraser',
+        icon1: <HiOutlineArrowUturnLeft className='h-3 w-3' />,
         icon2: null,
         shortcut: null
       },
@@ -289,7 +299,7 @@ export const ContextMenu: FC = () => {
             })
         },
         label: 'Delete Item (ctrl+del)',
-        icon1: 'fa-xmark',
+        icon1: <HiOutlineXMark className='h-3 w-3' />,
         icon2: null,
         shortcut: 'CTRL_DELETE'
       }
@@ -305,10 +315,10 @@ export const ContextMenu: FC = () => {
     contextMenuId?.includes('FL_')
 
   return (
-    <div className='absolute left-0 top-0 z-[100]'>
+    <div className='absolute top-0 left-0 z-100'>
       <div
         className={tw(
-          'absolute z-[100] rounded-sm border border-zinc-200 bg-white shadow-md dark:bg-zinc-900',
+          'absolute z-100 rounded-xs border border-zinc-200 bg-white shadow-md dark:bg-zinc-900',
           'min-h-[15rem] min-w-[10rem] p-4',
           'border border-gray-200 text-xs dark:border-zinc-800'
         )}
@@ -361,8 +371,8 @@ export const ContextMenu: FC = () => {
               className={tw(
                 'h-full w-1/2',
                 'hover:cursor-text',
-                'rounded-sm bg-inherit p-1 outline-none',
-                'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-600'
+                'rounded-xs bg-inherit p-1 outline-hidden',
+                'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:ring-4 focus-visible:ring-indigo-600 focus-visible:outline-hidden'
               )}
             />
           </div>
@@ -458,11 +468,11 @@ export const ContextMenu: FC = () => {
                     }}
                     className={tw(
                       !action ? 'opacity-30' : '',
-                      'flex items-end gap-2 whitespace-nowrap px-1 py-0.5 hover:bg-zinc-600'
+                      'flex items-end gap-2 px-1 py-0.5 whitespace-nowrap hover:bg-zinc-600'
                     )}>
                     <p>{contextMenuLabel}</p>
-                    <i className={`fa-solid ${icon1}`} />
-                    {icon2 && <i className={`fa-solid ${icon2}`} />}
+                    {icon1}
+                    {icon2}
                   </button>
                 )
               })}

@@ -29,8 +29,8 @@ export const InputSelectSingle: FC<InputComponentProps> = ({
       value={value}
       onChange={valChange}
       className={tw(
-        'w-full overflow-scroll rounded-sm bg-inherit p-1 transition-all duration-200',
-        'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-600',
+        'w-full overflow-scroll rounded-xs bg-inherit p-1 transition-all duration-200',
+        'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:outline-hidden focus-visible:ring-4 focus-visible:ring-indigo-600',
         codeFullLocked || codeDisabled
           ? 'cursor-not-allowed text-gray-400'
           : 'cursor-pointer'

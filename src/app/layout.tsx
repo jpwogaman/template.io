@@ -23,7 +23,7 @@ export default function RootLayout({
       lang='en'
       suppressHydrationWarning
       className={allFontsClassName}>
-      <body className='h-screen overflow-x-hidden'>
+      <body>
         <SelectedItemProvider>
           <MutationProvider>
             <KeyboardProvider>
@@ -33,8 +33,9 @@ export default function RootLayout({
                     <ThemeProvider
                       storageKey='theme'
                       attribute='class'
-                      defaultTheme='light'
-                      enableColorScheme>
+                      defaultTheme='dark'
+                      enableColorScheme
+                      themes={['dark', 'light']}>
                       <NavBar />
                       <Modal />
                       <ContextMenu />

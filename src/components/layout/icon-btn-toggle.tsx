@@ -41,7 +41,7 @@ export const IconBtnToggle: FC<IconBtnToggleProps> = ({
   return (
     <button
       className={tw(
-        'rounded-sm p-1 outline-none transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-600',
+        'rounded-xs p-1 outline-hidden transition-all duration-200 focus-visible:outline-hidden focus-visible:ring-4 focus-visible:ring-indigo-600',
         classes
       )}
       title={isToggleOn ? titleA : titleB}

@@ -1,6 +1,7 @@
 'use client'
 import React, { type FC } from 'react'
-import { IconBtnToggle } from '@/components/layout/icon-btn-toggle'
+import { HiOutlineLockClosed, HiOutlineLockOpen } from 'react-icons/hi2'
+import { FaArrowDown19 } from 'react-icons/fa6'
 import tw from '@/components/utils/tw'
 import { TrackListTableKeys } from '../utils/trackListTableKeys'
 import {
@@ -27,7 +28,7 @@ import {
 
 export const TrackList: FC = () => {
   const { setIsContextMenuOpen, setContextMenuId } = useContextMenu()
-  const { data, update } = useMutations()
+  const { data, update, renumber } = useMutations()
   const { settings, updateSettings } = useSelectedItem()
   const { selected_item_id } = settings
 
@@ -46,28 +47,25 @@ export const TrackList: FC = () => {
     )
   }
 
-  const trackTh = `border-[1.5px]
-  border-b-transparent
-  border-zinc-100
-  dark:border-zinc-400
-  bg-zinc-200
-  dark:bg-zinc-600
-  font-bold
-  z-50
-  dark:font-normal
-  p-1
-  sticky
-  top-0
-  `
   return (
     <div className='h-full w-1/2 overflow-y-scroll'>
       <table className='w-full table-fixed border-separate border-spacing-0 text-left text-xs'>
         <thead>
           <tr>
             {/* COLOR PICKER HEAD */}
-            <td className={tw(trackTh, 'sticky z-50 w-[20px]')} />
+            <td
+              className={tw(
+                'font-codeBold dark:font-code sticky top-0 z-50 border-[1.5px] border-zinc-100 border-b-transparent bg-zinc-200 px-1 dark:border-zinc-400 dark:bg-zinc-600',
+                'sticky z-50 w-[20px]'
+              )}
+            />
             {/* LOCK HEAD */}
-            <td className={tw(trackTh, 'sticky z-50 w-[25px]')} />
+            <td
+              className={tw(
+                'font-codeBold dark:font-code sticky top-0 z-50 border-[1.5px] border-zinc-100 border-b-transparent bg-zinc-200 px-1 dark:border-zinc-400 dark:bg-zinc-600',
+                'sticky z-50 w-[25px]'
+              )}
+            />
             {/* OTHER HEADS */}
             {TrackListTableKeys.keys.map((keyActual) => {
               const { key, show, className, label } = keyActual
@@ -76,15 +74,24 @@ export const TrackList: FC = () => {
               return (
                 <td
                   key={key}
-                  className={tw(trackTh, 'sticky z-50', className ?? '')}
+                  className={tw(
+                    'font-codeBold dark:font-code sticky top-0 z-50 border-[1.5px] border-zinc-100 border-b-transparent bg-zinc-200 px-1 dark:border-zinc-400 dark:bg-zinc-600',
+                    'sticky z-50',
+                    className ?? ''
+                  )}
                   title={key}>
                   {key === 'id' && (
-                    <div className='flex gap-1'>
+                    <div className='flex items-center'>
                       <p>{label}</p>
                       <button
-                        //onClick={renumberItems}
-                        title={`Renumber ${TrackListTableKeys.label}`}>
-                        <i className='fa-solid fa-arrow-down-1-9' />
+                        type='button'
+                        className={tw(
+                          'cursor-pointer text-zinc-200 transition-colors duration-300',
+                          'outline-hidden focus-visible:ring-4 focus-visible:ring-indigo-500 focus-visible:outline-hidden focus-visible:ring-inset'
+                        )}
+                        title='Renumber Tracks'
+                        onClick={() => renumber.allTracks()}>
+                        <FaArrowDown19 className='h-4 w-4' />
                       </button>
                     </div>
                   )}{' '}
@@ -93,7 +100,13 @@ export const TrackList: FC = () => {
               )
             })}
             {/* ART COUNT HEAD */}
-            <td className={tw(trackTh, 'sticky z-50 w-[5%]')}>Arts.</td>
+            <td
+              className={tw(
+                'font-codeBold dark:font-code sticky top-0 z-50 border-[1.5px] border-zinc-100 border-b-transparent bg-zinc-200 px-1 dark:border-zinc-400 dark:bg-zinc-600',
+                'sticky z-50 w-[5%]'
+              )}>
+              Arts.
+            </td>
           </tr>
         </thead>
         <tbody>
@@ -161,36 +174,37 @@ export const TrackList: FC = () => {
                 {/* LOCK CELL */}
                 <td
                   id={id + '_lock_' + 'cell'}
-                  className='px-1 py-0.5 text-center transition-all duration-200'>
-                  <IconBtnToggle
-                    classes={''}
-                    titleA={id + '_locked_currentValue: ' + locked}
-                    titleB={id + '_locked_currentValue: ' + locked}
-                    id={id + '_lock_' + 'button'}
-                    a='fa-solid fa-lock-open'
-                    b='fa-solid fa-lock'
-                    defaultIcon={locked ? 'b' : 'a'}
-                    onToggleA={() => {
+                  className='text-center transition-all duration-200'>
+                  <button
+                    type='button'
+                    className={tw(
+                      'cursor-pointer',
+                      'rounded-sm p-2 outline-none focus-visible:ring-4 focus-visible:ring-indigo-500 focus-visible:outline-hidden focus-visible:ring-inset'
+                    )}
+                    onClick={() => {
                       const refetch = true
                       update.track(
                         {
                           id: id,
-                          locked: true
+                          locked: !locked
                         },
                         refetch
                       )
-                    }}
-                    onToggleB={() => {
-                      const refetch = true
-                      update.track(
-                        {
-                          id: id,
-                          locked: false
-                        },
-                        refetch
-                      )
-                    }}
-                  />
+                    }}>
+                    <span className='sr-only'>lock track</span>
+                    {locked && (
+                      <HiOutlineLockClosed
+                        className='h-4 w-4'
+                        aria-hidden='true'
+                      />
+                    )}
+                    {!locked && (
+                      <HiOutlineLockOpen
+                        className='h-4 w-4'
+                        aria-hidden='true'
+                      />
+                    )}
+                  </button>
                 </td>
                 {/* OTHER CELLS */}
                 {TrackListTableKeys.keys.map((keyActual) => {

@@ -27,7 +27,7 @@ const Backdrop = ({ children, onClick }: BackdropProps) => {
       strict>
       <m.div
         onClick={onClick}
-        className='absolute left-0 top-0 z-[100] flex h-screen w-full items-center justify-center overflow-y-hidden bg-black bg-opacity-60'
+        className='absolute left-0 top-0 z-100 flex h-screen w-full items-center justify-center overflow-y-hidden bg-black bg-opacity-60'
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}>
@@ -202,8 +202,8 @@ export const Modal = () => {
                                   className={tw(
                                     'h-full w-full',
                                     'hover:cursor-text',
-                                    'rounded-sm bg-inherit p-1 outline-none',
-                                    'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-600'
+                                    'rounded-xs bg-inherit p-1 outline-hidden',
+                                    'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:outline-hidden focus-visible:ring-4 focus-visible:ring-indigo-600'
                                   )}
                                 />
                               )}
@@ -222,12 +222,12 @@ export const Modal = () => {
             onClick={close}
             type='button'
             className={tw(
-              'relative bottom-6 mx-auto mb-0 mt-auto flex min-h-[48px] cursor-pointer items-center rounded px-12 py-0 text-lg text-white',
+              'relative bottom-6 mx-auto mb-0 mt-auto flex min-h-[48px] cursor-pointer items-center rounded-sm px-12 py-0 text-lg text-white',
               'bg-indigo-500',
               'sunrise:bg-red-800',
               'hover:bg-indigo-600',
               'sunrise:hover:bg-red-900',
-              'focus-visible:bg-indigo-600 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-black',
+              'focus-visible:bg-indigo-600 focus-visible:outline-hidden focus-visible:ring-4 focus-visible:ring-black',
               'sunrise:focus-visible:ring-red-900'
             )}>
             Close

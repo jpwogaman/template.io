@@ -34,8 +34,8 @@ export const InputText: FC<InputComponentProps> = ({
         codeFullLocked || codeDisabled
           ? 'text-gray-400 hover:cursor-not-allowed hover:placeholder-zinc-400 dark:hover:placeholder-zinc-500'
           : 'hover:cursor-text hover:placeholder-zinc-200 dark:hover:placeholder-zinc-600',
-        'w-full rounded-sm bg-inherit p-1 placeholder-zinc-400 outline-none transition-all duration-200 dark:placeholder-zinc-500',
-        'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-600'
+        'w-full rounded-xs bg-inherit p-1 placeholder-zinc-400 outline-hidden transition-all duration-200 dark:placeholder-zinc-500',
+        'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:ring-4 focus-visible:ring-indigo-600 focus-visible:outline-hidden'
       )}
     />
   )

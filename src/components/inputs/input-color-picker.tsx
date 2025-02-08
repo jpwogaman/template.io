@@ -53,10 +53,10 @@ export const InputColorPicker: FC<InputComponentProps> = ({
         className='relative flex h-full items-center'>
         <div
           className={tw(
-            'h-[22px] w-full rounded-sm transition-all duration-200',
+            'h-[22px] w-full rounded-xs transition-all duration-200',
             codeFullLocked ? 'cursor-not-allowed' : 'cursor-pointer',
             isFocused
-              ? 'outline-none ring-4 ring-indigo-600'
+              ? 'outline-hidden ring-4 ring-indigo-600'
               : 'ring-4 ring-transparent'
           )}
         />

@@ -1,111 +1,97 @@
-@import '@fortawesome/fontawesome-free/css/all.min.css';
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-*,
-*::after,
-*::before {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  scroll-behavior: smooth;
+@custom-variant dark (&:where(.dark, .dark *));
+@theme {
+  --font-caviar: caviar_dreamsregular;
+  --font-caviarBold: caviar_dreamsbold;
+  --font-caviarItalic: caviar_dreamsitalic;
+  --font-caviarBoldItalic: caviar_dreamsbold_italic;
+  --font-code: camingocoderegular;
+  --font-codeItalic: camingocodeitalic;
+  --font-codeBold: camingocodebold;
+  --font-codeBoldItalic: camingocodebold_italic;
+
+  --color-main-sand: #cdbd9a;
+  --color-main-gray: #c1c1c1;
 }
 
-body {
+@layer base {
+  *,
+  *::after,
+  *::before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+  }
+
+  body {
     @apply bg-main 
   text-main 
-  min-h-[100svh] 
   transition-colors
-  font-mono 
+  font-code 
+  h-screen 
+  overflow-hidden
   duration-200;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    opacity: 1;
+  }
+
+  details[open] summary ~ * {
+    animation: sweep 1s ease-in-out;
+  }
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
-.bg-main {
+@utility bg-main {
   @apply bg-zinc-100 
 	dark:bg-zinc-800;
 }
 
-.text-main {
+@utility text-main {
   @apply text-zinc-900 
 	dark:text-zinc-200;
 }
 
-.bg-main-invert {
+@utility bg-main-invert {
   @apply bg-zinc-800 
 	dark:bg-zinc-100;
 }
 
-.text-main-invert {
+@utility text-main-invert {
   @apply text-zinc-200 
 	dark:text-zinc-900;
 }
 
-.customColorPickerContainer .react-colorful__saturation-pointer,
-.customColorPickerContainer .react-colorful__hue-pointer,
-.customColorPickerContainer .react-colorful__alpha-pointer {
-  @apply h-[16px]
+@layer utilities {
+  .customColorPickerContainer .react-colorful__saturation-pointer,
+  .customColorPickerContainer .react-colorful__hue-pointer,
+  .customColorPickerContainer .react-colorful__alpha-pointer {
+    @apply h-[16px]
 	w-[16px]
 	rounded-full;
-}
+  }
 
-.customColorPickerContainer .react-colorful__hue,
-.customColorPickerContainer .react-colorful__alpha {
-  @apply h-[14px]
+  .customColorPickerContainer .react-colorful__hue,
+  .customColorPickerContainer .react-colorful__alpha {
+    @apply h-[14px]
 	rounded-md;
-}
+  }
 
-.customColorPickerContainer .react-colorful__saturation {
-  @apply mb-2
+  .customColorPickerContainer .react-colorful__saturation {
+    @apply mb-2
 	rounded-lg
 	shadow-none;
-}
+  }
 
-.customColorPickerContainer .react-colorful {
-  @apply h-[100px]
+  .customColorPickerContainer .react-colorful {
+    @apply h-[100px]
 	cursor-pointer;
-}
-
-details[open] summary ~ * {
-  animation: sweep 1s ease-in-out;
-}
-
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button {  
-   opacity: 1;   
-}
-
-@keyframes sweep {
-  0% {
-    opacity: 0;
-    margin-top: -250px;
   }
-  100% {
-    opacity: 1;
-    margin-top: 0px;
-  }
-}
-
-.MSshow {
-  width: 50%;
-  opacity: 1;
-}
-
-.MShide {
-  width: 0%;
-  opacity: 0;
-}
-
-.MSshowTemplateTracks {
-  width: 50%;
-  min-width: 50%;
-}
-
-.MShideTemplateTracks {
-  width: 100%;
-  min-width: 100%;
 }

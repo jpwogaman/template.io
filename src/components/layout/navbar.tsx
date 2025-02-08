@@ -3,12 +3,14 @@
 import { type FC } from 'react'
 import { useTheme } from 'next-themes'
 import { useState, useEffect } from 'react'
-import { IconBtnToggle } from '@/components/layout/icon-btn-toggle'
+import { HiOutlineMoon, HiOutlineSun } from 'react-icons/hi2'
 import { useMutations, useSelectedItem } from '@/components/context'
+import tw from '../utils/tw'
 
 export const NavBar: FC = () => {
   const { copiedItemId, copiedSubItemId } = useSelectedItem()
   const [mounted, setMounted] = useState(false)
+
   const {
     dataLength,
     vepSamplerCount,
@@ -19,6 +21,14 @@ export const NavBar: FC = () => {
 
   const { setTheme, resolvedTheme } = useTheme()
 
+  const themeOrder = ['dark', 'light']
+  const themeIndex = themeOrder.indexOf(resolvedTheme as string)
+  const nextIndex = themeIndex === 1 ? 0 : themeIndex + 1
+
+  const changeTheme = () => {
+    setTheme(themeOrder[nextIndex] as string)
+  }
+
   useEffect(() => {
     setMounted(true)
   }, [])
@@ -27,53 +37,59 @@ export const NavBar: FC = () => {
   }
 
   return (
-    <nav className='container sticky top-0 z-50 max-h-[40px] min-w-full items-center bg-zinc-900'>
-      <ul className='flex justify-between'>
-        <li className='block whitespace-nowrap p-2 pl-5 text-left text-zinc-200'>
+    <nav className='h-[40px] bg-zinc-900 text-zinc-200'>
+      <ul className='flex h-full justify-between'>
+        <li className='flex items-center gap-2 pl-5'>
           <span className='underline underline-offset-4'>
             {dataLength} {dataLength > 1 ? 'Tracks' : 'Track'}
           </span>
-          <span> across </span>
+          <span>across</span>
           <span className='underline underline-offset-4'>
             {vepSamplerCount + nonVepSamplerCount}{' '}
             {vepSamplerCount + nonVepSamplerCount > 1 ? 'Samplers' : 'Sampler'}
           </span>
-          <span> (</span>
+          <span>(</span>
           <span className='underline underline-offset-4'>
             {vepSamplerCount}
           </span>
-          <span> across </span>
+          <span>across</span>
           <span className='underline underline-offset-4'>
             {vepInstanceCount}{' '}
             {vepInstanceCount > 1 ? 'VEP Instances' : 'VEP Instance'}
           </span>
-          <span> and </span>
+          <span>and</span>
           <span className='underline underline-offset-4'>
             {nonVepSamplerCount}
           </span>
-          <span> standalone in DAW)</span>
+          <span>standalone in DAW)</span>
         </li>
-        <li className='block flex gap-2 p-2 pl-5 text-left text-xs text-zinc-200'>
+        <li className='flex items-center gap-2 pl-5 text-left text-sm'>
+          <button className='px-2'>{`Copied Item: ${copiedItemId}`}</button>
+          <button className='px-2'>{`Copied SubItem: ${copiedSubItemId}`}</button>
+        </li>
+        <li className='flex items-center'>
           <button
-            className='border px-2'
-            onClick={() => renumber.allTracks()}>
-            Renumber Tracks
+            type='button'
+            className={tw(
+              'cursor-pointer rounded-lg p-2 text-zinc-200 transition-colors duration-300',
+              'outline-hidden focus-visible:ring-4 focus-visible:ring-indigo-500 focus-visible:outline-hidden focus-visible:ring-inset'
+            )}
+            onClick={changeTheme}>
+            <span className='sr-only'>toggle themes</span>
+            {resolvedTheme === 'dark' && (
+              <HiOutlineMoon
+                className='h-5 w-5'
+                aria-hidden='true'
+                style={{ transform: 'scale(-1,1)', rotate: '-25deg' }}
+              />
+            )}
+            {resolvedTheme === 'light' && (
+              <HiOutlineSun
+                className='h-5 w-5'
+                aria-hidden='true'
+              />
+            )}
           </button>
-          <button className='border px-2'>{`Copied Item: ${copiedItemId}`}</button>
-          <button className='border px-2'>{`Copied SubItem: ${copiedSubItemId}`}</button>
-        </li>
-        <li className='block w-60 cursor-pointer p-2 text-right text-zinc-200'>
-          <IconBtnToggle
-            classes='w-10'
-            titleA='Change to Dark Mode.'
-            titleB='Change to Light Mode.'
-            id='themeChange'
-            a='fa-solid fa-circle-half-stroke fa-rotate-180'
-            b='fa-solid fa-circle-half-stroke'
-            defaultIcon={resolvedTheme === 'light' ? 'a' : 'b'}
-            onToggleA={() => setTheme('dark')}
-            onToggleB={() => setTheme('light')}
-          />
         </li>
       </ul>
     </nav>

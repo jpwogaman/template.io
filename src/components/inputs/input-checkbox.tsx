@@ -32,8 +32,8 @@ export const InputCheckBox: FC<InputComponentProps> = ({
               ? 'cursor-not-allowed bg-zinc-700 checked:bg-zinc-500'
               : 'cursor-pointer bg-zinc-700 checked:bg-zinc-300',
             'border-zinc-500 checked:border-none',
-            'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-600',
-            'peer h-4 w-4 appearance-none rounded-sm border transition-all duration-200 hover:shadow-md'
+            'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:outline-hidden focus-visible:ring-4 focus-visible:ring-indigo-600',
+            'peer h-4 w-4 appearance-none rounded-xs border transition-all duration-200 hover:shadow-md'
           )}
         />
         <span className='pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform text-zinc-600 opacity-0 peer-checked:opacity-100'>

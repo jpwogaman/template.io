@@ -24,7 +24,7 @@ export const TrackListTableKeys: TrackListTableKeys = {
   label: 'Tracks',
   keys: [
     {
-      className: 'w-[5%]',
+      className: 'w-[6%]',
       show: true,
       key: 'id',
       input: undefined,
@@ -40,7 +40,7 @@ export const TrackListTableKeys: TrackListTableKeys = {
       label: undefined
     },
     {
-      className: 'w-[33%]',
+      className: 'w-[32%]',
       show: true,
       key: 'name',
       input: 'text',
