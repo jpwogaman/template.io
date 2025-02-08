@@ -146,11 +146,17 @@ export const itemInitKeyStringOrNumber = ({
       return
     }
     if (id.includes(clearState + '_AT_') && id.includes(key)) {
-      setValue(
-        (
+      if (key === 'art_layers' || key === 'ranges') {
+        setValue(
+          (
+            initItemsArtListTogNoId[key as artTogInitKeys] as unknown as string
+          ).replace('{}', id)
+        )
+      } else {
+        setValue(
           initItemsArtListTogNoId[key as artTogInitKeys] as unknown as string
-        ).replace('{}', id)
-      )
+        )
+      }
     }
   })
   /////
@@ -162,11 +168,17 @@ export const itemInitKeyStringOrNumber = ({
       return
     }
     if (id.includes(clearState + '_AT_') && id.includes(key)) {
-      setValue(
-        (
+      if (key === 'art_layers' || key === 'ranges') {
+        setValue(
+          (
+            initItemsArtListTapNoId[key as artTapInitKeys] as unknown as string
+          ).replace('{}', id)
+        )
+      } else {
+        setValue(
           initItemsArtListTapNoId[key as artTapInitKeys] as unknown as string
-        ).replace('{}', id)
-      )
+        )
+      }
     }
   })
   /////
