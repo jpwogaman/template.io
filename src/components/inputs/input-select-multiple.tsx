@@ -33,7 +33,7 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
     | React.JSX.Element[]
     | string[]
     | number[]
-    | undefined = selectArrays.valNoneList?.array
+    | undefined = selectArrays.valNoneList
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const valChange = (

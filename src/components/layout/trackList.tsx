@@ -202,7 +202,6 @@ export const TrackList: FC = () => {
                     codeFullLocked: item?.locked,
                     defaultValue: item[key],
                     options: selectArray,
-                    textTypeValidator: typeof item[key],
                     onChangeFunction: (event: ChangeEventHelper) => {
                       let typedValue: string | number | boolean =
                         event.target.value

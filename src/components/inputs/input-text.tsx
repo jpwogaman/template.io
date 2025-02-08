@@ -10,23 +10,12 @@ export const InputText: FC<InputComponentProps> = ({
   codeFullLocked,
   defaultValue,
   placeholder,
-  onChangeFunction,
-  textTypeValidator
+  onChangeFunction
 }) => {
-  const [value, setValue] = useState<string | number>(
-    textTypeValidator === 'string'
-      ? (defaultValue as string)
-      : textTypeValidator === 'number'
-        ? (defaultValue as number)
-        : ''
-  )
-  const nameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (textTypeValidator === 'string') {
-      setValue(event.target.value)
-    } else {
-      setValue(parseInt(event.target.value))
-    }
+  const [value, setValue] = useState(defaultValue as string)
 
+  const valChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value)
     onChangeFunction(event)
   }
   ////////
@@ -52,13 +41,13 @@ export const InputText: FC<InputComponentProps> = ({
     <input
       id={id}
       type='text'
-      disabled={codeFullLocked ?? codeDisabled}
+      disabled={codeFullLocked || codeDisabled}
       value={value}
       title={id + '_currentValue: ' + value}
       placeholder={placeholder as string}
-      onChange={nameChange}
+      onChange={valChange}
       className={tw(
-        (codeFullLocked ?? codeDisabled)
+        codeFullLocked || codeDisabled
           ? 'text-gray-400 hover:cursor-not-allowed hover:placeholder-zinc-400 dark:hover:placeholder-zinc-500'
           : 'hover:cursor-text hover:placeholder-zinc-200 dark:hover:placeholder-zinc-600',
         'w-full rounded-sm bg-inherit p-1 placeholder-zinc-400 outline-none transition-all duration-200 dark:placeholder-zinc-500',

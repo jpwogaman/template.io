@@ -104,7 +104,9 @@ export type fadInitKeys = keyof typeof initItemsFadListNoId
 export type itemInitKeyStringOrNumber = {
   id: string
   clearState: FileItemId
-  setValue: Dispatch<SetStateAction<string | number>>
+  setValue:
+    | Dispatch<SetStateAction<string>>
+    | Dispatch<SetStateAction<string | number>>
 }
 
 export const itemInitKeyStringOrNumber = ({

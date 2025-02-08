@@ -10,25 +10,12 @@ export const InputSelectSingle: FC<InputComponentProps> = ({
   codeFullLocked,
   defaultValue,
   options,
-  onChangeFunction,
-  textTypeValidator
+  onChangeFunction
 }) => {
-
-  const [value, setValue] = useState<string | number>(
-    textTypeValidator === 'string'
-      ? (defaultValue as string)
-      : textTypeValidator === 'number'
-        ? (defaultValue as number)
-        : ''
-  )
+  const [value, setValue] = useState(defaultValue as string)
 
   const valChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    if (textTypeValidator === 'string') {
-      setValue(event.target.value)
-    } else {
-      setValue(parseInt(event.target.value))
-    }
-
+    setValue(event.target.value)
     onChangeFunction(event)
   }
   ////////

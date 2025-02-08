@@ -71,6 +71,5 @@ export type InputComponentProps = {
   placeholder?: string | number
   options?: keyof selectArray
   children?: ReactNode
-  textTypeValidator?: string
   onChangeFunction: (event: ChangeEventHelper) => void
 }

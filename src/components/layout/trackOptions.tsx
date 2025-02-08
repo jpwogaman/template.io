@@ -373,276 +373,133 @@ export const TrackOptions: FC = () => {
                 }
               />
             </div>
-            {table && (
-              <table
-                id={'table_' + layoutConfig.label}
-                className='w-full table-fixed border-separate border-spacing-0 text-left text-xs'>
-                <thead>
-                  <tr>
-                    {layoutConfig.keys.map((key) => {
-                      if (!key.show) return
-                      return (
-                        <td
-                          key={key.key}
-                          title={key.key}
-                          className={tw(trackTh, key.className ?? '')}>
-                          {key.label}
-                        </td>
-                      )
-                    })}
-                  </tr>
-                </thead>
-                <tbody>
-                  {layoutDataArray?.map((layoutDataSingle) => {
-                    const layoutDataSingleId = layoutDataSingle.id
-
-                    const selectedLocked =
-                      locked && selected_sub_item_id === layoutDataSingleId
-                    const selectedUnlocked =
-                      !locked && selected_sub_item_id === layoutDataSingleId
-                    const unselectedLocked =
-                      locked && selected_sub_item_id !== layoutDataSingleId
-                    const unselectedUnlocked =
-                      !locked && selected_sub_item_id !== layoutDataSingleId
-
-                    return (
-                      <tr
-                        onClick={() =>
-                          updateSettings({
-                            key: 'selected_sub_item_id',
-                            value: layoutDataSingleId
-                          })
-                        }
-                        onKeyUpCapture={() =>
-                          updateSettings({
-                            key: 'selected_sub_item_id',
-                            value: layoutDataSingleId
-                          })
-                        }
-                        onContextMenu={() => {
-                          setIsContextMenuOpen(true)
-                          setContextMenuId(
-                            layoutDataSingleId as contextMenuType
-                          )
-                        }}
-                        key={layoutDataSingleId}
-                        className={tw(
-                          selectedUnlocked
-                            ? 'bg-red-300 hover:bg-red-400 hover:text-zinc-50 dark:bg-red-600 dark:hover:bg-red-400 dark:hover:text-zinc-50'
-                            : selectedLocked
-                              ? 'bg-red-500 hover:bg-red-600 hover:text-zinc-50 dark:bg-red-800 dark:hover:bg-red-500 dark:hover:text-zinc-50'
-                              : unselectedLocked
-                                ? 'bg-zinc-200 hover:bg-zinc-500 hover:text-zinc-50 dark:bg-zinc-600 dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
-                                : unselectedUnlocked
-                                  ? 'bg-zinc-200 hover:bg-zinc-500 hover:text-zinc-50 dark:bg-zinc-600 dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
-                                  : ''
-                        )}>
-                        {layoutConfig.keys.map((subKey) => {
-                          if (!subKey.show) return
-                          //const artLayerOrRangeOptions =
-                          //  layoutConfig.label === 'art_list_tap' ||
-                          //  layoutConfig.label === 'art_list_tog'
-
-                          //const layersOptions =
-                          //  key.key === 'art_layers' && artLayerOrRangeOptions
-
-                          //const stringListFullArtLayerIds = JSON.stringify(
-                          //  selectedItem?.art_layers.map(
-                          //    (artLayer: ItemsArtLayers) => artLayer.id
-                          //  )
-                          //)
-
-                          //const rangeOptions =
-                          //  key.key === 'ranges' && artLayerOrRangeOptions
-
-                          //const stringListOfFullRangeIds = JSON.stringify(
-                          //  selectedItem?.full_ranges.map(
-                          //    (fullRange: Ite msFullRanges) => fullRange.id
-                          //  )
-                          //)
-
-                          const safeValue = getLayoutData(
-                            layoutDataSingle,
-                            subKey.key
-                          )
-
-                          const inputPropsHelper: InputComponentProps = {
-                            id: `${layoutDataSingle.id}_${subKey.key}`,
-                            codeFullLocked: selectedItem?.locked,
-                            codeDisabled: isSubKeyInputDisabled(
-                              layoutConfig.label,
-                              layoutDataSingle,
-                              subKey.key
-                            ),
-                            defaultValue: safeValue,
-                            options: subKey.selectArray,
-                            textTypeValidator: typeof safeValue,
-                            onChangeFunction: (event: ChangeEventHelper) => {
-                              let typedValue: string | number | boolean =
-                                event.target.value
-                              if (typeof safeValue === 'string') {
-                                typedValue = event.target.value
-                              } else if (typeof safeValue === 'number') {
-                                typedValue = parseInt(event.target.value)
-                              } else if (typeof safeValue === 'boolean') {
-                                typedValue = event.target.value === 'true'
-                              }
-                              onChangeHelper({
-                                newValue: typedValue,
-                                layoutDataSingleId: layoutDataSingle.id,
-                                key: subKey.key,
-                                label: layoutConfig.label
-                              })
-                            }
-                          }
-                          return (
-                            <td
-                              key={subKey.key}
-                              title={layoutDataSingleId}
-                              className={'p-0.5'}>
-                              {!subKey.input && subKey.key === 'id' && (
-                                <p
-                                  id={`${layoutDataSingle.id}_${subKey.key}`}
-                                  title={layoutDataSingle.id}
-                                  className='cursor-default p-1 transition-all duration-200'>
-                                  {`${layoutDataSingle.id.split('_')[2]}_${parseInt(layoutDataSingle.id.split('_')[3]!)}`}
-                                </p>
-                              )}
-                              {subKey.input === 'select-multiple' && (
-                                <InputSelectMultiple {...inputPropsHelper} />
-                              )}
-                              {subKey.input === 'select' && (
-                                <InputSelectSingle {...inputPropsHelper} />
-                              )}
-                              {subKey.input === 'checkbox-switch' && (
-                                <InputCheckBoxSwitch {...inputPropsHelper} />
-                              )}
-                              {subKey.input === 'checkbox' && (
-                                <InputCheckBox {...inputPropsHelper} />
-                              )}
-                              {subKey.input === 'color-picker' && (
-                                <InputColorPicker {...inputPropsHelper} />
-                              )}
-                              {subKey.input === 'text' && (
-                                //<p
-                                //  id={`${layoutDataSingle.id}_${subKey.key}`}
-                                //  title={layoutDataSingle.id}
-                                //  className='cursor-default p-1 transition-all duration-200'>
-                                //  {safeValue}
-                                //</p>
-                                <InputText {...inputPropsHelper} />
-                              )}
-                              {subKey.input === 'text-rich' && (
-                                <InputTextRich {...inputPropsHelper} />
-                              )}
-                            </td>
-                          )
-                        })}
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
-            )}
-            {!table && (
-              <div
-                id={'card_' + layoutConfig.label}
-                className='flex gap-1 overflow-x-scroll'>
-                {layoutDataArray?.map((layoutDataSingle) => {
-                  const layoutDataSingleId = layoutDataSingle.id
-                  return (
-                    <table
-                      onClick={() =>
-                        updateSettings({
-                          key: 'selected_sub_item_id',
-                          value: layoutDataSingleId
-                        })
-                      }
-                      onKeyUpCapture={() =>
-                        updateSettings({
-                          key: 'selected_sub_item_id',
-                          value: layoutDataSingleId
-                        })
-                      }
-                      onContextMenu={() => {
-                        setIsContextMenuOpen(true)
-                        setContextMenuId(layoutDataSingleId as contextMenuType)
-                      }}
-                      key={layoutDataSingleId}
-                      className='w-max table-auto border-separate border-spacing-0 text-left text-xs'>
-                      <thead>
-                        <tr>
-                          <td className={tw(trackTh, 'w-1/2 border-r-0')}>
-                            {layoutDataSingleId}
+            {
+              table && (
+                <table
+                  id={'table_' + layoutConfig.label}
+                  className='w-full table-fixed border-separate border-spacing-0 text-left text-xs'>
+                  <thead>
+                    <tr>
+                      {layoutConfig.keys.map((key) => {
+                        if (!key.show) return
+                        return (
+                          <td
+                            key={key.key}
+                            title={key.key}
+                            className={tw(trackTh, key.className ?? '')}>
+                            {key.label}
                           </td>
-                          <td className={tw(trackTh, 'w-1/2 border-l-0')} />
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {layoutConfig.keys.map((subKey) => {
-                          if (!subKey.show) return
-                          //const artLayerOrRangeOptions =
-                          //  layoutConfig.label === 'art_list_tap' ||
-                          //  layoutConfig.label === 'art_list_tog'
+                        )
+                      })}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {layoutDataArray?.map((layoutDataSingle) => {
+                      const layoutDataSingleId = layoutDataSingle.id
 
-                          //const layersOptions =
-                          //  key.key === 'art_layers' && artLayerOrRangeOptions
+                      const selectedLocked =
+                        locked && selected_sub_item_id === layoutDataSingleId
+                      const selectedUnlocked =
+                        !locked && selected_sub_item_id === layoutDataSingleId
+                      const unselectedLocked =
+                        locked && selected_sub_item_id !== layoutDataSingleId
+                      const unselectedUnlocked =
+                        !locked && selected_sub_item_id !== layoutDataSingleId
 
-                          //const stringListFullArtLayerIds = JSON.stringify(
-                          //  selectedItem?.art_layers.map(
-                          //    (artLayer: ItemsArtLayers) => artLayer.id
-                          //  )
-                          //)
+                      return (
+                        <tr
+                          onClick={() =>
+                            updateSettings({
+                              key: 'selected_sub_item_id',
+                              value: layoutDataSingleId
+                            })
+                          }
+                          onKeyUpCapture={() =>
+                            updateSettings({
+                              key: 'selected_sub_item_id',
+                              value: layoutDataSingleId
+                            })
+                          }
+                          onContextMenu={() => {
+                            setIsContextMenuOpen(true)
+                            setContextMenuId(
+                              layoutDataSingleId as contextMenuType
+                            )
+                          }}
+                          key={layoutDataSingleId}
+                          className={tw(
+                            selectedUnlocked
+                              ? 'bg-red-300 hover:bg-red-400 hover:text-zinc-50 dark:bg-red-600 dark:hover:bg-red-400 dark:hover:text-zinc-50'
+                              : selectedLocked
+                                ? 'bg-red-500 hover:bg-red-600 hover:text-zinc-50 dark:bg-red-800 dark:hover:bg-red-500 dark:hover:text-zinc-50'
+                                : unselectedLocked
+                                  ? 'bg-zinc-200 hover:bg-zinc-500 hover:text-zinc-50 dark:bg-zinc-600 dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
+                                  : unselectedUnlocked
+                                    ? 'bg-zinc-200 hover:bg-zinc-500 hover:text-zinc-50 dark:bg-zinc-600 dark:hover:bg-zinc-400 dark:hover:text-zinc-50'
+                                    : ''
+                          )}>
+                          {layoutConfig.keys.map((subKey) => {
+                            if (!subKey.show) return
+                            //const artLayerOrRangeOptions =
+                            //  layoutConfig.label === 'art_list_tap' ||
+                            //  layoutConfig.label === 'art_list_tog'
 
-                          //const rangeOptions =
-                          //  key.key === 'ranges' && artLayerOrRangeOptions
+                            //const layersOptions =
+                            //  key.key === 'art_layers' && artLayerOrRangeOptions
 
-                          //const stringListOfFullRangeIds = JSON.stringify(
-                          //  selectedItem?.full_ranges.map(
-                          //    (fullRange: Ite msFullRanges) => fullRange.id
-                          //  )
-                          //)
+                            //const stringListFullArtLayerIds = JSON.stringify(
+                            //  selectedItem?.art_layers.map(
+                            //    (artLayer: ItemsArtLayers) => artLayer.id
+                            //  )
+                            //)
 
-                          const safeValue = getLayoutData(
-                            layoutDataSingle,
-                            subKey.key
-                          )
+                            //const rangeOptions =
+                            //  key.key === 'ranges' && artLayerOrRangeOptions
 
-                          const inputPropsHelper: InputComponentProps = {
-                            id: `${layoutDataSingle.id}_${subKey.key}`,
-                            codeFullLocked: selectedItem?.locked,
-                            codeDisabled: isSubKeyInputDisabled(
-                              layoutConfig.label,
+                            //const stringListOfFullRangeIds = JSON.stringify(
+                            //  selectedItem?.full_ranges.map(
+                            //    (fullRange: Ite msFullRanges) => fullRange.id
+                            //  )
+                            //)
+
+                            const safeValue = getLayoutData(
                               layoutDataSingle,
                               subKey.key
-                            ),
-                            defaultValue: safeValue,
-                            options: subKey.selectArray,
-                            textTypeValidator: typeof safeValue,
-                            onChangeFunction: (event: ChangeEventHelper) => {
-                              let typedValue: string | number | boolean =
-                                event.target.value
-                              if (typeof safeValue === 'string') {
-                                typedValue = event.target.value
-                              } else if (typeof safeValue === 'number') {
-                                typedValue = parseInt(event.target.value)
-                              } else if (typeof safeValue === 'boolean') {
-                                typedValue = event.target.value === 'true'
+                            )
+
+                            const inputPropsHelper: InputComponentProps = {
+                              id: `${layoutDataSingle.id}_${subKey.key}`,
+                              codeFullLocked: selectedItem?.locked,
+                              codeDisabled: isSubKeyInputDisabled(
+                                layoutConfig.label,
+                                layoutDataSingle,
+                                subKey.key
+                              ),
+                              defaultValue: safeValue,
+                              options: subKey.selectArray,
+                              onChangeFunction: (event: ChangeEventHelper) => {
+                                let typedValue: string | number | boolean =
+                                  event.target.value
+                                if (typeof safeValue === 'string') {
+                                  typedValue = event.target.value
+                                } else if (typeof safeValue === 'number') {
+                                  typedValue = parseInt(event.target.value)
+                                } else if (typeof safeValue === 'boolean') {
+                                  typedValue = event.target.value === 'true'
+                                }
+                                onChangeHelper({
+                                  newValue: typedValue,
+                                  layoutDataSingleId: layoutDataSingle.id,
+                                  key: subKey.key,
+                                  label: layoutConfig.label
+                                })
                               }
-                              onChangeHelper({
-                                newValue: typedValue,
-                                layoutDataSingleId: layoutDataSingle.id,
-                                key: subKey.key,
-                                label: layoutConfig.label
-                              })
                             }
-                          }
-                          return (
-                            <tr
-                              key={subKey.key}
-                              className='bg-zinc-300 dark:bg-zinc-600'>
-                              <td className={'p-0.5'}>{subKey.label}</td>
-                              <td className={'p-0.5'}>
+                            return (
+                              <td
+                                key={subKey.key}
+                                title={layoutDataSingleId}
+                                className={'p-0.5'}>
                                 {!subKey.input && subKey.key === 'id' && (
                                   <p
                                     id={`${layoutDataSingle.id}_${subKey.key}`}
@@ -667,21 +524,172 @@ export const TrackOptions: FC = () => {
                                   <InputColorPicker {...inputPropsHelper} />
                                 )}
                                 {subKey.input === 'text' && (
+                                  //<p
+                                  //  id={`${layoutDataSingle.id}_${subKey.key}`}
+                                  //  title={layoutDataSingle.id}
+                                  //  className='cursor-default p-1 transition-all duration-200'>
+                                  //  {safeValue}
+                                  //</p>
                                   <InputText {...inputPropsHelper} />
                                 )}
                                 {subKey.input === 'text-rich' && (
                                   <InputTextRich {...inputPropsHelper} />
                                 )}
                               </td>
-                            </tr>
+                            )
+                          })}
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              )
+            }
+            {
+              !table && (
+                <div
+                  id={'card_' + layoutConfig.label}
+                  className='flex gap-1 overflow-x-scroll'>
+                  {layoutDataArray?.map((layoutDataSingle) => {
+                    const layoutDataSingleId = layoutDataSingle.id
+                    return (
+                      <table
+                        onClick={() =>
+                          updateSettings({
+                            key: 'selected_sub_item_id',
+                            value: layoutDataSingleId
+                          })
+                        }
+                        onKeyUpCapture={() =>
+                          updateSettings({
+                            key: 'selected_sub_item_id',
+                            value: layoutDataSingleId
+                          })
+                        }
+                        onContextMenu={() => {
+                          setIsContextMenuOpen(true)
+                          setContextMenuId(
+                            layoutDataSingleId as contextMenuType
                           )
-                        })}
-                      </tbody>
-                    </table>
-                  )
-                })}
-              </div>
-            )}
+                        }}
+                        key={layoutDataSingleId}
+                        className='w-max table-auto border-separate border-spacing-0 text-left text-xs'>
+                        <thead>
+                          <tr>
+                            <td className={tw(trackTh, 'w-1/2 border-r-0')}>
+                              {layoutDataSingleId}
+                            </td>
+                            <td className={tw(trackTh, 'w-1/2 border-l-0')} />
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {layoutConfig.keys.map((subKey) => {
+                            if (!subKey.show) return
+                            //const artLayerOrRangeOptions =
+                            //  layoutConfig.label === 'art_list_tap' ||
+                            //  layoutConfig.label === 'art_list_tog'
+
+                            //const layersOptions =
+                            //  key.key === 'art_layers' && artLayerOrRangeOptions
+
+                            //const stringListFullArtLayerIds = JSON.stringify(
+                            //  selectedItem?.art_layers.map(
+                            //    (artLayer: ItemsArtLayers) => artLayer.id
+                            //  )
+                            //)
+
+                            //const rangeOptions =
+                            //  key.key === 'ranges' && artLayerOrRangeOptions
+
+                            //const stringListOfFullRangeIds = JSON.stringify(
+                            //  selectedItem?.full_ranges.map(
+                            //    (fullRange: Ite msFullRanges) => fullRange.id
+                            //  )
+                            //)
+
+                            const safeValue = getLayoutData(
+                              layoutDataSingle,
+                              subKey.key
+                            )
+
+                            const inputPropsHelper: InputComponentProps = {
+                              id: `${layoutDataSingle.id}_${subKey.key}`,
+                              codeFullLocked: selectedItem?.locked,
+                              codeDisabled: isSubKeyInputDisabled(
+                                layoutConfig.label,
+                                layoutDataSingle,
+                                subKey.key
+                              ),
+                              defaultValue: safeValue,
+                              options: subKey.selectArray,
+                              onChangeFunction: (event: ChangeEventHelper) => {
+                                let typedValue: string | number | boolean =
+                                  event.target.value
+                                if (typeof safeValue === 'string') {
+                                  typedValue = event.target.value
+                                } else if (typeof safeValue === 'number') {
+                                  typedValue = parseInt(event.target.value)
+                                } else if (typeof safeValue === 'boolean') {
+                                  typedValue = event.target.value === 'true'
+                                }
+                                onChangeHelper({
+                                  newValue: typedValue,
+                                  layoutDataSingleId: layoutDataSingle.id,
+                                  key: subKey.key,
+                                  label: layoutConfig.label
+                                })
+                              }
+                            }
+                            return (
+                              <tr
+                                key={subKey.key}
+                                className='bg-zinc-300 dark:bg-zinc-600'>
+                                <td className={'p-0.5'}>{subKey.label}</td>
+                                <td className={'p-0.5'}>
+                                  {!subKey.input && subKey.key === 'id' && (
+                                    <p
+                                      id={`${layoutDataSingle.id}_${subKey.key}`}
+                                      title={layoutDataSingle.id}
+                                      className='cursor-default p-1 transition-all duration-200'>
+                                      {`${layoutDataSingle.id.split('_')[2]}_${parseInt(layoutDataSingle.id.split('_')[3]!)}`}
+                                    </p>
+                                  )}
+                                  {subKey.input === 'select-multiple' && (
+                                    <InputSelectMultiple
+                                      {...inputPropsHelper}
+                                    />
+                                  )}
+                                  {subKey.input === 'select' && (
+                                    <InputSelectSingle {...inputPropsHelper} />
+                                  )}
+                                  {subKey.input === 'checkbox-switch' && (
+                                    <InputCheckBoxSwitch
+                                      {...inputPropsHelper}
+                                    />
+                                  )}
+                                  {subKey.input === 'checkbox' && (
+                                    <InputCheckBox {...inputPropsHelper} />
+                                  )}
+                                  {subKey.input === 'color-picker' && (
+                                    <InputColorPicker {...inputPropsHelper} />
+                                  )}
+                                  {subKey.input === 'text' && (
+                                    <InputText {...inputPropsHelper} />
+                                  )}
+                                  {subKey.input === 'text-rich' && (
+                                    <InputTextRich {...inputPropsHelper} />
+                                  )}
+                                </td>
+                              </tr>
+                            )
+                          })}
+                        </tbody>
+                      </table>
+                    )
+                  })}
+                </div>
+              )
+            }
           </Fragment>
         )
       })}

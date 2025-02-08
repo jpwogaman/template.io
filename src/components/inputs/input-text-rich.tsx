@@ -12,16 +12,16 @@ export const InputTextRich: FC<InputComponentProps> = ({
   placeholder,
   onChangeFunction
 }) => {
-  const [value, setValue] = useState<string | number>(
-    (defaultValue as unknown as string | number) ?? ''
-  )
-  const nameChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+  const [value, setValue] = useState(defaultValue as string)
+
+  const valChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setValue(event.target.value)
     onChangeFunction(event)
   }
 
+  // need to get rid of this, currently necessary to update the notes field when changing tracks
   useEffect(() => {
-    setValue(defaultValue as string | number)
+    setValue(defaultValue as string)
   }, [defaultValue])
 
   ////////
@@ -54,7 +54,7 @@ export const InputTextRich: FC<InputComponentProps> = ({
       placeholder={placeholder as string}
       maxLength={1000}
       wrap='soft'
-      onChange={nameChange}
+      onChange={valChange}
       className={tw(
         (codeFullLocked ?? codeDisabled)
           ? 'text-gray-400 hover:cursor-not-allowed hover:placeholder-zinc-400 dark:hover:placeholder-zinc-500'
