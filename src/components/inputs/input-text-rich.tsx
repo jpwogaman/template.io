@@ -1,8 +1,6 @@
 import React, { type FC, type ChangeEvent, useState, useEffect } from 'react'
 import tw from '@/components/utils/tw'
 import { type InputComponentProps } from './index'
-import { useMutations } from '../context'
-import { itemInitKeyStringOrNumber } from './item-init-helpers'
 
 export const InputTextRich: FC<InputComponentProps> = ({
   id,
@@ -19,30 +17,9 @@ export const InputTextRich: FC<InputComponentProps> = ({
     onChangeFunction(event)
   }
 
-  // need to get rid of this, currently necessary to update the notes field when changing tracks
   useEffect(() => {
     setValue(defaultValue as string)
   }, [defaultValue])
-
-  ////////
-  const { clearState, setClearState } = useMutations()
-
-  useEffect(() => {
-    if (typeof clearState !== 'string') return
-
-    if (id.includes(clearState + '_')) {
-      itemInitKeyStringOrNumber({
-        id,
-        clearState,
-        setValue
-      })
-    }
-
-    return () => {
-      setClearState(null)
-    }
-  }, [clearState])
-  ///////
 
   return (
     <textarea

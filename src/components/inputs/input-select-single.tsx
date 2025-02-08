@@ -1,8 +1,6 @@
 import { type FC, type ChangeEvent, useState, useEffect } from 'react'
 import { selectArrays, type InputComponentProps } from './index'
 import tw from '@/components/utils/tw'
-import { useMutations } from '../context'
-import { itemInitKeyStringOrNumber } from './item-init-helpers'
 
 export const InputSelectSingle: FC<InputComponentProps> = ({
   id,
@@ -18,25 +16,10 @@ export const InputSelectSingle: FC<InputComponentProps> = ({
     setValue(event.target.value)
     onChangeFunction(event)
   }
-  ////////
-  const { clearState, setClearState } = useMutations()
 
   useEffect(() => {
-    if (typeof clearState !== 'string') return
-
-    if (id.includes(clearState + '_')) {
-      itemInitKeyStringOrNumber({
-        id,
-        clearState,
-        setValue
-      })
-    }
-
-    return () => {
-      setClearState(null)
-    }
-  }, [clearState])
-  ///////
+    setValue(defaultValue as string)
+  }, [defaultValue])
 
   return (
     <select

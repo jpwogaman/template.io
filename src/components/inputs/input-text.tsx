@@ -1,8 +1,6 @@
 import React, { type FC, type ChangeEvent, useState, useEffect } from 'react'
 import tw from '@/components/utils/tw'
 import { type InputComponentProps } from './index'
-import { useMutations } from '../context'
-import { itemInitKeyStringOrNumber } from './item-init-helpers'
 
 export const InputText: FC<InputComponentProps> = ({
   id,
@@ -18,25 +16,11 @@ export const InputText: FC<InputComponentProps> = ({
     setValue(event.target.value)
     onChangeFunction(event)
   }
-  ////////
-  const { clearState, setClearState } = useMutations()
 
   useEffect(() => {
-    if (typeof clearState !== 'string') return
+    setValue(defaultValue as string)
+  }, [defaultValue])
 
-    if (id.includes(clearState + '_')) {
-      itemInitKeyStringOrNumber({
-        id,
-        clearState,
-        setValue
-      })
-    }
-
-    return () => {
-      setClearState(null)
-    }
-  }, [clearState])
-  ///////
   return (
     <input
       id={id}
