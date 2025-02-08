@@ -17,7 +17,8 @@ import {
   type ChangeEventHelper,
   type LayoutDataSingleHelper,
   type OnChangeHelperArgsType,
-  type InputComponentProps
+  type InputComponentProps,
+  layoutDataSingleKeys
 } from '../inputs'
 
 import { TrackOptionsTableKeys } from '../utils/trackOptionsTableKeys'
@@ -480,8 +481,17 @@ export const TrackOptions: FC = () => {
                             options: subKey.selectArray,
                             textTypeValidator: typeof safeValue,
                             onChangeFunction: (event: ChangeEventHelper) => {
+                              let typedValue: string | number | boolean =
+                                event.target.value
+                              if (typeof safeValue === 'string') {
+                                typedValue = event.target.value
+                              } else if (typeof safeValue === 'number') {
+                                typedValue = parseInt(event.target.value)
+                              } else if (typeof safeValue === 'boolean') {
+                                typedValue = event.target.value === 'true'
+                              }
                               onChangeHelper({
-                                newValue: event.target.value,
+                                newValue: typedValue,
                                 layoutDataSingleId: layoutDataSingle.id,
                                 key: subKey.key,
                                 label: layoutConfig.label
@@ -607,8 +617,17 @@ export const TrackOptions: FC = () => {
                             options: subKey.selectArray,
                             textTypeValidator: typeof safeValue,
                             onChangeFunction: (event: ChangeEventHelper) => {
+                              let typedValue: string | number | boolean =
+                                event.target.value
+                              if (typeof safeValue === 'string') {
+                                typedValue = event.target.value
+                              } else if (typeof safeValue === 'number') {
+                                typedValue = parseInt(event.target.value)
+                              } else if (typeof safeValue === 'boolean') {
+                                typedValue = event.target.value === 'true'
+                              }
                               onChangeHelper({
-                                newValue: event.target.value,
+                                newValue: typedValue,
                                 layoutDataSingleId: layoutDataSingle.id,
                                 key: subKey.key,
                                 label: layoutConfig.label
