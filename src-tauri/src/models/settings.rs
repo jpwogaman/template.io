@@ -17,6 +17,16 @@ pub struct Settings {
   pub previous_item_id: Option<String>,
   #[specta(optional)]
   pub next_item_id: Option<String>,
+  pub track_options_layouts: TrackOptionLayouts,
+}
+
+#[derive(Deserialize, Serialize, Debug, specta::Type)]
+pub struct TrackOptionLayouts {
+  pub full_ranges: String,
+  pub art_list_tog: String,
+  pub art_list_tap: String,
+  pub art_layers: String,
+  pub fad_list: String,
 }
 
 pub fn init_settings() -> Settings {
@@ -34,5 +44,12 @@ pub fn init_settings() -> Settings {
     selected_sub_item_id: "T_0_notes".to_string(),
     previous_item_id: None,
     next_item_id: None,
+    track_options_layouts: TrackOptionLayouts {
+      full_ranges: "table".to_string(),
+      art_list_tog: "table".to_string(),
+      art_list_tap: "table".to_string(),
+      art_layers: "table".to_string(),
+      fad_list: "table".to_string(),
+    },
   }
 }

@@ -140,7 +140,8 @@ export type ItemsFadList = { id: SubItemId; name: string; code_type: string; cod
 export type ItemsFadListRequest = { id: SubItemId; name?: string | null; code_type?: string | null; code?: number | null; default?: number | null; change_type?: string | null; fileitems_item_id?: FileItemId | null }
 export type ItemsFullRanges = { id: SubItemId; name: string; low: string; high: string; white_keys_only: boolean; fileitems_item_id: FileItemId }
 export type ItemsFullRangesRequest = { id: SubItemId; name?: string | null; low?: string | null; high?: string | null; white_keys_only?: boolean | null; fileitems_item_id?: FileItemId | null }
-export type Settings = { vep_out_settings: number; smp_out_settings: number; default_range_count: number; default_art_tog_count: number; default_art_tap_count: number; default_art_layer_count: number; default_fad_count: number; track_add_count: number; sub_item_add_count: number; selected_item_id: FileItemId; selected_sub_item_id: SubItemId; previous_item_id?: FileItemId | null; next_item_id?: FileItemId | null }
+export type Settings = { vep_out_settings: number; smp_out_settings: number; default_range_count: number; default_art_tog_count: number; default_art_tap_count: number; default_art_layer_count: number; default_fad_count: number; track_add_count: number; sub_item_add_count: number; selected_item_id: FileItemId; selected_sub_item_id: SubItemId; previous_item_id?: FileItemId | null; next_item_id?: FileItemId | null; track_options_layouts: TrackOptionLayouts }
+export type TrackOptionLayouts = { full_ranges: string; art_list_tog: string; art_list_tap: string; art_layers: string; fad_list: string }
 
 /** tauri-specta globals **/
 

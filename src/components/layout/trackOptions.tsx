@@ -1,6 +1,6 @@
 'use client'
 
-import { type FC, Fragment, useState } from 'react'
+import { type FC, Fragment } from 'react'
 
 import { IconBtnToggle } from '@/components/layout/icon-btn-toggle'
 import tw from '@/components/utils/tw'
@@ -17,8 +17,7 @@ import {
   type ChangeEventHelper,
   type LayoutDataSingleHelper,
   type OnChangeHelperArgsType,
-  type InputComponentProps,
-  layoutDataSingleKeys
+  type InputComponentProps
 } from '../inputs'
 
 import { TrackOptionsTableKeys } from '../utils/trackOptionsTableKeys'
@@ -37,30 +36,28 @@ import {
   type ItemsArtListTap,
   type ItemsArtListTog,
   type ItemsFadList,
-  type FullTrackCounts
+  type FullTrackCounts,
+  TrackOptionLayouts
 } from '../backendCommands/backendCommands'
 
 export const TrackOptions: FC = () => {
   const { setIsContextMenuOpen, setContextMenuId } = useContextMenu()
   const { selectedItem, update } = useMutations()
   const { settings, updateSettings } = useSelectedItem()
-  const { selected_sub_item_id } = settings
+  const { selected_sub_item_id, track_options_layouts } = settings
 
   //////////////////////////////////////////
-  //This could be a user-setting in local storage, but for now, it's hard-coded.
-  const [trackOptionsLayouts, setTrackOptionsLayouts] = useState({
-    full_ranges: 'table',
-    art_list_tog: 'table',
-    art_list_tap: 'table',
-    art_layers: 'table',
-    fad_list: 'table'
-  })
-
-  const cardTableLayoutsHelper = (layoutKey: string, layout: string) => {
-    setTrackOptionsLayouts((prevState) => ({
-      ...prevState,
-      [layoutKey]: layout
-    }))
+  const cardTableLayoutsHelper = (
+    layoutKey: keyof TrackOptionLayouts,
+    layout: 'table' | 'card'
+  ) => {
+    updateSettings({
+      key: 'track_options_layouts',
+      value: {
+        ...track_options_layouts,
+        [layoutKey]: layout
+      }
+    })
   }
   //////////////////////////////////////////
   const onChangeHelper = ({
@@ -352,7 +349,7 @@ export const TrackOptions: FC = () => {
           layoutDataArray = selectedItem?.fad_list!
         }
 
-        const table = trackOptionsLayouts[layoutConfig.label] === 'table'
+        const table = track_options_layouts[layoutConfig.label] === 'table'
 
         return (
           <Fragment key={layoutConfig.label}>
@@ -369,7 +366,7 @@ export const TrackOptions: FC = () => {
                 b='fa-solid fa-table-columns'
                 defaultIcon={table ? 'a' : 'b'}
                 onToggleA={() =>
-                  cardTableLayoutsHelper(layoutConfig.label, 'cards')
+                  cardTableLayoutsHelper(layoutConfig.label, 'card')
                 }
                 onToggleB={() =>
                   cardTableLayoutsHelper(layoutConfig.label, 'table')
@@ -527,6 +524,12 @@ export const TrackOptions: FC = () => {
                                 <InputColorPicker {...inputPropsHelper} />
                               )}
                               {subKey.input === 'text' && (
+                                //<p
+                                //  id={`${layoutDataSingle.id}_${subKey.key}`}
+                                //  title={layoutDataSingle.id}
+                                //  className='cursor-default p-1 transition-all duration-200'>
+                                //  {safeValue}
+                                //</p>
                                 <InputText {...inputPropsHelper} />
                               )}
                               {subKey.input === 'text-rich' && (

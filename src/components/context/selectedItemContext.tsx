@@ -79,7 +79,14 @@ const selectedItemContextDefaultValues: SelectedItemContextType = {
     selected_item_id: 'T_0',
     selected_sub_item_id: 'T_0_notes',
     previous_item_id: null,
-    next_item_id: null
+    next_item_id: null,
+    track_options_layouts: {
+      full_ranges: 'table',
+      art_list_tap: 'table',
+      art_list_tog: 'table',
+      art_layers: 'table',
+      fad_list: 'table'
+    }
   },
   /* eslint-disable @typescript-eslint/no-empty-function */
   updateSettings: async () => {}
@@ -120,7 +127,14 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
     selected_item_id: 'T_0',
     selected_sub_item_id: 'T_0_notes',
     previous_item_id: null,
-    next_item_id: null
+    next_item_id: null,
+    track_options_layouts: {
+      full_ranges: 'table',
+      art_list_tap: 'table',
+      art_list_tog: 'table',
+      art_layers: 'table',
+      fad_list: 'table'
+    }
   })
 
   const updateSettings = useCallback(
@@ -184,6 +198,10 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
         updateSettings({
           key: 'next_item_id',
           value: data.next_item_id
+        })
+        updateSettings({
+          key: 'track_options_layouts',
+          value: data.track_options_layouts
         })
       }),
     []
