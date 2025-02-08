@@ -7,6 +7,7 @@ import {
   ItemsArtListTog,
   ItemsFadList
 } from '../backendCommands/backendCommands'
+import { type FileItemId } from '../context'
 
 export const initFileItemNoId: Omit<FileItem, 'id'> = {
   locked: false,
@@ -22,7 +23,7 @@ export const initFileItemNoId: Omit<FileItem, 'id'> = {
   color: '#71717A'
 }
 
-export type itemInitKeys = keyof Omit<FileItem, 'id'>
+export type itemInitKeys = keyof typeof initFileItemNoId
 
 export const initItemsFullRangesNoId: Omit<
   ItemsFullRanges,
@@ -34,10 +35,7 @@ export const initItemsFullRangesNoId: Omit<
   white_keys_only: false
 }
 
-export type rangeInitKeys = keyof Omit<
-  ItemsFullRanges,
-  'id' | 'fileitems_item_id'
->
+export type rangeInitKeys = keyof typeof initItemsFullRangesNoId
 
 export const initItemsArtListTogNoId: Omit<
   ItemsArtListTog,
@@ -55,10 +53,7 @@ export const initItemsArtListTogNoId: Omit<
   art_layers: '[""]'
 }
 
-export type artTogInitKeys = keyof Omit<
-  ItemsArtListTog,
-  'id' | 'toggle' | 'fileitems_item_id'
->
+export type artTogInitKeys = keyof typeof initItemsArtListTogNoId
 
 export const initItemsArtListTapNoId: Omit<
   ItemsArtListTap,
@@ -76,10 +71,7 @@ export const initItemsArtListTapNoId: Omit<
   art_layers: '[""]'
 }
 
-export type artTapInitKeys = keyof Omit<
-  ItemsArtListTap,
-  'id' | 'toggle' | 'fileitems_item_id'
->
+export type artTapInitKeys = keyof typeof initItemsArtListTapNoId
 
 export const initItemsArtLayersNoId: Omit<
   ItemsArtLayers,
@@ -94,10 +86,7 @@ export const initItemsArtLayersNoId: Omit<
   change_type: 'Value 2'
 }
 
-export type artLayerInitKeys = keyof Omit<
-  ItemsArtLayers,
-  'id' | 'fileitems_item_id'
->
+export type artLayerInitKeys = keyof typeof initItemsArtLayersNoId
 
 export const initItemsFadListNoId: Omit<
   ItemsFadList,
@@ -110,9 +99,7 @@ export const initItemsFadListNoId: Omit<
   change_type: 'Value 2'
 }
 
-import { type FileItemId } from '../context'
-
-export type fadInitKeys = keyof Omit<ItemsFadList, 'id' | 'fileitems_item_id'>
+export type fadInitKeys = keyof typeof initItemsFadListNoId
 
 export type itemInitKeyStringOrNumber = {
   id: string
@@ -160,8 +147,9 @@ export const itemInitKeyStringOrNumber = ({
     }
     if (id.includes(clearState + '_AT_') && id.includes(key)) {
       setValue(
-        initItemsArtListTogNoId[key as artTogInitKeys] as unknown as string
-        //.replace('{}', id)
+        (
+          initItemsArtListTogNoId[key as artTogInitKeys] as unknown as string
+        ).replace('{}', id)
       )
     }
   })
@@ -175,8 +163,9 @@ export const itemInitKeyStringOrNumber = ({
     }
     if (id.includes(clearState + '_AT_') && id.includes(key)) {
       setValue(
-        initItemsArtListTapNoId[key as artTapInitKeys] as unknown as string
-        //.replace('{}', id)
+        (
+          initItemsArtListTapNoId[key as artTapInitKeys] as unknown as string
+        ).replace('{}', id)
       )
     }
   })
