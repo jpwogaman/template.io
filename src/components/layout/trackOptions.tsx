@@ -26,7 +26,7 @@ import {
   useMutations,
   useSelectedItem,
   useContextMenu,
-  contextMenuType,
+  type contextMenuType,
   type SubItemId
 } from '@/components/context'
 
@@ -37,7 +37,7 @@ import {
   type ItemsArtListTog,
   type ItemsFadList,
   type FullTrackCounts,
-  TrackOptionLayouts
+  type TrackOptionLayouts
 } from '../backendCommands/backendCommands'
 
 export const TrackOptions: FC = () => {
@@ -51,7 +51,7 @@ export const TrackOptions: FC = () => {
     layoutKey: keyof TrackOptionLayouts,
     layout: 'table' | 'card'
   ) => {
-    updateSettings({
+    void updateSettings({
       key: 'track_options_layouts',
       value: {
         ...track_options_layouts,
@@ -175,18 +175,23 @@ export const TrackOptions: FC = () => {
   }
 
   //////////////////////////////////////////
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function isItemsFullRanges(obj: any): obj is ItemsFullRanges {
     return obj && obj.hasOwnProperty('id')
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function isItemsArtListTog(obj: any): obj is ItemsArtListTog {
     return obj && obj.hasOwnProperty('id')
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function isItemsArtListTap(obj: any): obj is ItemsArtListTap {
     return obj && obj.hasOwnProperty('id')
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function isItemsArtLayers(obj: any): obj is ItemsArtLayers {
     return obj && obj.hasOwnProperty('id')
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function isItemsFadList(obj: any): obj is ItemsFadList {
     return obj && obj.hasOwnProperty('id')
   }
@@ -409,13 +414,13 @@ export const TrackOptions: FC = () => {
                     return (
                       <tr
                         onClick={() =>
-                          updateSettings({
+                          void updateSettings({
                             key: 'selected_sub_item_id',
                             value: layoutDataSingleId
                           })
                         }
                         onKeyUpCapture={() =>
-                          updateSettings({
+                          void updateSettings({
                             key: 'selected_sub_item_id',
                             value: layoutDataSingleId
                           })
@@ -552,13 +557,13 @@ export const TrackOptions: FC = () => {
                   return (
                     <table
                       onClick={() =>
-                        updateSettings({
+                        void updateSettings({
                           key: 'selected_sub_item_id',
                           value: layoutDataSingleId
                         })
                       }
                       onKeyUpCapture={() =>
-                        updateSettings({
+                        void updateSettings({
                           key: 'selected_sub_item_id',
                           value: layoutDataSingleId
                         })

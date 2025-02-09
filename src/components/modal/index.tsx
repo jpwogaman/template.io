@@ -1,7 +1,7 @@
 'use client'
 // credit -> https://github.com/fireship-io/framer-demo/tree/framer-motion-demo/src
 
-import { ChangeEvent, Fragment, type ReactNode } from 'react'
+import { type ChangeEvent, Fragment, type ReactNode } from 'react'
 import { LazyMotion } from 'motion/react'
 import * as m from 'motion/react-m'
 import { useModal, useSelectedItem } from '@/components/context'
@@ -168,49 +168,58 @@ export const Modal = () => {
                     <Fragment key={key}>
                       <hr className='my-2' />
 
-                      {Object.entries(item).map(([subKey, subItem]) => {
-                        type subKey = Partial<keyof Settings>
+                      {Object.entries(item).map(
+                        ([subKey, subItem]: [
+                          subKey: string,
+                          subItem: {
+                            label: string
+                            input: string
+                            max: number
+                          }
+                        ]) => {
+                          type subKey = Partial<keyof Settings>
 
-                        const { label, input, max } = subItem
+                          const { label, input, max } = subItem
 
-                        return (
-                          <div
-                            key={subKey}
-                            className='flex items-center'>
-                            <label className='mr-4'>{`${label}:`}</label>
-                            <div className='w-[60px]'>
-                              {input === 'number' && (
-                                <input
-                                  type='number'
-                                  id='contextMenuCountInput'
-                                  max={max}
-                                  min={1}
-                                  value={settings[subKey as subKey] as number}
-                                  onChange={(
-                                    e: ChangeEvent<HTMLInputElement>
-                                  ) => {
-                                    e.stopPropagation()
-                                    e.preventDefault()
-                                    const newValue =
-                                      parseInt(e.target.value) || 1
+                          return (
+                            <div
+                              key={subKey}
+                              className='flex items-center'>
+                              <label className='mr-4'>{`${label}:`}</label>
+                              <div className='w-[60px]'>
+                                {input === 'number' && (
+                                  <input
+                                    type='number'
+                                    id='contextMenuCountInput'
+                                    max={max}
+                                    min={1}
+                                    value={settings[subKey as subKey] as number}
+                                    onChange={(
+                                      e: ChangeEvent<HTMLInputElement>
+                                    ) => {
+                                      e.stopPropagation()
+                                      e.preventDefault()
+                                      const newValue =
+                                        parseInt(e.target.value) || 1
 
-                                    updateSettings({
-                                      key: subKey as subKey,
-                                      value: newValue
-                                    })
-                                  }}
-                                  className={tw(
-                                    'h-full w-full',
-                                    'hover:cursor-text',
-                                    'rounded-xs bg-inherit p-1 outline-hidden',
-                                    'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:ring-4 focus-visible:ring-indigo-600 focus-visible:outline-hidden'
-                                  )}
-                                />
-                              )}
+                                      void updateSettings({
+                                        key: subKey as subKey,
+                                        value: newValue
+                                      })
+                                    }}
+                                    className={tw(
+                                      'h-full w-full',
+                                      'hover:cursor-text',
+                                      'rounded-xs bg-inherit p-1 outline-hidden',
+                                      'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:ring-4 focus-visible:ring-indigo-600 focus-visible:outline-hidden'
+                                    )}
+                                  />
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        )
-                      })}
+                          )
+                        }
+                      )}
                     </Fragment>
                   )
                 })}

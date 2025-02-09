@@ -308,10 +308,11 @@ export const ContextMenu: FC = () => {
 
   if (!isContextMenuOpen) return null
 
+  
   const contextMenuIsSubItem =
-    contextMenuId?.includes('FR_') ||
-    contextMenuId?.includes('AT_') ||
-    contextMenuId?.includes('AL_') ||
+    contextMenuId?.includes('FR_') || // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
+    contextMenuId?.includes('AT_') || // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
+    contextMenuId?.includes('AL_') || // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
     contextMenuId?.includes('FL_')
 
   return (
@@ -363,9 +364,15 @@ export const ContextMenu: FC = () => {
                 e.preventDefault()
                 const newValue = parseInt(e.target.value) || 1
                 if (contextMenuIsSubItem) {
-                  updateSettings({ key: 'sub_item_add_count', value: newValue })
+                  void updateSettings({
+                    key: 'sub_item_add_count',
+                    value: newValue
+                  })
                 } else {
-                  updateSettings({ key: 'track_add_count', value: newValue })
+                  void updateSettings({
+                    key: 'track_add_count',
+                    value: newValue
+                  })
                 }
               }}
               className={tw(
@@ -397,7 +404,7 @@ export const ContextMenu: FC = () => {
 
                 const contextMenuMap: Record<
                   string,
-                  { label: string; action: any }
+                  { label: string; action: () => void | null }
                 > = {
                   FR_: { label: 'Range', action: range.action },
                   AT_: { label: 'Articulation', action: articulation.action },
@@ -457,7 +464,7 @@ export const ContextMenu: FC = () => {
                     onClick={() => {
                       if (!action) return
                       if (!contextMenuId?.includes(selected_item_id)) {
-                        updateSettings({
+                        void updateSettings({
                           key: 'selected_item_id',
                           value: contextMenuId
                         })

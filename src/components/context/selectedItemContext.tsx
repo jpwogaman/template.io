@@ -145,66 +145,66 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
         return updatedSettings
       })
     },
-    [commands, setSettings]
+    [setSettings]
   )
 
   const getSettings = useCallback(
     async () =>
       await commands.getSettings().then((data: Settings) => {
-        updateSettings({
+        void updateSettings({
           key: 'vep_out_settings',
           value: data.vep_out_settings
         })
-        updateSettings({
+        void updateSettings({
           key: 'smp_out_settings',
           value: data.smp_out_settings
         })
-        updateSettings({
+        void updateSettings({
           key: 'default_range_count',
           value: data.default_range_count
         })
-        updateSettings({
+        void updateSettings({
           key: 'default_art_tog_count',
           value: data.default_art_tog_count
         })
-        updateSettings({
+        void updateSettings({
           key: 'default_art_tap_count',
           value: data.default_art_tap_count
         })
-        updateSettings({
+        void updateSettings({
           key: 'default_fad_count',
           value: data.default_fad_count
         })
-        updateSettings({
+        void updateSettings({
           key: 'track_add_count',
           value: data.track_add_count
         })
-        updateSettings({
+        void updateSettings({
           key: 'sub_item_add_count',
           value: data.sub_item_add_count
         })
-        updateSettings({
+        void updateSettings({
           key: 'selected_item_id',
           value: data.selected_item_id
         })
-        updateSettings({
+        void updateSettings({
           key: 'selected_sub_item_id',
           value: data.selected_sub_item_id
         })
-        updateSettings({
+        void updateSettings({
           key: 'previous_item_id',
           value: data.previous_item_id
         })
-        updateSettings({
+        void updateSettings({
           key: 'next_item_id',
           value: data.next_item_id
         })
-        updateSettings({
+        void updateSettings({
           key: 'track_options_layouts',
           value: data.track_options_layouts
         })
       }),
-    []
+    [updateSettings]
   )
 
   useEffect(() => {

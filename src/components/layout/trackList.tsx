@@ -21,9 +21,9 @@ import {
   useMutations,
   useSelectedItem,
   useContextMenu,
-  contextMenuType,
-  FileItemId,
-  SubItemId
+  type contextMenuType,
+  type FileItemId,
+  type SubItemId
 } from '@/components/context'
 
 export const TrackList: FC = () => {
@@ -127,15 +127,15 @@ export const TrackList: FC = () => {
                   setContextMenuId(id as contextMenuType)
                 }}
                 onKeyUpCapture={() => {
-                  updateSettings({ key: 'selected_item_id', value: id })
-                  updateSettings({
+                  void updateSettings({ key: 'selected_item_id', value: id })
+                  void updateSettings({
                     key: 'selected_sub_item_id',
                     value: (id + '_notes') as SubItemId
                   })
                 }}
                 onClick={() => {
-                  updateSettings({ key: 'selected_item_id', value: id })
-                  updateSettings({
+                  void updateSettings({ key: 'selected_item_id', value: id })
+                  void updateSettings({
                     key: 'selected_sub_item_id',
                     value: (id + '_notes') as SubItemId
                   })

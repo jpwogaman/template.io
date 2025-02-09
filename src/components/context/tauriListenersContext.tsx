@@ -77,6 +77,8 @@ export const TauriListenersProvider: FC<TauriListenersProviderProps> = ({
         })
         .catch((e) => console.error(e))
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

@@ -39,7 +39,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
     selected_sub_item_id
   } = settings
 
-  const { selectedItem, create, del } = useMutations()
+  const { selectedItem, del } = useMutations()
 
   const commandSimplifier = useCallback((e: KeyboardEvent) => {
     if (e.ctrlKey && !e.shiftKey && !e.altKey) {
@@ -137,11 +137,11 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
 
         keyDownTarget_FROM?.blur()
         previousInput?.focus()
-        updateSettings({
+        void updateSettings({
           key: 'selected_item_id',
           value: previous_item_id
         })
-        updateSettings({
+        void updateSettings({
           key: 'selected_sub_item_id',
           value: `${previous_item_id}_notes`
         })
@@ -186,11 +186,11 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         const nextInput = window.document.getElementById(newInput)
 
         nextInput?.focus()
-        updateSettings({
+        void updateSettings({
           key: 'selected_item_id',
           value: next_item_id
         })
-        updateSettings({
+        void updateSettings({
           key: 'selected_sub_item_id',
           value: `${next_item_id}_notes`
         })
@@ -202,7 +202,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         const nextInput = window.document.getElementById(
           `${selected_item_id}_notes`
         )
-        updateSettings({
+        void updateSettings({
           key: 'selected_sub_item_id',
           value: `${selected_item_id}_notes`
         })
@@ -217,7 +217,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         const nextInput = window.document.getElementById(
           `${selected_item_id}_FR_0_name`
         )
-        updateSettings({
+        void updateSettings({
           key: 'selected_sub_item_id',
           value: `${selected_item_id}_FR_0`
         })
@@ -237,7 +237,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         const trackOptionsNameInput = window.document.getElementById(
           `${selected_item_id}_notes`
         )
-        updateSettings({
+        void updateSettings({
           key: 'selected_sub_item_id',
           value: `${selected_item_id}_notes`
         })
@@ -340,9 +340,10 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       selectedItemLayerCount,
       selectedItemFadCount,
       commandSimplifier,
-      create,
       del,
-      selectedItem?.art_list_tog
+      selectedItem?.art_list_tog,
+      updateSettings,
+      selected_sub_item_id
     ]
   )
 

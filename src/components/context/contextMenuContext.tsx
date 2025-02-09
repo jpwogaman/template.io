@@ -9,8 +9,8 @@ import {
   type FC,
   useEffect,
   useState,
-  Dispatch,
-  SetStateAction
+  type Dispatch,
+  type SetStateAction
 } from 'react'
 
 import { type FileItemId, type SubItemId } from './selectedItemContext'

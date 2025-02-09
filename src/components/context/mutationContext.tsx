@@ -8,9 +8,7 @@ import {
   type ReactNode,
   type FC,
   useEffect,
-  useState,
-  Dispatch,
-  SetStateAction
+  useState
 } from 'react'
 
 import {
@@ -51,8 +49,6 @@ interface MutationContextType {
   vepSamplerCount: number
   vepInstanceCount: number
   nonVepSamplerCount: number
-  clearState: FileItemId | null
-  setClearState: Dispatch<SetStateAction<FileItemId | null>>
   getData: () => void
   getSelectedItem: () => void
   //////////////////////////////////////////
@@ -98,9 +94,7 @@ const mutationContextDefaultValues: MutationContextType = {
   vepSamplerCount: 0,
   vepInstanceCount: 0,
   nonVepSamplerCount: 0,
-  clearState: null,
   /* eslint-disable @typescript-eslint/no-empty-function */
-  setClearState: () => {},
   getData: () => {},
   getSelectedItem: () => {},
   //////////////////////////////////////////
@@ -175,10 +169,10 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
 
   useEffect(() => {
     setMounted(true)
-    getData().catch((error) => {
+    void getData().catch((error) => {
       console.log('getData_error', error)
     })
-    getSelectedItem().catch((error) => {
+    void getSelectedItem().catch((error) => {
       console.log('getSelectedItem_error', error)
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -193,7 +187,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     } catch (error) {
       console.error('Error fetching data:', error)
     }
-  }, [commands.listAllFileitemsAndRelationCounts, setData])
+  }, [setData])
 
   const getSelectedItem = useCallback(async () => {
     if (!selected_item_id) return
@@ -203,7 +197,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     } catch (error) {
       console.error('Error fetching selected item:', error)
     }
-  }, [selected_item_id, commands.getFileitemAndRelations, setSelectedItem])
+  }, [selected_item_id, setSelectedItem])
   //////////////////////////////////////////
   // logic to count vep samplers and instances
   const dataLength = data?.length ?? 0
@@ -286,13 +280,13 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
         (item: FullTrackWithCounts) => item.id === selected_item_id
       ) ?? 0
 
-    updateSettings({
+    void updateSettings({
       key: 'previous_item_id',
-      value: data[index - 1]?.id as FileItemId
+      value: data[index - 1]?.id
     })
-    updateSettings({
+    void updateSettings({
       key: 'next_item_id',
-      value: data[index + 1]?.id as FileItemId
+      value: data[index + 1]?.id
     })
 
     setSelectedItemRangeCount(data[index]?._count?.full_ranges ?? 0)
@@ -305,7 +299,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     setSelectedItemLayerCount(data[index]?._count?.art_layers ?? 0)
     setSelectedItemFadCount(data[index]?._count?.fad_list ?? 0)
 
-    getSelectedItem()
+    void getSelectedItem()
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [selected_item_id, data])
   //////////////////////////////////////////
@@ -314,8 +308,8 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     await commands
       .createFileitem()
       .then(() => {
-        getData()
-        getSelectedItem()
+        void getData()
+        void getSelectedItem()
       })
       .catch((error) => {
         console.log('createFileitem error', error)
@@ -326,8 +320,8 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       await commands
         .createFullRange(fileitemsItemId)
         .then(() => {
-          getData()
-          getSelectedItem()
+          void getData()
+          void getSelectedItem()
         })
         .catch((error) => {
           console.log('createFullRange error', error)
@@ -340,8 +334,8 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       await commands
         .createArtTog(fileitemsItemId)
         .then(() => {
-          getData()
-          getSelectedItem()
+          void getData()
+          void getSelectedItem()
         })
         .catch((error) => {
           console.log('createArtTog error', error)
@@ -354,8 +348,8 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       await commands
         .createArtTap(fileitemsItemId)
         .then(() => {
-          getData()
-          getSelectedItem()
+          void getData()
+          void getSelectedItem()
         })
         .catch((error) => {
           console.log('createArtTap error', error)
@@ -368,8 +362,8 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       await commands
         .createArtLayer(fileitemsItemId)
         .then(() => {
-          getData()
-          getSelectedItem()
+          void getData()
+          void getSelectedItem()
         })
         .catch((error) => {
           console.log('createArtLayer error', error)
@@ -382,8 +376,8 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       await commands
         .createFad(fileitemsItemId)
         .then(() => {
-          getData()
-          getSelectedItem()
+          void getData()
+          void getSelectedItem()
         })
         .catch((error) => {
           console.log('createFad error', error)
@@ -399,9 +393,9 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
         .updateFileitem(data)
         .then(() => {
           if (refetch) {
-            getData()
+            void getData()
           }
-          getSelectedItem()
+          void getSelectedItem()
         })
         .catch((error) => {
           console.log('updateFileItem error', error)
@@ -415,7 +409,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
         .updateFullRange(data)
         .then(() => {
           if (refetch) {
-            getSelectedItem()
+            void getSelectedItem()
           }
         })
         .catch((error) => {
@@ -430,7 +424,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
         .updateArtTog(data)
         .then(() => {
           if (refetch) {
-            getSelectedItem()
+            void getSelectedItem()
           }
         })
         .catch((error) => {
@@ -446,20 +440,21 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
 
         if (result.status === 'ok') {
           if (refetch) {
-            getSelectedItem()
+            void getSelectedItem()
           }
         } else {
           console.error(`Error updating Tap Articulation: ${result.error}`)
           alert(`Error updating Tap Articulation: ${result.error}`)
         }
-      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
         console.error(
           `Error: ${error instanceof Error ? error.message : error}`
         )
         alert(`Error: ${error instanceof Error ? error.message : error}`)
       }
     },
-    [getSelectedItem, commands.updateArtTap]
+    [getSelectedItem]
   )
   const updateSingleArtLayerMutation = useCallback(
     async (data: ItemsArtLayersRequest, refetch: boolean) => {
@@ -467,7 +462,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
         .updateArtLayer(data)
         .then(() => {
           if (refetch) {
-            getSelectedItem()
+            void getSelectedItem()
           }
         })
         .catch((error) => {
@@ -482,7 +477,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
         .updateFad(data)
         .then(() => {
           if (refetch) {
-            getSelectedItem()
+            void getSelectedItem()
           }
         })
         .catch((error) => {
@@ -498,9 +493,12 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       await commands
         .deleteFileitemAndRelations(id)
         .then(() => {
-          getData()
+          void getData()
           if (!previous_item_id) return
-          updateSettings({ key: 'selected_item_id', value: previous_item_id })
+          void updateSettings({
+            key: 'selected_item_id',
+            value: previous_item_id
+          })
         })
         .catch((error) => {
           console.log('deleteFileitemAndRelations error', error)
@@ -517,20 +515,21 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
         )
 
         if (result.status === 'ok') {
-          getData()
-          getSelectedItem()
+          void getData()
+          void getSelectedItem()
         } else {
           console.error(`Error deleting Full Range: ${result.error}`)
           alert(`Error deleting Full Range: ${result.error}`)
         }
-      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
         console.error(
           `Error: ${error instanceof Error ? error.message : error}`
         )
         alert(`Error: ${error instanceof Error ? error.message : error}`)
       }
     },
-    [getData, getSelectedItem, commands.deleteFullRangeByFileitem]
+    [getData, getSelectedItem]
   )
   const deleteSingleArtListTogMutation = useCallback(
     async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
@@ -541,20 +540,21 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
         )
 
         if (result.status === 'ok') {
-          getData()
-          getSelectedItem()
+          void getData()
+          void getSelectedItem()
         } else {
           console.error(`Error deleting Toggle Articulation: ${result.error}`)
           alert(`Error deleting Toggle Articulation: ${result.error}`)
         }
-      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
         console.error(
           `Error: ${error instanceof Error ? error.message : error}`
         )
         alert(`Error: ${error instanceof Error ? error.message : error}`)
       }
     },
-    [getData, getSelectedItem, commands.deleteArtTogByFileitem]
+    [getData, getSelectedItem]
   )
   const deleteSingleArtListTapMutation = useCallback(
     async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
@@ -565,20 +565,21 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
         )
 
         if (result.status === 'ok') {
-          getData()
-          getSelectedItem()
+          void getData()
+          void getSelectedItem()
         } else {
           console.error(`Error deleting Tap Articulation: ${result.error}`)
           alert(`Error deleting Tap Articulation: ${result.error}`)
         }
-      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
         console.error(
           `Error: ${error instanceof Error ? error.message : error}`
         )
         alert(`Error: ${error instanceof Error ? error.message : error}`)
       }
     },
-    [getData, getSelectedItem, commands.deleteArtTapByFileitem]
+    [getData, getSelectedItem]
   )
   const deleteSingleArtLayerMutation = useCallback(
     async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
@@ -589,20 +590,21 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
         )
 
         if (result.status === 'ok') {
-          getData()
-          getSelectedItem()
+          void getData()
+          void getSelectedItem()
         } else {
           console.error(`Error deleting Articulation Layer: ${result.error}`)
           alert(`Error deleting Articulation Layer: ${result.error}`)
         }
-      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
         console.error(
           `Error: ${error instanceof Error ? error.message : error}`
         )
         alert(`Error: ${error instanceof Error ? error.message : error}`)
       }
     },
-    [getData, getSelectedItem, commands.deleteArtLayerByFileitem]
+    [getData, getSelectedItem]
   )
   const deleteSingleFadListMutation = useCallback(
     async ({ id, fileitemsItemId }: deleteSubItemArgs) => {
@@ -610,39 +612,37 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
         const result = await commands.deleteFadByFileitem(id, fileitemsItemId)
 
         if (result.status === 'ok') {
-          getData()
-          getSelectedItem()
+          void getData()
+          void getSelectedItem()
         } else {
           console.error(`Error deleting Fader: ${result.error}`)
           alert(`Error deleting Fader: ${result.error}`)
         }
-      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
         console.error(
           `Error: ${error instanceof Error ? error.message : error}`
         )
         alert(`Error: ${error instanceof Error ? error.message : error}`)
       }
     },
-    [getData, getSelectedItem, commands.deleteFadByFileitem]
+    [getData, getSelectedItem]
   )
   ////////////////////////////////////////////
-  const [clearState, setClearState] = useState<FileItemId | null>(null)
-
   //// CLEAR mutations
   const clearSingleItemMutation = useCallback(
     async (id: FileItemId) => {
       await commands
         .clearFileitem(id)
         .then(() => {
-          getSelectedItem().then(() => {
-            setClearState(id)
-          })
+          void getData()
+          void getSelectedItem()
         })
         .catch((error) => {
           console.log('clearFileitem error', error)
         })
     },
-    [getSelectedItem, setClearState, commands.clearFileitem]
+    [getData, getSelectedItem]
   )
   ////////////////////////////////////////////
   //// RENUMBER/REORDER mutations
@@ -650,8 +650,8 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     await commands
       .renumberAllFileitems()
       .then(() => {
-        getData()
-        getSelectedItem()
+        void getData()
+        void getSelectedItem()
       })
       .catch((error) => {
         console.log('renumberAllItemsMutation error', error)
@@ -746,8 +746,6 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       dataLength,
       getData,
       getSelectedItem,
-      clearState,
-      setClearState,
       vepSamplerCount,
       vepInstanceCount,
       nonVepSamplerCount,
@@ -766,8 +764,6 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       dataLength,
       getData,
       getSelectedItem,
-      clearState,
-      setClearState,
       vepSamplerCount,
       vepInstanceCount,
       nonVepSamplerCount,
