@@ -341,7 +341,7 @@ export const TrackOptions: FC = () => {
         return (
           <Fragment key={layoutConfig.label}>
             <div className='flex justify-between pt-4 pb-2'>
-              <h2 className='font-caviarBold text-base'>{`${
+              <h2 className='font-codeBold text-base'>{`${
                 layoutConfig.title
               } (${layoutDataArray?.length ?? 0})`}</h2>
 

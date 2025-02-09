@@ -2,8 +2,8 @@
 // credit -> https://github.com/fireship-io/framer-demo/tree/framer-motion-demo/src
 
 import { ChangeEvent, Fragment, type ReactNode } from 'react'
-import { LazyMotion } from 'framer-motion'
-import * as m from 'framer-motion/m'
+import { LazyMotion } from 'motion/react'
+import * as m from 'motion/react-m'
 import { useModal, useSelectedItem } from '@/components/context'
 import Link from 'next/link'
 import { type Settings } from '../backendCommands/backendCommands'
@@ -27,7 +27,7 @@ const Backdrop = ({ children, onClick }: BackdropProps) => {
       strict>
       <m.div
         onClick={onClick}
-        className='absolute left-0 top-0 z-100 flex h-screen w-full items-center justify-center overflow-y-hidden bg-black bg-opacity-60'
+        className='absolute top-0 left-0 z-100 flex h-screen w-full items-center justify-center overflow-y-hidden bg-black/60'
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}>
@@ -136,7 +136,7 @@ export const Modal = () => {
           {modalType === 'about' && (
             <div className='text-main relative top-12 w-full'>
               <h3 className='text-center text-2xl'>Template.io</h3>
-              <div className='text-main mt-4 text-left font-mono text-base'>
+              <div className='text-main font-code mt-4 text-left text-base'>
                 <p>
                   Version: 0.1.0{' '}
                   <Link
@@ -162,7 +162,7 @@ export const Modal = () => {
           {modalType === 'settings' && (
             <div className='text-main relative top-12 w-full'>
               <h3 className='text-center text-2xl'>Settings</h3>
-              <div className='text-main mt-4 text-left font-mono text-base'>
+              <div className='text-main font-code mt-4 text-left text-base'>
                 {Object.entries(SettingsMenuOptions).map(([key, item]) => {
                   return (
                     <Fragment key={key}>
@@ -185,7 +185,7 @@ export const Modal = () => {
                                   id='contextMenuCountInput'
                                   max={max}
                                   min={1}
-                                  value={settings[subKey as subKey] ?? ''}
+                                  value={settings[subKey as subKey] as number}
                                   onChange={(
                                     e: ChangeEvent<HTMLInputElement>
                                   ) => {
@@ -203,7 +203,7 @@ export const Modal = () => {
                                     'h-full w-full',
                                     'hover:cursor-text',
                                     'rounded-xs bg-inherit p-1 outline-hidden',
-                                    'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:outline-hidden focus-visible:ring-4 focus-visible:ring-indigo-600'
+                                    'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:ring-4 focus-visible:ring-indigo-600 focus-visible:outline-hidden'
                                   )}
                                 />
                               )}
@@ -222,12 +222,12 @@ export const Modal = () => {
             onClick={close}
             type='button'
             className={tw(
-              'relative bottom-6 mx-auto mb-0 mt-auto flex min-h-[48px] cursor-pointer items-center rounded-sm px-12 py-0 text-lg text-white',
+              'relative bottom-6 mx-auto mt-auto mb-0 flex min-h-[48px] cursor-pointer items-center rounded-sm px-12 py-0 text-lg text-white',
               'bg-indigo-500',
               'sunrise:bg-red-800',
               'hover:bg-indigo-600',
               'sunrise:hover:bg-red-900',
-              'focus-visible:bg-indigo-600 focus-visible:outline-hidden focus-visible:ring-4 focus-visible:ring-black',
+              'focus-visible:bg-indigo-600 focus-visible:ring-4 focus-visible:ring-black focus-visible:outline-hidden',
               'sunrise:focus-visible:ring-red-900'
             )}>
             Close

@@ -69,8 +69,8 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
   //    key={name}
   //    title={id + '_' + name + '_currentlySelected: ' + value.includes(name)}
   //    className={tw(
-  //      value.includes(name) && !codeDisabled ? 'font-bold text-red-700' : '',
-  //      value.includes(name) && codeDisabled ? 'font-bold text-red-800' : ''
+  //      value.includes(name) && !codeDisabled ? 'font-codeBold text-red-700' : '',
+  //      value.includes(name) && codeDisabled ? 'font-codeBold text-red-800' : ''
   //    )}
   //    onKeyDown={(e) => {
   //      e.preventDefault()
