@@ -38,7 +38,25 @@ export const ContextMenu: FC = () => {
     if (art) return true
   }
 
-  const ContextMenuOptions = {
+  type ContextMenuOptions = Record<
+    string,
+    Record<
+      string,
+      {
+        track: { action: (() => void) | null }
+        range: { action: (() => void) | null }
+        articulation: { action: (() => void) | null }
+        layer: { action: (() => void) | null }
+        fader: { action: (() => void) | null }
+        label: string | null
+        icon1: React.JSX.Element | null
+        icon2: React.JSX.Element | null
+        shortcut: string | null
+      }
+    >
+  >
+
+  const ContextMenuOptions: ContextMenuOptions = {
     move: {
       moveItemUp: {
         track: {
@@ -304,11 +322,10 @@ export const ContextMenu: FC = () => {
         shortcut: 'CTRL_DELETE'
       }
     }
-  } as const
+  }
 
   if (!isContextMenuOpen) return null
 
-  
   const contextMenuIsSubItem =
     contextMenuId?.includes('FR_') || // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
     contextMenuId?.includes('AT_') || // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
@@ -402,17 +419,14 @@ export const ContextMenu: FC = () => {
                   fader
                 } = subItem
 
-                const contextMenuMap: Record<
-                  string,
-                  { label: string; action: () => void | null }
-                > = {
+                const contextMenuMap = {
                   FR_: { label: 'Range', action: range.action },
                   AT_: { label: 'Articulation', action: articulation.action },
                   AL_: { label: 'Layer', action: layer.action },
                   FL_: { label: 'Fader', action: fader.action }
                 }
 
-                let contextMenuLabel = label.replace('Item', 'Track')
+                let contextMenuLabel = label?.replace('Item', 'Track')
                 let action = track.action
 
                 for (const [
@@ -420,7 +434,7 @@ export const ContextMenu: FC = () => {
                   { label: mappedLabel, action: mappedAction }
                 ] of Object.entries(contextMenuMap)) {
                   if (contextMenuId?.includes(prefix)) {
-                    contextMenuLabel = label.replace('Item', mappedLabel)
+                    contextMenuLabel = label?.replace('Item', mappedLabel)
                     action = mappedAction
                     break
                   }
@@ -430,7 +444,7 @@ export const ContextMenu: FC = () => {
                   const count = contextMenuIsSubItem
                     ? sub_item_add_count
                     : track_add_count
-                  contextMenuLabel = contextMenuLabel.replace(
+                  contextMenuLabel = contextMenuLabel?.replace(
                     'Add',
                     `Add ${count ?? 1}`
                   )
@@ -447,7 +461,7 @@ export const ContextMenu: FC = () => {
                     for (const [singular, plural] of Object.entries(
                       singularToPlural
                     )) {
-                      if (contextMenuLabel.includes(singular)) {
+                      if (contextMenuLabel?.includes(singular)) {
                         contextMenuLabel = contextMenuLabel.replace(
                           singular,
                           plural

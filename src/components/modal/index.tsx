@@ -62,7 +62,21 @@ export const Modal = () => {
   const { close, modalOpen, modalType } = useModal()
   const { settings, updateSettings } = useSelectedItem()
 
-  const SettingsMenuOptions = {
+  type SettingsMenuOptions = Record<
+    string,
+    Partial<
+      Record<
+        keyof Settings,
+        {
+          label: string
+          input: string
+          max: number
+        }
+      >
+    >
+  >
+
+  const SettingsMenuOptions: SettingsMenuOptions = {
     outputs: {
       vep_out_settings: {
         label: 'Number of VEP Outs',
@@ -114,7 +128,7 @@ export const Modal = () => {
         max: 10
       }
     }
-  } as const
+  }
 
   if (!modalOpen) return null
   return (
@@ -164,20 +178,18 @@ export const Modal = () => {
               <h3 className='text-center text-2xl'>Settings</h3>
               <div className='text-main font-code mt-4 text-left text-base'>
                 {Object.entries(SettingsMenuOptions).map(([key, item]) => {
+                  type subItemMap = [
+                    keyof Settings,
+                    (typeof item)[keyof Settings]
+                  ][]
+
                   return (
                     <Fragment key={key}>
                       <hr className='my-2' />
 
-                      {Object.entries(item).map(
-                        ([subKey, subItem]: [
-                          subKey: string,
-                          subItem: {
-                            label: string
-                            input: string
-                            max: number
-                          }
-                        ]) => {
-                          type subKey = Partial<keyof Settings>
+                      {(Object.entries(item) as subItemMap).map(
+                        ([subKey, subItem]) => {
+                          if (!subItem) return null
 
                           const { label, input, max } = subItem
 
@@ -193,7 +205,7 @@ export const Modal = () => {
                                     id='contextMenuCountInput'
                                     max={max}
                                     min={1}
-                                    value={settings[subKey as subKey] as number}
+                                    value={settings[subKey] as number}
                                     onChange={(
                                       e: ChangeEvent<HTMLInputElement>
                                     ) => {
@@ -203,7 +215,7 @@ export const Modal = () => {
                                         parseInt(e.target.value) || 1
 
                                       void updateSettings({
-                                        key: subKey as subKey,
+                                        key: subKey,
                                         value: newValue
                                       })
                                     }}
