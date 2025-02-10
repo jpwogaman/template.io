@@ -25,6 +25,7 @@ export const InputText: FC<InputComponentProps> = ({
     <input
       id={id}
       type='text'
+      autoComplete='off'
       disabled={codeFullLocked ? true : codeDisabled}
       value={value}
       title={id + '_currentValue: ' + value}

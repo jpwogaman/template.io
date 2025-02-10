@@ -24,6 +24,7 @@ export const InputTextRich: FC<InputComponentProps> = ({
   return (
     <textarea
       id={id}
+      autoComplete='off'
       disabled={codeFullLocked ?? codeDisabled}
       readOnly={codeFullLocked ?? codeDisabled}
       value={value}

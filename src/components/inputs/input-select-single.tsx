@@ -24,6 +24,7 @@ export const InputSelectSingle: FC<InputComponentProps> = ({
   return (
     <select
       id={id}
+      autoComplete='off'
       disabled={codeFullLocked ? true : codeDisabled}
       title={id + '_currentValue: ' + value}
       value={value}

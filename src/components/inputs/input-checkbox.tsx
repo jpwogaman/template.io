@@ -23,6 +23,7 @@ export const InputCheckBox: FC<InputComponentProps> = ({
         <input
           type='checkbox'
           id={id}
+          autoComplete='off'
           checked={defaultValue as boolean}
           disabled={codeFullLocked}
           value={(defaultValue as boolean) ? 'false' : 'true'}

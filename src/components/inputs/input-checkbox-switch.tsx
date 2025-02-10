@@ -26,6 +26,7 @@ export const InputCheckBoxSwitch: FC<InputComponentProps> = ({
         <input
           id={id}
           type='checkbox'
+          autoComplete='off'
           checked={defaultValue === 'Value 2'}
           disabled={codeFullLocked}
           value={defaultValue === 'Value 2' ? 'Value 1' : 'Value 2'} // this needs to be opposite

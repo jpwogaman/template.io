@@ -63,6 +63,7 @@ export const InputColorPicker: FC<InputComponentProps> = ({
         <input
           id={id}
           type='color'
+          autoComplete='off'
           disabled={codeFullLocked}
           defaultValue={defaultValue as string}
           onFocus={() => setIsFocused(true)}
