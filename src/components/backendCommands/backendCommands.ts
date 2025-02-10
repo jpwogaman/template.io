@@ -121,7 +121,7 @@ async setSettings(settings: Settings) : Promise<void> {
 
 
 /** user-defined types **/
-import { type FileItemId, type SubItemId } from '../context'
+import { type FileItemId, type SubItemId } from '@/components/context'
 
 export type FileItem = { id: FileItemId; locked: boolean; name: string; notes: string; channel: number; base_delay: number; avg_delay: number; vep_out: string; vep_instance: string; smp_number: string; smp_out: string; color: string }
 export type FileItemRequest = { id: FileItemId; locked?: boolean | null; name?: string | null; notes?: string | null; channel?: number | null; base_delay?: number | null; avg_delay?: number | null; vep_out?: string | null; vep_instance?: string | null; smp_number?: string | null; smp_out?: string | null; color?: string | null }

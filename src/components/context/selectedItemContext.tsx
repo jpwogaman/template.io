@@ -12,7 +12,11 @@ import {
   useCallback,
   useEffect
 } from 'react'
-import { type Settings, commands } from '../backendCommands/backendCommands'
+
+import {
+  type Settings,
+  commands
+} from '@/components/backendCommands/backendCommands'
 
 export type FileItemId = `T_${number}`
 export type SubItemId =

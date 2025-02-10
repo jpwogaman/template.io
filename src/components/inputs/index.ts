@@ -19,9 +19,9 @@ import {
   type ItemsArtListTog,
   type ItemsFadList,
   type FileItem
-} from '../backendCommands/backendCommands'
+} from '@/components/backendCommands/backendCommands'
 
-import { type FileItemId, type SubItemId } from '../context'
+import { type FileItemId, type SubItemId } from '@/components/context'
 
 export type layoutDataArray =
   | ItemsFullRanges[]
@@ -65,7 +65,7 @@ export type OnChangeHelperArgsType = {
 export type InputComponentProps = {
   id: string
   toggle?: boolean
-  codeDisabled: boolean
+  codeDisabled?: boolean
   codeFullLocked: boolean
   defaultValue?: string | number | boolean
   placeholder?: string | number

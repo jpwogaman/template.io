@@ -32,7 +32,7 @@ pub fn main() {
     ///////// Imports
     (
       "/** user-defined types **/".to_string(),
-      "/** user-defined types **/\nimport { type FileItemId, type SubItemId } from '../context'".to_string(),
+      "/** user-defined types **/\nimport { type FileItemId, type SubItemId } from '@/components/context'".to_string(),
     ),
     //////////// FileItems
     (

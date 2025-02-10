@@ -18,9 +18,9 @@ import {
   type LayoutDataSingleHelper,
   type OnChangeHelperArgsType,
   type InputComponentProps
-} from '../inputs'
+} from '@/components/inputs'
 
-import { TrackOptionsTableKeys } from '../utils/trackOptionsTableKeys'
+import { TrackOptionsTableKeys } from '@/components/utils/trackOptionsTableKeys'
 
 import {
   useMutations,
@@ -38,7 +38,7 @@ import {
   type ItemsFadList,
   type FullTrackCounts,
   type TrackOptionLayouts
-} from '../backendCommands/backendCommands'
+} from '@/components/backendCommands/backendCommands'
 
 export const TrackOptions: FC = () => {
   const { setIsContextMenuOpen, setContextMenuId } = useContextMenu()
@@ -299,7 +299,7 @@ export const TrackOptions: FC = () => {
         )}>
         <InputTextRich
           id={`${selectedItem?.id}_notes`}
-          codeFullLocked={selectedItem?.locked}
+          codeFullLocked={selectedItem?.locked ?? false}
           defaultValue={selectedItem?.notes}
           onChangeFunction={(event: ChangeEventHelper) => {
             if (!selectedItem?.id) return
@@ -476,7 +476,7 @@ export const TrackOptions: FC = () => {
 
                           const inputPropsHelper: InputComponentProps = {
                             id: `${layoutDataSingle.id}_${subKey.key}`,
-                            codeFullLocked: selectedItem?.locked,
+                            codeFullLocked: selectedItem?.locked ?? false,
                             codeDisabled: isSubKeyInputDisabled(
                               layoutConfig.label,
                               layoutDataSingle,
@@ -625,7 +625,7 @@ export const TrackOptions: FC = () => {
 
                           const inputPropsHelper: InputComponentProps = {
                             id: `${layoutDataSingle.id}_${subKey.key}`,
-                            codeFullLocked: selectedItem?.locked,
+                            codeFullLocked: selectedItem?.locked ?? false,
                             codeDisabled: isSubKeyInputDisabled(
                               layoutConfig.label,
                               layoutDataSingle,

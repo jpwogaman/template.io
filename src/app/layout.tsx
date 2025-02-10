@@ -1,6 +1,5 @@
 import '@/styles/globals.css'
-import { allFontsClassName } from '@/styles/fonts'
-
+import { ThemeProvider } from 'next-themes'
 import {
   TauriListenersProvider,
   SelectedItemProvider,
@@ -9,11 +8,10 @@ import {
   ContextMenuProvider,
   KeyboardProvider
 } from '@/components/context'
-import { ThemeProvider } from 'next-themes'
-
 import { NavBar } from '@/components/layout/navbar'
 import { Modal } from '@/components/modal'
 import { ContextMenu } from '@/components/contextMenu'
+import { allFontsClassName } from '@/styles/fonts'
 
 export default function RootLayout({
   children

@@ -1,5 +1,5 @@
-import { type selectArray } from '../inputs'
-import { type FileItem } from '../backendCommands/backendCommands'
+import { type selectArray } from '@/components/inputs'
+import { type FileItem } from '@/components/backendCommands/backendCommands'
 
 export type TrackListTableKeys = {
   label: 'Tracks'

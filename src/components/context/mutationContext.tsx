@@ -26,7 +26,7 @@ import {
   type ItemsArtListTapRequest,
   type ItemsArtLayersRequest,
   type ItemsFadListRequest
-} from '../backendCommands/backendCommands'
+} from '@/components/backendCommands/backendCommands'
 
 type createSubItemArgs = {
   fileitemsItemId: FileItemId

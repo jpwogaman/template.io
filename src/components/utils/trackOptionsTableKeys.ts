@@ -1,8 +1,8 @@
-import { type selectArray } from '../inputs'
+import { type selectArray } from '@/components/inputs'
 import {
   type FullTrackForExport,
   type FullTrackCounts
-} from '../backendCommands/backendCommands'
+} from '@/components/backendCommands/backendCommands'
 
 export type TrackOptionsTableKeys<T extends keyof FullTrackCounts> = {
   title: string

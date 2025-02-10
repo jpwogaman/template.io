@@ -6,7 +6,7 @@ import { LazyMotion } from 'motion/react'
 import * as m from 'motion/react-m'
 import { useModal, useSelectedItem } from '@/components/context'
 import Link from 'next/link'
-import { type Settings } from '../backendCommands/backendCommands'
+import { type Settings } from '@/components/backendCommands/backendCommands'
 
 const loadFeatures = () =>
   import('@/components/layout/motionFeatures').then((res) => res.default)
