@@ -1,4 +1,9 @@
-import React, { type FC, type ChangeEvent, useState, useEffect } from 'react'
+import React, {
+  type FC,
+  type ChangeEvent,
+  useState,
+  useLayoutEffect
+} from 'react'
 import { twMerge } from 'tailwind-merge'
 import { type InputComponentProps } from './index'
 
@@ -17,7 +22,7 @@ export const InputTextRich: FC<InputComponentProps> = ({
     onChangeFunction(event)
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setValue(defaultValue as string)
   }, [defaultValue])
 
@@ -25,8 +30,8 @@ export const InputTextRich: FC<InputComponentProps> = ({
     <textarea
       id={id}
       autoComplete='off'
-      disabled={codeFullLocked ?? codeDisabled}
-      readOnly={codeFullLocked ?? codeDisabled}
+      disabled={codeFullLocked ? true : codeDisabled}
+      readOnly={codeFullLocked ? true : codeDisabled}
       value={value}
       title={id + '_currentValue: ' + value}
       placeholder={placeholder as string}
@@ -34,7 +39,7 @@ export const InputTextRich: FC<InputComponentProps> = ({
       wrap='soft'
       onChange={valChange}
       className={twMerge(
-        (codeFullLocked ?? codeDisabled)
+        codeFullLocked || codeDisabled
           ? 'text-gray-400 hover:cursor-not-allowed hover:placeholder-zinc-400 dark:hover:placeholder-zinc-500'
           : 'hover:cursor-text hover:placeholder-zinc-200 dark:hover:placeholder-zinc-600',
         'w-full rounded-xs border-2 border-zinc-300 bg-inherit p-1 text-xs placeholder-zinc-400 outline-hidden transition-all duration-200 dark:border-white dark:placeholder-zinc-500',

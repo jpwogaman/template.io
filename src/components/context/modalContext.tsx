@@ -99,9 +99,7 @@ export const ModalProvider: FC<ModalProviderProps> = ({ children }) => {
     return () => {
       window.removeEventListener('keydown', handleEsc)
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [modalOpen])
+  }, [modalOpen, close])
 
   const value = useMemo(
     () => ({

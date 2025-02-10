@@ -1,4 +1,9 @@
-import React, { type FC, type ChangeEvent, useState, useEffect } from 'react'
+import React, {
+  type FC,
+  type ChangeEvent,
+  useState,
+  useLayoutEffect
+} from 'react'
 import { twMerge } from 'tailwind-merge'
 import { type InputComponentProps } from './index'
 
@@ -17,7 +22,7 @@ export const InputText: FC<InputComponentProps> = ({
     onChangeFunction(event)
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setValue(defaultValue as string)
   }, [defaultValue])
 
@@ -27,6 +32,7 @@ export const InputText: FC<InputComponentProps> = ({
       type='text'
       autoComplete='off'
       disabled={codeFullLocked ? true : codeDisabled}
+      readOnly={codeFullLocked ? true : codeDisabled}
       value={value}
       title={id + '_currentValue: ' + value}
       placeholder={placeholder as string}

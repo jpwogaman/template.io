@@ -51,19 +51,18 @@ export const TauriListenersProvider: FC<TauriListenersProviderProps> = ({
     }).catch((e) => console.error('Error in settings modal listener:', e))
 
     return () => {
-      // Ensure that the unlisten function exists before calling it
       refreshListener
-        .then((unlisten) => unlisten && unlisten()) // Check if unlisten is a function
+        .then((unlisten) => unlisten && unlisten())
         .catch((e) => console.error('Error cleaning up refresh listener:', e))
 
       aboutModalListener
-        .then((unlisten) => unlisten && unlisten()) // Check if unlisten is a function
+        .then((unlisten) => unlisten && unlisten())
         .catch((e) =>
           console.error('Error cleaning up about modal listener:', e)
         )
 
       settingsModalListener
-        .then((unlisten) => unlisten && unlisten()) // Check if unlisten is a function
+        .then((unlisten) => unlisten && unlisten())
         .catch((e) =>
           console.error('Error cleaning up settings modal listener:', e)
         )

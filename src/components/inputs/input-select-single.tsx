@@ -1,4 +1,4 @@
-import { type FC, type ChangeEvent, useState, useEffect } from 'react'
+import { type FC, type ChangeEvent, useState, useLayoutEffect } from 'react'
 import { selectArrays, type InputComponentProps } from './index'
 import { twMerge } from 'tailwind-merge'
 
@@ -17,7 +17,7 @@ export const InputSelectSingle: FC<InputComponentProps> = ({
     onChangeFunction(event)
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setValue(defaultValue as string)
   }, [defaultValue])
 
