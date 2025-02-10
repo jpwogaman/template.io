@@ -128,14 +128,6 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
 
         if (!previous_item_id) return
 
-        const newInput = keyDownTarget_FROM?.id.replace(
-          selected_item_id,
-          previous_item_id
-        )
-        const previousInput = window.document.getElementById(newInput)
-
-        keyDownTarget_FROM?.blur()
-        previousInput?.focus()
         void updateSettings({
           key: 'selected_item_id',
           value: previous_item_id
@@ -144,6 +136,12 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
           key: 'selected_sub_item_id',
           value: `${previous_item_id}_notes`
         })
+        const newInput = keyDownTarget_FROM?.id.replace(
+          selected_item_id,
+          previous_item_id
+        )
+        const previousInput = window.document.getElementById(newInput)
+        previousInput?.focus()
       }
       if (command === 'ARROWDOWN') {
         if (e.repeat && !isTextArea) return
@@ -177,14 +175,6 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         }
 
         if (!next_item_id) return
-
-        const newInput = keyDownTarget_FROM?.id.replace(
-          selected_item_id,
-          next_item_id
-        )
-        const nextInput = window.document.getElementById(newInput)
-
-        nextInput?.focus()
         void updateSettings({
           key: 'selected_item_id',
           value: next_item_id
@@ -193,19 +183,25 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
           key: 'selected_sub_item_id',
           value: `${next_item_id}_notes`
         })
+        const newInput = keyDownTarget_FROM?.id.replace(
+          selected_item_id,
+          next_item_id
+        )
+        const nextInput = window.document.getElementById(newInput)
+        nextInput?.focus()
       }
       if (command === 'SHIFT_ARROWUP') {
         if (e.repeat) return
         if (!keyDownTarget_FROM?.id.includes('_FR_0')) return
         e.preventDefault()
-        const nextInput = window.document.getElementById(
-          `${selected_item_id}_notes`
-        )
+
         void updateSettings({
           key: 'selected_sub_item_id',
           value: `${selected_item_id}_notes`
         })
-
+        const nextInput = window.document.getElementById(
+          `${selected_item_id}_notes`
+        )
         nextInput?.focus()
       }
       if (command === 'SHIFT_ARROWDOWN') {
@@ -213,14 +209,14 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         if (!keyDownTarget_FROM?.id.includes('_notes')) return
         e.preventDefault()
 
-        const nextInput = window.document.getElementById(
-          `${selected_item_id}_FR_0_name`
-        )
         void updateSettings({
           key: 'selected_sub_item_id',
           value: `${selected_item_id}_FR_0`
         })
 
+        const nextInput = window.document.getElementById(
+          `${selected_item_id}_FR_0_name`
+        )
         nextInput?.focus()
       }
       ////////////////////////////////
@@ -233,14 +229,14 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         if (e.repeat) return
         if (selectedInputIsInTrackOptions) return
         e.preventDefault()
-        const trackOptionsNameInput = window.document.getElementById(
-          `${selected_item_id}_notes`
-        )
+
         void updateSettings({
           key: 'selected_sub_item_id',
           value: `${selected_item_id}_notes`
         })
-
+        const trackOptionsNameInput = window.document.getElementById(
+          `${selected_item_id}_notes`
+        )
         trackOptionsNameInput?.focus()
       }
       if (command === 'CTRL_ARROWLEFT') {

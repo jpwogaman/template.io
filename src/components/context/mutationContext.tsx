@@ -162,7 +162,9 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await getData()
+        if (data === null) {
+          await getData()
+        }
         await getSelectedItem()
       } catch (error) {
         console.error('Error during data fetching:', error)
