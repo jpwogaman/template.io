@@ -38,12 +38,11 @@ const contextMenuContextDefaultValues: ContextMenuType = {
     top: 0,
     left: 0
   },
-  /* eslint-disable @typescript-eslint/no-empty-function */
-  close: () => {},
-  open: () => {},
-  setContextMenuId: () => {},
-  setIsContextMenuOpen: () => {},
-  setContextMenuPosition: () => {}
+  close: () => undefined,
+  open: () => undefined,
+  setContextMenuId: () => undefined,
+  setIsContextMenuOpen: () => undefined,
+  setContextMenuPosition: () => undefined
 }
 
 export const ContextMenuContext = createContext<ContextMenuType>(

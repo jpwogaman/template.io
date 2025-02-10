@@ -1,13 +1,13 @@
 'use client'
 
 import {
-  createContext,
-  useContext,
-  useMemo,
   type ReactNode,
   type FC,
   type SetStateAction,
   type Dispatch,
+  createContext,
+  useContext,
+  useMemo,
   useState,
   useCallback,
   useEffect
@@ -27,22 +27,20 @@ type updateSettings = {
 interface SelectedItemContextType {
   copiedItemId: FileItemId | null
   copiedSubItemId: SubItemId | null
-
   selectedItemRangeCount: number
   selectedItemArtTogCount: number
   selectedItemArtTapCount: number
   selectedItemArtCount: number
   selectedItemLayerCount: number
   selectedItemFadCount: number
-
+  setCopiedItemId: Dispatch<SetStateAction<FileItemId | null>>
+  setCopiedSubItemId: Dispatch<SetStateAction<SubItemId | null>>
   setSelectedItemRangeCount: Dispatch<SetStateAction<number>>
   setSelectedItemArtTogCount: Dispatch<SetStateAction<number>>
   setSelectedItemArtTapCount: Dispatch<SetStateAction<number>>
   setSelectedItemArtCount: Dispatch<SetStateAction<number>>
   setSelectedItemLayerCount: Dispatch<SetStateAction<number>>
   setSelectedItemFadCount: Dispatch<SetStateAction<number>>
-  setCopiedItemId: Dispatch<SetStateAction<FileItemId | null>>
-  setCopiedSubItemId: Dispatch<SetStateAction<SubItemId | null>>
   settings: Settings
   updateSettings: ({ key, value }: updateSettings) => Promise<void>
 }
@@ -56,16 +54,14 @@ const selectedItemContextDefaultValues: SelectedItemContextType = {
   selectedItemArtCount: 0,
   selectedItemLayerCount: 0,
   selectedItemFadCount: 0,
-  /* eslint-disable @typescript-eslint/no-empty-function */
-
-  setSelectedItemRangeCount: () => {},
-  setSelectedItemArtTogCount: () => {},
-  setSelectedItemArtTapCount: () => {},
-  setSelectedItemArtCount: () => {},
-  setSelectedItemLayerCount: () => {},
-  setSelectedItemFadCount: () => {},
-  setCopiedItemId: () => {},
-  setCopiedSubItemId: () => {},
+  setCopiedItemId: () => undefined,
+  setCopiedSubItemId: () => undefined,
+  setSelectedItemRangeCount: () => undefined,
+  setSelectedItemArtTogCount: () => undefined,
+  setSelectedItemArtTapCount: () => undefined,
+  setSelectedItemArtCount: () => undefined,
+  setSelectedItemLayerCount: () => undefined,
+  setSelectedItemFadCount: () => undefined,
   settings: {
     vep_out_settings: 128,
     smp_out_settings: 32,
@@ -88,8 +84,7 @@ const selectedItemContextDefaultValues: SelectedItemContextType = {
       fad_list: 'table'
     }
   },
-  /* eslint-disable @typescript-eslint/no-empty-function */
-  updateSettings: async () => {}
+  updateSettings: async () => undefined
 }
 
 export const SelectedItemContext = createContext<SelectedItemContextType>(
@@ -105,37 +100,16 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
 }) => {
   const [copiedItemId, setCopiedItemId] = useState<FileItemId | null>(null)
   const [copiedSubItemId, setCopiedSubItemId] = useState<SubItemId | null>(null)
-
   const [selectedItemRangeCount, setSelectedItemRangeCount] = useState(0)
   const [selectedItemArtTogCount, setSelectedItemArtTogCount] = useState(0)
   const [selectedItemArtTapCount, setSelectedItemArtTapCount] = useState(0)
   const [selectedItemArtCount, setSelectedItemArtCount] = useState(0)
   const [selectedItemLayerCount, setSelectedItemLayerCount] = useState(0)
   const [selectedItemFadCount, setSelectedItemFadCount] = useState(0)
-  const [mounted, setMounted] = useState(false)
 
-  const [settings, setSettings] = useState<Settings>({
-    vep_out_settings: 128,
-    smp_out_settings: 32,
-    default_range_count: 1,
-    default_art_tog_count: 2,
-    default_art_tap_count: 4,
-    default_art_layer_count: 1,
-    default_fad_count: 4,
-    track_add_count: 1,
-    sub_item_add_count: 1,
-    selected_item_id: 'T_0',
-    selected_sub_item_id: 'T_0_notes',
-    previous_item_id: null,
-    next_item_id: null,
-    track_options_layouts: {
-      full_ranges: 'table',
-      art_list_tap: 'table',
-      art_list_tog: 'table',
-      art_layers: 'table',
-      fad_list: 'table'
-    }
-  })
+  const [settings, setSettings] = useState<Settings>(
+    selectedItemContextDefaultValues.settings
+  )
 
   const updateSettings = useCallback(
     async ({ key, value }: updateSettings) => {
@@ -148,81 +122,38 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
     [setSettings]
   )
 
-  const getSettings = useCallback(
-    async () =>
-      await commands.getSettings().then((data: Settings) => {
-        void updateSettings({
-          key: 'vep_out_settings',
-          value: data.vep_out_settings
-        })
-        void updateSettings({
-          key: 'smp_out_settings',
-          value: data.smp_out_settings
-        })
-        void updateSettings({
-          key: 'default_range_count',
-          value: data.default_range_count
-        })
-        void updateSettings({
-          key: 'default_art_tog_count',
-          value: data.default_art_tog_count
-        })
-        void updateSettings({
-          key: 'default_art_tap_count',
-          value: data.default_art_tap_count
-        })
-        void updateSettings({
-          key: 'default_fad_count',
-          value: data.default_fad_count
-        })
-        void updateSettings({
-          key: 'track_add_count',
-          value: data.track_add_count
-        })
-        void updateSettings({
-          key: 'sub_item_add_count',
-          value: data.sub_item_add_count
-        })
-        void updateSettings({
-          key: 'selected_item_id',
-          value: data.selected_item_id
-        })
-        void updateSettings({
-          key: 'selected_sub_item_id',
-          value: data.selected_sub_item_id
-        })
-        void updateSettings({
-          key: 'previous_item_id',
-          value: data.previous_item_id
-        })
-        void updateSettings({
-          key: 'next_item_id',
-          value: data.next_item_id
-        })
-        void updateSettings({
-          key: 'track_options_layouts',
-          value: data.track_options_layouts
-        })
-      }),
-    [updateSettings]
-  )
-
   useEffect(() => {
-    setMounted(true)
-    getSettings().catch((e) => console.error(e))
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, [])
+    const fetchSettings = async () => {
+      try {
+        const data = await commands.getSettings()
+        const settingsKeys = Object.keys(
+          selectedItemContextDefaultValues.settings
+        ) as (keyof Settings)[]
+
+        settingsKeys.forEach((key) => {
+          void updateSettings({
+            key,
+            value: data[key]
+          })
+        })
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    void fetchSettings()
+  }, [updateSettings])
 
   const value = useMemo(
     () => ({
+      copiedItemId,
+      copiedSubItemId,
       selectedItemRangeCount,
       selectedItemArtTogCount,
       selectedItemArtTapCount,
       selectedItemArtCount,
       selectedItemLayerCount,
       selectedItemFadCount,
-      copiedItemId,
-      copiedSubItemId,
       setSelectedItemRangeCount,
       setSelectedItemArtTogCount,
       setSelectedItemArtTapCount,
@@ -231,19 +162,18 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
       setSelectedItemFadCount,
       setCopiedItemId,
       setCopiedSubItemId,
-      /////
       settings,
       updateSettings
     }),
     [
+      copiedItemId,
+      copiedSubItemId,
       selectedItemRangeCount,
       selectedItemArtTogCount,
       selectedItemArtTapCount,
       selectedItemArtCount,
       selectedItemLayerCount,
       selectedItemFadCount,
-      copiedItemId,
-      copiedSubItemId,
       setSelectedItemRangeCount,
       setSelectedItemArtTogCount,
       setSelectedItemArtTapCount,
@@ -252,15 +182,10 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
       setSelectedItemFadCount,
       setCopiedItemId,
       setCopiedSubItemId,
-      /////
       settings,
       updateSettings
     ]
   )
-
-  if (!mounted) {
-    return null
-  }
 
   return (
     <SelectedItemContext.Provider value={value}>

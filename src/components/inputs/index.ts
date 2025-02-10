@@ -65,8 +65,8 @@ export type OnChangeHelperArgsType = {
 export type InputComponentProps = {
   id: string
   toggle?: boolean
-  codeDisabled?: boolean
-  codeFullLocked?: boolean
+  codeDisabled: boolean
+  codeFullLocked: boolean
   defaultValue?: string | number | boolean
   placeholder?: string | number
   options?: keyof selectArray

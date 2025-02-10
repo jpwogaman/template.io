@@ -1,12 +1,12 @@
 'use client'
 
 import {
+  type ReactNode,
+  type FC,
   createContext,
   useContext,
   useMemo,
   useCallback,
-  type ReactNode,
-  type FC,
   useEffect,
   useState
 } from 'react'
@@ -94,48 +94,41 @@ const mutationContextDefaultValues: MutationContextType = {
   vepSamplerCount: 0,
   vepInstanceCount: 0,
   nonVepSamplerCount: 0,
-  /* eslint-disable @typescript-eslint/no-empty-function */
-  getData: () => {},
-  getSelectedItem: () => {},
+  getData: () => undefined,
+  getSelectedItem: () => undefined,
   //////////////////////////////////////////
   create: {
-    /* eslint-disable @typescript-eslint/no-empty-function */
-    track: () => {},
-    fullRange: () => {},
-    artListTog: () => {},
-    artListTap: () => {},
-    artLayer: () => {},
-    fadList: () => {}
+    track: () => undefined,
+    fullRange: () => undefined,
+    artListTog: () => undefined,
+    artListTap: () => undefined,
+    artLayer: () => undefined,
+    fadList: () => undefined
   },
   update: {
-    /* eslint-disable @typescript-eslint/no-empty-function */
-    track: () => {},
-    fullRange: () => {},
-    artListTog: () => {},
-    artListTap: () => {},
-    artLayer: () => {},
-    fadList: () => {}
+    track: () => undefined,
+    fullRange: () => undefined,
+    artListTog: () => undefined,
+    artListTap: () => undefined,
+    artLayer: () => undefined,
+    fadList: () => undefined
   },
   del: {
-    /* eslint-disable @typescript-eslint/no-empty-function */
-    track: () => {},
-    fullRange: () => {},
-    artListTog: () => {},
-    artListTap: () => {},
-    artLayer: () => {},
-    fadList: () => {}
+    track: () => undefined,
+    fullRange: () => undefined,
+    artListTog: () => undefined,
+    artListTap: () => undefined,
+    artLayer: () => undefined,
+    fadList: () => undefined
   },
   clear: {
-    /* eslint-disable @typescript-eslint/no-empty-function */
-    track: () => {}
+    track: () => undefined
   },
   renumber: {
-    /* eslint-disable @typescript-eslint/no-empty-function */
-    allTracks: () => {}
+    allTracks: () => undefined
   },
   paste: {
-    /* eslint-disable @typescript-eslint/no-empty-function */
-    track: () => {}
+    track: () => undefined
   }
 }
 
@@ -161,25 +154,56 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
 
   const { selected_item_id, previous_item_id } = settings
 
-  const [mounted, setMounted] = useState(false)
   const [data, setData] = useState<FullTrackWithCounts[] | null>(null)
   const [selectedItem, setSelectedItem] = useState<FullTrackForExport | null>(
     null
   )
 
   useEffect(() => {
-    setMounted(true)
-    void getData().catch((error) => {
-      console.log('getData_error', error)
-    })
-    void getSelectedItem().catch((error) => {
-      console.log('getSelectedItem_error', error)
-    })
+    const fetchData = async () => {
+      try {
+        await getData()
+        await getSelectedItem()
+      } catch (error) {
+        console.error('Error during data fetching:', error)
+      }
+    }
+    void fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [selected_item_id])
+
+  useEffect(() => {
+    if (!data || !selected_item_id) return
+
+    const index = data.findIndex((item) => item.id === selected_item_id)
+    if (index === -1) return
+
+    const currentItem = data[index]
+
+    void updateSettings({
+      key: 'previous_item_id',
+      value: data[index - 1]?.id ?? null
+    })
+    void updateSettings({
+      key: 'next_item_id',
+      value: data[index + 1]?.id ?? null
+    })
+
+    setSelectedItemRangeCount(currentItem?._count?.full_ranges ?? 0)
+    setSelectedItemArtTogCount(currentItem?._count?.art_list_tog ?? 0)
+    setSelectedItemArtTapCount(currentItem?._count?.art_list_tap ?? 0)
+    setSelectedItemArtCount(
+      (currentItem?._count?.art_list_tog ?? 0) +
+        (currentItem?._count?.art_list_tap ?? 0)
+    )
+    setSelectedItemLayerCount(currentItem?._count?.art_layers ?? 0)
+    setSelectedItemFadCount(currentItem?._count?.fad_list ?? 0)
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, selected_item_id])
 
   //////////////////////////////////////////
-  // initial queries
+  // Initial queries
   const getData = useCallback(async () => {
     try {
       const data = await commands.listAllFileitemsAndRelationCounts()
@@ -187,7 +211,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     } catch (error) {
       console.error('Error fetching data:', error)
     }
-  }, [setData])
+  }, [])
 
   const getSelectedItem = useCallback(async () => {
     if (!selected_item_id) return
@@ -197,7 +221,8 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     } catch (error) {
       console.error('Error fetching selected item:', error)
     }
-  }, [selected_item_id, setSelectedItem])
+  }, [selected_item_id])
+
   //////////////////////////////////////////
   // logic to count vep samplers and instances
   const dataLength = data?.length ?? 0
@@ -271,38 +296,7 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
     vepSamplerCount += element
   }
   //////////////////////////////////////////
-  // logic to find previous and next item ids, as well as set some other counts
-  useEffect(() => {
-    if (!data) return
 
-    const index =
-      data.findIndex(
-        (item: FullTrackWithCounts) => item.id === selected_item_id
-      ) ?? 0
-
-    void updateSettings({
-      key: 'previous_item_id',
-      value: data[index - 1]?.id
-    })
-    void updateSettings({
-      key: 'next_item_id',
-      value: data[index + 1]?.id
-    })
-
-    setSelectedItemRangeCount(data[index]?._count?.full_ranges ?? 0)
-    setSelectedItemArtTogCount(data[index]?._count?.art_list_tog ?? 0)
-    setSelectedItemArtTapCount(data[index]?._count?.art_list_tap ?? 0)
-    setSelectedItemArtCount(
-      (data[index]?._count?.art_list_tog ?? 0) +
-        (data[index]?._count?.art_list_tap ?? 0)
-    )
-    setSelectedItemLayerCount(data[index]?._count?.art_layers ?? 0)
-    setSelectedItemFadCount(data[index]?._count?.fad_list ?? 0)
-
-    void getSelectedItem()
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, [selected_item_id, data])
-  //////////////////////////////////////////
   // CREATE mutations
   const createSingleItemMutation = useCallback(async () => {
     await commands
@@ -446,12 +440,11 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
           console.error(`Error updating Tap Articulation: ${result.error}`)
           alert(`Error updating Tap Articulation: ${result.error}`)
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
-        console.error(
-          `Error: ${error instanceof Error ? error.message : error}`
-        )
-        alert(`Error: ${error instanceof Error ? error.message : error}`)
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : String(error)
+        console.error(`Error: ${errorMessage}`)
+        alert(`Error: ${errorMessage}`)
       }
     },
     [getSelectedItem]
@@ -521,12 +514,11 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
           console.error(`Error deleting Full Range: ${result.error}`)
           alert(`Error deleting Full Range: ${result.error}`)
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
-        console.error(
-          `Error: ${error instanceof Error ? error.message : error}`
-        )
-        alert(`Error: ${error instanceof Error ? error.message : error}`)
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : String(error)
+        console.error(`Error: ${errorMessage}`)
+        alert(`Error: ${errorMessage}`)
       }
     },
     [getData, getSelectedItem]
@@ -546,12 +538,11 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
           console.error(`Error deleting Toggle Articulation: ${result.error}`)
           alert(`Error deleting Toggle Articulation: ${result.error}`)
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
-        console.error(
-          `Error: ${error instanceof Error ? error.message : error}`
-        )
-        alert(`Error: ${error instanceof Error ? error.message : error}`)
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : String(error)
+        console.error(`Error: ${errorMessage}`)
+        alert(`Error: ${errorMessage}`)
       }
     },
     [getData, getSelectedItem]
@@ -571,12 +562,11 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
           console.error(`Error deleting Tap Articulation: ${result.error}`)
           alert(`Error deleting Tap Articulation: ${result.error}`)
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
-        console.error(
-          `Error: ${error instanceof Error ? error.message : error}`
-        )
-        alert(`Error: ${error instanceof Error ? error.message : error}`)
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : String(error)
+        console.error(`Error: ${errorMessage}`)
+        alert(`Error: ${errorMessage}`)
       }
     },
     [getData, getSelectedItem]
@@ -596,12 +586,11 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
           console.error(`Error deleting Articulation Layer: ${result.error}`)
           alert(`Error deleting Articulation Layer: ${result.error}`)
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
-        console.error(
-          `Error: ${error instanceof Error ? error.message : error}`
-        )
-        alert(`Error: ${error instanceof Error ? error.message : error}`)
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : String(error)
+        console.error(`Error: ${errorMessage}`)
+        alert(`Error: ${errorMessage}`)
       }
     },
     [getData, getSelectedItem]
@@ -618,12 +607,11 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
           console.error(`Error deleting Fader: ${result.error}`)
           alert(`Error deleting Fader: ${result.error}`)
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
-        console.error(
-          `Error: ${error instanceof Error ? error.message : error}`
-        )
-        alert(`Error: ${error instanceof Error ? error.message : error}`)
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : String(error)
+        console.error(`Error: ${errorMessage}`)
+        alert(`Error: ${errorMessage}`)
       }
     },
     [getData, getSelectedItem]
@@ -778,10 +766,6 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       paste
     ]
   )
-
-  if (!mounted) {
-    return null
-  }
 
   return (
     <mutationContext.Provider value={value}>

@@ -1,14 +1,14 @@
 'use client'
 
 import {
-  createContext,
-  useContext,
-  useMemo,
-  useCallback,
   type ReactNode,
   type FC,
   type SetStateAction,
   type Dispatch,
+  createContext,
+  useContext,
+  useMemo,
+  useCallback,
   useEffect,
   useState
 } from 'react'
@@ -45,13 +45,12 @@ const modalContextDefaultValues: ModalContextType = {
   modalType: 'about',
   loading: false,
   status: null,
-  /* eslint-disable @typescript-eslint/no-empty-function */
-  close: () => {},
-  open: () => {},
-  setModalType: () => {},
-  setModalMessage: () => {},
-  setLoading: () => {},
-  setStatus: () => {}
+  close: () => undefined,
+  open: () => undefined,
+  setModalType: () => undefined,
+  setModalMessage: () => undefined,
+  setLoading: () => undefined,
+  setStatus: () => undefined
 }
 
 export const ModalContext = createContext<ModalContextType>(
@@ -81,19 +80,23 @@ export const ModalProvider: FC<ModalProviderProps> = ({ children }) => {
     setModalOpen(true)
   }, [setModalOpen])
 
-  const handleEsc = (e: KeyboardEvent) => {
-    e.preventDefault()
-    if (e.key === 'Escape') {
-      close()
-    }
-  }
-
   useEffect(() => {
+    const handleEsc = (e: KeyboardEvent): void => {
+      e.preventDefault()
+      if (e.key === 'Escape') {
+        close()
+      }
+    }
+
     if (modalOpen) {
       document.body.classList.add('overflow-hidden')
       window.addEventListener('keydown', handleEsc)
     } else {
       document.body.classList.remove('overflow-hidden')
+      window.removeEventListener('keydown', handleEsc)
+    }
+
+    return () => {
       window.removeEventListener('keydown', handleEsc)
     }
 

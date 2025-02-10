@@ -25,7 +25,7 @@ export const InputText: FC<InputComponentProps> = ({
     <input
       id={id}
       type='text'
-      disabled={codeFullLocked || codeDisabled} // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
+      disabled={codeFullLocked ? true : codeDisabled}
       value={value}
       title={id + '_currentValue: ' + value}
       placeholder={placeholder as string}

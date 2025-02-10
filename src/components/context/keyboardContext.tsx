@@ -1,20 +1,19 @@
 'use client'
 
 import {
+  type ReactNode,
+  type FC,
   createContext,
   useContext,
   useEffect,
-  type ReactNode,
-  type FC,
-  useCallback
+  useCallback,
+  useMemo
 } from 'react'
 import { useMutations, useSelectedItem } from '@/components/context'
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface KeyboardType {}
 
-const keyboardContextDefaultValues: KeyboardType = {}
+const keyboardContextDefaultValues: Record<string, unknown> = {}
 
-export const KeyboardContext = createContext<KeyboardType>(
+export const KeyboardContext = createContext<Record<string, unknown>>(
   keyboardContextDefaultValues
 )
 
@@ -354,7 +353,13 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
     }
   }, [handleKeyDown])
 
-  return <KeyboardContext.Provider value>{children}</KeyboardContext.Provider>
+  const value: Record<string, unknown> = useMemo(() => ({}), [])
+
+  return (
+    <KeyboardContext.Provider value={value}>
+      {children}
+    </KeyboardContext.Provider>
+  )
 }
 
 export const useKeyboard = () => {

@@ -326,11 +326,9 @@ export const ContextMenu: FC = () => {
 
   if (!isContextMenuOpen) return null
 
-  const contextMenuIsSubItem =
-    contextMenuId?.includes('FR_') || // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
-    contextMenuId?.includes('AT_') || // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
-    contextMenuId?.includes('AL_') || // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
-    contextMenuId?.includes('FL_')
+  const contextMenuIsSubItem = ['FR_', 'AT_', 'AL_', 'FL_'].some((prefix) =>
+    (contextMenuId ?? '').includes(prefix)
+  )
 
   return (
     <div className='absolute top-0 left-0 z-100'>

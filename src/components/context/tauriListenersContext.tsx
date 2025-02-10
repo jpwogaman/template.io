@@ -1,22 +1,20 @@
 'use client'
 
 import {
-  createContext,
-  useContext,
   type ReactNode,
   type FC,
-  useEffect
+  createContext,
+  useContext,
+  useEffect,
+  useMemo
 } from 'react'
 
 import { listen } from '@tauri-apps/api/event'
 import { useModal } from '@/components/context'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface TauriListenersContextType {}
+const tauriListenersContextDefaultValues: Record<string, unknown> = {}
 
-const tauriListenersContextDefaultValues: TauriListenersContextType = {}
-
-export const TauriListenersContext = createContext<TauriListenersContextType>(
+export const TauriListenersContext = createContext<Record<string, unknown>>(
   tauriListenersContextDefaultValues
 )
 
@@ -30,59 +28,52 @@ export const TauriListenersProvider: FC<TauriListenersProviderProps> = ({
   const { modalOpen, close, open, setModalType } = useModal()
 
   useEffect(() => {
-    const refresh = listen('refresh', () => {
+    const refreshListener = listen('refresh', () => {
       location.reload()
-    }).catch((e) => console.error(e))
-    /////
-    const aboutModal = listen('about', () => {
+    }).catch((e) => console.error('Error in refresh listener:', e))
+
+    const aboutModalListener = listen('about', () => {
       if (modalOpen) {
         close()
       } else {
         open()
         setModalType('about')
       }
-    }).catch((e) => console.error(e))
-    /////
-    const settingsModal = listen('settings', () => {
+    }).catch((e) => console.error('Error in about modal listener:', e))
+
+    const settingsModalListener = listen('settings', () => {
       if (modalOpen) {
         close()
       } else {
         open()
         setModalType('settings')
       }
-    }).catch((e) => console.error(e))
+    }).catch((e) => console.error('Error in settings modal listener:', e))
 
     return () => {
-      refresh
-        .then((value) => {
-          if (typeof value === 'function') {
-            value()
-          }
-        })
-        .catch((e) => console.error(e))
-      aboutModal
-        .then((value) => {
-          if (typeof value === 'function') {
-            value()
-            close()
-          }
-        })
-        .catch((e) => console.error(e))
-      settingsModal
-        .then((value) => {
-          if (typeof value === 'function') {
-            value()
-            close()
-          }
-        })
-        .catch((e) => console.error(e))
-    }
+      // Ensure that the unlisten function exists before calling it
+      refreshListener
+        .then((unlisten) => unlisten && unlisten()) // Check if unlisten is a function
+        .catch((e) => console.error('Error cleaning up refresh listener:', e))
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+      aboutModalListener
+        .then((unlisten) => unlisten && unlisten()) // Check if unlisten is a function
+        .catch((e) =>
+          console.error('Error cleaning up about modal listener:', e)
+        )
+
+      settingsModalListener
+        .then((unlisten) => unlisten && unlisten()) // Check if unlisten is a function
+        .catch((e) =>
+          console.error('Error cleaning up settings modal listener:', e)
+        )
+    }
+  }, [modalOpen, close, open, setModalType])
+
+  const value: Record<string, unknown> = useMemo(() => ({}), [])
 
   return (
-    <TauriListenersContext.Provider value>
+    <TauriListenersContext.Provider value={value}>
       {children}
     </TauriListenersContext.Provider>
   )

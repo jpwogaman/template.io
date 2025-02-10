@@ -24,7 +24,7 @@ export const InputSelectSingle: FC<InputComponentProps> = ({
   return (
     <select
       id={id}
-      disabled={codeFullLocked || codeDisabled} // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
+      disabled={codeFullLocked ? true : codeDisabled}
       title={id + '_currentValue: ' + value}
       value={value}
       onChange={valChange}

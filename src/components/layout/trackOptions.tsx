@@ -175,50 +175,42 @@ export const TrackOptions: FC = () => {
   }
 
   //////////////////////////////////////////
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function isItemsFullRanges(obj: any): obj is ItemsFullRanges {
-    return obj && obj.hasOwnProperty('id')
-  }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function isItemsArtListTog(obj: any): obj is ItemsArtListTog {
-    return obj && obj.hasOwnProperty('id')
-  }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function isItemsArtListTap(obj: any): obj is ItemsArtListTap {
-    return obj && obj.hasOwnProperty('id')
-  }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function isItemsArtLayers(obj: any): obj is ItemsArtLayers {
-    return obj && obj.hasOwnProperty('id')
-  }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function isItemsFadList(obj: any): obj is ItemsFadList {
-    return obj && obj.hasOwnProperty('id')
-  }
+  const isItemsFullRanges = (obj: unknown): obj is ItemsFullRanges =>
+    typeof obj === 'object' && obj !== null && 'id' in obj
 
-  function safeGet<T extends object, K extends keyof T>(obj: T, key: K): T[K] {
-    if (key in obj) {
-      return obj[key]
-    }
-    return undefined as any
-  }
+  const isItemsArtListTog = (obj: unknown): obj is ItemsArtListTog =>
+    typeof obj === 'object' && obj !== null && 'id' in obj
 
-  function getLayoutData<T extends keyof FullTrackCounts>(
+  const isItemsArtListTap = (obj: unknown): obj is ItemsArtListTap =>
+    typeof obj === 'object' && obj !== null && 'id' in obj
+
+  const isItemsArtLayers = (obj: unknown): obj is ItemsArtLayers =>
+    typeof obj === 'object' && obj !== null && 'id' in obj
+
+  const isItemsFadList = (obj: unknown): obj is ItemsFadList =>
+    typeof obj === 'object' && obj !== null && 'id' in obj
+
+  const safeGet = <T extends object, K extends keyof T>(
+    obj: T,
+    key: K
+  ): T[K] | undefined => (key in obj ? obj[key] : undefined)
+
+  const getLayoutData = <T extends keyof FullTrackCounts>(
     layoutDataSingle: layoutDataSingle,
     key: LayoutDataSingleHelper<T>
-  ) {
-    if (isItemsFullRanges(layoutDataSingle)) {
-      return safeGet(layoutDataSingle, key as keyof ItemsFullRanges)
-    } else if (isItemsArtListTog(layoutDataSingle)) {
-      return safeGet(layoutDataSingle, key as keyof ItemsArtListTog)
-    } else if (isItemsArtListTap(layoutDataSingle)) {
-      return safeGet(layoutDataSingle, key as keyof ItemsArtListTap)
-    } else if (isItemsArtLayers(layoutDataSingle)) {
-      return safeGet(layoutDataSingle, key as keyof ItemsArtLayers)
-    } else if (isItemsFadList(layoutDataSingle)) {
-      return safeGet(layoutDataSingle, key as keyof ItemsFadList)
-    }
-  }
+  ) =>
+    isItemsFullRanges(layoutDataSingle)
+      ? safeGet(layoutDataSingle, key as keyof ItemsFullRanges)
+      : isItemsArtListTog(layoutDataSingle)
+        ? safeGet(layoutDataSingle, key as keyof ItemsArtListTog)
+        : isItemsArtListTap(layoutDataSingle)
+          ? safeGet(layoutDataSingle, key as keyof ItemsArtListTap)
+          : isItemsArtLayers(layoutDataSingle)
+            ? safeGet(layoutDataSingle, key as keyof ItemsArtLayers)
+            : isItemsFadList(layoutDataSingle)
+              ? safeGet(layoutDataSingle, key as keyof ItemsFadList)
+              : undefined
+
   //////////////////////////////////////////
   // This logic is used to disable individual components in the artTap, artTog, and fadList tables.
 
@@ -326,19 +318,29 @@ export const TrackOptions: FC = () => {
         let layoutDataArray: layoutDataArray = []
 
         if (layoutConfig.label === 'full_ranges') {
-          layoutDataArray = selectedItem?.full_ranges!
+          if (selectedItem?.full_ranges) {
+            layoutDataArray = selectedItem.full_ranges
+          }
         }
         if (layoutConfig.label === 'art_list_tog') {
-          layoutDataArray = selectedItem?.art_list_tog!
+          if (selectedItem?.art_list_tog) {
+            layoutDataArray = selectedItem.art_list_tog
+          }
         }
         if (layoutConfig.label === 'art_list_tap') {
-          layoutDataArray = selectedItem?.art_list_tap!
+          if (selectedItem?.art_list_tap) {
+            layoutDataArray = selectedItem.art_list_tap
+          }
         }
         if (layoutConfig.label === 'art_layers') {
-          layoutDataArray = selectedItem?.art_layers!
+          if (selectedItem?.art_layers) {
+            layoutDataArray = selectedItem.art_layers
+          }
         }
         if (layoutConfig.label === 'fad_list') {
-          layoutDataArray = selectedItem?.fad_list!
+          if (selectedItem?.fad_list) {
+            layoutDataArray = selectedItem.fad_list
+          }
         }
 
         const table = track_options_layouts[layoutConfig.label] === 'table'
