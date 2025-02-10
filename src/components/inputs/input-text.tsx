@@ -1,5 +1,5 @@
 import React, { type FC, type ChangeEvent, useState, useEffect } from 'react'
-import tw from '@/components/utils/tw'
+import { twMerge } from 'tailwind-merge'
 import { type InputComponentProps } from './index'
 
 export const InputText: FC<InputComponentProps> = ({
@@ -30,7 +30,7 @@ export const InputText: FC<InputComponentProps> = ({
       title={id + '_currentValue: ' + value}
       placeholder={placeholder as string}
       onChange={valChange}
-      className={tw(
+      className={twMerge(
         codeFullLocked || codeDisabled
           ? 'text-gray-400 hover:cursor-not-allowed hover:placeholder-zinc-400 dark:hover:placeholder-zinc-500'
           : 'hover:cursor-text hover:placeholder-zinc-200 dark:hover:placeholder-zinc-600',

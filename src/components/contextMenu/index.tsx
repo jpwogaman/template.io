@@ -1,6 +1,6 @@
 'use client'
 
-import tw from '@/components/utils/tw'
+import { twMerge } from 'tailwind-merge'
 import { Fragment, type FC, type ChangeEvent } from 'react'
 import {
   useMutations,
@@ -333,7 +333,7 @@ export const ContextMenu: FC = () => {
   return (
     <div className='absolute top-0 left-0 z-100'>
       <div
-        className={tw(
+        className={twMerge(
           'absolute z-100 rounded-xs border border-zinc-200 bg-white shadow-md dark:bg-zinc-900',
           'min-h-[15rem] min-w-[10rem] p-4',
           'border border-gray-200 text-xs dark:border-zinc-800'
@@ -345,7 +345,7 @@ export const ContextMenu: FC = () => {
         <div className='flex'>
           <div className='w-3/4'>
             <h3
-              className={tw(
+              className={twMerge(
                 !contextMenuId?.includes(selected_item_id)
                   ? 'text-red-400'
                   : '',
@@ -354,7 +354,7 @@ export const ContextMenu: FC = () => {
 
             {contextMenuIsSubItem && (
               <h3
-                className={tw(
+                className={twMerge(
                   !contextMenuId?.includes(selected_sub_item_id)
                     ? 'text-red-400'
                     : '',
@@ -390,7 +390,7 @@ export const ContextMenu: FC = () => {
                   })
                 }
               }}
-              className={tw(
+              className={twMerge(
                 'h-full w-1/2',
                 'hover:cursor-text',
                 'rounded-xs bg-inherit p-1 outline-hidden',
@@ -485,7 +485,7 @@ export const ContextMenu: FC = () => {
                       action()
                       close()
                     }}
-                    className={tw(
+                    className={twMerge(
                       !action ? 'opacity-30' : '',
                       'flex items-end gap-2 px-1 py-0.5 whitespace-nowrap hover:bg-zinc-600'
                     )}>

@@ -1,6 +1,6 @@
 import { type FC, type ChangeEvent } from 'react'
 import { type InputComponentProps } from './index'
-import tw from '@/components/utils/tw'
+import { twMerge } from 'tailwind-merge'
 
 export const InputCheckBox: FC<InputComponentProps> = ({
   id,
@@ -27,16 +27,16 @@ export const InputCheckBox: FC<InputComponentProps> = ({
           disabled={codeFullLocked}
           value={(defaultValue as boolean) ? 'false' : 'true'}
           onChange={(event) => valChange(event)}
-          className={tw(
+          className={twMerge(
             codeFullLocked
               ? 'cursor-not-allowed bg-zinc-700 checked:bg-zinc-500'
               : 'cursor-pointer bg-zinc-700 checked:bg-zinc-300',
             'border-zinc-500 checked:border-none',
-            'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:outline-hidden focus-visible:ring-4 focus-visible:ring-indigo-600',
+            'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:ring-4 focus-visible:ring-indigo-600 focus-visible:outline-hidden',
             'peer h-4 w-4 appearance-none rounded-xs border transition-all duration-200 hover:shadow-md'
           )}
         />
-        <span className='pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform text-zinc-600 opacity-0 peer-checked:opacity-100'>
+        <span className='pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform text-zinc-600 opacity-0 peer-checked:opacity-100'>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             className='h-3 w-3'

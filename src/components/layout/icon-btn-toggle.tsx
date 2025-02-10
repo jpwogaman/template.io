@@ -1,7 +1,7 @@
 'use client'
 
 import { type FC, useState } from 'react'
-import tw from '@/components/utils/tw'
+import { twMerge } from 'tailwind-merge'
 
 interface IconBtnToggleProps {
   id: string
@@ -40,8 +40,8 @@ export const IconBtnToggle: FC<IconBtnToggleProps> = ({
 
   return (
     <button
-      className={tw(
-        'rounded-xs p-1 outline-hidden transition-all duration-200 focus-visible:outline-hidden focus-visible:ring-4 focus-visible:ring-indigo-600',
+      className={twMerge(
+        'rounded-xs p-1 outline-hidden transition-all duration-200 focus-visible:ring-4 focus-visible:ring-indigo-600 focus-visible:outline-hidden',
         classes
       )}
       title={isToggleOn ? titleA : titleB}

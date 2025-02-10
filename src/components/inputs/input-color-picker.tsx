@@ -1,6 +1,6 @@
 import { type FC, type ChangeEvent, useState } from 'react'
 import { type InputComponentProps } from './index'
-import tw from '@/components/utils/tw'
+import { twMerge } from 'tailwind-merge'
 
 export const InputColorPicker: FC<InputComponentProps> = ({
   id,
@@ -52,11 +52,11 @@ export const InputColorPicker: FC<InputComponentProps> = ({
         title={id + '_currentValue: ' + `${defaultValue}`}
         className='relative flex h-full items-center'>
         <div
-          className={tw(
+          className={twMerge(
             'h-[22px] w-full rounded-xs transition-all duration-200',
             codeFullLocked ? 'cursor-not-allowed' : 'cursor-pointer',
             isFocused
-              ? 'outline-hidden ring-4 ring-indigo-600'
+              ? 'ring-4 ring-indigo-600 outline-hidden'
               : 'ring-4 ring-transparent'
           )}
         />
@@ -79,7 +79,7 @@ export const InputColorPicker: FC<InputComponentProps> = ({
             e.stopPropagation()
             handleOpen()
           }}
-          className={tw('sr-only h-full w-full')}
+          className={twMerge('sr-only h-full w-full')}
           onChange={valChange}
         />
       </label>

@@ -3,7 +3,7 @@
 import { type FC, Fragment } from 'react'
 import { HiOutlineTableCells, HiOutlineViewColumns } from 'react-icons/hi2'
 
-import tw from '@/components/utils/tw'
+import { twMerge } from 'tailwind-merge'
 import {
   InputCheckBox,
   InputCheckBoxSwitch,
@@ -285,7 +285,7 @@ export const TrackOptions: FC = () => {
 
       <h2>Notes:</h2>
       <div
-        className={tw(
+        className={twMerge(
           'm-1 flex items-center p-1'
           //notesSelectedUnlocked
           //  ? 'bg-red-300 hover:bg-red-400 hover:text-zinc-50 dark:bg-red-600 dark:hover:bg-red-400 dark:hover:text-zinc-50'
@@ -354,7 +354,7 @@ export const TrackOptions: FC = () => {
 
               <button
                 type='button'
-                className={tw(
+                className={twMerge(
                   'cursor-pointer rounded-lg p-2 text-zinc-200 transition-colors duration-300',
                   'outline-hidden focus-visible:ring-4 focus-visible:ring-indigo-500 focus-visible:outline-hidden focus-visible:ring-inset'
                 )}
@@ -390,7 +390,7 @@ export const TrackOptions: FC = () => {
                         <td
                           key={key.key}
                           title={key.key}
-                          className={tw(
+                          className={twMerge(
                             'font-codeBold dark:font-code z-50 border-[1.5px] border-zinc-100 border-b-transparent bg-zinc-200 p-1 dark:border-zinc-400 dark:bg-zinc-600',
                             key.className ?? ''
                           )}>
@@ -434,7 +434,7 @@ export const TrackOptions: FC = () => {
                           )
                         }}
                         key={layoutDataSingleId}
-                        className={tw(
+                        className={twMerge(
                           selectedUnlocked
                             ? 'bg-red-300 hover:bg-red-400 hover:text-zinc-50 dark:bg-red-600 dark:hover:bg-red-400 dark:hover:text-zinc-50'
                             : selectedLocked
@@ -579,14 +579,14 @@ export const TrackOptions: FC = () => {
                       <thead>
                         <tr>
                           <td
-                            className={tw(
+                            className={twMerge(
                               'font-codeBold dark:font-code z-50 border-[1.5px] border-zinc-100 border-b-transparent bg-zinc-200 p-1 dark:border-zinc-400 dark:bg-zinc-600',
                               'w-1/2 border-r-0'
                             )}>
                             {layoutDataSingleId}
                           </td>
                           <td
-                            className={tw(
+                            className={twMerge(
                               'font-codeBold dark:font-code z-50 border-[1.5px] border-zinc-100 border-b-transparent bg-zinc-200 p-1 dark:border-zinc-400 dark:bg-zinc-600',
                               'w-1/2 border-l-0'
                             )}

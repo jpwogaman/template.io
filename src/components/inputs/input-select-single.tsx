@@ -1,6 +1,6 @@
 import { type FC, type ChangeEvent, useState, useEffect } from 'react'
 import { selectArrays, type InputComponentProps } from './index'
-import tw from '@/components/utils/tw'
+import { twMerge } from 'tailwind-merge'
 
 export const InputSelectSingle: FC<InputComponentProps> = ({
   id,
@@ -28,7 +28,7 @@ export const InputSelectSingle: FC<InputComponentProps> = ({
       title={id + '_currentValue: ' + value}
       value={value}
       onChange={valChange}
-      className={tw(
+      className={twMerge(
         'w-full overflow-scroll rounded-xs bg-inherit p-1 transition-all duration-200',
         'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:ring-4 focus-visible:ring-indigo-600 focus-visible:outline-hidden',
         codeFullLocked || codeDisabled

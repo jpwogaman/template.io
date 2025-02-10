@@ -11,9 +11,7 @@ import { type Settings } from '../backendCommands/backendCommands'
 const loadFeatures = () =>
   import('@/components/layout/motionFeatures').then((res) => res.default)
 
-function tw(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
-}
+import { twMerge } from 'tailwind-merge'
 
 interface BackdropProps {
   onClick: () => void
@@ -219,7 +217,7 @@ export const Modal = () => {
                                         value: newValue
                                       })
                                     }}
-                                    className={tw(
+                                    className={twMerge(
                                       'h-full w-full',
                                       'hover:cursor-text',
                                       'rounded-xs bg-inherit p-1 outline-hidden',
@@ -242,7 +240,7 @@ export const Modal = () => {
           <button
             onClick={close}
             type='button'
-            className={tw(
+            className={twMerge(
               'relative bottom-6 mx-auto mt-auto mb-0 flex min-h-[48px] cursor-pointer items-center rounded-sm px-12 py-0 text-lg text-white',
               'bg-indigo-500',
               'sunrise:bg-red-800',

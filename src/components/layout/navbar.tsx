@@ -5,7 +5,7 @@ import { useTheme } from 'next-themes'
 import { useState, useEffect } from 'react'
 import { HiOutlineMoon, HiOutlineSun } from 'react-icons/hi2'
 import { useMutations, useSelectedItem } from '@/components/context'
-import tw from '../utils/tw'
+import { twMerge } from 'tailwind-merge'
 
 export const NavBar: FC = () => {
   const { copiedItemId, copiedSubItemId } = useSelectedItem()
@@ -63,7 +63,7 @@ export const NavBar: FC = () => {
           {mounted && (
             <button
               type='button'
-              className={tw(
+              className={twMerge(
                 'cursor-pointer rounded-lg p-2 text-zinc-200 transition-colors duration-300',
                 'outline-hidden focus-visible:ring-4 focus-visible:ring-indigo-500 focus-visible:outline-hidden focus-visible:ring-inset'
               )}

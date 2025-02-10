@@ -2,7 +2,7 @@
 import React, { type FC } from 'react'
 import { HiOutlineLockClosed, HiOutlineLockOpen } from 'react-icons/hi2'
 import { FaArrowDown19 } from 'react-icons/fa6'
-import tw from '@/components/utils/tw'
+import { twMerge } from 'tailwind-merge'
 import { TrackListTableKeys } from '../utils/trackListTableKeys'
 import {
   InputCheckBox,
@@ -54,14 +54,14 @@ export const TrackList: FC = () => {
           <tr>
             {/* COLOR PICKER HEAD */}
             <td
-              className={tw(
+              className={twMerge(
                 'font-codeBold dark:font-code sticky top-0 z-50 border-[1.5px] border-zinc-100 border-b-transparent bg-zinc-200 px-1 dark:border-zinc-400 dark:bg-zinc-600',
                 'sticky z-50 w-[20px]'
               )}
             />
             {/* LOCK HEAD */}
             <td
-              className={tw(
+              className={twMerge(
                 'font-codeBold dark:font-code sticky top-0 z-50 border-[1.5px] border-zinc-100 border-b-transparent bg-zinc-200 px-1 dark:border-zinc-400 dark:bg-zinc-600',
                 'sticky z-50 w-[25px]'
               )}
@@ -74,7 +74,7 @@ export const TrackList: FC = () => {
               return (
                 <td
                   key={key}
-                  className={tw(
+                  className={twMerge(
                     'font-codeBold dark:font-code sticky top-0 z-50 border-[1.5px] border-zinc-100 border-b-transparent bg-zinc-200 px-1 dark:border-zinc-400 dark:bg-zinc-600',
                     'sticky z-50',
                     className ?? ''
@@ -85,7 +85,7 @@ export const TrackList: FC = () => {
                       <p>{label}</p>
                       <button
                         type='button'
-                        className={tw(
+                        className={twMerge(
                           'cursor-pointer text-zinc-200 transition-colors duration-300',
                           'outline-hidden focus-visible:ring-4 focus-visible:ring-indigo-500 focus-visible:outline-hidden focus-visible:ring-inset'
                         )}
@@ -101,7 +101,7 @@ export const TrackList: FC = () => {
             })}
             {/* ART COUNT HEAD */}
             <td
-              className={tw(
+              className={twMerge(
                 'font-codeBold dark:font-code sticky top-0 z-50 border-[1.5px] border-zinc-100 border-b-transparent bg-zinc-200 px-1 dark:border-zinc-400 dark:bg-zinc-600',
                 'sticky z-50 w-[5%]'
               )}>
@@ -140,7 +140,7 @@ export const TrackList: FC = () => {
                     value: (id + '_notes') as SubItemId
                   })
                 }}
-                className={tw(
+                className={twMerge(
                   selectedUnlocked
                     ? 'bg-red-300 hover:bg-red-400 hover:text-zinc-50 dark:bg-red-600 dark:hover:bg-red-400 dark:hover:text-zinc-50'
                     : selectedLocked
@@ -177,7 +177,7 @@ export const TrackList: FC = () => {
                   className='text-center transition-all duration-200'>
                   <button
                     type='button'
-                    className={tw(
+                    className={twMerge(
                       'cursor-pointer',
                       'rounded-sm p-2 outline-none focus-visible:ring-4 focus-visible:ring-indigo-500 focus-visible:outline-hidden focus-visible:ring-inset'
                     )}
@@ -252,7 +252,7 @@ export const TrackList: FC = () => {
                                 '_currentValue: ' +
                                 `${item[key]}`
                           }
-                          className={tw(
+                          className={twMerge(
                             'cursor-default overflow-hidden p-1 transition-all duration-200',
                             item?.locked && key != 'id' ? 'text-gray-400' : ''
                           )}>
@@ -284,7 +284,7 @@ export const TrackList: FC = () => {
                 {/* ART COUNT CELL */}
                 <td
                   id={id + '_artCount_' + 'cell'}
-                  className={tw(
+                  className={twMerge(
                     'p-0.5 transition-all duration-200',
                     locked ? 'text-gray-400' : ''
                   )}>

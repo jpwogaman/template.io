@@ -1,6 +1,6 @@
 import { type FC, type ChangeEvent } from 'react'
 import { selectArrays, type InputComponentProps } from './index'
-import tw from '@/components/utils/tw'
+import { twMerge } from 'tailwind-merge'
 
 export const InputSelectMultiple: FC<InputComponentProps> = ({
   id,
@@ -68,7 +68,7 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
   //  <button
   //    key={name}
   //    title={id + '_' + name + '_currentlySelected: ' + value.includes(name)}
-  //    className={tw(
+  //    className={twMerge(
   //      value.includes(name) && !codeDisabled ? 'font-codeBold text-red-700' : '',
   //      value.includes(name) && codeDisabled ? 'font-codeBold text-red-800' : ''
   //    )}
@@ -90,7 +90,7 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
   return (
     <ul
       id={id}
-      className={tw(
+      className={twMerge(
         'max-h-[32px] w-full overflow-x-hidden overflow-y-scroll bg-inherit p-[4.5px] outline-offset-4 outline-green-600 focus:bg-white focus:text-zinc-900 dark:outline-green-800',
         codeDisabled ? 'cursor-not-allowed text-gray-400' : 'cursor-pointer',
         'flex flex-wrap gap-2'
