@@ -10,16 +10,20 @@ use crate::services::fileitem_service::{
 use log::{ error, info };
 
 pub fn import(app: AppHandle) {
-  let file_path: Option<FilePath> = app.dialog().file().blocking_pick_file();
+  let file_path: Option<FilePath> = app
+    .dialog()
+    .file()
+    .set_title("Import File")
+    .add_filter("", &["json"])
+    .blocking_pick_file();
 
   if let Some(file_path) = file_path {
     let file_path_str = file_path.to_string();
-
     match read_to_string(file_path_str) {
       Ok(file_content) => {
         match from_str::<Value>(&file_content) {
           Ok(parsed_json) => {
-            create_all_fileitems_from_json(parsed_json);            
+            create_all_fileitems_from_json(parsed_json);
           }
           Err(e) => {
             error!("Failed to parse JSON: {:?}", e);
@@ -38,7 +42,12 @@ pub fn import(app: AppHandle) {
 pub fn export(app: AppHandle) {
   let full_track_list_for_export =
     list_all_fileitems_and_relations_for_json_export();
-  let file_path: Option<FilePath> = app.dialog().file().blocking_save_file();
+  let file_path: Option<FilePath> = app
+    .dialog()
+    .file()
+    .set_title("Export File")
+    .add_filter("", &["json"])
+    .blocking_save_file();
 
   if let Some(file_path) = file_path {
     let file_path_str = file_path.to_string();
