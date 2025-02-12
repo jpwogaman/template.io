@@ -68,7 +68,7 @@ pub fn init_settings() -> Settings {
   }
 }
 
-fn normalize_hex(color: &str) -> Option<String> {
+pub fn normalize_hex(color: &str) -> Option<String> {
   let re = Regex::new(r"^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$").unwrap();
 
   if let Some(caps) = re.captures(color) {

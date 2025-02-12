@@ -16,6 +16,7 @@ use crate::{
     items_artlist_tog::{ ItemsArtListTog },
     items_artlist_tap::{ ItemsArtListTap },
     items_art_layers::{ ItemsArtLayers },
+    settings::{ normalize_hex, init_settings },
   },
   schema::{
     fileitems::dsl as fileitems_dsl,
@@ -68,6 +69,7 @@ use crate::{
 };
 use diesel::{ prelude::* };
 use serde_json::Value;
+use std::collections::HashSet;
 
 pub fn init() {
   let fileitems = list_fileitems();
@@ -122,6 +124,13 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
     Ok(json) => {
       delete_all_fileitems_and_relations();
 
+      let mut settings = Settings::get();
+      let default_colors = init_settings().default_colors;
+      settings.default_colors = default_colors;
+      settings.set();
+
+      let mut new_colors: HashSet<String> = HashSet::new();
+
       for full_track in json.items {
         let fileitem = full_track.fileitem;
         let full_ranges = full_track.full_ranges;
@@ -130,6 +139,10 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
         let art_list_tap = full_track.art_list_tap;
         let art_layers = full_track.art_layers;
 
+        // Collect colors from the current track and normalize them
+        collect_colors_from_track(&fileitem, &mut new_colors);
+
+        // Store other track data
         store_new_item(&fileitem);
 
         for full_range in full_ranges {
@@ -152,11 +165,34 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
           store_new_art_layer(&layer);
         }
       }
+
+      // Update the settings with the new colors
+      add_colors_to_settings(new_colors);
     }
     Err(e) => {
       eprintln!("JSON does not match schema: {:?}", e);
     }
   }
+}
+
+fn collect_colors_from_track(
+  fileitem: &FileItem,
+  new_colors: &mut HashSet<String>
+) {
+  if let Some(valid_color) = normalize_hex(&fileitem.color) {
+    new_colors.insert(valid_color);
+  }
+}
+
+fn add_colors_to_settings(new_colors: HashSet<String>) {
+  let mut settings = Settings::get();
+  // Add the new colors to the settings, ensuring no duplicates
+  for color in new_colors {
+    settings.default_colors.insert(color);
+  }
+
+  settings.normalize_colors();
+  settings.set();
 }
 
 pub fn list_all_fileitems_and_relations_for_json_export() -> FullTrackListForExport {
@@ -355,7 +391,6 @@ pub fn clear_fileitem(id: String) {
   delete_all_art_tap_for_fileitem(id.clone());
   delete_all_art_layers_for_fileitem(id.clone());
   delete_all_fad_for_fileitem(id.clone());
-  
 
   create_full_range(id.clone());
   create_art_tog(id.clone());

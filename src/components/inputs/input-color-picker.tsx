@@ -69,7 +69,7 @@ export const InputColorPicker: FC<InputComponentProps> = ({
         id='colorPicker'
         className={twMerge(
           open && isSelectedItem
-            ? 'absolute bottom-[34px] left-[22px] z-100 block min-h-32 w-40 rounded-sm bg-zinc-200 p-2'
+            ? 'absolute bottom-[34px] left-[22px] z-100 block max-h-60 min-h-32 w-40 rounded-sm bg-zinc-200 p-2'
             : 'hidden'
         )}>
         <div className='flex h-full flex-col justify-between gap-4'>
@@ -103,14 +103,14 @@ export const InputColorPicker: FC<InputComponentProps> = ({
                   <hr
                     className={twMerge(
                       'h-1 w-full',
-                      defaultValue === color ? 'bg-black' : 'bg-inherit'
+                      defaultValue === color ? 'bg-black' : ''
                     )}
                   />
                 </div>
               )
             })}
           </div>
-          <div className='flex justify-between text-black'>
+          <div className='mt-[15%] flex justify-between text-black'>
             <input
               type='text'
               id={id + 'colorPickerInput'}
