@@ -71,5 +71,6 @@ export type InputComponentProps = {
   placeholder?: string | number
   options?: keyof selectArray
   children?: ReactNode
+  isSelectedItem?: boolean
   onChangeFunction: (event: ChangeEventHelper) => void
 }

@@ -156,9 +156,10 @@ export const TrackList: FC = () => {
                   id={id + '_color_' + 'cell'}
                   className='h-[30px] transition-all duration-200'>
                   <InputColorPicker
-                    id={`${item?.id}_color`}
-                    codeFullLocked={item?.locked}
-                    defaultValue={item?.color}
+                    id={`${item.id}_color`}
+                    codeFullLocked={item.locked}
+                    defaultValue={item.color}
+                    isSelectedItem={item.id === selected_item_id}
                     onChangeFunction={(event: ChangeEventHelper) => {
                       const refetch = false
                       update.track(
