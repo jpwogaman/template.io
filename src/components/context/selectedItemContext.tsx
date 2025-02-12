@@ -86,7 +86,16 @@ const selectedItemContextDefaultValues: SelectedItemContextType = {
       art_list_tog: 'table',
       art_layers: 'table',
       fad_list: 'table'
-    }
+    },
+    default_colors: [
+      '#F0D340',
+      '#58FA3D',
+      '#cd9323',
+      '#9a2151',
+      '#c034b5',
+      '#224596',
+      '#37bdb4'
+    ]
   },
   updateSettings: async () => undefined
 }
@@ -115,10 +124,39 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
     selectedItemContextDefaultValues.settings
   )
 
+  const normalizeHex = (color: string): string | null => {
+    const regex = /^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/
+    const match = regex.exec(color)
+
+    if (!match) return null
+
+    let hex = match[1]?.toLowerCase()
+
+    if (hex?.length === 3) {
+      hex = hex
+        .split('')
+        .map((c) => c + c)
+        .join('')
+    }
+
+    return hex ? `#${hex}` : null
+  }
+
   const updateSettings = useCallback(
     async ({ key, value }: updateSettings) => {
       setSettings((prevSettings) => {
-        const updatedSettings = { ...prevSettings, [key]: value }
+        let updatedValue = value
+
+        if (key === 'default_colors' && Array.isArray(value)) {
+          const normalizedColors = new Set(
+            value
+              .map((color) => normalizeHex(color))
+              .filter(Boolean) as string[]
+          )
+          updatedValue = Array.from(normalizedColors)
+        }
+
+        const updatedSettings = { ...prevSettings, [key]: updatedValue }
         void commands.setSettings(updatedSettings)
         return updatedSettings
       })

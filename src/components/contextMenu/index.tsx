@@ -331,7 +331,7 @@ export const ContextMenu: FC = () => {
   )
 
   return (
-    <div className='absolute top-0 left-0 z-100'>
+    <div className='absolute top-0 left-0 z-200'>
       <div
         className={twMerge(
           'absolute z-100 rounded-xs border border-zinc-200 bg-white shadow-md dark:bg-zinc-900',

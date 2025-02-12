@@ -8,6 +8,7 @@ pub fn get_settings() -> Settings {
 
 #[tauri::command]
 #[specta::specta]
-pub fn set_settings(settings: Settings) {
+pub fn set_settings(mut settings: Settings) {
+  settings.normalize_colors();
   settings.set();
 }

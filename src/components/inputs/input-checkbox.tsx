@@ -9,9 +9,11 @@ export const InputCheckBox: FC<InputComponentProps> = ({
   defaultValue,
   onChangeFunction
 }) => {
-  const valChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const valChange = (
+    event: React.KeyboardEvent<HTMLInputElement> | ChangeEvent<HTMLInputElement>
+  ) => {
     if (codeFullLocked || codeDisabled) return
-    onChangeFunction(event)
+    onChangeFunction(event as ChangeEvent<HTMLInputElement>)
   }
 
   return (
@@ -27,13 +29,17 @@ export const InputCheckBox: FC<InputComponentProps> = ({
           checked={defaultValue as boolean}
           disabled={codeFullLocked}
           value={(defaultValue as boolean) ? 'false' : 'true'}
-          onChange={(event) => valChange(event)}
+          onKeyDown={(e) => {
+            if (e.key !== 'Enter') return
+            valChange(e)
+          }}
+          onChange={(e) => valChange(e)}
           className={twMerge(
             codeFullLocked
               ? 'cursor-not-allowed bg-zinc-700 checked:bg-zinc-500'
               : 'cursor-pointer bg-zinc-700 checked:bg-zinc-300',
             'border-zinc-500 checked:border-none',
-            'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:ring-4 focus-visible:ring-indigo-600 focus-visible:outline-hidden',
+            'focus-visible:bg-white focus-visible:ring-4 focus-visible:ring-indigo-600 focus-visible:outline-hidden',
             'peer h-4 w-4 appearance-none rounded-xs border transition-all duration-200 hover:shadow-md'
           )}
         />

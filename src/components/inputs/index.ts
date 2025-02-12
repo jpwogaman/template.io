@@ -52,9 +52,8 @@ export type LayoutDataSingleHelper<T extends keyof FullTrackCounts> =
     : never
 
 export type ChangeEventHelper = ChangeEvent<
-  HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement
+  HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement | HTMLButtonElement
 >
-
 export type OnChangeHelperArgsType = {
   newValue?: string | number | boolean
   layoutDataSingleId?: FileItemId | SubItemId

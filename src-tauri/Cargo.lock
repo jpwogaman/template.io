@@ -5228,6 +5228,7 @@ dependencies = [
  "libsqlite3-sys",
  "log",
  "palette",
+ "regex",
  "reqwest",
  "serde",
  "serde_json",

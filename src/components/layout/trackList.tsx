@@ -161,7 +161,7 @@ export const TrackList: FC = () => {
                     defaultValue={item.color}
                     isSelectedItem={item.id === selected_item_id}
                     onChangeFunction={(event: ChangeEventHelper) => {
-                      const refetch = false
+                      const refetch = true
                       update.track(
                         {
                           id: item?.id,
@@ -180,7 +180,7 @@ export const TrackList: FC = () => {
                     type='button'
                     className={twMerge(
                       'cursor-pointer',
-                      'rounded-sm p-2 outline-none focus-visible:ring-4 focus-visible:ring-indigo-500 focus-visible:outline-hidden focus-visible:ring-inset'
+                      'rounded-sm p-2 outline-hidden focus-visible:ring-4 focus-visible:ring-indigo-500 focus-visible:outline-hidden focus-visible:ring-inset'
                     )}
                     onClick={() => {
                       const refetch = true

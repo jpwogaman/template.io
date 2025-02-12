@@ -1,4 +1,6 @@
 use serde::{ Deserialize, Serialize };
+use std::collections::HashSet;
+use regex::Regex;
 
 #[derive(Deserialize, Serialize, Debug, specta::Type)]
 pub struct Settings {
@@ -18,6 +20,7 @@ pub struct Settings {
   #[specta(optional)]
   pub next_item_id: Option<String>,
   pub track_options_layouts: TrackOptionLayouts,
+  pub default_colors: HashSet<String>,
 }
 
 #[derive(Deserialize, Serialize, Debug, specta::Type)]
@@ -51,5 +54,48 @@ pub fn init_settings() -> Settings {
       art_layers: "table".to_string(),
       fad_list: "table".to_string(),
     },
+    default_colors: [
+      "#F0D340".to_string(),
+      "#58FA3D".to_string(),
+      "#cd9323".to_string(),
+      "#9a2151".to_string(),
+      "#c034b5".to_string(),
+      "#224596".to_string(),
+      "#37bdb4".to_string(),
+    ]
+      .into_iter()
+      .collect(),
   }
 }
+
+fn normalize_hex(color: &str) -> Option<String> {
+  let re = Regex::new(r"^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$").unwrap();
+
+  if let Some(caps) = re.captures(color) {
+    let hex = caps.get(1).unwrap().as_str().to_lowercase();
+    let normalized = if hex.len() == 3 {
+      hex
+        .chars()
+        .map(|c| format!("{c}{c}"))
+        .collect::<String>()
+    } else {
+      hex
+    };
+    Some(format!("#{}", normalized))
+  } else {
+    None
+  }
+}
+
+impl Settings {
+  pub fn normalize_colors(&mut self) {
+        let mut normalized_colors = HashSet::new();
+        for color in &self.default_colors {
+            if let Some(valid_color) = normalize_hex(color) {
+                normalized_colors.insert(valid_color);
+            }
+        }
+        self.default_colors = normalized_colors;
+    }
+}
+
