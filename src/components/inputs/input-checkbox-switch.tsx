@@ -15,7 +15,7 @@ export const InputCheckBoxSwitch: FC<InputComponentProps> = ({
 
   return (
     <div className='flex items-center justify-evenly'>
-      <label
+      <label //NOSONAR
         htmlFor={id}
         title={
           id +

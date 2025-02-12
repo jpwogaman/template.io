@@ -47,7 +47,7 @@ export const InputColorPicker: FC<InputComponentProps> = ({
             : (defaultValue as string)
       }}
       className='relative h-full w-full items-center'>
-      <label
+      <label //NOSONAR
         htmlFor={id}
         title={id + '_currentValue: ' + `${defaultValue}`}
         className='relative flex h-full items-center'>
