@@ -1,4 +1,4 @@
-import { type selectArray } from '@/components/inputs'
+import { type SelectValuesKeys } from '@/components/context'
 import { type FileItem } from '@/components/backendCommands/backendCommands'
 
 export type TrackListTableKeys = {
@@ -15,7 +15,7 @@ export type TrackListTableKeys = {
       | 'select-multiple'
       | 'text-rich'
       | 'color-picker'
-    selectArray?: keyof selectArray
+    selectArray?: SelectValuesKeys
     label?: string
   }[]
 }

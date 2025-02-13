@@ -1,6 +1,7 @@
 import { type FC, type ChangeEvent, useState, useLayoutEffect } from 'react'
-import { selectArrays, type InputComponentProps } from './index'
+import { type InputComponentProps } from './index'
 import { twMerge } from 'tailwind-merge'
+import { useSelectArraysContext } from '../context'
 
 export const InputSelectSingle: FC<InputComponentProps> = ({
   id,
@@ -11,7 +12,10 @@ export const InputSelectSingle: FC<InputComponentProps> = ({
   onChangeFunction
 }) => {
   const [value, setValue] = useState(defaultValue as string)
-
+  const [selectList, setSelectList] = useState<React.JSX.Element | undefined>(
+    undefined
+  )
+  const { getSelectList } = useSelectArraysContext()
   const valChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setValue(event.target.value)
     onChangeFunction(event)
@@ -20,6 +24,11 @@ export const InputSelectSingle: FC<InputComponentProps> = ({
   useLayoutEffect(() => {
     setValue(defaultValue as string)
   }, [defaultValue])
+
+  useLayoutEffect(() => {
+    const list = getSelectList(options ?? 'valNoneList')
+    setSelectList(list)
+  }, [options, getSelectList])
 
   return (
     <select
@@ -36,9 +45,7 @@ export const InputSelectSingle: FC<InputComponentProps> = ({
           ? 'cursor-not-allowed text-gray-400'
           : 'cursor-pointer'
       )}>
-      {codeDisabled
-        ? selectArrays.valNoneList
-        : options && selectArrays[options]}
+      {codeDisabled ? getSelectList('valNoneList') : selectList}
     </select>
   )
 }

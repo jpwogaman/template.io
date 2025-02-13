@@ -2,9 +2,7 @@ import React, {
   type FC,
   type ChangeEvent,
   useState,
-  useLayoutEffect,
-  useEffect,
-  Fragment
+  useLayoutEffect
 } from 'react'
 import { type InputComponentProps } from './index'
 import { twMerge } from 'tailwind-merge'

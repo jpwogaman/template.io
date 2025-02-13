@@ -1,4 +1,3 @@
-export * from './input-arrays'
 export * from './input-checkbox-switch'
 export * from './input-checkbox'
 export * from './input-select-multiple'
@@ -8,7 +7,6 @@ export * from './input-text-rich'
 export * from './input-color-picker'
 
 import { type ReactNode, type ChangeEvent } from 'react'
-import { type selectArray } from './index'
 
 import {
   type FullTrackForExport,
@@ -21,7 +19,11 @@ import {
   type FileItem
 } from '@/components/backendCommands/backendCommands'
 
-import { type FileItemId, type SubItemId } from '@/components/context'
+import {
+  type FileItemId,
+  type SubItemId,
+  type SelectValuesKeys
+} from '@/components/context'
 
 export type layoutDataArray =
   | ItemsFullRanges[]
@@ -68,7 +70,7 @@ export type InputComponentProps = {
   codeFullLocked: boolean
   defaultValue?: string | number | boolean
   placeholder?: string | number
-  options?: keyof selectArray
+  options?: SelectValuesKeys
   children?: ReactNode
   isSelectedItem?: boolean
   onChangeFunction: (event: ChangeEventHelper) => void

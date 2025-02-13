@@ -1,8 +1,8 @@
-import { type selectArray } from '@/components/inputs'
 import {
   type FullTrackForExport,
   type FullTrackCounts
 } from '@/components/backendCommands/backendCommands'
+import { type SelectValuesKeys } from '@/components/context'
 
 export type TrackOptionsTableKeys<T extends keyof FullTrackCounts> = {
   title: string
@@ -25,7 +25,7 @@ export type TrackOptionsTableKeys<T extends keyof FullTrackCounts> = {
       | 'select-multiple'
       | 'text-rich'
       | 'color-picker'
-    selectArray?: keyof selectArray
+    selectArray?: SelectValuesKeys
     label: string
   }[]
 }[]

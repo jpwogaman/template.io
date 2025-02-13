@@ -1,5 +1,5 @@
 import { type FC, type ChangeEvent } from 'react'
-import { selectArrays, type InputComponentProps } from './index'
+import { type InputComponentProps } from './index'
 import { twMerge } from 'tailwind-merge'
 
 export const InputSelectMultiple: FC<InputComponentProps> = ({
@@ -26,14 +26,6 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
       parseInt(initialId.split('_')[3]!)
     }`
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, prefer-const
-  let inputSelectOptionElements:
-    | React.JSX.Element
-    | React.JSX.Element[]
-    | string[]
-    | number[]
-    | undefined = selectArrays.valNoneList
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const valChange = (

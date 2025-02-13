@@ -6,7 +6,8 @@ import {
   MutationProvider,
   ModalProvider,
   ContextMenuProvider,
-  KeyboardProvider
+  KeyboardProvider,
+  SelectArraysProvider
 } from '@/components/context'
 import { NavBar } from '@/components/layout/navbar'
 import { Modal } from '@/components/modal'
@@ -24,25 +25,27 @@ export default function RootLayout({
       <body>
         <SelectedItemProvider>
           <MutationProvider>
-            <KeyboardProvider>
-              <ModalProvider>
-                <ContextMenuProvider>
-                  <TauriListenersProvider>
-                    <ThemeProvider
-                      storageKey='theme'
-                      attribute='class'
-                      defaultTheme='dark'
-                      enableColorScheme
-                      themes={['dark', 'light']}>
-                      <NavBar />
-                      <Modal />
-                      <ContextMenu />
-                      {children}
-                    </ThemeProvider>
-                  </TauriListenersProvider>
-                </ContextMenuProvider>
-              </ModalProvider>
-            </KeyboardProvider>
+            <SelectArraysProvider>
+              <KeyboardProvider>
+                <ModalProvider>
+                  <ContextMenuProvider>
+                    <TauriListenersProvider>
+                      <ThemeProvider
+                        storageKey='theme'
+                        attribute='class'
+                        defaultTheme='dark'
+                        enableColorScheme
+                        themes={['dark', 'light']}>
+                        <NavBar />
+                        <Modal />
+                        <ContextMenu />
+                        {children}
+                      </ThemeProvider>
+                    </TauriListenersProvider>
+                  </ContextMenuProvider>
+                </ModalProvider>
+              </KeyboardProvider>
+            </SelectArraysProvider>
           </MutationProvider>
         </SelectedItemProvider>
       </body>
