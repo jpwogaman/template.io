@@ -178,6 +178,7 @@ export const TrackList: FC = () => {
                   className='text-center transition-all duration-200'>
                   <button
                     type='button'
+                    id={`${item.id}_locked`}
                     className={twMerge(
                       'cursor-pointer',
                       'rounded-sm p-2 outline-hidden focus-visible:ring-4 focus-visible:ring-indigo-500 focus-visible:outline-hidden focus-visible:ring-inset'
