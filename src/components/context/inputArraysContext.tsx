@@ -195,17 +195,30 @@ export const SelectArraysProvider: FC<SelectArraysContextProps> = ({
     (name: SelectValuesKeys) => {
       const values = selectValues[name]
 
+      const shortenedSubItemId = (initialId: string) => {
+        return `${initialId.split('_')[2]}_${parseInt(
+          initialId.split('_')[3]!
+        )}`
+      }
+
+      const useShortId = name === 'artLayersArray' || name === 'artRngsArray'
+
       return (
         <>
-          {values?.map((value, index) => (
-            <option
-              key={`${value}_${index}`}
-              value={value.toString()}>
-              {value.toString().includes('---')
-                ? value.toString().split('---')[1]
-                : value}
-            </option>
-          ))}
+          {values?.map((value, index) => {
+            return (
+              <option
+                key={`${value}_${index}`}
+                title={value.toString()}
+                value={value.toString()}>
+                {value.toString().includes('---')
+                  ? value.toString().split('---')[1]
+                  : useShortId
+                    ? shortenedSubItemId(value.toString())
+                    : value}
+              </option>
+            )
+          })}
         </>
       )
     },

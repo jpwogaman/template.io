@@ -495,7 +495,7 @@ export const TrackOptions: FC = () => {
                                   </p>
                                 )}
                                 {subKey.input === 'select-multiple' && (
-                                  <InputSelectSingle {...inputPropsHelper} />
+                                  <InputSelectMultiple {...inputPropsHelper} />
                                 )}
                                 {subKey.input === 'select' && (
                                   <InputSelectSingle {...inputPropsHelper} />

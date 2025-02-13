@@ -1,93 +1,80 @@
-import { type FC, type ChangeEvent } from 'react'
+import { type FC, type ChangeEvent, useState, useLayoutEffect } from 'react'
 import { type InputComponentProps } from './index'
 import { twMerge } from 'tailwind-merge'
+import { useSelectArraysContext } from '../context'
+import { HiChevronDown, HiChevronUp } from 'react-icons/hi2'
 
 export const InputSelectMultiple: FC<InputComponentProps> = ({
   id,
   codeDisabled,
+  codeFullLocked,
   defaultValue,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   options,
   onChangeFunction
 }) => {
-  //defaultValue and options for this select will be either ranges or art_layers
-  //ranges: "[\"T_{}_FR_0\"]"
-  //art_layers: "[\"\"]"
+  const [value, setValue] = useState<string>(defaultValue as string)
+  const [selectList, setSelectList] = useState<React.JSX.Element | undefined>(
+    undefined
+  )
+  const [size, setSize] = useState(1)
 
-  const value =
-    typeof defaultValue === 'string'
-      ? (JSON.parse(defaultValue) as string[])
-      : []
+  const { getSelectList } = useSelectArraysContext()
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const shortenedSubComponentId = (initialId: string) => {
-    return `${
-      //initialId.split('_')[2]}_${
-      parseInt(initialId.split('_')[3]!)
-    }`
+  const valChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setValue(event.target.value)
+    onChangeFunction(event)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const valChange = (
-    event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
-  ) => {
-    const newValueIsAlreadySelected = value.includes(event.target.value)
-    const newValueFiltered = value.filter(
-      (val: string) => val !== event.target.value
-    )
+  useLayoutEffect(() => {
+    setValue(defaultValue as string)
+  }, [defaultValue])
 
-    if (!onChangeFunction) return
-    if (newValueIsAlreadySelected) {
-      onChangeFunction({
-        ...event,
-        target: { ...event.target, value: JSON.stringify(newValueFiltered) }
-      })
-    } else {
-      onChangeFunction({
-        ...event,
-        target: {
-          ...event.target,
-          value: JSON.stringify([...value, event.target.value])
-        }
-      })
-    }
-  }
-
-  //const parsedOptions = JSON.parse(options!) as string[]
-
-  //inputSelectOptionElements = parsedOptions.map((name: string) => (
-  //  // this should be a <li> element, but SONARLINT doesn't like it
-  //  <button
-  //    key={name}
-  //    title={id + '_' + name + '_currentlySelected: ' + value.includes(name)}
-  //    className={twMerge(
-  //      value.includes(name) && !codeDisabled ? 'font-codeBold text-red-700' : '',
-  //      value.includes(name) && codeDisabled ? 'font-codeBold text-red-800' : ''
-  //    )}
-  //    onKeyDown={(e) => {
-  //      e.preventDefault()
-  //      console.log('keydown')
-  //    }}
-  //    onClick={(event) => {
-  //      event.preventDefault()
-  //      valChange({
-  //        ...event,
-  //        target: { ...event.target, value: name }
-  //      } as unknown as ChangeEvent<HTMLSelectElement>)
-  //    }}>
-  //    {shortenedSubComponentId(name)}
-  //  </button>
-  //))
+  useLayoutEffect(() => {
+    const list = getSelectList(options ?? 'valNoneList')
+    setSelectList(list)
+  }, [options, getSelectList])
 
   return (
-    <ul
-      id={id}
-      className={twMerge(
-        'max-h-[32px] w-full overflow-x-hidden overflow-y-scroll bg-inherit p-[4.5px] outline-offset-4 outline-green-600 focus:bg-white focus:text-zinc-900 dark:outline-green-800',
-        codeDisabled ? 'cursor-not-allowed text-gray-400' : 'cursor-pointer',
-        'flex flex-wrap gap-2'
-      )}>
-      {/*{inputSelectOptionElements}*/}
-    </ul>
+    <div className='flex h-full w-full items-center justify-between'>
+      <select
+        id={id}
+        multiple
+        autoComplete='off'
+        disabled={codeFullLocked ? true : codeDisabled}
+        title={id + '_currentValue: ' + value}
+        value={value}
+        size={size}
+        onChange={valChange}
+        onClick={() => setSize(3)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            setSize(3)
+          }
+        }}
+        className={twMerge(
+          size === 3 ? 'no-scrollbar overflow-y-scroll' : 'overflow-y-hidden',
+          'h-full w-full overflow-x-hidden rounded-xs bg-inherit p-1 transition-all duration-200',
+          'focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:ring-4 focus-visible:ring-indigo-600 focus-visible:outline-hidden',
+          codeFullLocked || codeDisabled
+            ? 'cursor-not-allowed text-gray-400'
+            : 'cursor-pointer'
+        )}>
+        {codeDisabled ? getSelectList('valNoneList') : selectList}
+      </select>
+      <button
+        className='cursor-pointer'
+        onClick={() =>
+          setSize((prev) => {
+            if (prev === 1) {
+              return 3
+            } else {
+              return 1
+            }
+          })
+        }>
+        {size === 1 && <HiChevronDown className='h-4 w-4' />}
+        {size === 3 && <HiChevronUp className='h-4 w-4' />}
+      </button>
+    </div>
   )
 }
