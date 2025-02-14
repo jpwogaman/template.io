@@ -22,15 +22,15 @@ interface KeyboardProviderProps {
 }
 
 export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
-  const {
-    selectedItemRangeCount,
-    selectedItemArtCount,
-    selectedItemLayerCount,
-    selectedItemFadCount,
-    settings,
-    updateSettings
-  } = useSelectedItem()
+  const { selectedItemSubItemCounts, settings, updateSettings } =
+    useSelectedItem()
 
+  const {
+    art_layers: selectedItemLayerCount,
+    art_list_both: selectedItemArtCount,
+    fad_list: selectedItemFadCount,
+    full_ranges: selectedItemRangeCount
+  } = selectedItemSubItemCounts
   const {
     selected_item_id,
     next_item_id,

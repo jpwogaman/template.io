@@ -31,20 +31,27 @@ type updateSettings = {
 interface SelectedItemContextType {
   copiedItemId: FileItemId | null
   copiedSubItemId: SubItemId | null
-  selectedItemRangeCount: number
-  selectedItemArtTogCount: number
-  selectedItemArtTapCount: number
-  selectedItemArtCount: number
-  selectedItemLayerCount: number
-  selectedItemFadCount: number
+  selectedItemSubItemCounts: {
+    full_ranges: number
+    art_list_tog: number
+    art_list_tap: number
+    art_list_both: number
+    art_layers: number
+    fad_list: number
+  }
+  setSelectedItemSubItemCounts: Dispatch<
+    SetStateAction<{
+      full_ranges: number
+      art_list_tog: number
+      art_list_tap: number
+      art_list_both: number
+      art_layers: number
+      fad_list: number
+    }>
+  >
   setCopiedItemId: Dispatch<SetStateAction<FileItemId | null>>
   setCopiedSubItemId: Dispatch<SetStateAction<SubItemId | null>>
-  setSelectedItemRangeCount: Dispatch<SetStateAction<number>>
-  setSelectedItemArtTogCount: Dispatch<SetStateAction<number>>
-  setSelectedItemArtTapCount: Dispatch<SetStateAction<number>>
-  setSelectedItemArtCount: Dispatch<SetStateAction<number>>
-  setSelectedItemLayerCount: Dispatch<SetStateAction<number>>
-  setSelectedItemFadCount: Dispatch<SetStateAction<number>>
+
   settings: Settings
   updateSettings: ({ key, value }: updateSettings) => Promise<void>
 }
@@ -52,20 +59,17 @@ interface SelectedItemContextType {
 const selectedItemContextDefaultValues: SelectedItemContextType = {
   copiedItemId: null,
   copiedSubItemId: null,
-  selectedItemRangeCount: 0,
-  selectedItemArtTogCount: 0,
-  selectedItemArtTapCount: 0,
-  selectedItemArtCount: 0,
-  selectedItemLayerCount: 0,
-  selectedItemFadCount: 0,
+  selectedItemSubItemCounts: {
+    full_ranges: 0,
+    art_list_tog: 0,
+    art_list_tap: 0,
+    art_list_both: 0,
+    art_layers: 0,
+    fad_list: 0
+  },
   setCopiedItemId: () => undefined,
   setCopiedSubItemId: () => undefined,
-  setSelectedItemRangeCount: () => undefined,
-  setSelectedItemArtTogCount: () => undefined,
-  setSelectedItemArtTapCount: () => undefined,
-  setSelectedItemArtCount: () => undefined,
-  setSelectedItemLayerCount: () => undefined,
-  setSelectedItemFadCount: () => undefined,
+  setSelectedItemSubItemCounts: () => undefined,
   settings: {
     vep_out_settings: 128,
     smp_out_settings: 32,
@@ -113,12 +117,15 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
 }) => {
   const [copiedItemId, setCopiedItemId] = useState<FileItemId | null>(null)
   const [copiedSubItemId, setCopiedSubItemId] = useState<SubItemId | null>(null)
-  const [selectedItemRangeCount, setSelectedItemRangeCount] = useState(0)
-  const [selectedItemArtTogCount, setSelectedItemArtTogCount] = useState(0)
-  const [selectedItemArtTapCount, setSelectedItemArtTapCount] = useState(0)
-  const [selectedItemArtCount, setSelectedItemArtCount] = useState(0)
-  const [selectedItemLayerCount, setSelectedItemLayerCount] = useState(0)
-  const [selectedItemFadCount, setSelectedItemFadCount] = useState(0)
+
+  const [selectedItemSubItemCounts, setSelectedItemSubItemCounts] = useState({
+    full_ranges: 0,
+    art_list_tog: 0,
+    art_list_tap: 0,
+    art_list_both: 0,
+    art_layers: 0,
+    fad_list: 0
+  })
 
   const [settings, setSettings] = useState<Settings>(
     selectedItemContextDefaultValues.settings
@@ -190,40 +197,20 @@ export const SelectedItemProvider: FC<SelectedItemProviderProps> = ({
     () => ({
       copiedItemId,
       copiedSubItemId,
-      selectedItemRangeCount,
-      selectedItemArtTogCount,
-      selectedItemArtTapCount,
-      selectedItemArtCount,
-      selectedItemLayerCount,
-      selectedItemFadCount,
-      setSelectedItemRangeCount,
-      setSelectedItemArtTogCount,
-      setSelectedItemArtTapCount,
-      setSelectedItemArtCount,
-      setSelectedItemLayerCount,
-      setSelectedItemFadCount,
       setCopiedItemId,
       setCopiedSubItemId,
+      selectedItemSubItemCounts,
+      setSelectedItemSubItemCounts,
       settings,
       updateSettings
     }),
     [
       copiedItemId,
       copiedSubItemId,
-      selectedItemRangeCount,
-      selectedItemArtTogCount,
-      selectedItemArtTapCount,
-      selectedItemArtCount,
-      selectedItemLayerCount,
-      selectedItemFadCount,
-      setSelectedItemRangeCount,
-      setSelectedItemArtTogCount,
-      setSelectedItemArtTapCount,
-      setSelectedItemArtCount,
-      setSelectedItemLayerCount,
-      setSelectedItemFadCount,
       setCopiedItemId,
       setCopiedSubItemId,
+      selectedItemSubItemCounts,
+      setSelectedItemSubItemCounts,
       settings,
       updateSettings
     ]

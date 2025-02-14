@@ -141,16 +141,8 @@ interface MutationProviderProps {
 }
 
 export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
-  const {
-    setSelectedItemRangeCount,
-    setSelectedItemArtTogCount,
-    setSelectedItemArtTapCount,
-    setSelectedItemArtCount,
-    setSelectedItemLayerCount,
-    setSelectedItemFadCount,
-    settings,
-    updateSettings
-  } = useSelectedItem()
+  const { setSelectedItemSubItemCounts, settings, updateSettings } =
+    useSelectedItem()
 
   const { selected_item_id, previous_item_id } = settings
 
@@ -158,21 +150,37 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   const [selectedItem, setSelectedItem] = useState<FullTrackForExport | null>(
     null
   )
+  // Initial queries
+  const getData = useCallback(async () => {
+    try {
+      const data = await commands.listAllFileitemsAndRelationCounts()
+      setData(data)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }, [setData])
+
+  const getSelectedItem = useCallback(async () => {
+    if (!selected_item_id) return
+    try {
+      const data = await commands.getFileitemAndRelations(selected_item_id)
+      setSelectedItem(data)
+    } catch (error) {
+      console.error('Error fetching selected item:', error)
+    }
+  }, [selected_item_id, setSelectedItem])
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (data === null) {
-          await getData()
-        }
+        await getData()
         await getSelectedItem()
       } catch (error) {
         console.error('Error during data fetching:', error)
       }
     }
     void fetchData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selected_item_id])
+  }, [getData, getSelectedItem])
 
   useEffect(() => {
     if (!data || !selected_item_id) return
@@ -191,39 +199,17 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       value: data[index + 1]?.id ?? null
     })
 
-    setSelectedItemRangeCount(currentItem?._count?.full_ranges ?? 0)
-    setSelectedItemArtTogCount(currentItem?._count?.art_list_tog ?? 0)
-    setSelectedItemArtTapCount(currentItem?._count?.art_list_tap ?? 0)
-    setSelectedItemArtCount(
-      (currentItem?._count?.art_list_tog ?? 0) +
-        (currentItem?._count?.art_list_tap ?? 0)
-    )
-    setSelectedItemLayerCount(currentItem?._count?.art_layers ?? 0)
-    setSelectedItemFadCount(currentItem?._count?.fad_list ?? 0)
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, selected_item_id])
-
-  //////////////////////////////////////////
-  // Initial queries
-  const getData = useCallback(async () => {
-    try {
-      const data = await commands.listAllFileitemsAndRelationCounts()
-      setData(data)
-    } catch (error) {
-      console.error('Error fetching data:', error)
-    }
-  }, [])
-
-  const getSelectedItem = useCallback(async () => {
-    if (!selected_item_id) return
-    try {
-      const data = await commands.getFileitemAndRelations(selected_item_id)
-      setSelectedItem(data)
-    } catch (error) {
-      console.error('Error fetching selected item:', error)
-    }
-  }, [selected_item_id])
+    setSelectedItemSubItemCounts({
+      full_ranges: currentItem?._count?.full_ranges ?? 0,
+      art_list_tap: currentItem?._count?.art_list_tog ?? 0,
+      art_list_tog: currentItem?._count?.art_list_tap ?? 0,
+      art_list_both:
+        (currentItem?._count?.art_list_tog ?? 0) +
+        (currentItem?._count?.art_list_tap ?? 0),
+      fad_list: currentItem?._count?.art_layers ?? 0,
+      art_layers: currentItem?._count?.fad_list ?? 0
+    })
+  }, [data, selected_item_id, updateSettings, setSelectedItemSubItemCounts])
 
   //////////////////////////////////////////
   // logic to count vep samplers and instances
