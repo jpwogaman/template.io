@@ -73,5 +73,6 @@ export type InputComponentProps = {
   options?: SelectValuesKeys
   children?: ReactNode
   isSelectedItem?: boolean
+  isSelectedSubItem?: boolean
   onChangeFunction: (event: ChangeEventHelper) => void
 }

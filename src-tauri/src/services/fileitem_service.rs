@@ -149,20 +149,28 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
           store_new_full_range(&full_range);
         }
 
-        for fad in fad_list {
-          store_new_fad(&fad);
-        }
+        for mut tog in art_list_tog {
+          if tog.ranges == "[\"\"]" {
+            tog.ranges = format!("[\"{}_FR_0\"]", tog.fileitems_item_id);
+          }
 
-        for tog in art_list_tog {
           store_new_art_tog(&tog);
         }
 
-        for tap in art_list_tap {
+        for mut tap in art_list_tap {
+          if tap.ranges == "[\"\"]" {
+            tap.ranges = format!("[\"{}_FR_0\"]", tap.fileitems_item_id);
+          }
+
           store_new_art_tap(&tap);
         }
 
         for layer in art_layers {
           store_new_art_layer(&layer);
+        }
+
+        for fad in fad_list {
+          store_new_fad(&fad);
         }
       }
 
