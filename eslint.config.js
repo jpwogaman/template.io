@@ -1,6 +1,8 @@
 import { FlatCompat } from '@eslint/eslintrc'
 import js from '@eslint/js'
 
+// @ts-expect-error
+import reactCompiler from 'eslint-plugin-react-compiler'
 import typescriptEslint from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
 import path from 'path'
@@ -23,7 +25,8 @@ export default [
   ),
   {
     plugins: {
-      '@typescript-eslint': typescriptEslint
+      '@typescript-eslint': typescriptEslint,
+      'react-compiler': reactCompiler
     },
     languageOptions: {
       parser: tsParser,
@@ -34,6 +37,7 @@ export default [
       }
     },
     rules: {
+      'react-compiler/react-compiler': 'error',
       '@typescript-eslint/array-type': 'off',
       '@typescript-eslint/consistent-type-definitions': 'off',
       '@typescript-eslint/require-await': 'off',

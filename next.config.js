@@ -10,6 +10,9 @@ const config = {
   distDir: 'dist',
   images: {
     unoptimized: true
+  },
+  experimental: {
+    reactCompiler: true
   }
 }
 
