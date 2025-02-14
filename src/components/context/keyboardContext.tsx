@@ -38,7 +38,8 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
     selected_sub_item_id
   } = settings
 
-  const { selectedItem, del } = useMutations()
+  const { selectedItem, previousItemLocked, nextItemLocked, del } =
+    useMutations()
 
   const commandSimplifier = useCallback((e: KeyboardEvent) => {
     if (e.ctrlKey && !e.shiftKey && !e.altKey) {
@@ -136,10 +137,17 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
           key: 'selected_sub_item_id',
           value: `${previous_item_id}_notes`
         })
-        const newInput = keyDownTarget_FROM?.id.replace(
-          selected_item_id,
-          previous_item_id
-        )
+
+        let newInput: string
+
+        if (previousItemLocked) {
+          newInput = `${previous_item_id}_locked`
+        } else {
+          newInput = keyDownTarget_FROM?.id.replace(
+            selected_item_id,
+            previous_item_id
+          )
+        }
         const previousInput = window.document.getElementById(newInput)
         previousInput?.focus()
       }
@@ -183,10 +191,17 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
           key: 'selected_sub_item_id',
           value: `${next_item_id}_notes`
         })
-        const newInput = keyDownTarget_FROM?.id.replace(
-          selected_item_id,
-          next_item_id
-        )
+
+        let newInput: string
+
+        if (nextItemLocked) {
+          newInput = `${next_item_id}_locked`
+        } else {
+          newInput = keyDownTarget_FROM?.id.replace(
+            selected_item_id,
+            next_item_id
+          )
+        }
         const nextInput = window.document.getElementById(newInput)
         nextInput?.focus()
       }
@@ -330,13 +345,15 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       selected_item_id,
       next_item_id,
       previous_item_id,
-      selectedItemRangeCount,
-      selectedItemArtCount,
-      selectedItemLayerCount,
-      selectedItemFadCount,
       commandSimplifier,
       del,
       selectedItem?.art_list_tog,
+      previousItemLocked,
+      nextItemLocked,
+      selectedItemLayerCount,
+      selectedItemArtCount,
+      selectedItemFadCount,
+      selectedItemRangeCount,
       updateSettings,
       selected_sub_item_id
     ]

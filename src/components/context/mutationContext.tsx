@@ -45,6 +45,8 @@ type pasteItemArgs = {
 interface MutationContextType {
   data: FullTrackWithCounts[] | null
   selectedItem: FullTrackForExport | null
+  previousItemLocked: boolean
+  nextItemLocked: boolean
   dataLength: number
   vepSamplerCount: number
   vepInstanceCount: number
@@ -90,6 +92,8 @@ interface MutationContextType {
 const mutationContextDefaultValues: MutationContextType = {
   data: null,
   selectedItem: null,
+  previousItemLocked: false,
+  nextItemLocked: false,
   dataLength: 0,
   vepSamplerCount: 0,
   vepInstanceCount: 0,
@@ -150,6 +154,8 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
   const [selectedItem, setSelectedItem] = useState<FullTrackForExport | null>(
     null
   )
+  const [previousItemLocked, setPreviousItemLocked] = useState(false)
+  const [nextItemLocked, setNextItemLocked] = useState(false)
   // Initial queries
   const getData = useCallback(async () => {
     try {
@@ -199,6 +205,16 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       value: data[index + 1]?.id ?? null
     })
 
+    const previousItemLocked = data.find(
+      (item) => item.id === data[index - 1]?.id
+    )?.locked
+    const nextItemLocked = data.find(
+      (item) => item.id === data[index + 1]?.id
+    )?.locked
+
+    setPreviousItemLocked(previousItemLocked ?? false)
+    setNextItemLocked(nextItemLocked ?? false)
+
     setSelectedItemSubItemCounts({
       full_ranges: currentItem?._count?.full_ranges ?? 0,
       art_list_tap: currentItem?._count?.art_list_tog ?? 0,
@@ -209,7 +225,14 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       fad_list: currentItem?._count?.art_layers ?? 0,
       art_layers: currentItem?._count?.fad_list ?? 0
     })
-  }, [data, selected_item_id, updateSettings, setSelectedItemSubItemCounts])
+  }, [
+    data,
+    selected_item_id,
+    updateSettings,
+    setSelectedItemSubItemCounts,
+    setPreviousItemLocked,
+    setNextItemLocked
+  ])
 
   //////////////////////////////////////////
   // logic to count vep samplers and instances
@@ -727,6 +750,8 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       nonVepSamplerCount,
       /////////////////////////////////
       selectedItem,
+      previousItemLocked,
+      nextItemLocked,
       /////////////////////////////////
       create,
       update,
@@ -745,6 +770,8 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       nonVepSamplerCount,
       /////////////////////////////////
       selectedItem,
+      previousItemLocked,
+      nextItemLocked,
       /////////////////////////////////
       create,
       update,
