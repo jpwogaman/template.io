@@ -287,12 +287,30 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
           let newInput = `${selected_item_id}_${optionType}_${nextNumber}_${optionField}`
           if (optionType) {
             if (optionType === 'FR') {
-              if (track_options_layouts.full_ranges === 'card') {
+              if (
+                track_options_layouts.full_ranges === 'card' &&
+                optionField !==
+                  allOptionsFullRanges[allOptionsFullRanges.length - 1]
+              ) {
                 const nextOptionField = getNextOptionField(
                   optionField,
                   allOptionsFullRanges
                 )
                 newInput = `${selected_item_id}_FR_${optionNumber}_${nextOptionField}`
+              } else if (
+                track_options_layouts.full_ranges === 'card' &&
+                optionField ===
+                  allOptionsFullRanges[allOptionsFullRanges.length - 1] &&
+                nextNumber < selectedItemRangeCount
+              ) {
+                newInput = `${selected_item_id}_FR_${nextNumber}_name`
+              } else if (
+                track_options_layouts.full_ranges === 'card' &&
+                optionField ===
+                  allOptionsFullRanges[allOptionsFullRanges.length - 1] &&
+                nextNumber > selectedItemRangeCount - 1
+              ) {
+                newInput = `${selected_item_id}_AT_0_name`
               } else if (
                 track_options_layouts.full_ranges === 'table' &&
                 nextNumber > selectedItemRangeCount - 1
