@@ -222,8 +222,8 @@ export const MutationProvider: FC<MutationProviderProps> = ({ children }) => {
       art_list_both:
         (currentItem?._count?.art_list_tog ?? 0) +
         (currentItem?._count?.art_list_tap ?? 0),
-      fad_list: currentItem?._count?.art_layers ?? 0,
-      art_layers: currentItem?._count?.fad_list ?? 0
+      fad_list: currentItem?._count?.fad_list ?? 0,
+      art_layers: currentItem?._count?.art_layers ?? 0
     })
   }, [
     data,
