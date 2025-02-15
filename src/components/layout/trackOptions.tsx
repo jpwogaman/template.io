@@ -20,7 +20,10 @@ import {
   type InputComponentProps
 } from '@/components/inputs'
 
-import { TrackOptionsTableKeys } from '@/components/utils/trackOptionsTableKeys'
+import {
+  TrackOptionsTableKeys,
+  type TrackOptionsTableKeysType
+} from '@/components/utils/trackOptionsTableKeys'
 
 import {
   useMutations,
@@ -230,7 +233,7 @@ export const TrackOptions: FC = () => {
   const isSubKeyInputDisabled = (
     label: keyof FullTrackCounts,
     item: layoutDataSingle,
-    subKey: TrackOptionsTableKeys<
+    subKey: TrackOptionsTableKeysType<
       keyof FullTrackCounts
     >[number]['keys'][number]['key']
   ) => {

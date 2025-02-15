@@ -4,7 +4,7 @@ import {
 } from '@/components/backendCommands/backendCommands'
 import { type SelectValuesKeys } from '@/components/context'
 
-export type TrackOptionsTableKeys<T extends keyof FullTrackCounts> = {
+export type TrackOptionsTableKeysType<T extends keyof FullTrackCounts> = {
   title: string
   label: T
   layout: 'card' | 'table'
@@ -30,7 +30,7 @@ export type TrackOptionsTableKeys<T extends keyof FullTrackCounts> = {
   }[]
 }[]
 
-export const TrackOptionsTableKeys: TrackOptionsTableKeys<
+export const TrackOptionsTableKeys: TrackOptionsTableKeysType<
   keyof FullTrackCounts
 > = [
   {

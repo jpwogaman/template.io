@@ -35,7 +35,8 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
     selected_item_id,
     next_item_id,
     previous_item_id,
-    selected_sub_item_id
+    selected_sub_item_id,
+    track_options_layouts
   } = settings
 
   const { selectedItem, previousItemLocked, nextItemLocked, del } =
@@ -87,6 +88,70 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       const optionNumber = keyDownTarget_FROM?.id.split('_')[3] // 0, 1, 2, 3
       const optionField = keyDownTarget_FROM?.id.split('_')?.slice(4).join('_') // name, value, notes, code_type
 
+      const allOptionsFullRanges = [
+        'id',
+        'name',
+        'low',
+        'high',
+        'white_keys_only'
+      ]
+      const allOptionsArtListTog = [
+        'id',
+        'name',
+        'toggle',
+        'code_type',
+        'code',
+        'on',
+        'off',
+        'default',
+        'delay',
+        'change_type',
+        'ranges',
+        'art_layers'
+      ]
+      const allOptionsArtListTap = [
+        'id',
+        'name',
+        'toggle',
+        'code_type',
+        'code',
+        'on',
+        'off',
+        'default',
+        'delay',
+        'change_type',
+        'ranges',
+        'art_layers'
+      ]
+      const allOptionsArtLayers = [
+        'id',
+        'name',
+        'code_type',
+        'code',
+        'on',
+        'off',
+        'default',
+        'change_type'
+      ]
+
+      const allOptionsFadList = [
+        'id',
+        'name',
+        'code_type',
+        'code',
+        'default',
+        'change_type'
+      ]
+
+      const getNextOptionField = (currentField: string, list: string[]) => {
+        const currentIndex = list.indexOf(currentField)
+        return list[currentIndex + 1]
+      }
+      const getPreviousOptionField = (currentField: string, list: string[]) => {
+        const currentIndex = list.indexOf(currentField)
+        return list[currentIndex - 1]
+      }
+
       ////////////////////////////////
       // Special case for Articulations
       const isArtTog = (selectedSubItemId: string) => {
@@ -108,17 +173,75 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
 
           let newInput = `${selected_item_id}_${optionType}_${nextNumber}_${optionField}`
 
-          if (optionType === 'FR' && nextNumber < 0) {
-            return
-          }
-          if (optionType === 'AT' && nextNumber < 0) {
-            newInput = `${selected_item_id}_FR_${selectedItemRangeCount - 1}_${optionField}`
-          }
-          if (optionType === 'AL' && nextNumber < 0) {
-            newInput = `${selected_item_id}_AT_${selectedItemArtCount - 1}_${optionField}`
-          }
-          if (optionType === 'FL' && nextNumber < 0) {
-            newInput = `${selected_item_id}_AL_${selectedItemLayerCount - 1}_${optionField}`
+          if (optionType) {
+            if (optionType === 'FR') {
+              if (track_options_layouts.full_ranges === 'card') {
+                const previousOptionField = getPreviousOptionField(
+                  optionField,
+                  allOptionsFullRanges
+                )
+                newInput = `${selected_item_id}_FR_${optionNumber}_${previousOptionField}`
+              } else if (
+                track_options_layouts.full_ranges === 'table' &&
+                nextNumber < 0
+              ) {
+                return
+              }
+            }
+            if (optionType === 'AT') {
+              if (
+                track_options_layouts.art_list_tog === 'card' &&
+                isArtTog(selected_sub_item_id)
+              ) {
+                const previousOptionField = getPreviousOptionField(
+                  optionField,
+                  allOptionsArtListTog
+                )
+                newInput = `${selected_item_id}_AT_${optionNumber}_${previousOptionField}`
+              } else if (
+                track_options_layouts.art_list_tap === 'card' &&
+                !isArtTog(selected_sub_item_id)
+              ) {
+                const previousOptionField = getPreviousOptionField(
+                  optionField,
+                  allOptionsArtListTap
+                )
+                newInput = `${selected_item_id}_AT_${optionNumber}_${previousOptionField}`
+              } else if (
+                track_options_layouts.art_list_tog === 'table' &&
+                nextNumber < 0
+              ) {
+                newInput = `${selected_item_id}_FR_${selectedItemRangeCount - 1}_${optionField}`
+              }
+            }
+            if (optionType === 'AL') {
+              if (track_options_layouts.art_layers === 'card') {
+                const previousOptionField = getPreviousOptionField(
+                  optionField,
+                  allOptionsArtLayers
+                )
+                newInput = `${selected_item_id}_AL_${optionNumber}_${previousOptionField}`
+              } else if (
+                track_options_layouts.art_layers === 'table' &&
+                nextNumber < 0
+              ) {
+                newInput = `${selected_item_id}_AT_${selectedItemArtCount - 1}_${optionField}`
+              }
+            }
+            if (optionType === 'FL') {
+              if (track_options_layouts.fad_list === 'card') {
+                const previousOptionField = getPreviousOptionField(
+                  optionField,
+                  allOptionsFadList
+                )
+                newInput = `${selected_item_id}_FL_${optionNumber}_${previousOptionField}`
+              } else if (
+                track_options_layouts.fad_list === 'table' &&
+                nextNumber < 0
+              ) {
+                newInput = `${selected_item_id}_AL_${selectedItemLayerCount - 1}_${optionField}`
+              }
+            }
           }
 
           const nextInput = window.document.getElementById(newInput)
@@ -162,18 +285,75 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
           const nextNumber = parseInt(optionNumber ?? '0') + 1
 
           let newInput = `${selected_item_id}_${optionType}_${nextNumber}_${optionField}`
-
-          if (optionType === 'FR' && nextNumber > selectedItemRangeCount - 1) {
-            newInput = `${selected_item_id}_AT_0_name` // no like option-fields besides name for FR
-          }
-          if (optionType === 'AT' && nextNumber > selectedItemArtCount - 1) {
-            newInput = `${selected_item_id}_AL_0_${optionField}`
-          }
-          if (optionType === 'AL' && nextNumber > selectedItemLayerCount - 1) {
-            newInput = `${selected_item_id}_FL_0_${optionField}`
-          }
-          if (optionType === 'FL' && nextNumber > selectedItemFadCount - 1) {
-            return
+          if (optionType) {
+            if (optionType === 'FR') {
+              if (track_options_layouts.full_ranges === 'card') {
+                const nextOptionField = getNextOptionField(
+                  optionField,
+                  allOptionsFullRanges
+                )
+                newInput = `${selected_item_id}_FR_${optionNumber}_${nextOptionField}`
+              } else if (
+                track_options_layouts.full_ranges === 'table' &&
+                nextNumber > selectedItemRangeCount - 1
+              ) {
+                newInput = `${selected_item_id}_AT_0_name`
+              }
+            }
+            if (optionType === 'AT') {
+              if (
+                track_options_layouts.art_list_tog === 'card' &&
+                isArtTog(selected_sub_item_id)
+              ) {
+                const nextOptionField = getNextOptionField(
+                  optionField,
+                  allOptionsArtListTog
+                )
+                newInput = `${selected_item_id}_AT_${optionNumber}_${nextOptionField}`
+              } else if (
+                track_options_layouts.art_list_tap === 'card' &&
+                !isArtTog(selected_sub_item_id)
+              ) {
+                const nextOptionField = getNextOptionField(
+                  optionField,
+                  allOptionsArtListTap
+                )
+                newInput = `${selected_item_id}_AT_${optionNumber}_${nextOptionField}`
+              } else if (
+                track_options_layouts.art_list_tog === 'table' &&
+                nextNumber > selectedItemArtCount - 1
+              ) {
+                newInput = `${selected_item_id}_AL_0_${optionField}`
+              }
+            }
+            if (optionType === 'AL') {
+              if (track_options_layouts.art_layers === 'card') {
+                const nextOptionField = getNextOptionField(
+                  optionField,
+                  allOptionsArtLayers
+                )
+                newInput = `${selected_item_id}_AL_${optionNumber}_${nextOptionField}`
+              } else if (
+                track_options_layouts.art_layers === 'table' &&
+                nextNumber > selectedItemLayerCount - 1
+              ) {
+                newInput = `${selected_item_id}_FL_0_${optionField}`
+              }
+            }
+            if (optionType === 'FL') {
+              if (track_options_layouts.fad_list === 'card') {
+                const nextOptionField = getNextOptionField(
+                  optionField,
+                  allOptionsFadList
+                )
+                newInput = `${selected_item_id}_FL_${optionNumber}_${nextOptionField}`
+              } else if (
+                track_options_layouts.fad_list === 'table' &&
+                nextNumber > selectedItemFadCount - 1
+              ) {
+                return
+              }
+            }
           }
 
           const nextInput = window.document.getElementById(newInput)
