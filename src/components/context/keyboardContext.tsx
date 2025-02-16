@@ -10,8 +10,6 @@ import {
   useMemo
 } from 'react'
 import { useMutations, useSelectedItem } from '@/components/context'
-import { option } from 'motion/react-m'
-import { FullTrackCounts } from '../backendCommands/backendCommands'
 
 const keyboardContextDefaultValues: Record<string, unknown> = {}
 
@@ -92,14 +90,15 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       const optionNumber = keyDownTarget_FROM?.id.split('_')[3] // 0, 1, 2, 3
       const optionField = keyDownTarget_FROM?.id.split('_')?.slice(4).join('_') // name, value, notes, code_type
 
-      const allOptionsFullRanges = [
+      const allKeysFR = [
         //'id', //not selectable
         'name',
         'low',
         'high',
         'white_keys_only'
       ]
-      const allOptionsArtListTog = [
+
+      const allKeysATog = [
         //'id', //not selectable
         'name',
         //'toggle', //not selectable or visible
@@ -113,7 +112,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         'ranges',
         'art_layers'
       ]
-      const allOptionsArtListTap = [
+      const allKeysATap = [
         //'id', //not selectable
         'name',
         //'toggle', //not selectable or visible
@@ -127,7 +126,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         'ranges',
         'art_layers'
       ]
-      const allOptionsArtLayers = [
+      const allKeysAL = [
         //'id', //not selectable
         'name',
         'code_type',
@@ -138,7 +137,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         'change_type'
       ]
 
-      const allOptionsFadList = [
+      const allKeysFL = [
         //'id', //not selectable
         'name',
         'code_type',
@@ -147,11 +146,17 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         'change_type'
       ]
 
-      const getNextOptionField = (currentField: string, list: string[]) => {
+      const FRLayout = track_options_layouts.full_ranges
+      const ATogLayout = track_options_layouts.art_list_tog
+      const ATapLayout = track_options_layouts.art_list_tap
+      const ALLayout = track_options_layouts.art_layers
+      const FLLayout = track_options_layouts.fad_list
+
+      const getNextKey = (currentField: string, list: string[]) => {
         const currentIndex = list.indexOf(currentField)
         return list[currentIndex + 1]
       }
-      const getPreviousOptionField = (currentField: string, list: string[]) => {
+      const getPreviousKey = (currentField: string, list: string[]) => {
         const currentIndex = list.indexOf(currentField)
         return list[currentIndex - 1]
       }
@@ -178,136 +183,137 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
           let newInput = ''
 
           if (optionType === 'FR') {
-            if (
-              track_options_layouts.full_ranges === 'card' &&
-              optionField !== allOptionsFullRanges[0]
-            ) {
-              const previousOptionField = getPreviousOptionField(
-                optionField,
-                allOptionsFullRanges
-              )
+            if (FRLayout === 'card' && optionField !== allKeysFR[0]) {
+              const previousOptionField = getPreviousKey(optionField, allKeysFR)
               newInput = `${selected_item_id}_FR_${optionNumber}_${previousOptionField}`
             } else if (
-              track_options_layouts.full_ranges === 'card' &&
-              optionField === allOptionsFullRanges[0] &&
+              FRLayout === 'card' &&
+              optionField === allKeysFR[0] &&
               previousSubItemNumber >= 0
             ) {
               newInput = `${selected_item_id}_FR_${previousSubItemNumber}_white_keys_only`
             } else if (
-              track_options_layouts.full_ranges === 'card' &&
-              optionField === allOptionsFullRanges[0] &&
+              FRLayout === 'card' &&
+              optionField === allKeysFR[0] &&
               previousSubItemNumber < 0
             ) {
               newInput = `${selected_item_id}_notes`
-            } else if (
-              track_options_layouts.full_ranges === 'table' &&
-              previousSubItemNumber < 0
-            ) {
+            } else if (FRLayout === 'table' && previousSubItemNumber < 0) {
               newInput = `${selected_item_id}_notes`
-            } else if (
-              track_options_layouts.full_ranges === 'table' &&
-              previousSubItemNumber >= 0
-            ) {
+            } else if (FRLayout === 'table' && previousSubItemNumber >= 0) {
               newInput = `${selected_item_id}_FR_${previousSubItemNumber}_${optionField}`
             } else {
               return
             }
           }
           if (optionType === 'AT' && isArtTog(selected_sub_item_id)) {
-            if (
-              track_options_layouts.art_list_tog === 'card' &&
-              optionField !== allOptionsArtListTog[0]
-            ) {
-              const previousOptionField = getPreviousOptionField(
+            if (ATogLayout === 'card' && optionField !== allKeysATog[0]) {
+              const previousOptionField = getPreviousKey(
                 optionField,
-                allOptionsArtListTog
+                allKeysATog
               )
               newInput = `${selected_item_id}_AT_${optionNumber}_${previousOptionField}`
             } else if (
-              track_options_layouts.art_list_tog === 'card' &&
-              optionField === allOptionsArtListTog[0] &&
+              ATogLayout === 'card' &&
+              optionField === allKeysATog[0] &&
               previousSubItemNumber >= 0
             ) {
               newInput = `${selected_item_id}_AT_${previousSubItemNumber}_art_layers`
             } else if (
-              track_options_layouts.art_list_tog === 'card' &&
-              track_options_layouts.full_ranges === 'table' &&
-              optionField === allOptionsArtListTog[0] &&
+              ATogLayout === 'card' &&
+              FRLayout === 'table' &&
+              optionField === allKeysATog[0] &&
               previousSubItemNumber < 0
             ) {
               newInput = `${selected_item_id}_FR_${selectedItemRangeCount - 1}_name`
             } else if (
-              track_options_layouts.art_list_tog === 'table' &&
-              track_options_layouts.full_ranges === 'table' &&
+              ATogLayout === 'table' &&
+              FRLayout === 'table' &&
+              optionField === 'name' &&
               previousSubItemNumber < 0
             ) {
-              newInput = `${selected_item_id}_FR_${selectedItemRangeCount - 1}_${optionField}`
+              newInput = `${selected_item_id}_FR_${selectedItemRangeCount - 1}_name`
             } else if (
-              track_options_layouts.art_list_tog === 'card' &&
-              track_options_layouts.full_ranges === 'card' &&
-              optionField === allOptionsArtListTog[0] &&
+              ATogLayout === 'table' &&
+              FRLayout === 'table' &&
+              (optionField === 'code_type' ||
+                optionField === 'code' ||
+                optionField === 'on' ||
+                optionField === 'off') &&
+              previousSubItemNumber < 0
+            ) {
+              newInput = `${selected_item_id}_FR_${selectedItemRangeCount - 1}_low`
+            } else if (
+              ATogLayout === 'table' &&
+              FRLayout === 'table' &&
+              (optionField === 'default' ||
+                optionField === 'delay' ||
+                optionField === 'change_type' ||
+                optionField === 'ranges' ||
+                optionField === 'art_layers') &&
+              previousSubItemNumber < 0
+            ) {
+              newInput = `${selected_item_id}_FR_${selectedItemRangeCount - 1}_high`
+            } else if (
+              ATogLayout === 'card' &&
+              FRLayout === 'card' &&
+              optionField === allKeysATog[0] &&
               previousSubItemNumber < 0
             ) {
               newInput = `${selected_item_id}_FR_${selectedItemRangeCount - 1}_white_keys_only`
             } else if (
-              track_options_layouts.art_list_tog === 'table' &&
-              track_options_layouts.full_ranges === 'card' &&
+              ATogLayout === 'table' &&
+              FRLayout === 'card' &&
               previousSubItemNumber < 0
             ) {
               newInput = `${selected_item_id}_FR_${selectedItemRangeCount - 1}_white_keys_only`
-            } else if (
-              track_options_layouts.art_list_tog === 'table' &&
-              previousSubItemNumber >= 0
-            ) {
+            } else if (ATogLayout === 'table' && previousSubItemNumber >= 0) {
               newInput = `${selected_item_id}_AT_${previousSubItemNumber}_${optionField}`
             } else {
               return
             }
           }
           if (optionType === 'AT' && !isArtTog(selected_sub_item_id)) {
-            if (
-              track_options_layouts.art_list_tap === 'card' &&
-              optionField !== allOptionsArtListTap[0]
-            ) {
-              const previousOptionField = getPreviousOptionField(
+            if (ATapLayout === 'card' && optionField !== allKeysATap[0]) {
+              const previousOptionField = getPreviousKey(
                 optionField,
-                allOptionsArtListTap
+                allKeysATap
               )
               newInput = `${selected_item_id}_AT_${optionNumber}_${previousOptionField}`
             } else if (
-              track_options_layouts.art_list_tap === 'card' &&
-              optionField === allOptionsArtListTap[0] &&
+              ATapLayout === 'card' &&
+              optionField === allKeysATap[0] &&
               previousSubItemNumber >= selectedItemArtTogCount
             ) {
               newInput = `${selected_item_id}_AT_${previousSubItemNumber}_art_layers`
             } else if (
-              track_options_layouts.art_list_tap === 'card' &&
-              track_options_layouts.art_list_tog === 'table' &&
-              optionField === allOptionsArtListTap[0] &&
+              ATapLayout === 'card' &&
+              ATogLayout === 'table' &&
+              optionField === allKeysATap[0] &&
               previousSubItemNumber < selectedItemArtTogCount
             ) {
               newInput = `${selected_item_id}_AT_${selectedItemArtTogCount - 1}_name`
             } else if (
-              track_options_layouts.art_list_tap === 'table' &&
-              track_options_layouts.art_list_tog === 'table' &&
+              ATapLayout === 'table' &&
+              ATogLayout === 'table' &&
               previousSubItemNumber < selectedItemArtTogCount
             ) {
               newInput = `${selected_item_id}_AT_${selectedItemArtTogCount - 1}_${optionField}`
             } else if (
-              track_options_layouts.art_list_tap === 'card' &&
-              track_options_layouts.art_list_tog === 'card' &&
-              optionField === allOptionsArtListTap[0] &&
+              ATapLayout === 'card' &&
+              ATogLayout === 'card' &&
+              optionField === allKeysATap[0] &&
               previousSubItemNumber < selectedItemArtTogCount
             ) {
               newInput = `${selected_item_id}_AT_${selectedItemArtTogCount - 1}_art_layers`
             } else if (
-              track_options_layouts.art_list_tap === 'table' &&
-              track_options_layouts.art_list_tog === 'card' &&
+              ATapLayout === 'table' &&
+              ATogLayout === 'card' &&
               previousSubItemNumber < selectedItemArtTogCount
             ) {
               newInput = `${selected_item_id}_AT_${selectedItemArtTogCount - 1}_art_layers`
             } else if (
-              track_options_layouts.art_list_tap === 'table' &&
+              ATapLayout === 'table' &&
               previousSubItemNumber >= selectedItemArtTogCount
             ) {
               newInput = `${selected_item_id}_AT_${previousSubItemNumber}_${optionField}`
@@ -316,102 +322,84 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
             }
           }
           if (optionType === 'AL') {
-            if (
-              track_options_layouts.art_layers === 'card' &&
-              optionField !== allOptionsArtLayers[0]
-            ) {
-              const previousOptionField = getPreviousOptionField(
-                optionField,
-                allOptionsArtLayers
-              )
+            if (ALLayout === 'card' && optionField !== allKeysAL[0]) {
+              const previousOptionField = getPreviousKey(optionField, allKeysAL)
               newInput = `${selected_item_id}_AL_${optionNumber}_${previousOptionField}`
             } else if (
-              track_options_layouts.art_layers === 'card' &&
-              optionField === allOptionsArtLayers[0] &&
+              ALLayout === 'card' &&
+              optionField === allKeysAL[0] &&
               previousSubItemNumber >= 0
             ) {
               newInput = `${selected_item_id}_AL_${previousSubItemNumber}_change_type`
             } else if (
-              track_options_layouts.art_layers === 'card' &&
-              track_options_layouts.art_list_tap === 'table' &&
-              optionField === allOptionsArtLayers[0] &&
+              ALLayout === 'card' &&
+              ATapLayout === 'table' &&
+              optionField === allKeysAL[0] &&
               previousSubItemNumber < 0
             ) {
               newInput = `${selected_item_id}_AT_${selectedItemArtCount - 1}_name`
             } else if (
-              track_options_layouts.art_layers === 'table' &&
-              track_options_layouts.art_list_tap === 'table' &&
+              ALLayout === 'table' &&
+              ATapLayout === 'table' &&
               previousSubItemNumber < 0
             ) {
               newInput = `${selected_item_id}_AT_${selectedItemArtCount - 1}_${optionField}`
             } else if (
-              track_options_layouts.art_layers === 'card' &&
-              track_options_layouts.art_list_tap === 'card' &&
-              optionField === allOptionsArtLayers[0] &&
+              ALLayout === 'card' &&
+              ATapLayout === 'card' &&
+              optionField === allKeysAL[0] &&
               previousSubItemNumber < 0
             ) {
               newInput = `${selected_item_id}_AT_${selectedItemArtCount - 1}_art_layers`
             } else if (
-              track_options_layouts.art_layers === 'table' &&
-              track_options_layouts.art_list_tap === 'card' &&
+              ALLayout === 'table' &&
+              ATapLayout === 'card' &&
               previousSubItemNumber < 0
             ) {
               newInput = `${selected_item_id}_AT_${selectedItemArtCount - 1}_art_layers`
-            } else if (
-              track_options_layouts.art_layers === 'table' &&
-              previousSubItemNumber >= 0
-            ) {
+            } else if (ALLayout === 'table' && previousSubItemNumber >= 0) {
               newInput = `${selected_item_id}_AL_${previousSubItemNumber}_${optionField}`
             } else {
               return
             }
           }
           if (optionType === 'FL') {
-            if (
-              track_options_layouts.fad_list === 'card' &&
-              optionField !== allOptionsFadList[0]
-            ) {
-              const previousOptionField = getPreviousOptionField(
-                optionField,
-                allOptionsFadList
-              )
+            if (FLLayout === 'card' && optionField !== allKeysFL[0]) {
+              const previousOptionField = getPreviousKey(optionField, allKeysFL)
               newInput = `${selected_item_id}_FL_${optionNumber}_${previousOptionField}`
             } else if (
-              track_options_layouts.fad_list === 'card' &&
-              optionField === allOptionsFadList[0] &&
+              FLLayout === 'card' &&
+              optionField === allKeysFL[0] &&
               previousSubItemNumber >= 0
             ) {
               newInput = `${selected_item_id}_FL_${previousSubItemNumber}_change_type`
             } else if (
-              track_options_layouts.fad_list === 'card' &&
-              track_options_layouts.art_layers === 'table' &&
-              optionField === allOptionsFadList[0] &&
+              FLLayout === 'card' &&
+              ALLayout === 'table' &&
+              optionField === allKeysFL[0] &&
               previousSubItemNumber < 0
             ) {
               newInput = `${selected_item_id}_AL_${selectedItemLayerCount - 1}_name`
             } else if (
-              track_options_layouts.fad_list === 'table' &&
-              track_options_layouts.art_layers === 'table' &&
+              FLLayout === 'table' &&
+              ALLayout === 'table' &&
               previousSubItemNumber < 0
             ) {
               newInput = `${selected_item_id}_AL_${selectedItemLayerCount - 1}_${optionField}`
             } else if (
-              track_options_layouts.fad_list === 'card' &&
-              track_options_layouts.art_layers === 'card' &&
-              optionField === allOptionsFadList[0] &&
+              FLLayout === 'card' &&
+              ALLayout === 'card' &&
+              optionField === allKeysFL[0] &&
               previousSubItemNumber < 0
             ) {
               newInput = `${selected_item_id}_AL_${selectedItemLayerCount - 1}_change_type`
             } else if (
-              track_options_layouts.fad_list === 'table' &&
-              track_options_layouts.art_layers === 'card' &&
+              FLLayout === 'table' &&
+              ALLayout === 'card' &&
               previousSubItemNumber < 0
             ) {
               newInput = `${selected_item_id}_AL_${selectedItemLayerCount - 1}_change_type`
-            } else if (
-              track_options_layouts.fad_list === 'table' &&
-              previousSubItemNumber >= 0
-            ) {
+            } else if (FLLayout === 'table' && previousSubItemNumber >= 0) {
               newInput = `${selected_item_id}_FL_${previousSubItemNumber}_${optionField}`
             } else {
               return
@@ -461,310 +449,183 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
           let newInput = ''
 
           if (optionType === 'FR') {
-            if (
-              track_options_layouts.full_ranges === 'card' &&
-              optionField !==
-                allOptionsFullRanges[allOptionsFullRanges.length - 1]
-            ) {
-              const nextOptionField = getNextOptionField(
-                optionField,
-                allOptionsFullRanges
-              )
-              newInput = `${selected_item_id}_FR_${optionNumber}_${nextOptionField}`
+            const lastOption = optionField === allKeysFR[allKeysFR.length - 1]
+
+            if (FRLayout === 'card' && !lastOption) {
+              newInput = `${selected_item_id}_FR_${optionNumber}_${getNextKey(optionField, allKeysFR)}`
             } else if (
-              track_options_layouts.full_ranges === 'card' &&
-              optionField ===
-                allOptionsFullRanges[allOptionsFullRanges.length - 1] &&
+              FRLayout === 'card' &&
+              lastOption &&
               nextSubItemNumber < selectedItemRangeCount
             ) {
               newInput = `${selected_item_id}_FR_${nextSubItemNumber}_name`
             } else if (
-              track_options_layouts.full_ranges === 'card' &&
-              optionField ===
-                allOptionsFullRanges[allOptionsFullRanges.length - 1] &&
+              FRLayout === 'card' &&
+              lastOption &&
               nextSubItemNumber >= selectedItemRangeCount
             ) {
               newInput = `${selected_item_id}_AT_0_name`
             } else if (
-              track_options_layouts.full_ranges === 'table' &&
+              FRLayout === 'table' &&
               nextSubItemNumber < selectedItemRangeCount
             ) {
               newInput = `${selected_item_id}_FR_${nextSubItemNumber}_${optionField}`
             } else if (
-              track_options_layouts.full_ranges === 'table' &&
+              FRLayout === 'table' &&
+              optionField === 'low' &&
+              nextSubItemNumber >= selectedItemRangeCount
+            ) {
+              newInput = `${selected_item_id}_AT_0_code_type`
+            } else if (
+              FRLayout === 'table' &&
+              optionField === 'high' &&
+              nextSubItemNumber >= selectedItemRangeCount
+            ) {
+              newInput = `${selected_item_id}_AT_0_default`
+            } else if (
+              FRLayout === 'table' &&
+              optionField === 'white_keys_only' &&
+              nextSubItemNumber >= selectedItemRangeCount
+            ) {
+              newInput = `${selected_item_id}_AT_0_ranges`
+            } else if (
+              FRLayout === 'table' &&
               nextSubItemNumber >= selectedItemRangeCount
             ) {
               newInput = `${selected_item_id}_AT_0_name`
             }
           }
-          //if (optionType === 'AT' && isArtTog(selected_sub_item_id)) {
-          //  if (
-          //    track_options_layouts.art_list_tog === 'card' &&
-          //    optionField !==
-          //      allOptionsArtListTog[allOptionsArtListTog.length - 1]
-          //  ) {
-          //    const nextOptionField = getNextOptionField(
-          //      optionField,
-          //      allOptionsArtListTog
-          //    )
-          //    newInput = `${selected_item_id}_AT_${optionNumber}_${nextOptionField}`
-          //  } else if (
-          //    track_options_layouts.art_list_tog === 'card' &&
-          //    optionField ===
-          //      allOptionsArtListTog[allOptionsArtListTog.length - 1] &&
-          //    nextSubItemNumber >= 0
-          //  ) {
-          //    newInput = `${selected_item_id}_AT_${nextSubItemNumber}_art_layers`
-          //  } else if (
-          //    track_options_layouts.art_list_tog === 'card' &&
-          //    track_options_layouts.full_ranges === 'table' &&
-          //    optionField ===
-          //      allOptionsArtListTog[allOptionsArtListTog.length - 1] &&
-          //    nextSubItemNumber < 0
-          //  ) {
-          //    newInput = `${selected_item_id}_FR_${selectedItemRangeCount - 1}_name`
-          //  } else if (
-          //    track_options_layouts.art_list_tog === 'table' &&
-          //    track_options_layouts.full_ranges === 'table' &&
-          //    nextSubItemNumber < 0
-          //  ) {
-          //    newInput = `${selected_item_id}_FR_${selectedItemRangeCount - 1}_${optionField}`
-          //  } else if (
-          //    track_options_layouts.art_list_tog === 'card' &&
-          //    track_options_layouts.full_ranges === 'card' &&
-          //    optionField ===
-          //      allOptionsArtListTog[allOptionsArtListTog.length - 1] &&
-          //    nextSubItemNumber < 0
-          //  ) {
-          //    newInput = `${selected_item_id}_FR_${selectedItemRangeCount - 1}_white_keys_only`
-          //  } else if (
-          //    track_options_layouts.art_list_tog === 'table' &&
-          //    track_options_layouts.full_ranges === 'card' &&
-          //    nextSubItemNumber < 0
-          //  ) {
-          //    newInput = `${selected_item_id}_FR_${selectedItemRangeCount - 1}_white_keys_only`
-          //  } else if (
-          //    track_options_layouts.art_list_tog === 'table' &&
-          //    nextSubItemNumber >= 0
-          //  ) {
-          //    newInput = `${selected_item_id}_AT_${nextSubItemNumber}_${optionField}`
-          //  } else {
-          //    return
-          //  }
-          //}
-          //if (optionType === 'AT' && !isArtTog(selected_sub_item_id)) {
-          //  if (
-          //    track_options_layouts.art_list_tap === 'card' &&
-          //    optionField !==
-          //      allOptionsArtListTap[allOptionsArtListTap.length - 1]
-          //  ) {
-          //    const nextOptionField = getNextOptionField(
-          //      optionField,
-          //      allOptionsArtListTap
-          //    )
-          //    newInput = `${selected_item_id}_AT_${optionNumber}_${nextOptionField}`
-          //  } else if (
-          //    track_options_layouts.art_list_tap === 'card' &&
-          //    optionField ===
-          //      allOptionsArtListTap[allOptionsArtListTap.length - 1] &&
-          //    nextSubItemNumber >= selectedItemArtTogCount
-          //  ) {
-          //    newInput = `${selected_item_id}_AT_${nextSubItemNumber}_art_layers`
-          //  } else if (
-          //    track_options_layouts.art_list_tap === 'card' &&
-          //    track_options_layouts.art_list_tog === 'table' &&
-          //    optionField ===
-          //      allOptionsArtListTap[allOptionsArtListTap.length - 1] &&
-          //    nextSubItemNumber < selectedItemArtTogCount
-          //  ) {
-          //    newInput = `${selected_item_id}_AT_${selectedItemArtTogCount - 1}_name`
-          //  } else if (
-          //    track_options_layouts.art_list_tap === 'table' &&
-          //    track_options_layouts.art_list_tog === 'table' &&
-          //    nextSubItemNumber < selectedItemArtTogCount
-          //  ) {
-          //    newInput = `${selected_item_id}_AT_${selectedItemArtTogCount - 1}_${optionField}`
-          //  } else if (
-          //    track_options_layouts.art_list_tap === 'card' &&
-          //    track_options_layouts.art_list_tog === 'card' &&
-          //    optionField ===
-          //      allOptionsArtListTap[allOptionsArtListTap.length - 1] &&
-          //    nextSubItemNumber < selectedItemArtTogCount
-          //  ) {
-          //    newInput = `${selected_item_id}_AT_${selectedItemArtTogCount - 1}_art_layers`
-          //  } else if (
-          //    track_options_layouts.art_list_tap === 'table' &&
-          //    track_options_layouts.art_list_tog === 'card' &&
-          //    nextSubItemNumber < selectedItemArtTogCount
-          //  ) {
-          //    newInput = `${selected_item_id}_AT_${selectedItemArtTogCount - 1}_art_layers`
-          //  } else if (
-          //    track_options_layouts.art_list_tap === 'table' &&
-          //    nextSubItemNumber >= selectedItemArtTogCount
-          //  ) {
-          //    newInput = `${selected_item_id}_AT_${nextSubItemNumber}_${optionField}`
-          //  } else {
-          //    return
-          //  }
-          //}
-          //if (optionType === 'AL') {
-          //  if (
-          //    track_options_layouts.art_layers === 'card' &&
-          //    optionField !==
-          //      allOptionsArtLayers[allOptionsArtLayers.length - 1]
-          //  ) {
-          //    const nextOptionField = getNextOptionField(
-          //      optionField,
-          //      allOptionsArtLayers
-          //    )
-          //    newInput = `${selected_item_id}_AL_${optionNumber}_${nextOptionField}`
-          //  } else if (
-          //    track_options_layouts.art_layers === 'card' &&
-          //    optionField ===
-          //      allOptionsArtLayers[allOptionsArtLayers.length - 1] &&
-          //    nextSubItemNumber >= 0
-          //  ) {
-          //    newInput = `${selected_item_id}_AL_${nextSubItemNumber}_change_type`
-          //  } else if (
-          //    track_options_layouts.art_layers === 'card' &&
-          //    track_options_layouts.art_list_tap === 'table' &&
-          //    optionField ===
-          //      allOptionsArtLayers[allOptionsArtLayers.length - 1] &&
-          //    nextSubItemNumber < 0
-          //  ) {
-          //    newInput = `${selected_item_id}_AT_${selectedItemArtCount - 1}_name`
-          //  } else if (
-          //    track_options_layouts.art_layers === 'table' &&
-          //    track_options_layouts.art_list_tap === 'table' &&
-          //    nextSubItemNumber < 0
-          //  ) {
-          //    newInput = `${selected_item_id}_AT_${selectedItemArtCount - 1}_${optionField}`
-          //  } else if (
-          //    track_options_layouts.art_layers === 'card' &&
-          //    track_options_layouts.art_list_tap === 'card' &&
-          //    optionField ===
-          //      allOptionsArtLayers[allOptionsArtLayers.length - 1] &&
-          //    nextSubItemNumber < 0
-          //  ) {
-          //    newInput = `${selected_item_id}_AT_${selectedItemArtCount - 1}_art_layers`
-          //  } else if (
-          //    track_options_layouts.art_layers === 'table' &&
-          //    track_options_layouts.art_list_tap === 'card' &&
-          //    nextSubItemNumber < 0
-          //  ) {
-          //    newInput = `${selected_item_id}_AT_${selectedItemArtCount - 1}_art_layers`
-          //  } else if (
-          //    track_options_layouts.art_layers === 'table' &&
-          //    nextSubItemNumber >= 0
-          //  ) {
-          //    newInput = `${selected_item_id}_AL_${nextSubItemNumber}_${optionField}`
-          //  } else {
-          //    return
-          //  }
-          //}
-          //if (optionType === 'FL') {
-          //  if (
-          //    track_options_layouts.fad_list === 'card' &&
-          //    optionField !== allOptionsFadList[allOptionsFadList.length - 1]
-          //  ) {
-          //    const nextOptionField = getNextOptionField(
-          //      optionField,
-          //      allOptionsFadList
-          //    )
-          //    newInput = `${selected_item_id}_FL_${optionNumber}_${nextOptionField}`
-          //  } else if (
-          //    track_options_layouts.fad_list === 'card' &&
-          //    optionField === allOptionsFadList[allOptionsFadList.length - 1] &&
-          //    nextSubItemNumber >= 0
-          //  ) {
-          //    newInput = `${selected_item_id}_FL_${nextSubItemNumber}_change_type`
-          //  } else if (
-          //    track_options_layouts.fad_list === 'card' &&
-          //    track_options_layouts.art_layers === 'table' &&
-          //    optionField === allOptionsFadList[allOptionsFadList.length - 1] &&
-          //    nextSubItemNumber < 0
-          //  ) {
-          //    newInput = `${selected_item_id}_AL_${selectedItemLayerCount - 1}_name`
-          //  } else if (
-          //    track_options_layouts.fad_list === 'table' &&
-          //    track_options_layouts.art_layers === 'table' &&
-          //    nextSubItemNumber < 0
-          //  ) {
-          //    newInput = `${selected_item_id}_AL_${selectedItemLayerCount - 1}_${optionField}`
-          //  } else if (
-          //    track_options_layouts.fad_list === 'card' &&
-          //    track_options_layouts.art_layers === 'card' &&
-          //    optionField === allOptionsFadList[allOptionsFadList.length - 1] &&
-          //    nextSubItemNumber < 0
-          //  ) {
-          //    newInput = `${selected_item_id}_AL_${selectedItemLayerCount - 1}_change_type`
-          //  } else if (
-          //    track_options_layouts.fad_list === 'table' &&
-          //    track_options_layouts.art_layers === 'card' &&
-          //    nextSubItemNumber < 0
-          //  ) {
-          //    newInput = `${selected_item_id}_AL_${selectedItemLayerCount - 1}_change_type`
-          //  } else if (
-          //    track_options_layouts.fad_list === 'table' &&
-          //    nextSubItemNumber >= 0
-          //  ) {
-          //    newInput = `${selected_item_id}_FL_${nextSubItemNumber}_${optionField}`
-          //  } else {
-          //    return
-          //  }
-          //}
+          if (optionType === 'AT' && isArtTog(selected_sub_item_id)) {
+            const lastOption =
+              optionField === allKeysATog[allKeysATog.length - 1]
 
-          if (optionType === 'AT') {
-            if (
-              track_options_layouts.art_list_tog === 'card' &&
-              isArtTog(selected_sub_item_id)
-            ) {
-              const nextOptionField = getNextOptionField(
-                optionField,
-                allOptionsArtListTog
-              )
-              newInput = `${selected_item_id}_AT_${optionNumber}_${nextOptionField}`
+            if (ATogLayout === 'card' && !lastOption) {
+              newInput = `${selected_item_id}_AT_${optionNumber}_${getNextKey(optionField, allKeysATog)}`
             } else if (
-              track_options_layouts.art_list_tap === 'card' &&
-              !isArtTog(selected_sub_item_id)
+              ATogLayout === 'card' &&
+              lastOption &&
+              nextSubItemNumber < selectedItemArtTogCount
             ) {
-              const nextOptionField = getNextOptionField(
-                optionField,
-                allOptionsArtListTap
-              )
-              newInput = `${selected_item_id}_AT_${optionNumber}_${nextOptionField}`
+              newInput = `${selected_item_id}_AT_${nextSubItemNumber}_name`
             } else if (
-              track_options_layouts.art_list_tog === 'table' &&
-              nextSubItemNumber > selectedItemArtCount - 1
+              ATogLayout === 'card' &&
+              lastOption &&
+              nextSubItemNumber >= selectedItemArtTogCount
+            ) {
+              newInput = `${selected_item_id}_AT_${selectedItemArtTogCount}_name`
+            } else if (
+              ATogLayout === 'table' &&
+              optionField === 'off' &&
+              nextSubItemNumber >= selectedItemArtTogCount
+            ) {
+              newInput = `${selected_item_id}_AT_${nextSubItemNumber}_on`
+            } else if (
+              ATogLayout === 'table' &&
+              nextSubItemNumber < selectedItemArtCount
+            ) {
+              newInput = `${selected_item_id}_AT_${nextSubItemNumber}_${optionField}`
+            } else {
+              return
+            }
+          }
+          if (optionType === 'AT' && !isArtTog(selected_sub_item_id)) {
+            const lastOption =
+              optionField === allKeysATap[allKeysATap.length - 1]
+
+            if (ATapLayout === 'card' && !lastOption) {
+              newInput = `${selected_item_id}_AT_${optionNumber}_${getNextKey(optionField, allKeysATap)}`
+            } else if (
+              ATapLayout === 'card' &&
+              lastOption &&
+              nextSubItemNumber < selectedItemArtCount
+            ) {
+              newInput = `${selected_item_id}_AT_${nextSubItemNumber}_name`
+            } else if (
+              ATapLayout === 'card' &&
+              lastOption &&
+              nextSubItemNumber >= selectedItemArtCount
+            ) {
+              newInput = `${selected_item_id}_AL_0_name`
+            } else if (
+              ATapLayout === 'table' &&
+              optionField === 'delay' &&
+              nextSubItemNumber >= selectedItemArtCount
+            ) {
+              newInput = `${selected_item_id}_AL_0_default`
+            } else if (
+              ATapLayout === 'table' &&
+              (optionField === 'ranges' || optionField === 'art_layers') &&
+              nextSubItemNumber >= selectedItemArtCount
+            ) {
+              newInput = `${selected_item_id}_AL_0_change_type`
+            } else if (
+              ATapLayout === 'table' &&
+              nextSubItemNumber < selectedItemArtCount
+            ) {
+              newInput = `${selected_item_id}_AT_${nextSubItemNumber}_${optionField}`
+            } else if (
+              ATapLayout === 'table' &&
+              nextSubItemNumber >= selectedItemArtCount
             ) {
               newInput = `${selected_item_id}_AL_0_${optionField}`
+            } else {
+              return
             }
           }
           if (optionType === 'AL') {
-            if (track_options_layouts.art_layers === 'card') {
-              const nextOptionField = getNextOptionField(
-                optionField,
-                allOptionsArtLayers
-              )
-              newInput = `${selected_item_id}_AL_${optionNumber}_${nextOptionField}`
+            const lastOption = optionField === allKeysAL[allKeysAL.length - 1]
+
+            if (ALLayout === 'card' && !lastOption) {
+              newInput = `${selected_item_id}_AL_${optionNumber}_${getNextKey(optionField, allKeysAL)}`
             } else if (
-              track_options_layouts.art_layers === 'table' &&
-              nextSubItemNumber > selectedItemLayerCount - 1
+              ALLayout === 'card' &&
+              lastOption &&
+              nextSubItemNumber < selectedItemLayerCount
+            ) {
+              newInput = `${selected_item_id}_AL_${nextSubItemNumber}_name`
+            } else if (
+              ALLayout === 'card' &&
+              lastOption &&
+              nextSubItemNumber >= selectedItemLayerCount
+            ) {
+              newInput = `${selected_item_id}_FL_0_name`
+            } else if (
+              ALLayout === 'table' &&
+              (optionField === 'on' || optionField === 'off') &&
+              nextSubItemNumber >= selectedItemLayerCount
+            ) {
+              newInput = `${selected_item_id}_FL_0_code`
+            } else if (
+              ALLayout === 'table' &&
+              nextSubItemNumber < selectedItemLayerCount
+            ) {
+              newInput = `${selected_item_id}_AL_${nextSubItemNumber}_${optionField}`
+            } else if (
+              ALLayout === 'table' &&
+              nextSubItemNumber >= selectedItemLayerCount
             ) {
               newInput = `${selected_item_id}_FL_0_${optionField}`
+            } else {
+              return
             }
           }
           if (optionType === 'FL') {
-            if (track_options_layouts.fad_list === 'card') {
-              const nextOptionField = getNextOptionField(
-                optionField,
-                allOptionsFadList
-              )
-              newInput = `${selected_item_id}_FL_${optionNumber}_${nextOptionField}`
+            const lastOption = optionField === allKeysFL[allKeysFL.length - 1]
+
+            if (FLLayout === 'card' && !lastOption) {
+              newInput = `${selected_item_id}_FL_${optionNumber}_${getNextKey(optionField, allKeysFL)}`
             } else if (
-              track_options_layouts.fad_list === 'table' &&
-              nextSubItemNumber > selectedItemFadCount - 1
+              FLLayout === 'card' &&
+              lastOption &&
+              nextSubItemNumber < selectedItemFadCount
             ) {
+              newInput = `${selected_item_id}_FL_${nextSubItemNumber}_name`
+            } else if (
+              FLLayout === 'table' &&
+              nextSubItemNumber < selectedItemFadCount
+            ) {
+              newInput = `${selected_item_id}_FL_${nextSubItemNumber}_${optionField}`
+            } else {
               return
             }
           }
