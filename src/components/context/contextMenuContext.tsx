@@ -9,8 +9,8 @@ import {
   useContext,
   useMemo,
   useCallback,
-  useEffect,
-  useState
+  useState,
+  useLayoutEffect
 } from 'react'
 
 import { type FileItemId, type SubItemId } from './selectedItemContext'
@@ -62,6 +62,7 @@ export const ContextMenuProvider: FC<ContextMenuProviderProps> = ({
     top: 0,
     left: 0
   })
+
   const close = useCallback(() => {
     setIsContextMenuOpen(false)
   }, [setIsContextMenuOpen])
@@ -105,15 +106,19 @@ export const ContextMenuProvider: FC<ContextMenuProviderProps> = ({
     }
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const handleRightClick = (e: MouseEvent) => {
       e.preventDefault()
       setContextMenuPositionHelper(e)
-      open()
     }
     const handleLeftClick = (e: MouseEvent) => {
-      const contextMenu = document.getElementById('contextMenuCountInput')
-      if (contextMenu && !contextMenu.contains(e.target as Node)) {
+      const contextMenuCountInput = document.getElementById(
+        'contextMenuCountInput'
+      )
+      if (
+        contextMenuCountInput &&
+        !contextMenuCountInput.contains(e.target as Node)
+      ) {
         close()
       }
     }
@@ -124,7 +129,7 @@ export const ContextMenuProvider: FC<ContextMenuProviderProps> = ({
       window.addEventListener('click', handleLeftClick)
       window.removeEventListener('contextmenu', handleRightClick)
     }
-  }, [isContextMenuOpen, open, close])
+  }, [isContextMenuOpen, close])
 
   const value = useMemo(
     () => ({

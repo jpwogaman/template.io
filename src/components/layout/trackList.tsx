@@ -122,7 +122,17 @@ export const TrackList: FC = () => {
               <tr
                 id={id + '_row'}
                 key={id}
-                onContextMenu={() => {
+                onContextMenu={(e) => {
+                  const colorPickerPopUp =
+                    document.getElementById('colorPickerPopUp')
+
+                  if (
+                    colorPickerPopUp &&
+                    colorPickerPopUp.contains(e.target as Node)
+                  ) {
+                    return
+                  }
+
                   setIsContextMenuOpen(true)
                   setContextMenuId(id as contextMenuType)
                 }}
