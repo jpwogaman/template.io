@@ -62,7 +62,8 @@ diesel::table! {
         delay -> Integer,
         change_type -> Text,
         ranges -> Text,
-        art_layers -> Text,
+        art_layers_on -> Text,
+        art_layers_off -> Text,
         fileitems_item_id -> Text,
     }
 }
