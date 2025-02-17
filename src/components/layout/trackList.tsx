@@ -3,7 +3,7 @@ import React, { type FC } from 'react'
 import { HiOutlineLockClosed, HiOutlineLockOpen } from 'react-icons/hi2'
 import { FaArrowDown19 } from 'react-icons/fa6'
 import { twMerge } from 'tailwind-merge'
-import { TrackListTableKeys } from '@/components/utils/trackListTableKeys'
+import { TrackListTableKeys } from '@/components/layout/trackListTableKeys'
 import {
   InputCheckBox,
   InputCheckBoxSwitch,

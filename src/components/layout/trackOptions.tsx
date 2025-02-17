@@ -23,7 +23,7 @@ import {
 import {
   TrackOptionsTableKeys,
   type TrackOptionsTableKeysType
-} from '@/components/utils/trackOptionsTableKeys'
+} from '@/components/layout/trackOptionsTableKeys'
 
 import {
   useMutations,
