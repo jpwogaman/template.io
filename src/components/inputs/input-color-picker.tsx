@@ -2,13 +2,12 @@ import React, {
   type FC,
   type ChangeEvent,
   useState,
-  useLayoutEffect,
-  useEffect
+  useLayoutEffect
 } from 'react'
 import { type InputComponentProps } from './index'
 import { twMerge } from 'tailwind-merge'
 import { HiOutlinePlus, HiXMark } from 'react-icons/hi2'
-import { useSelectedItem } from '@/components/context'
+import { useKeyboard, useSelectedItem } from '@/components/context'
 
 export const InputColorPicker: FC<InputComponentProps> = ({
   id,
@@ -27,6 +26,7 @@ export const InputColorPicker: FC<InputComponentProps> = ({
   const [colorDeleteId, setColorDeleteId] = useState<string | null>(null)
 
   const { settings, updateSettings } = useSelectedItem()
+  const { isCtrlPressed } = useKeyboard()
 
   const valChange = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (codeFullLocked) return
@@ -97,31 +97,6 @@ export const InputColorPicker: FC<InputComponentProps> = ({
     setDefaultColors(newColors)
     setColorDeleteId(null)
   }
-
-  // MOVE TO KEYBOARD CONTEXT
-  const [isCtrlPressed, setIsCtrlPressed] = useState(false)
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Control') {
-        setIsCtrlPressed(true)
-      }
-    }
-
-    const handleKeyUp = (e: KeyboardEvent) => {
-      if (e.key === 'Control') {
-        setIsCtrlPressed(false)
-      }
-    }
-
-    document.addEventListener('keydown', handleKeyDown)
-    document.addEventListener('keyup', handleKeyUp)
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown)
-      document.removeEventListener('keyup', handleKeyUp)
-    }
-  }, [])
 
   return (
     <div

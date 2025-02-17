@@ -7,11 +7,22 @@ import {
   useContext,
   useEffect,
   useCallback,
-  useMemo
+  useMemo,
+  useState,
+  Dispatch,
+  SetStateAction
 } from 'react'
 import { useMutations, useSelectedItem } from '@/components/context'
 
-const keyboardContextDefaultValues: Record<string, unknown> = {}
+type keyboardContextDefaultValuesType = {
+  isCtrlPressed: boolean
+  setIsCtrlPressed: Dispatch<SetStateAction<boolean>>
+}
+
+const keyboardContextDefaultValues: keyboardContextDefaultValuesType = {
+  isCtrlPressed: false,
+  setIsCtrlPressed: () => undefined
+}
 
 export const KeyboardContext = createContext<Record<string, unknown>>(
   keyboardContextDefaultValues
@@ -22,6 +33,8 @@ interface KeyboardProviderProps {
 }
 
 export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
+  const [isCtrlPressed, setIsCtrlPressed] = useState(false)
+
   const { selectedItemSubItemCounts, settings, updateSettings } =
     useSelectedItem()
 
@@ -817,13 +830,33 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
   )
 
   useEffect(() => {
+    const handleControlPressKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Control') {
+        setIsCtrlPressed(true)
+      }
+    }
+
+    const handleControlPressKeyUp = (e: KeyboardEvent) => {
+      if (e.key === 'Control') {
+        setIsCtrlPressed(false)
+      }
+    }
+
     window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keydown', handleControlPressKeyDown)
+    document.addEventListener('keyup', handleControlPressKeyUp)
+
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('keydown', handleControlPressKeyDown)
+      document.removeEventListener('keyup', handleControlPressKeyUp)
     }
   }, [handleKeyDown])
 
-  const value: Record<string, unknown> = useMemo(() => ({}), [])
+  const value = useMemo(
+    () => ({ isCtrlPressed, setIsCtrlPressed }),
+    [isCtrlPressed, setIsCtrlPressed]
+  )
 
   return (
     <KeyboardContext.Provider value={value}>
