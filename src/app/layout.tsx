@@ -11,7 +11,7 @@ import {
 } from '@/components/context'
 import { NavBar } from '@/components/layout/navbar'
 import { Modal } from '@/components/modal'
-import { ContextMenu } from '@/components/contextMenu'
+import { ContextMenu } from '@/components/layout/contextMenu'
 import { allFontsClassName } from '@/styles/fonts'
 
 export default function RootLayout({
