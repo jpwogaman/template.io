@@ -116,10 +116,7 @@ export const InputColorPicker: FC<InputComponentProps> = ({
           onClick={(e) => {
             const colorDeletePopUp = document.getElementById('colorDeletePopUp')
 
-            if (
-              colorDeletePopUp &&
-              colorDeletePopUp.contains(e.target as Node)
-            ) {
+            if (colorDeletePopUp?.contains(e.target as Node)) {
               return
             }
 

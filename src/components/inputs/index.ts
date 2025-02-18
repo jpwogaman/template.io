@@ -68,9 +68,10 @@ export type InputComponentProps = {
   toggle?: boolean
   codeDisabled?: boolean
   codeFullLocked: boolean
-  defaultValue?: string | number | boolean
+  defaultValue?: string | number | boolean | { off: string; on: string }
   placeholder?: string | number
   options?: SelectValuesKeys
+  multiSelectTog?: boolean
   children?: ReactNode
   isSelectedItem?: boolean
   isSelectedSubItem?: boolean

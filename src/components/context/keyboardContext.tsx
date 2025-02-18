@@ -9,8 +9,8 @@ import {
   useCallback,
   useMemo,
   useState,
-  Dispatch,
-  SetStateAction
+  type Dispatch,
+  type SetStateAction
 } from 'react'
 import { useMutations, useSelectedItem } from '@/components/context'
 
@@ -41,8 +41,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
   const {
     art_layers: selectedItemLayerCount,
     art_list_both: selectedItemArtCount,
-    art_list_tog: selectedItemArtTapCount,
-    art_list_tap: selectedItemArtTogCount,
+    art_list_tog: selectedItemArtTogCount,
     fad_list: selectedItemFadCount,
     full_ranges: selectedItemRangeCount
   } = selectedItemSubItemCounts
@@ -819,7 +818,6 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
       nextItemLocked,
       selectedItemLayerCount,
       selectedItemArtCount,
-      selectedItemArtTapCount,
       selectedItemArtTogCount,
       selectedItemFadCount,
       selectedItemRangeCount,

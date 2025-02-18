@@ -126,10 +126,7 @@ export const TrackList: FC = () => {
                   const colorPickerPopUp =
                     document.getElementById('colorPickerPopUp')
 
-                  if (
-                    colorPickerPopUp &&
-                    colorPickerPopUp.contains(e.target as Node)
-                  ) {
+                  if (colorPickerPopUp?.contains(e.target as Node)) {
                     return
                   }
 
