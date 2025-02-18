@@ -51,6 +51,48 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
     Set<string>
   >(new Set())
 
+  const tapLayersOrBothRangesIsOnlyEmpty = useCallback(
+    () =>
+      activeValuesTapLayersOrBothRanges.size === 1 &&
+      activeValuesTapLayersOrBothRanges.has(''),
+    [activeValuesTapLayersOrBothRanges]
+  )
+
+  const activeTapLayersOrBothRangesMinusEmpty = useCallback(
+    () =>
+      activeValuesTapLayersOrBothRanges.size > 1 &&
+      activeValuesTapLayersOrBothRanges.has('')
+        ? activeValuesTapLayersOrBothRanges.size - 1
+        : activeValuesTapLayersOrBothRanges.size,
+    [activeValuesTapLayersOrBothRanges]
+  )
+
+  const togLayersOnIsOnlyEmpty = useCallback(
+    () => activeValuesTogLayersOn.size === 1 && activeValuesTogLayersOn.has(''),
+    [activeValuesTogLayersOn]
+  )
+
+  const activeTogLayersOnMinusEmpty = useCallback(
+    () =>
+      activeValuesTogLayersOn.size > 1 && activeValuesTogLayersOn.has('')
+        ? activeValuesTogLayersOn.size - 1
+        : activeValuesTogLayersOn.size,
+    [activeValuesTogLayersOn]
+  )
+
+  const togLayersOffIsOnlyEmpty = useCallback(
+    () =>
+      activeValuesTogLayersOff.size === 1 && activeValuesTogLayersOff.has(''),
+    [activeValuesTogLayersOff]
+  )
+  const activeTogLayersOffMinusEmpty = useCallback(
+    () =>
+      activeValuesTogLayersOff.size > 1 && activeValuesTogLayersOff.has('')
+        ? activeValuesTogLayersOff.size - 1
+        : activeValuesTogLayersOff.size,
+    [activeValuesTogLayersOff]
+  )
+
   const valChange = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       if (codeFullLocked) return
@@ -215,10 +257,10 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
                       activeValuesTogLayersOn.has(value.toString())
                       ? 'bg-indigo-200'
                       : '',
-                    options === 'artRngsArray' ||
-                      (options === 'artLayersArray' &&
-                        !multiSelectTog &&
-                        activeValuesTogLayersOn.has(value.toString()))
+
+                    options === 'artLayersArray' &&
+                      !multiSelectTog &&
+                      activeValuesTogLayersOn.has(value.toString())
                       ? 'bg-indigo-200'
                       : '',
                     activeValuesTapLayersOrBothRanges.has(value.toString())
@@ -302,7 +344,14 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
         )
       }
     }
-  }, [defaultValue, options, multiSelectTog])
+  }, [
+    defaultValue,
+    options,
+    multiSelectTog,
+    setActiveValuesTogLayersOff,
+    setActiveValuesTogLayersOn,
+    setActiveValuesTapLayersOrBothRanges
+  ])
 
   useLayoutEffect(() => {
     const list = getSelectList(options ?? 'valNoneList')
@@ -310,15 +359,6 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
     setButtonListTogLayersOff(list)
     setButtonListTogLayersOn(list)
   }, [options, getSelectList])
-
-  const isOnlyEmpty =
-    activeValuesTapLayersOrBothRanges.size === 1 &&
-    activeValuesTapLayersOrBothRanges.has('')
-  const activeMinusEmpty =
-    activeValuesTapLayersOrBothRanges.size > 1 &&
-    activeValuesTapLayersOrBothRanges.has('')
-      ? activeValuesTapLayersOrBothRanges.size - 1
-      : activeValuesTapLayersOrBothRanges.size
 
   return (
     <div className={twMerge('relative h-6 w-full')}>
@@ -379,7 +419,9 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
         title={
           options === 'artLayersArray' && multiSelectTog
             ? `${id.replace('art_layers', 'art_layers_on')}: ${JSON.stringify(Array.from(activeValuesTogLayersOn))}\n${id.replace('art_layers', 'art_layers_off')}: ${JSON.stringify(Array.from(activeValuesTogLayersOff))}`
-            : id + '_currentValue: ' + `${defaultValue as string}`
+            : id +
+              '_currentValue: ' +
+              `${JSON.stringify(Array.from(activeValuesTapLayersOrBothRanges))}`
         }
         className={twMerge(
           'absolute flex h-full w-full items-center rounded-xs transition-all duration-200',
@@ -388,9 +430,31 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
             ? 'bg-white text-black ring-4 ring-indigo-600 outline-hidden'
             : ''
         )}>
-        {activeValuesTapLayersOrBothRanges.size > 0 && !isOnlyEmpty
-          ? `(x${activeMinusEmpty})`
-          : shortenedSubItemId(possibleValuesRangesOrLayers[0] ?? '')}
+        {options === 'artRngsArray' && (
+          <p>
+            {activeValuesTapLayersOrBothRanges.size > 0 &&
+              !tapLayersOrBothRangesIsOnlyEmpty() &&
+              `(x${activeTapLayersOrBothRangesMinusEmpty()})`}
+          </p>
+        )}
+        {options === 'artLayersArray' && !multiSelectTog && (
+          <p>
+            {activeValuesTapLayersOrBothRanges.size > 0 &&
+              !tapLayersOrBothRangesIsOnlyEmpty() &&
+              `(x${activeTapLayersOrBothRangesMinusEmpty()})`}
+          </p>
+        )}
+        {options === 'artLayersArray' && multiSelectTog && (
+          <p>
+            {activeValuesTogLayersOn.size > 0 && !togLayersOnIsOnlyEmpty()
+              ? `(x${activeTogLayersOnMinusEmpty()})/`
+              : '/'}
+
+            {activeValuesTogLayersOff.size > 0 &&
+              !togLayersOffIsOnlyEmpty() &&
+              `(x${activeTogLayersOffMinusEmpty()})`}
+          </p>
+        )}
 
         <input
           id={
