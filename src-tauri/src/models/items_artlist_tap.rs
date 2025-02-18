@@ -116,7 +116,7 @@ pub fn init_art_tap(
     delay: 0,
     change_type: "Value 2".to_string(),
     ranges: format!("[\"{}_FR_0\"]", fileitems_item_id),
-    art_layers: "[\"\"]".to_string(),
+    art_layers: "[]".to_string(),
     fileitems_item_id: fileitems_item_id,
   }
 }

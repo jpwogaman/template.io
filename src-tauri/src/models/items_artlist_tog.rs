@@ -118,8 +118,8 @@ pub fn init_art_tog(
     delay: 0,
     change_type: "Value 2".to_string(),
     ranges: format!("[\"{}_FR_0\"]", fileitems_item_id),
-    art_layers_on: "[\"\"]".to_string(),
-    art_layers_off: "[\"\"]".to_string(),
+    art_layers_on: "[]".to_string(),
+    art_layers_off: "[]".to_string(),
     fileitems_item_id: fileitems_item_id,
   }
 }
