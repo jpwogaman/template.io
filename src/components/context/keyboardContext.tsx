@@ -143,10 +143,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
         'name',
         'code_type',
         'code',
-        'on',
-        'off',
-        'default',
-        'change_type'
+        'on'
       ]
 
       const allKeysFL = [
@@ -342,7 +339,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
               optionField === allKeysAL[0] &&
               previousSubItemNumber >= 0
             ) {
-              newInput = `${selected_item_id}_AL_${previousSubItemNumber}_change_type`
+              newInput = `${selected_item_id}_AL_${previousSubItemNumber}_on`
             } else if (
               ALLayout === 'card' &&
               ATapLayout === 'table' &&
@@ -384,7 +381,7 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
               optionField === allKeysFL[0] &&
               previousSubItemNumber >= 0
             ) {
-              newInput = `${selected_item_id}_FL_${previousSubItemNumber}_change_type`
+              newInput = `${selected_item_id}_FL_${previousSubItemNumber}_on`
             } else if (
               FLLayout === 'card' &&
               ALLayout === 'table' &&
@@ -392,6 +389,20 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
               previousSubItemNumber < 0
             ) {
               newInput = `${selected_item_id}_AL_${selectedItemLayerCount - 1}_name`
+            } else if (
+              FLLayout === 'table' &&
+              ALLayout === 'table' &&
+              previousSubItemNumber < 0 &&
+              optionField === 'default'
+            ) {
+              newInput = `${selected_item_id}_AL_${selectedItemLayerCount - 1}_code`
+            } else if (
+              FLLayout === 'table' &&
+              ALLayout === 'table' &&
+              previousSubItemNumber < 0 &&
+              optionField === 'change_type'
+            ) {
+              newInput = `${selected_item_id}_AL_${selectedItemLayerCount - 1}_on`
             } else if (
               FLLayout === 'table' &&
               ALLayout === 'table' &&
@@ -404,13 +415,13 @@ export const KeyboardProvider: FC<KeyboardProviderProps> = ({ children }) => {
               optionField === allKeysFL[0] &&
               previousSubItemNumber < 0
             ) {
-              newInput = `${selected_item_id}_AL_${selectedItemLayerCount - 1}_change_type`
+              newInput = `${selected_item_id}_AL_${selectedItemLayerCount - 1}_on`
             } else if (
               FLLayout === 'table' &&
               ALLayout === 'card' &&
               previousSubItemNumber < 0
             ) {
-              newInput = `${selected_item_id}_AL_${selectedItemLayerCount - 1}_change_type`
+              newInput = `${selected_item_id}_AL_${selectedItemLayerCount - 1}_on`
             } else if (FLLayout === 'table' && previousSubItemNumber >= 0) {
               newInput = `${selected_item_id}_FL_${previousSubItemNumber}_${optionField}`
             } else {

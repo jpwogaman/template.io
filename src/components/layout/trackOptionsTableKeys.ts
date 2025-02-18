@@ -330,30 +330,6 @@ export const TrackOptionsTableKeys: TrackOptionsTableKeysType<
         input: 'select',
         selectArray: 'valMidiList',
         label: 'On'
-      },
-      {
-        className: 'w-[9.5%]',
-        show: true,
-        key: 'off',
-        input: 'select',
-        selectArray: 'valMidiList',
-        label: 'Off'
-      },
-      {
-        className: 'w-[19%]',
-        show: true,
-        key: 'default',
-        input: 'select',
-        selectArray: 'valDeftList',
-        label: 'Default'
-      },
-      {
-        className: 'w-[9.5%]',
-        show: true,
-        key: 'change_type',
-        input: 'checkbox-switch',
-        selectArray: 'valChngList',
-        label: 'Change'
       }
     ]
   },

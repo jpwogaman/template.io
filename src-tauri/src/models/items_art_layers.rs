@@ -34,9 +34,6 @@ pub struct ItemsArtLayers {
   pub code_type: String,
   pub code: i32,
   pub on: i32,
-  pub off: i32,
-  pub default: String,
-  pub change_type: String,
   pub fileitems_item_id: String, // manually changed to FileItemId
 }
 
@@ -52,12 +49,6 @@ pub struct ItemsArtLayersRequest {
   #[specta(optional)]
   pub on: Option<i32>,
   #[specta(optional)]
-  pub off: Option<i32>,
-  #[specta(optional)]
-  pub default: Option<String>,
-  #[specta(optional)]
-  pub change_type: Option<String>,
-  #[specta(optional)]
   pub fileitems_item_id: Option<String>, // manually changed to FileItemId
 }
 
@@ -68,12 +59,7 @@ impl ItemsArtLayers {
       name: updates.name.unwrap_or_else(|| self.name.clone()),
       code_type: updates.code_type.unwrap_or_else(|| self.code_type.clone()),
       code: updates.code.unwrap_or(self.code),
-      on: updates.on.unwrap_or(self.on),
-      off: updates.off.unwrap_or(self.off),
-      default: updates.default.unwrap_or_else(|| self.default.clone()),
-      change_type: updates.change_type.unwrap_or_else(||
-        self.change_type.clone()
-      ),
+      on: updates.on.unwrap_or(self.on),      
       fileitems_item_id: updates.fileitems_item_id.unwrap_or_else(||
         self.fileitems_item_id.clone()
       ),
@@ -90,10 +76,7 @@ pub fn init_art_layer(
     name: "".to_string(),
     code_type: "/control".to_string(),
     code: 0,
-    on: 127,
-    off: 0,
-    default: "Off".to_string(),
-    change_type: "Value 2".to_string(),
+    on: 127,    
     fileitems_item_id: fileitems_item_id,
   }
 }

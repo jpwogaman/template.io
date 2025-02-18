@@ -120,93 +120,117 @@ pub fn create_fileitem() {
 }
 
 pub fn create_all_fileitems_from_json(full_data: Value) {
-    // Step 1: Transform old schema fields if necessary
-    let mut transformed_data = full_data.clone();
+  // Step 1: Transform old schema fields if necessary
+  let mut transformed_data = full_data.clone();
 
-    if let Some(items) = transformed_data.get_mut("items").and_then(|i| i.as_array_mut()) {
+  if
+    let Some(items) = transformed_data
+      .get_mut("items")
+      .and_then(|i| i.as_array_mut())
+  {
+    for item in items {
+      if
+        let Some(art_list_tog) = item
+          .get_mut("art_list_tog")
+          .and_then(|tog| tog.as_array_mut())
+      {
+        for tog in art_list_tog {
+          if let Some(art_layers) = tog.get("art_layers") {
+            // Convert to new schema
+            let art_layers_on = art_layers.clone();
+            let art_layers_off = Value::String("[]".to_string()); // Empty array as string replacement
 
-        for item in items {
-            if let Some(art_list_tog) = item.get_mut("art_list_tog").and_then(|tog| tog.as_array_mut()) {
-                for tog in art_list_tog {
-                    if let Some(art_layers) = tog.get("art_layers") {
-                        // Convert to new schema
-                        let art_layers_on = art_layers.clone();
-                        let art_layers_off = Value::String("[\"\"]".to_string()); // Empty array as string replacement
-
-                        // Apply changes
-                        tog.as_object_mut().unwrap().insert("art_layers_on".to_string(), art_layers_on);
-                        tog.as_object_mut().unwrap().insert("art_layers_off".to_string(), art_layers_off);
-                        tog.as_object_mut().unwrap().remove("art_layers"); // Remove old field
-                    }
-                }
-            }
+            // Apply changes
+            tog
+              .as_object_mut()
+              .unwrap()
+              .insert("art_layers_on".to_string(), art_layers_on);
+            tog
+              .as_object_mut()
+              .unwrap()
+              .insert("art_layers_off".to_string(), art_layers_off);
+            tog.as_object_mut().unwrap().remove("art_layers"); // Remove old field
+          }
         }
+      }
+      if
+        let Some(art_layers) = item
+          .get_mut("art_layers")
+          .and_then(|layer| layer.as_array_mut())
+      {
+        for layer in art_layers {
+          // Convert to new schema
+          layer.as_object_mut().unwrap().remove("off"); // Remove old field
+          layer.as_object_mut().unwrap().remove("default"); // Remove old field
+          layer.as_object_mut().unwrap().remove("change_type"); // Remove old field
+        }
+      }
     }
+  }
 
-    // Step 2: Now deserialize the cleaned-up JSON into the new schema
-    match serde_json::from_value::<FullTrackListForExport>(transformed_data) {
-        Ok(json) => {
-            delete_all_fileitems_and_relations();
+  // Step 2: Now deserialize the cleaned-up JSON into the new schema
+  match serde_json::from_value::<FullTrackListForExport>(transformed_data) {
+    Ok(json) => {
+      delete_all_fileitems_and_relations();
 
-            let mut settings = Settings::get();
-            let default_colors = init_settings().default_colors;
-            settings.default_colors = default_colors;
-            settings.set();
+      let mut settings = Settings::get();
+      let default_colors = init_settings().default_colors;
+      settings.default_colors = default_colors;
+      settings.set();
 
-            let mut new_colors: HashSet<String> = HashSet::new();
+      let mut new_colors: HashSet<String> = HashSet::new();
 
-            for full_track in json.items {
-                let fileitem = full_track.fileitem;
-                let full_ranges = full_track.full_ranges;
-                let fad_list = full_track.fad_list;
-                let art_list_tog = full_track.art_list_tog;
-                let art_list_tap = full_track.art_list_tap;
-                let art_layers = full_track.art_layers;
+      for full_track in json.items {
+        let fileitem = full_track.fileitem;
+        let full_ranges = full_track.full_ranges;
+        let fad_list = full_track.fad_list;
+        let art_list_tog = full_track.art_list_tog;
+        let art_list_tap = full_track.art_list_tap;
+        let art_layers = full_track.art_layers;
 
-                // Collect colors from the current track and normalize them
-                collect_colors_from_track(&fileitem, &mut new_colors);
+        // Collect colors from the current track and normalize them
+        collect_colors_from_track(&fileitem, &mut new_colors);
 
-                // Store other track data
-                store_new_item(&fileitem);
+        // Store other track data
+        store_new_item(&fileitem);
 
-                for full_range in full_ranges {
-                    store_new_full_range(&full_range);
-                }
-
-                for mut tog in art_list_tog {
-                    if tog.ranges == "[\"\"]" {
-                        tog.ranges = format!("[\"{}_FR_0\"]", tog.fileitems_item_id);
-                    }
-
-                    store_new_art_tog(&tog);
-                }
-
-                for mut tap in art_list_tap {
-                    if tap.ranges == "[\"\"]" {
-                        tap.ranges = format!("[\"{}_FR_0\"]", tap.fileitems_item_id);
-                    }
-
-                    store_new_art_tap(&tap);
-                }
-
-                for layer in art_layers {
-                    store_new_art_layer(&layer);
-                }
-
-                for fad in fad_list {
-                    store_new_fad(&fad);
-                }
-            }
-
-            // Update the settings with the new colors
-            add_colors_to_settings(new_colors);
+        for full_range in full_ranges {
+          store_new_full_range(&full_range);
         }
-        Err(e) => {
-            eprintln!("JSON does not match schema: {:?}", e);
+
+        for mut tog in art_list_tog {
+          if tog.ranges == "[\"\"]" {
+            tog.ranges = format!("[\"{}_FR_0\"]", tog.fileitems_item_id);
+          }
+
+          store_new_art_tog(&tog);
         }
+
+        for mut tap in art_list_tap {
+          if tap.ranges == "[\"\"]" {
+            tap.ranges = format!("[\"{}_FR_0\"]", tap.fileitems_item_id);
+          }
+
+          store_new_art_tap(&tap);
+        }
+
+        for layer in art_layers {
+          store_new_art_layer(&layer);
+        }
+
+        for fad in fad_list {
+          store_new_fad(&fad);
+        }
+      }
+
+      // Update the settings with the new colors
+      add_colors_to_settings(new_colors);
     }
+    Err(e) => {
+      eprintln!("JSON does not match schema: {:?}", e);
+    }
+  }
 }
-
 
 fn collect_colors_from_track(
   fileitem: &FileItem,

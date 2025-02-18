@@ -124,10 +124,7 @@ pub fn renumber_art_layers(fileitems_item_id: String) {
         name: layer.name.clone(),
         code_type: layer.code_type.clone(),
         code: layer.code,
-        on: layer.on,
-        off: layer.off,
-        default: layer.default.clone(),
-        change_type: layer.change_type.clone(),
+        on: layer.on,        
         fileitems_item_id: layer.fileitems_item_id.clone(),
       }
     })

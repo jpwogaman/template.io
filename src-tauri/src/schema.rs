@@ -24,9 +24,6 @@ diesel::table! {
         code_type -> Text,
         code -> Integer,
         on -> Integer,
-        off -> Integer,
-        default -> Text,
-        change_type -> Text,
         fileitems_item_id -> Text,
     }
 }
