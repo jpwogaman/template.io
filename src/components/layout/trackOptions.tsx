@@ -88,7 +88,11 @@ export const TrackOptions: FC = () => {
         }
       }
       if (label === 'art_list_tog') {
-        if (key === 'change_type') {
+        if (
+          key === 'change_type' ||
+          key === 'art_layers_on' ||
+          key === 'art_layers_off'
+        ) {
           update.artListTog(
             {
               id,
