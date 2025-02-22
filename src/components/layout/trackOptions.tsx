@@ -17,7 +17,8 @@ import {
   type ChangeEventHelper,
   type LayoutDataSingleHelper,
   type OnChangeHelperArgsType,
-  type InputComponentProps
+  type InputComponentProps,
+  type layoutDataSingleKeys
 } from '@/components/inputs'
 
 import {
@@ -40,7 +41,8 @@ import {
   type ItemsArtListTog,
   type ItemsFadList,
   type FullTrackCounts,
-  type TrackOptionLayouts
+  type TrackOptionLayouts,
+  type FileItem
 } from '@/components/backendCommands/backendCommands'
 
 export const TrackOptions: FC = () => {
@@ -111,7 +113,7 @@ export const TrackOptions: FC = () => {
         }
       }
       if (label === 'art_list_tap') {
-        if (key === 'default') {
+        if (key === 'default' || key === 'layers_together') {
           update.artListTap(
             {
               id,
@@ -119,7 +121,7 @@ export const TrackOptions: FC = () => {
             },
             (refetch = true)
           )
-        } else if (key === 'change_type') {
+        } else if (key === 'change_type' || key === 'art_layers') {
           update.artListTap(
             {
               id,
@@ -138,23 +140,13 @@ export const TrackOptions: FC = () => {
         }
       }
       if (label === 'art_layers') {
-        if (key === 'change_type') {
-          update.artLayer(
-            {
-              id,
-              [key]: newValue as string
-            },
-            (refetch = true)
-          )
-        } else {
-          update.artLayer(
-            {
-              id,
-              [key]: newValue
-            },
-            refetch
-          )
-        }
+        update.artLayer(
+          {
+            id,
+            [key]: newValue
+          },
+          refetch
+        )
       }
       if (label === 'fad_list') {
         if (key === 'change_type') {
@@ -278,30 +270,19 @@ export const TrackOptions: FC = () => {
         ((subKey === 'on' && item.change_type === 'Value 1') ||
           (subKey === 'default' && item.default))
 
-      const artLayerLockedHelper =
-        label === 'art_layers' &&
-        isItemsArtLayers(item) &&
-        item.change_type === 'Value 1' &&
-        subKey === 'code'
-
       const fadLockedHelper =
         label === 'fad_list' &&
         isItemsFadList(item) &&
         item.change_type === 'Value 1' &&
         subKey === 'code'
 
-      if (
-        artTogLockedHelper ||
-        artTapLockedHelper ||
-        artLayerLockedHelper ||
-        fadLockedHelper
-      ) {
+      if (artTogLockedHelper || artTapLockedHelper || fadLockedHelper) {
         return true
       } else {
         return false
       }
     },
-    [isItemsArtListTog, isItemsArtListTap, isItemsArtLayers, isItemsFadList]
+    [isItemsArtListTog, isItemsArtListTap, isItemsFadList]
   )
 
   type getInputPropsHelperType = {
@@ -323,6 +304,11 @@ export const TrackOptions: FC = () => {
         'art_layers_off'
       )
 
+      const safeValueTapLayersTogether = getLayoutData(
+        layoutDataSingle,
+        'layers_together'
+      )
+
       const inputPropsHelper: InputComponentProps = {
         id: `${layoutDataSingle.id}_${subKey.key}`,
         codeFullLocked: selectedItem?.locked ?? false,
@@ -337,42 +323,36 @@ export const TrackOptions: FC = () => {
                 on: safeValueTogLayersOn as string,
                 off: safeValueTogLayersOff as string
               }
-            : safeValue,
+            : layoutConfig.label === 'art_list_tap' &&
+                subKey.key === 'art_layers'
+              ? {
+                  layers: safeValue as string,
+                  together: safeValueTapLayersTogether as boolean
+                }
+              : safeValue,
         options: subKey.selectArray,
         multiSelectTog: layoutConfig.label === 'art_list_tog',
         isSelectedSubItem: layoutDataSingle.id === selected_sub_item_id,
-        onChangeFunction: (event: ChangeEventHelper) => {
-          let manualArtTogLayersKey: typeof subKey.key = 'art_layers'
-          if (
-            layoutConfig.label === 'art_list_tog' &&
-            subKey.key === 'art_layers'
-          ) {
-            if (event.target.value.startsWith('ON___')) {
-              event.target.value = event.target.value.replace('ON___', '')
-              manualArtTogLayersKey = 'art_layers_on'
-            }
-            if (event.target.value.startsWith('OFF___')) {
-              event.target.value = event.target.value.replace('OFF___', '')
-              manualArtTogLayersKey = 'art_layers_off'
-            }
-          }
-
+        onChangeFunction: (
+          event: ChangeEventHelper,
+          manualKey?: layoutDataSingleKeys | keyof FileItem
+        ) => {
           let typedValue: string | number | boolean = event.target.value
-          if (typeof safeValue === 'string') {
+
+          if (manualKey && manualKey === 'layers_together') {
+            typedValue = event.target.value === 'true'
+          } else if (typeof safeValue === 'string') {
             typedValue = event.target.value
           } else if (typeof safeValue === 'number') {
             typedValue = parseInt(event.target.value)
           } else if (typeof safeValue === 'boolean') {
             typedValue = event.target.value === 'true'
           }
+
           onChangeHelper({
             newValue: typedValue,
             layoutDataSingleId: layoutDataSingle.id,
-            key:
-              layoutConfig.label === 'art_list_tog' &&
-              manualArtTogLayersKey !== 'art_layers'
-                ? manualArtTogLayersKey
-                : subKey.key,
+            key: manualKey ?? subKey.key,
             label: layoutConfig.label
           })
         }

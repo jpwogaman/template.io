@@ -12,5 +12,6 @@ CREATE TABLE items_artlist_tap (
     change_type VARCHAR(50) NOT NULL,
     ranges VARCHAR(50) NOT NULL,
     art_layers VARCHAR(50) NOT NULL,
+    layers_together BOOLEAN NOT NULL,
     fileitems_item_id VARCHAR(50) NOT NULL REFERENCES fileitems(id)
 );

@@ -68,12 +68,20 @@ export type InputComponentProps = {
   toggle?: boolean
   codeDisabled?: boolean
   codeFullLocked: boolean
-  defaultValue?: string | number | boolean | { off: string; on: string }
+  defaultValue?:
+    | string
+    | number
+    | boolean
+    | { off: string; on: string }
+    | { layers: string; together: boolean }
   placeholder?: string | number
   options?: SelectValuesKeys
   multiSelectTog?: boolean
   children?: ReactNode
   isSelectedItem?: boolean
   isSelectedSubItem?: boolean
-  onChangeFunction: (event: ChangeEventHelper) => void
+  onChangeFunction: (
+    event: ChangeEventHelper,
+    manualKey?: layoutDataSingleKeys | keyof FileItem
+  ) => void
 }

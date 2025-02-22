@@ -221,7 +221,7 @@ export const InputColorPicker: FC<InputComponentProps> = ({
       )}
       <label //NOSONAR
         htmlFor={id}
-        title={id + '_currentValue: ' + `${defaultValue}`}
+        title={id + '_currentValue: ' + `${defaultValue as string}`}
         className='relative flex h-full w-full items-center'>
         <div
           className={twMerge(

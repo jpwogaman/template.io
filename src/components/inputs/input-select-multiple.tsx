@@ -10,7 +10,7 @@ import {
   useSelectArraysContext,
   type SelectValuesKeys
 } from '@/components/context'
-import { type InputComponentProps } from '@/components/inputs'
+import { InputCheckBox, type InputComponentProps } from '@/components/inputs'
 
 export const InputSelectMultiple: FC<InputComponentProps> = ({
   id,
@@ -50,6 +50,7 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
   const [activeValuesTogLayersOff, setActiveValuesTogLayersOff] = useState<
     Set<string>
   >(new Set())
+  const [tapLayersTogether, setTapLayersTogether] = useState(false)
 
   const tapLayersOrBothRangesIsOnlyEmpty = useCallback(
     () =>
@@ -170,10 +171,10 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
 
           const syntheticEvent = {
             ...event,
-            target: { ...event.target, value: `OFF___${jsonValue}` }
+            target: { ...event.target, value: jsonValue }
           } as unknown as ChangeEvent<HTMLInputElement>
 
-          onChangeFunction(syntheticEvent)
+          onChangeFunction(syntheticEvent, 'art_layers_off')
           return newSet
         })
       }
@@ -201,10 +202,10 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
 
           const syntheticEvent = {
             ...event,
-            target: { ...event.target, value: `ON___${jsonValue}` }
+            target: { ...event.target, value: jsonValue }
           } as unknown as ChangeEvent<HTMLInputElement>
 
-          onChangeFunction(syntheticEvent)
+          onChangeFunction(syntheticEvent, 'art_layers_on')
           return newSet
         })
       }
@@ -271,7 +272,12 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
                   )}
                   onClick={valChange}
                   onKeyDown={(e) => {
-                    if (e.shiftKey && e.key === 'Tab' && value === values[0]) {
+                    if (
+                      e.shiftKey &&
+                      e.key === 'Tab' &&
+                      options !== 'artLayersArray' &&
+                      value === values[0]
+                    ) {
                       setRangeLayersPopUpOpen(false)
                     }
                   }}
@@ -303,14 +309,36 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
   useLayoutEffect(() => {
     if (!defaultValue) return
 
-    if (
-      options === 'artRngsArray' ||
-      (options === 'artLayersArray' && !multiSelectTog)
-    ) {
+    if (options === 'artRngsArray') {
       try {
         const fixedJson = (defaultValue as string).toString().replace(/'/g, '"')
         const parsedArray = JSON.parse(fixedJson) as string[]
         setActiveValuesTapLayersOrBothRanges(new Set(parsedArray))
+      } catch (error) {
+        console.error(
+          'Error parsing defaultValue:',
+          error,
+          'Raw Value:',
+          defaultValue
+        )
+      }
+    }
+
+    if (options === 'artLayersArray' && !multiSelectTog) {
+      try {
+        const fixedJson = (
+          defaultValue as { layers: string; together: boolean }
+        ).layers
+          .toString()
+          .replace(/'/g, '"')
+
+        const together = (defaultValue as { layers: string; together: boolean })
+          .together
+
+        const parsedLayers = JSON.parse(fixedJson) as string[]
+
+        setActiveValuesTapLayersOrBothRanges(new Set(parsedLayers))
+        setTapLayersTogether(together)
       } catch (error) {
         console.error(
           'Error parsing defaultValue:',
@@ -350,7 +378,8 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
     multiSelectTog,
     setActiveValuesTogLayersOff,
     setActiveValuesTogLayersOn,
-    setActiveValuesTapLayersOrBothRanges
+    setActiveValuesTapLayersOrBothRanges,
+    setTapLayersTogether
   ])
 
   useLayoutEffect(() => {
@@ -376,6 +405,22 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
         options === 'artLayersArray' &&
         !multiSelectTog && (
           <div className='absolute right-[2px] bottom-[27px] z-100 block max-h-60 w-40 rounded-sm bg-zinc-300 p-2 dark:bg-zinc-200'>
+            <div className='flex items-center justify-end gap-1'>
+              <p className='text-black'>Together</p>
+              <div className='rounded-xs border border-zinc-400'>
+                <InputCheckBox
+                  id={id.replace('art_layers', 'layers_together')}
+                  codeFullLocked={codeFullLocked}
+                  defaultValue={tapLayersTogether}
+                  onChangeFunction={(e) => {
+                    setTapLayersTogether((prev) => {
+                      onChangeFunction(e, 'layers_together')
+                      return !prev
+                    })
+                  }}
+                />
+              </div>
+            </div>
             <div className='flex h-full flex-wrap'>
               {buttonListTapLayersOrBothRanges}
             </div>
@@ -391,7 +436,8 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
                 title={''}
                 className={twMerge(
                   togLayersOffTab ? 'bg-zinc-400' : 'bg-red-300',
-                  'w-8 cursor-pointer rounded-sm border border-black px-1 text-black'
+                  'w-8 cursor-pointer rounded-sm border border-black px-1 text-black',
+                  'focus-visible:border-white focus-visible:ring-4 focus-visible:ring-indigo-600 focus-visible:outline-hidden'
                 )}
                 onClick={() => setTogLayersOffTab(false)}>
                 On
@@ -399,7 +445,8 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
               <button
                 className={twMerge(
                   togLayersOffTab ? 'bg-red-300' : 'bg-zinc-400',
-                  'w-8 cursor-pointer rounded-sm border border-black px-1 text-black'
+                  'w-8 cursor-pointer rounded-sm border border-black px-1 text-black',
+                  'focus-visible:border-white focus-visible:ring-4 focus-visible:ring-indigo-600 focus-visible:outline-hidden'
                 )}
                 onClick={() => setTogLayersOffTab(true)}>
                 Off
@@ -419,9 +466,11 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
         title={
           options === 'artLayersArray' && multiSelectTog
             ? `${id.replace('art_layers', 'art_layers_on')}: ${JSON.stringify(Array.from(activeValuesTogLayersOn))}\n${id.replace('art_layers', 'art_layers_off')}: ${JSON.stringify(Array.from(activeValuesTogLayersOff))}`
-            : id +
-              '_currentValue: ' +
-              `${JSON.stringify(Array.from(activeValuesTapLayersOrBothRanges))}`
+            : options === 'artLayersArray' && !multiSelectTog
+              ? `${id}: ${JSON.stringify(Array.from(activeValuesTapLayersOrBothRanges))}\n${id.replace('art_layers', 'layers_together')}: ${tapLayersTogether}`
+              : id +
+                '_currentValue: ' +
+                `${JSON.stringify(Array.from(activeValuesTapLayersOrBothRanges))}`
         }
         className={twMerge(
           'absolute flex h-full w-full items-center rounded-xs transition-all duration-200',
@@ -442,6 +491,7 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
             {activeValuesTapLayersOrBothRanges.size > 0 &&
               !tapLayersOrBothRangesIsOnlyEmpty() &&
               `(x${activeTapLayersOrBothRangesMinusEmpty()})`}
+            {tapLayersTogether ? '*' : ''}
           </p>
         )}
         {options === 'artLayersArray' && multiSelectTog && (

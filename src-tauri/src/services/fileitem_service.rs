@@ -154,6 +154,19 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
         }
       }
       if
+        let Some(art_list_tap) = item
+          .get_mut("art_list_tap")
+          .and_then(|tap| tap.as_array_mut())
+      {
+        for tap in art_list_tap {
+          if let Some(tap_obj) = tap.as_object_mut() {
+            if !tap_obj.contains_key("layers_together") {
+              tap_obj.insert("layers_together".to_string(), false.into());
+            }
+          }
+        }
+      }
+      if
         let Some(art_layers) = item
           .get_mut("art_layers")
           .and_then(|layer| layer.as_array_mut())

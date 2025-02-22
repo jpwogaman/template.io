@@ -42,6 +42,7 @@ diesel::table! {
         change_type -> Text,
         ranges -> Text,
         art_layers -> Text,
+        layers_together -> Bool,
         fileitems_item_id -> Text,
     }
 }
