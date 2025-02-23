@@ -394,7 +394,7 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
       {rangeLayersPopUpOpen &&
         isSelectedSubItem &&
         options === 'artRngsArray' && (
-          <div className='absolute right-[2px] bottom-[27px] z-100 block max-h-60 w-40 rounded-sm bg-zinc-300 p-2 dark:bg-zinc-200'>
+          <div className='absolute right-[2px] bottom-[27px] z-100 block max-h-60 w-40 rounded-sm border border-black bg-zinc-300 p-2 dark:bg-zinc-200'>
             <div className='flex h-full flex-wrap'>
               {buttonListTapLayersOrBothRanges}
             </div>
@@ -404,7 +404,7 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
         isSelectedSubItem &&
         options === 'artLayersArray' &&
         !multiSelectTog && (
-          <div className='absolute right-[2px] bottom-[27px] z-100 block max-h-60 w-40 rounded-sm bg-zinc-300 p-2 dark:bg-zinc-200'>
+          <div className='absolute right-[2px] bottom-[27px] z-100 block max-h-60 w-40 rounded-sm border border-black bg-zinc-300 p-2 dark:bg-zinc-200'>
             <div className='flex items-center justify-end gap-1'>
               <p className='text-black'>Together</p>
               <div className='rounded-xs border border-zinc-400'>
@@ -431,7 +431,7 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
         isSelectedSubItem &&
         options === 'artLayersArray' &&
         multiSelectTog && (
-          <div className='absolute right-[2px] bottom-[27px] z-100 flex max-h-60 w-40 flex-col gap-2 rounded-sm bg-zinc-300 p-2 dark:bg-zinc-200'>
+          <div className='absolute right-[2px] bottom-[27px] z-100 flex max-h-60 w-40 flex-col gap-2 rounded-sm border border-black bg-zinc-300 p-2 dark:bg-zinc-200'>
             <div className='flex justify-start gap-1'>
               <button
                 title={''}
