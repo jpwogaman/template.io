@@ -215,6 +215,12 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
           if tog.ranges == "[\"\"]" {
             tog.ranges = format!("[\"{}_FR_0\"]", tog.fileitems_item_id);
           }
+          if tog.art_layers_on == "[\"\"]" {
+            tog.art_layers_on = "[]".to_string();
+          }
+          if tog.art_layers_off == "[\"\"]" {
+            tog.art_layers_off = "[]".to_string();
+          }
 
           store_new_art_tog(&tog);
         }
@@ -222,6 +228,9 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
         for mut tap in art_list_tap {
           if tap.ranges == "[\"\"]" {
             tap.ranges = format!("[\"{}_FR_0\"]", tap.fileitems_item_id);
+          }
+          if tap.art_layers == "[\"\"]" {
+            tap.art_layers = "[]".to_string();
           }
 
           store_new_art_tap(&tap);
