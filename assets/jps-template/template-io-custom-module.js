@@ -2,7 +2,7 @@
 /// <reference path="./custom-module.d.ts" />
 
 /** @type {import("@/../../src/components/backendCommands/backendCommands").FullTrackListForExport} */
-const allTrack_jsn = loadJSON('tracks-11.27.2023-v23_new-import-test.json')
+const allTrack_jsn = loadJSON('tracks-11.27.2023-v28_new-export-test.json')
 
 const items = allTrack_jsn.items
 
@@ -248,149 +248,181 @@ module.exports = {
       // this sends the default fader parameters to Cubase
       sendParameters('OSC4', fadAddress, fadCode, fadDefaultValue)
     }
-    const artListJsn = [
-      ...items[trkNumb].art_list_tap,
-      ...items[trkNumb].art_list_tog
-    ]
 
-    const trkAllArtLayersJsn = items[trkNumb].art_layers // {}[]
-    const trkAllRanges = items[trkNumb].full_ranges // {}[]
-
-    for (let i = 0; i < artListJsn.length; i++) {
-      const artNameAddress = '/art_name_' + (i + 1)
-      const artAddressAddress = '/art_type_' + (i + 1)
-      const artCodeAddress = '/art_code_' + (i + 1)
-      const artInputBypassAddress = '/art_inpt_' + (i + 1)
-      const artDefaultValueAddress = '/art_deft_' + (i + 1)
-      const artOnValueAddress = '/art_on___' + (i + 1)
-      const artOffValueAddress = '/art_off__' + (i + 1)
-      const artColorAddress = '/art_colr_' + (i + 1)
-      const artAlphaFillOnAddress = '/art_mod_a_' + (i + 1)
-      const artAlphaFillOffAddress = '/art_mod_b_' + (i + 1)
-      const artModeAddress = '/art_mode_' + (i + 1)
-      const artRangeAddress = '/art_rang_' + (i + 1)
-      const artLayersAddress = '/art_layers_' + (i + 1)
-      const artId = artListJsn[i].id // string
-      const artName = artListJsn[i].name // string
-      const artAddress = artListJsn[i].code_type // string
-      const artMode = artListJsn[i].toggle // boolean
-      const artDefaultValue = artListJsn[i].default // string | number | boolean | null
-      const artCode = artListJsn[i].code // number | null
-      const artOnValue = artListJsn[i].on // number | null
-      const artOffValue = artListJsn[i].off // number | null
-      const artDelayValue = artListJsn[i].delay // number | null
-      const artRangeList = artListJsn[i].ranges // string[]
-      const artLayersList = JSON.parse(artListJsn[i].art_layers) // string[]
-
-      if (!artName) {
-        receive('/template_io_key_range_var_1', trkAllRanges) // {}[]
-        receive('/template_io_key_range_var_2', artRangeList) // string[]
+    /**
+     * @param {import("@/../../src/components/backendCommands/backendCommands").ItemsArtListTap | import("@/../../src/components/backendCommands/backendCommands").ItemsArtListTog} art
+     * @param {number} index
+     * @param {"toggle" | "tap"} mode
+     * @param {boolean} showCodes
+     */
+    function processArt(art, index, mode, showCodes) {
+      if (!art.name) {
+        receive('/template_io_key_range_var_1', items[trkNumb].full_ranges) // {}[]
+        receive('/template_io_key_range_var_2', art.ranges) // string[]
         receive('/template_io_key_range_script', 1)
-        continue
+        return
       }
 
-      // this will display the note name or CC number, as well as it's value under the articulation button in the UI, e.g. (CC32/1), (C3/20)
-      if (toggleShowCodes) {
+      if (showCodes) {
         let codeDisplay = ''
-        if (artAddress === '/control') {
+        if (art.code_type === '/control') {
           codeDisplay = 'CC'
         }
-        if (artAddress === '/note') {
-          codeDisplay = `${globalAllNotesList[artCode]}/`
+        if (art.code_type === '/note') {
+          codeDisplay = `${globalAllNotesList[art.code]}/`
         }
 
-        let artDelaySign = ''
-        if (Math.sign(artDelayValue) === 1) {
-          artDelaySign = '+'
+        let artDelaySign = Math.sign(art.delay) === 1 ? '+' : ''
+        let layersCount = ''
+
+        if (
+          mode === 'toggle' &&
+          'art_layers_on' in art &&
+          'art_layers_off' in art
+        ) {
+          layersCount = `${JSON.parse(art.art_layers_on).length}/${JSON.parse(art.art_layers_off).length}`
+        } else if (mode === 'tap' && 'art_layers' in art) {
+          layersCount = JSON.parse(art.art_layers).length
         }
 
-        receive(
-          artNameAddress,
-          `${artName}\n(${codeDisplay}${artCode}/${artOnValue}${
-            artOffValue ? '/' + artOffValue : ''
-          })\n(${artDelaySign}${artDelayValue}ms)\n(Layers: ${artLayersList.length - 1})`
-        )
+        let offDisplay = art.off ? `/${art.off}` : ''
+        let nameDisplay = `${art.name}\n(${codeDisplay}${art.code} - ${art.on}${offDisplay})\n(${artDelaySign}${art.delay}ms)\n(Layers: ${layersCount})`
+
+        receive(`/art_name_${index}`, nameDisplay)
       } else {
-        receive(artNameAddress, artName)
+        receive(`/art_name_${index}`, art.name)
       }
 
-      //NEED TO ADD LOGIC FOR CHANGETYPE VALUE 1 VS 2
+      receive(`/art_type_${index}`, art.code_type)
+      receive(`/art_code_${index}`, art.code)
+      receive(`/art_inpt_${index}`, 'false')
+      receive(`/art_deft_${index}`, art.off)
+      receive(`/art_on___${index}`, art.on)
+      receive(`/art_off__${index}`, art.off)
+      receive(`/art_rang_${index}`, art.ranges)
+      receive(`/art_mode_${index}`, mode)
+      receive(`/art_colr_${index}`, mode === 'toggle' ? '#a86739' : '#6dfdbb')
 
-      // this populates the articulation button with the appropriate data
-      receive(artAddressAddress, artAddress) // string
-      receive(artCodeAddress, artCode) // number | null
-      receive(artDefaultValueAddress, artOffValue) // number | null
-      receive(artOnValueAddress, artOnValue) // number | null
-      receive(artOffValueAddress, artOffValue) // number | null
-      receive(artRangeAddress, artRangeList) // string[]
-      receive(artInputBypassAddress, 'false')
-      receive(artColorAddress, '#6dfdbb')
+      if (mode === 'tap' && 'art_layers' in art) {
+        receive(`/art_layers_together_${index}`, art.layers_together.toString())
 
-      // this sends the articulation OFF parameters to Cubase for ALL articulations
-      sendParameters('OSC4', artAddress, artCode, artOffValue)
+        if (art.art_layers !== '[]') {
+          for (const index in items[trkNumb].art_layers) {
+            const layer = items[trkNumb].art_layers[index]
 
-      const allLayersThisTrack = []
+            if (art.art_layers.includes(layer.id)) {
+              const layersFiltered = art.art_layers.replace('"",', '')
+              const obj = JSON.parse(layersFiltered)
+              const layersFilteredObj = obj.map((item) => {
+                return item
+              })
 
-      if (artLayersList !== "['']") {
-        for (const index in trkAllArtLayersJsn) {
-          const layer = trkAllArtLayersJsn[index]
-
-          if (artLayersList.includes(layer.id)) {
-            allLayersThisTrack.push(layer)
-            const layersFiltered = artListJsn[i].art_layers.replace('"",', '')
-            const obj = JSON.parse(layersFiltered)
-            const layersFilteredObj = obj.map((item) => {
-              return item
-            })
-
-            const newObj = {
-              id: artId,
-              name: artName,
-              layers: layersFilteredObj
+              const newObj = {
+                id: art.id,
+                name: art.name,
+                layers: layersFilteredObj
+              }
+              receive(`/art_layers_on_${index}`, newObj)
             }
-
-            receive(artLayersAddress, newObj)
-
-            //if (layer.default === 'On') {
-            //  prmUpdate(4, layer.codeType, layer.code, layer.on)
-            //}
-            //if (layer.default === 'Off') {
-            //  prmUpdate(4, layer.codeType, layer.code, layer.off)
-            //}
           }
+        } else {
+          receive(`/art_layers_on_${index}`, '')
+        }
+      } else if (
+        mode === 'toggle' &&
+        'art_layers_on' &&
+        'art_layers_off' in art
+      ) {
+        receive(`/art_layers_together_${index}`, 'true')
+
+        if (art.art_layers_on !== '[]') {
+          for (const index in items[trkNumb].art_layers) {
+            const layer = items[trkNumb].art_layers[index]
+
+            if (art.art_layers_on.includes(layer.id)) {
+              const layersFiltered = art.art_layers_on.replace('"",', '')
+              const obj = JSON.parse(layersFiltered)
+              const layersFilteredObj = obj.map((item) => {
+                return item
+              })
+
+              const newObj = {
+                id: art.id,
+                name: art.name,
+                layers: layersFilteredObj
+              }
+
+              receive(`/art_layers_on_${index}`, newObj)
+            }
+          }
+        } else {
+          receive(`/art_layers_on_${index}`, '')
+        }
+        if (art.art_layers_off !== '[]') {
+          for (const index in items[trkNumb].art_layers) {
+            const layer = items[trkNumb].art_layers[index]
+
+            if (art.art_layers_off.includes(layer.id)) {
+              const layersFiltered = art.art_layers_off.replace('"",', '')
+              const obj = JSON.parse(layersFiltered)
+              const layersFilteredObj = obj.map((item) => {
+                return item
+              })
+
+              const newObj = {
+                id: art.id,
+                name: art.name,
+                layers: layersFilteredObj
+              }
+
+              receive(`/art_layers_off_${index}`, newObj)
+            }
+          }
+        } else {
+          receive(`/art_layers_off_${index}`, '')
         }
       }
 
-      receive('/template_io_art_layers_var_1', allLayersThisTrack) // {}[]
-
-      if (artMode === true) {
-        receive(artModeAddress, 'toggle') // toggle, push, momentary, tap
-        receive(artColorAddress, '#a86739')
-        receive(artAlphaFillOffAddress, 0.75)
-
-        if (artDefaultValue !== 'On') continue
-
-        receive(artDefaultValueAddress, artOnValue) // number | null
-        receive('/template_io_key_range_var_1', trkAllRanges) // {}[]
-        receive('/template_io_key_range_var_2', artRangeList) // string[]
-        receive('/template_io_key_range_script', 1)
-
-        // this sends the articulation ON parameters to Cubase for ALL toggle articulations with a default of 'On'
-        sendParameters('OSC4', artAddress, artCode, artOnValue)
-      } else {
-        receive(artModeAddress, 'tap') // toggle, push, momentary, tap
-
-        if (!artDefaultValue) continue
-
-        receive(artAlphaFillOnAddress, 0.75)
-        receive(artDefaultValueAddress, artOnValue) // number | null
-        receive('/template_io_key_range_var_1', trkAllRanges) // {}[]
-        receive('/template_io_key_range_var_2', artRangeList) // string[]
-        receive('/template_io_key_range_script', 1)
-
-        // this sends the articulation ON parameters to Cubase for ONLY the default tap articulation
-        sendParameters('OSC4', artAddress, artCode, artOnValue)
+      if (mode === 'toggle') {
+        sendParameters('OSC4', art.code_type, art.code, art.off)
       }
+
+      if (
+        (mode === 'toggle' && art.default === 'On') ||
+        (mode === 'tap' && art.default)
+      ) {
+        receive(
+          mode === 'toggle' ? `/art_mod_b_${index}` : `/art_mod_a_${index}`,
+          0.75
+        )
+        receive(`/art_deft_${index}`, art.on)
+        receive('/template_io_key_range_var_1', items[trkNumb].full_ranges)
+        receive('/template_io_key_range_var_2', art.ranges)
+        receive('/template_io_key_range_script', 1)
+        sendParameters('OSC4', art.code_type, art.code, art.on)
+
+        // send layers
+      }
+    }
+
+    const artListTog = items[trkNumb].art_list_tog
+    const artListTap = items[trkNumb].art_list_tap
+
+    // Process Tog Articulations
+    for (let i = 0; i < artListTog.length; i++) {
+      processArt(artListTog[i], i + 1, 'toggle', toggleShowCodes)
+    }
+
+    // Process Tap Articulations
+    for (let i = 0; i < artListTap.length; i++) {
+      let index = 0
+      if (artListTog.length === 1 && artListTog[0].name === '') {
+        index = i + 1
+      } else {
+        index = artListTog.length + i + 1
+      }
+
+      processArt(artListTap[i], index, 'tap', toggleShowCodes)
     }
 
     return { address, args, host, port }

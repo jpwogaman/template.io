@@ -25,7 +25,7 @@ for (let i = 0; i < all_notes.length; i++) {
 }
 
 let selectedRanges = []
- 
+if (!indart_Ranges) return
 indart_Ranges.forEach((indRange, i)=> {
 
   const indSelectedRange = allart_Ranges.filter((range) => range.id === indart_Ranges[i])[0]
