@@ -84,4 +84,5 @@ export type InputComponentProps = {
     event: ChangeEventHelper,
     manualKey?: layoutDataSingleKeys | keyof FileItem
   ) => void
+  shiftTabOutFunction?: () => void
 }

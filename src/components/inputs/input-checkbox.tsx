@@ -7,7 +7,8 @@ export const InputCheckBox: FC<InputComponentProps> = ({
   codeFullLocked,
   codeDisabled,
   defaultValue,
-  onChangeFunction
+  onChangeFunction,
+  shiftTabOutFunction
 }) => {
   const valChange = (
     event: React.KeyboardEvent<HTMLInputElement> | ChangeEvent<HTMLInputElement>
@@ -30,6 +31,9 @@ export const InputCheckBox: FC<InputComponentProps> = ({
           disabled={codeFullLocked}
           value={(defaultValue as boolean) ? 'false' : 'true'}
           onKeyDown={(e) => {
+            if (e.shiftKey && e.key === 'Tab') {
+              shiftTabOutFunction && shiftTabOutFunction()
+            }
             if (e.key !== 'Enter') return
             valChange(e)
           }}

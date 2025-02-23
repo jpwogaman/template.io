@@ -418,6 +418,7 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
                       return !prev
                     })
                   }}
+                  shiftTabOutFunction={() => setRangeLayersPopUpOpen(false)}
                 />
               </div>
             </div>
@@ -439,7 +440,12 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
                   'w-8 cursor-pointer rounded-sm border border-black px-1 text-black',
                   'focus-visible:border-white focus-visible:ring-4 focus-visible:ring-indigo-600 focus-visible:outline-hidden'
                 )}
-                onClick={() => setTogLayersOffTab(false)}>
+                onClick={() => setTogLayersOffTab(false)}
+                onKeyDown={(e) => {
+                  if (e.shiftKey && e.key === 'Tab') {
+                    setRangeLayersPopUpOpen(false)
+                  }
+                }}>
                 On
               </button>
               <button
