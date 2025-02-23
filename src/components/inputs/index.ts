@@ -6,7 +6,12 @@ export * from './input-text'
 export * from './input-text-rich'
 export * from './input-color-picker'
 
-import { type ReactNode, type ChangeEvent } from 'react'
+import {
+  type ReactNode,
+  type ChangeEvent,
+  type Dispatch,
+  type SetStateAction
+} from 'react'
 
 import {
   type FullTrackForExport,
@@ -85,4 +90,6 @@ export type InputComponentProps = {
     manualKey?: layoutDataSingleKeys | keyof FileItem
   ) => void
   shiftTabOutFunction?: () => void
+  openPopupId?: string | null
+  setOpenPopupId?: Dispatch<SetStateAction<string | null>>
 }

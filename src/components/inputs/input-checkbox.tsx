@@ -32,7 +32,7 @@ export const InputCheckBox: FC<InputComponentProps> = ({
           value={(defaultValue as boolean) ? 'false' : 'true'}
           onKeyDown={(e) => {
             if (e.shiftKey && e.key === 'Tab') {
-              shiftTabOutFunction && shiftTabOutFunction()
+              shiftTabOutFunction?.()
             }
             if (e.key !== 'Enter') return
             valChange(e)

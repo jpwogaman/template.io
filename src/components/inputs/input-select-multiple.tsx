@@ -3,7 +3,8 @@ import React, {
   type ChangeEvent,
   useState,
   useLayoutEffect,
-  useCallback
+  useCallback,
+  useEffect
 } from 'react'
 import { twMerge } from 'tailwind-merge'
 import {
@@ -19,11 +20,25 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
   onChangeFunction,
   options,
   multiSelectTog,
-  isSelectedSubItem
+  isSelectedSubItem,
+  openPopupId,
+  setOpenPopupId
 }) => {
   const [rangeLayersCellIsFocused, setRangeLayersCellIsFocused] =
     useState(false)
   const [rangeLayersPopUpOpen, setRangeLayersPopUpOpen] = useState(false)
+
+  useLayoutEffect(() => {
+    if (rangeLayersPopUpOpen) {
+      setOpenPopupId?.(id) // Mark this popup as open
+    }
+  }, [rangeLayersPopUpOpen, id, setOpenPopupId])
+
+  useEffect(() => {
+    if (openPopupId !== id) {
+      setRangeLayersPopUpOpen(false) // Close this popup if another one opens
+    }
+  }, [openPopupId, id])
 
   const [togLayersOffTab, setTogLayersOffTab] = useState(false)
 
@@ -523,7 +538,15 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
           checked={rangeLayersPopUpOpen}
           disabled={codeFullLocked}
           className='sr-only'
-          onChange={() => setRangeLayersPopUpOpen((prev) => !prev)}
+          onChange={() => {
+            if (rangeLayersPopUpOpen) {
+              setRangeLayersPopUpOpen(false)
+              setOpenPopupId?.(null)
+            } else {
+              setRangeLayersPopUpOpen(true)
+              setOpenPopupId?.(id)
+            }
+          }}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               setRangeLayersPopUpOpen((prev) => !prev)

@@ -1,6 +1,6 @@
 'use client'
 
-import { type FC, Fragment, useCallback } from 'react'
+import { type FC, Fragment, useCallback, useState } from 'react'
 import { HiOutlineTableCells, HiOutlineViewColumns } from 'react-icons/hi2'
 
 import { twMerge } from 'tailwind-merge'
@@ -285,6 +285,8 @@ export const TrackOptions: FC = () => {
     [isItemsArtListTog, isItemsArtListTap, isItemsFadList]
   )
 
+  const [openPopupId, setOpenPopupId] = useState<string | null>(null)
+
   type getInputPropsHelperType = {
     layoutDataSingle: layoutDataSingle
     subKey: TrackOptionsTableKeysType<
@@ -333,6 +335,8 @@ export const TrackOptions: FC = () => {
         options: subKey.selectArray,
         multiSelectTog: layoutConfig.label === 'art_list_tog',
         isSelectedSubItem: layoutDataSingle.id === selected_sub_item_id,
+        openPopupId,
+        setOpenPopupId,
         onChangeFunction: (
           event: ChangeEventHelper,
           manualKey?: layoutDataSingleKeys | keyof FileItem
@@ -365,7 +369,9 @@ export const TrackOptions: FC = () => {
       isSubKeyInputDisabled,
       onChangeHelper,
       selectedItem?.locked,
-      selected_sub_item_id
+      selected_sub_item_id,
+      openPopupId,
+      setOpenPopupId
     ]
   )
 
