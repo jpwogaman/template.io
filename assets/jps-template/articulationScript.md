@@ -15,9 +15,14 @@ set('template_io_articulation_script', 1)
 set('template_io_key_range_var_2', ranges)
 set('template_io_key_range_script', 1)
 
-var layers = get('artLayers_1')
+var layersOn = get('art_layers_on_1') // _2, _3, etc
+var layersOff = get('art_layers_off_1') // _2, _3, etc
+var layersTogether = get('art_layers_together_1') // _2, _3, etc
 var allLayers = get('template_io_art_layers_var_1')
-console.log(layers)
+
+console.log(layersOn)
+console.log(layersOff)
+console.log(layersTogether)
 console.log(allLayers)
 /////////////// 'template_io_articulation_script'
 

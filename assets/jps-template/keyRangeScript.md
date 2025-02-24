@@ -33,6 +33,12 @@ indart_Ranges.forEach((indRange, i)=> {
   const selectedName = !indSelectedRange.name ? '' : indSelectedRange.name
   set('key_range_name_' + Number(i+1), selectedName)
 
+  if (selectedName === '') {
+    set('key_range_name_color_' + Number(i+1), 0)
+  } else {
+    set('key_range_name_color_' + Number(i+1), 0.6)
+  }
+
 })
 
 const blackKeys = []

@@ -307,24 +307,22 @@ module.exports = {
         receive(`/art_layers_together_${index}`, art.layers_together.toString())
 
         if (art.art_layers !== '[]') {
-          for (const index in items[trkNumb].art_layers) {
-            const layer = items[trkNumb].art_layers[index]
-
-            if (art.art_layers.includes(layer.id)) {
-              const layersFiltered = art.art_layers.replace('"",', '')
-              const obj = JSON.parse(layersFiltered)
-              const layersFilteredObj = obj.map((item) => {
-                return item
-              })
-
-              const newObj = {
-                id: art.id,
-                name: art.name,
-                layers: layersFilteredObj
-              }
-              receive(`/art_layers_on_${index}`, newObj)
+          const layersFiltered = art.art_layers.replace('"",', '')
+          const obj = JSON.parse(layersFiltered)
+          const layersFilteredObj = obj.map((item) => {
+            const layer = {
+              ...items[trkNumb].art_layers.find((layer) => layer.id === item)
             }
+            delete layer.fileitems_item_id
+            return layer
+          })
+
+          const newObj = {
+            id: art.id,
+            name: art.name,
+            layers: layersFilteredObj
           }
+          receive(`/art_layers_on_${index}`, newObj)
         } else {
           receive(`/art_layers_on_${index}`, '')
         }
@@ -336,48 +334,42 @@ module.exports = {
         receive(`/art_layers_together_${index}`, 'true')
 
         if (art.art_layers_on !== '[]') {
-          for (const index in items[trkNumb].art_layers) {
-            const layer = items[trkNumb].art_layers[index]
-
-            if (art.art_layers_on.includes(layer.id)) {
-              const layersFiltered = art.art_layers_on.replace('"",', '')
-              const obj = JSON.parse(layersFiltered)
-              const layersFilteredObj = obj.map((item) => {
-                return item
-              })
-
-              const newObj = {
-                id: art.id,
-                name: art.name,
-                layers: layersFilteredObj
-              }
-
-              receive(`/art_layers_on_${index}`, newObj)
+          const layersOnFiltered = art.art_layers_on.replace('"",', '')
+          const obj = JSON.parse(layersOnFiltered)
+          const layersOnFilteredObj = obj.map((item) => {
+            const layer = {
+              ...items[trkNumb].art_layers.find((layer) => layer.id === item)
             }
+            delete layer.fileitems_item_id
+            return layer
+          })
+
+          const newObj = {
+            id: art.id,
+            name: art.name,
+            layers: layersOnFilteredObj
           }
+          receive(`/art_layers_on_${index}`, newObj)
         } else {
           receive(`/art_layers_on_${index}`, '')
         }
         if (art.art_layers_off !== '[]') {
-          for (const index in items[trkNumb].art_layers) {
-            const layer = items[trkNumb].art_layers[index]
-
-            if (art.art_layers_off.includes(layer.id)) {
-              const layersFiltered = art.art_layers_off.replace('"",', '')
-              const obj = JSON.parse(layersFiltered)
-              const layersFilteredObj = obj.map((item) => {
-                return item
-              })
-
-              const newObj = {
-                id: art.id,
-                name: art.name,
-                layers: layersFilteredObj
-              }
-
-              receive(`/art_layers_off_${index}`, newObj)
+          const layersOffFiltered = art.art_layers_off.replace('"",', '')
+          const obj = JSON.parse(layersOffFiltered)
+          const layersOffFilteredObj = obj.map((item) => {
+            const layer = {
+              ...items[trkNumb].art_layers.find((layer) => layer.id === item)
             }
+            delete layer.fileitems_item_id
+            return layer
+          })
+
+          const newObj = {
+            id: art.id,
+            name: art.name,
+            layers: layersOffFilteredObj
           }
+          receive(`/art_layers_on_${index}`, newObj)
         } else {
           receive(`/art_layers_off_${index}`, '')
         }
