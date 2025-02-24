@@ -123,6 +123,8 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
   // Step 1: Transform old schema fields if necessary
   let mut transformed_data = full_data.clone();
 
+  println!("---------BEGIN SCHEMA CHECK--------");
+
   if
     let Some(items) = transformed_data
       .get_mut("items")
@@ -137,7 +139,8 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
         for tog in art_list_tog {
           if let Some(art_layers) = tog.get("art_layers") {
             // Convert to new schema
-            let art_layers_on = art_layers.clone();
+            let original = art_layers.clone();
+            let art_layers_on = original.clone();
             let art_layers_off = Value::String("[]".to_string()); // Empty array as string replacement
 
             // Apply changes
@@ -150,6 +153,14 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
               .unwrap()
               .insert("art_layers_off".to_string(), art_layers_off);
             tog.as_object_mut().unwrap().remove("art_layers"); // Remove old field
+
+            println!(
+              "Transformed tog {}: art_layers -> art_layers_on: {:?}, art_layers_off: []\n-----",
+              tog.get("id").unwrap_or(&Value::String("unknown".to_string())),
+              original
+            );
+          }else {
+            println!("---------TOG PASSED--------");
           }
         }
       }
@@ -162,7 +173,16 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
           if let Some(tap_obj) = tap.as_object_mut() {
             if !tap_obj.contains_key("layers_together") {
               tap_obj.insert("layers_together".to_string(), false.into());
-            }
+
+              println!(
+                "Transformed tap {}: Added layers_together: false\n-----",
+                tap_obj
+                  .get("id")
+                  .unwrap_or(&Value::String("unknown".to_string()))
+              );
+            } else {
+            println!("---------TAP PASSED--------");
+          }
           }
         }
       }
@@ -172,15 +192,36 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
           .and_then(|layer| layer.as_array_mut())
       {
         for layer in art_layers {
-          // Convert to new schema
-          layer.as_object_mut().unwrap().remove("off"); // Remove old field
-          layer.as_object_mut().unwrap().remove("default"); // Remove old field
-          layer.as_object_mut().unwrap().remove("change_type"); // Remove old field
+          let layer_obj = layer.as_object_mut().unwrap();
+          let mut removed_fields = Vec::new();
+
+          if layer_obj.remove("off").is_some() {
+            removed_fields.push("off");
+          }
+          if layer_obj.remove("default").is_some() {
+            removed_fields.push("default");
+          }
+          if layer_obj.remove("change_type").is_some() {
+            removed_fields.push("change_type");
+          }
+
+          if !removed_fields.is_empty() {
+            println!(
+              "Transformed layer {}: Removed fields: {:?}\n-----",
+              layer_obj
+                .get("id")
+                .unwrap_or(&Value::String("unknown".to_string())),
+              removed_fields
+            );
+          } else {
+            println!("---------LAYER PASSED--------");
+          }
         }
       }
     }
   }
 
+  println!("---------END SCHEMA CHECK--------");
   // Step 2: Now deserialize the cleaned-up JSON into the new schema
   match serde_json::from_value::<FullTrackListForExport>(transformed_data) {
     Ok(json) => {
@@ -207,31 +248,65 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
         // Store other track data
         store_new_item(&fileitem);
 
+        // Collect valid layer IDs into a HashSet for fast lookup
+        let valid_layer_ids: HashSet<String> = art_layers
+          .clone()
+          .into_iter()
+          .map(|layer| layer.id)
+          .collect();
+
+        // Collect valid range IDs into a HashSet for fast lookup
+        let valid_range_ids: HashSet<String> = full_ranges
+          .clone()
+          .into_iter()
+          .map(|range| range.id)
+          .collect();
+
         for full_range in full_ranges {
           store_new_full_range(&full_range);
         }
 
         for mut tog in art_list_tog {
-          if tog.ranges == "[\"\"]" {
-            tog.ranges = format!("[\"{}_FR_0\"]", tog.fileitems_item_id);
-          }
-          if tog.art_layers_on == "[\"\"]" {
-            tog.art_layers_on = "[]".to_string();
-          }
-          if tog.art_layers_off == "[\"\"]" {
-            tog.art_layers_off = "[]".to_string();
-          }
+          filter_and_log_ids(
+            &mut tog.art_layers_on,
+            &valid_layer_ids,
+            &tog.id,
+            "tog",
+            "art_layers_on"
+          );
+          filter_and_log_ids(
+            &mut tog.art_layers_off,
+            &valid_layer_ids,
+            &tog.id,
+            "tog",
+            "art_layers_off"
+          );
+          filter_and_log_ids(
+            &mut tog.ranges,
+            &valid_range_ids,
+            &tog.id,
+            "tog",
+            "ranges"
+          );
 
           store_new_art_tog(&tog);
         }
 
         for mut tap in art_list_tap {
-          if tap.ranges == "[\"\"]" {
-            tap.ranges = format!("[\"{}_FR_0\"]", tap.fileitems_item_id);
-          }
-          if tap.art_layers == "[\"\"]" {
-            tap.art_layers = "[]".to_string();
-          }
+          filter_and_log_ids(
+            &mut tap.art_layers,
+            &valid_layer_ids,
+            &tap.id,
+            "tap",
+            "art_layers"
+          );
+          filter_and_log_ids(
+            &mut tap.ranges,
+            &valid_range_ids,
+            &tap.id,
+            "tap",
+            "ranges"
+          );
 
           store_new_art_tap(&tap);
         }
@@ -251,6 +326,52 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
     Err(e) => {
       eprintln!("JSON does not match schema: {:?}", e);
     }
+  }
+}
+
+fn filter_and_log_ids(
+  ids: &mut String,
+  valid_ids: &HashSet<String>,
+  id: &str,
+  label: &str,
+  field: &str
+) {
+  if ids == "[\"\"]" {
+    *ids = "[]".to_string();
+    return;
+  }
+
+  match serde_json::from_str::<Vec<String>>(ids) {
+    Ok(mut parsed_ids) => {
+      let original_ids = parsed_ids.clone();
+
+      // Retain only valid IDs
+      parsed_ids.retain(|item_id| valid_ids.contains(item_id));
+
+      // Log what was removed
+      if parsed_ids != original_ids {
+        let removed_ids: Vec<_> = original_ids
+          .into_iter()
+          .filter(|item_id| !parsed_ids.contains(item_id))
+          .collect();
+
+        if !removed_ids.is_empty() {
+          println!(
+            "Edited {} {}: Removed {:?} from {} \nNew Value {:?}\n----------",
+            label,
+            id,
+            removed_ids,
+            field,
+            serde_json::to_string(&parsed_ids).unwrap_or("[]".to_string())
+          );
+        }
+      }
+
+      // Update the stringified array
+      *ids = serde_json::to_string(&parsed_ids).unwrap_or("[]".to_string());
+    }
+    Err(e) =>
+      eprintln!("Failed to parse {} for {} {}: {}", field, label, id, e),
   }
 }
 
