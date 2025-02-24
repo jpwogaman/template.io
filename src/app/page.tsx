@@ -4,7 +4,7 @@ import { TrackOptions } from '@/components/layout/trackOptions'
 
 const Home: NextPage = () => {
   return (
-    <main className='flex h-[calc(100%-40px)]'>
+    <main className='flex h-[calc(100%-40px)] overflow-hidden'>
       <TrackList />
       <TrackOptions />
     </main>

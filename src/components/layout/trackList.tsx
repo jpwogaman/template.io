@@ -1,5 +1,5 @@
 'use client'
-import React, { type FC } from 'react'
+import React, { useCallback, useLayoutEffect, type FC } from 'react'
 import { HiOutlineLockClosed, HiOutlineLockOpen } from 'react-icons/hi2'
 import { FaArrowDown19 } from 'react-icons/fa6'
 import { twMerge } from 'tailwind-merge'
@@ -25,6 +25,7 @@ import {
   type FileItemId,
   type SubItemId
 } from '@/components/context'
+import { ScrollToSelectedItemButton } from './scrollToSelectedItemButton'
 
 export const TrackList: FC = () => {
   const { setIsContextMenuOpen, setContextMenuId } = useContextMenu()
@@ -47,8 +48,44 @@ export const TrackList: FC = () => {
     )
   }
 
+  const scrollIntoView = useCallback(() => {
+    const manualWorksCardRef = document.getElementById(
+      selected_item_id + '_row'
+    ) as HTMLDivElement | null
+
+    if (!manualWorksCardRef) return
+
+    // Check if the element is already in view
+    const rect = manualWorksCardRef.getBoundingClientRect()
+    const isInView =
+      rect.top >= 0 &&
+      rect.left >= 0 &&
+      rect.bottom <=
+        (window.innerHeight || document.documentElement.clientHeight) &&
+      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+
+    if (isInView) {
+      return // Skip scrolling if it's already in view
+    }
+
+    // Scroll to the element if it's not in view
+    manualWorksCardRef.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+      inline: 'nearest'
+    })
+  }, [selected_item_id])
+
+  useLayoutEffect(() => {
+    if (selected_item_id) {
+      scrollIntoView() // Trigger scroll when selected_item_id is available
+    }
+  }, [selected_item_id, scrollIntoView])
+
   return (
-    <div className='h-full w-1/2 overflow-y-scroll'>
+    <div
+      id='trackList'
+      className='relative h-full w-1/2 overflow-y-scroll'>
       <table className='w-full table-fixed border-separate border-spacing-0 text-left text-xs'>
         <thead>
           <tr>
@@ -304,6 +341,7 @@ export const TrackList: FC = () => {
           })}
         </tbody>
       </table>
+      <ScrollToSelectedItemButton />
     </div>
   )
 }
