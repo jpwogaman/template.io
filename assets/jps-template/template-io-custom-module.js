@@ -123,6 +123,7 @@ function oscReset() {
   receive('/template_io_key_range_script', 1)
   receive('/selected_track_number', ' ')
   receive('/selected_track_delays', ' ')
+  receive('/selected_track_notes', ' ')
 }
 
 //
