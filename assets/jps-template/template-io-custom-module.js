@@ -103,25 +103,19 @@ function oscReset() {
   const artCount = 18
   // reset all fader info in OSC
   for (let i = 0; i < fadCount; i++) {
-    const fadNameAddress = '/cc_' + (i + 1) + '_text_display'
-    const fadCodeAddress = '/cc_' + (i + 1) + '_increment'
-    const fadDefaultValueAddress = '/cc_' + (i + 1) + '_fad'
-    receive(fadNameAddress, ' ')
-    receive(fadDefaultValueAddress, 0)
-    receive(fadCodeAddress, 0)
+    const index = i + 1
+    receive(`/cc_${index}_text_display`, ' ')
+    receive(`/cc_${index}_increment`, 0)
+    receive(`/cc_${index}_fad`, 0)
   }
   // reset all articulation info in OSC
   for (let i = 0; i < artCount; i++) {
-    const artNameAddress = '/art_name_' + (i + 1)
-    const artInputBypassAddress = '/art_inpt_' + (i + 1)
-    const artColorAddress = '/art_colr_' + (i + 1)
-    const artAlphaFillOnAddress = '/art_mod_a_' + (i + 1)
-    const artAlphaFillOffAddress = '/art_mod_b_' + (i + 1)
-    receive(artNameAddress, ' ')
-    receive(artInputBypassAddress, 'true')
-    receive(artColorAddress, '#A9A9A9')
-    receive(artAlphaFillOnAddress, 0.15)
-    receive(artAlphaFillOffAddress, 0.15)
+    const index = i + 1
+    receive(`/art_name_${index}`, ' ')
+    receive(`/art_inpt_${index}`, 'true')
+    receive(`/art_colr_${index}`, '#A9A9A9')
+    receive(`/art_mod_a_${index}`, 0.15)
+    receive(`/art_mod_b_${index}`, 0.15)
   }
   // reset the range information in OSC
   receive('/template_io_key_range_var_1', ...[])
@@ -193,60 +187,52 @@ module.exports = {
     const trkNumb = arg1 * 128 + arg2
     receive('/selected_track_number', trkNumb)
 
-    if (!items[trkNumb]) {
+    const track = items[trkNumb]
+
+    if (!track) {
       receive('/selected_track_name', 'No Track Data!')
       return data
     }
 
-    const trkName = items[trkNumb].name // string
-    const trkNotes = items[trkNumb].notes // string
+    receive('/selected_track_name', track.name)
+    receive('/selected_track_notes', track.notes)
+    receive('/template_io_selected_track_name', track.name)
+    receive('/template_io_selected_track_notes', track.notes)
 
-    receive('/selected_track_name', trkName)
-    receive('/selected_track_notes', trkNotes)
-    receive('/template_io_selected_track_name', trkName)
-    receive('/template_io_selected_track_notes', trkNotes)
-
-    const trkBaseDelay = items[trkNumb].base_delay // number | null
-    const trkAvgDelay = items[trkNumb].avg_delay // number | null
     // hack to get the base delay to show positive or negative
     let trkBaseDelaySign = ''
     let trkAvgDelaySign = ''
-    if (Math.sign(trkBaseDelay) === 1) {
+    if (Math.sign(track.base_delay) === 1) {
       trkBaseDelaySign = '+'
     }
-    if (Math.sign(trkAvgDelay) === 1) {
+    if (Math.sign(track.avg_delay) === 1) {
       trkAvgDelaySign = '+'
     }
 
     receive(
       '/selected_track_delays',
-      `Base Delay: ${trkBaseDelaySign}${trkBaseDelay}ms\nAvg Delay: ${trkAvgDelaySign}${trkAvgDelay}ms`
+      `Base Delay: ${trkBaseDelaySign}${track.base_delay}ms\nAvg Delay: ${trkAvgDelaySign}${track.avg_delay}ms`
     )
 
     // if there are more than 4 faders in the JSON file, then we show a red border around the fader panel so that the user knows to paginate
-    if (items[trkNumb].fad_list.length > 4) {
+    if (track.fad_list.length > 4) {
       receive('/fader_panel_color_2', '1px solid red')
     } else {
       receive('/fader_panel_color_2', '')
     }
 
-    const fadListJsn = items[trkNumb].fad_list
-    for (let i = 0; i < fadListJsn.length; i++) {
-      const fadNameAddress = '/cc_' + (i + 1) + '_text_display'
-      const fadCodeAddress = '/cc_' + (i + 1) + '_increment'
-      const fadDefaultValueAddress = '/cc_' + (i + 1) + '_fad'
-      const fadName = fadListJsn[i].name // string | null
-      const fadAddress = fadListJsn[i].code_type // string | null
-      const fadCode = fadListJsn[i].code // number | null
-      const fadDefaultValue = fadListJsn[i].default // number | null
+    const fadList = track.fad_list
+    for (let i = 0; i < fadList.length; i++) {
+      const fad = fadList[i]
+      const index = i + 1
 
       // this populates the fader button with the appropriate data
-      receive(fadNameAddress, fadName) // string | null
-      receive(fadCodeAddress, fadCode) // number | null
-      receive(fadDefaultValueAddress, fadDefaultValue) // number | null
+      receive(`/cc_${index}_text_display`, fad.name) // string | null
+      receive(`/cc_${index}_increment`, fad.code) // number | null
+      receive(`/cc_${index}_fad`, fad.default) // number | null
 
       // this sends the default fader parameters to Cubase
-      sendParameters('OSC4', fadAddress, fadCode, fadDefaultValue)
+      sendParameters('OSC4', fad.code_type, fad.code, fad.default)
     }
 
     /**
@@ -257,7 +243,7 @@ module.exports = {
      */
     function processArt(art, index, mode, showCodes) {
       if (!art.name) {
-        receive('/template_io_key_range_var_1', items[trkNumb].full_ranges) // {}[]
+        receive('/template_io_key_range_var_1', track.full_ranges) // {}[]
         receive('/template_io_key_range_var_2', art.ranges) // string[]
         receive('/template_io_key_range_script', 1)
         return
@@ -311,7 +297,7 @@ module.exports = {
           const obj = JSON.parse(layersFiltered)
           const layersFilteredObj = obj.map((item) => {
             const layer = {
-              ...items[trkNumb].art_layers.find((layer) => layer.id === item)
+              ...track.art_layers.find((layer) => layer.id === item)
             }
             delete layer.fileitems_item_id
             return layer
@@ -338,7 +324,7 @@ module.exports = {
           const obj = JSON.parse(layersOnFiltered)
           const layersOnFilteredObj = obj.map((item) => {
             const layer = {
-              ...items[trkNumb].art_layers.find((layer) => layer.id === item)
+              ...track.art_layers.find((layer) => layer.id === item)
             }
             delete layer.fileitems_item_id
             return layer
@@ -358,7 +344,7 @@ module.exports = {
           const obj = JSON.parse(layersOffFiltered)
           const layersOffFilteredObj = obj.map((item) => {
             const layer = {
-              ...items[trkNumb].art_layers.find((layer) => layer.id === item)
+              ...track.art_layers.find((layer) => layer.id === item)
             }
             delete layer.fileitems_item_id
             return layer
@@ -388,7 +374,7 @@ module.exports = {
           0.75
         )
         receive(`/art_deft_${index}`, art.on)
-        receive('/template_io_key_range_var_1', items[trkNumb].full_ranges)
+        receive('/template_io_key_range_var_1', track.full_ranges)
         receive('/template_io_key_range_var_2', art.ranges)
         receive('/template_io_key_range_script', 1)
         sendParameters('OSC4', art.code_type, art.code, art.on)
@@ -397,8 +383,8 @@ module.exports = {
       }
     }
 
-    const artListTog = items[trkNumb].art_list_tog
-    const artListTap = items[trkNumb].art_list_tap
+    const artListTog = track.art_list_tog
+    const artListTap = track.art_list_tap
 
     // Process Tog Articulations
     for (let i = 0; i < artListTog.length; i++) {
