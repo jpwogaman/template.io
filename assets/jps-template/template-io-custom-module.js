@@ -68,9 +68,18 @@ function toggles_OSC2(arg1_OSC2, arg2_OSC2) {
   // auto-update on track selection
   if (arg1_OSC2 === 127 && arg2_OSC2 === 1) {
     toggleAutoUpdate = true
+    receive('/track_name_color', '#70b7ff')
+    receive('/template_io_track_name_color', '#70b7ff')
   }
   if (arg1_OSC2 === 127 && arg2_OSC2 === 0) {
     toggleAutoUpdate = false
+    receive('/track_name_color', 'red')
+    receive('/template_io_track_name_color', 'red')
+  }
+
+  // call oscReset()
+  if (arg1_OSC2 === 126 && arg2_OSC2 === 1) {
+    oscFullReset()
   }
 
   // show codes in UI
@@ -97,19 +106,43 @@ function toggles_OSC3(arg1_OSC3, arg2_OSC3) {
   }
 }
 
-function oscReset() {
-  // might not need to hardcode the number of faders and articulations, but it's fine for now. in OSC we can use a matrix widget and dynamically create the number of faders and articulations based on the JSON file
-  const fadCount = 8
-  const artCount = 18
-  // reset all fader info in OSC
-  for (let i = 0; i < fadCount; i++) {
+function oscFullReset() {
+  toggles_OSC2(127, 0)
+  toggles_OSC2(119, 0)
+  oscResetFads(0, 8)
+  oscResetArts(0, 18)
+  receive('/template_io_key_range_var_1', ...[])
+  receive('/template_io_key_range_var_2', ...[])
+  receive('/template_io_key_range_script', 1)
+  receive('/selected_track_number', 'Track No.')
+  receive('/selected_track_name', 'Track Name')
+  receive('/selected_track_delays', 'Delays')
+  receive('/selected_track_notes', ' ')
+}
+
+/**
+ *
+ * @param {number} start
+ * @param {number} fadCount
+ */
+
+function oscResetFads(start, fadCount) {
+  for (let i = start; i < fadCount; i++) {
     const index = i + 1
     receive(`/cc_${index}_text_display`, ' ')
     receive(`/cc_${index}_increment`, 0)
     receive(`/cc_${index}_fad`, 0)
   }
-  // reset all articulation info in OSC
-  for (let i = 0; i < artCount; i++) {
+}
+
+/**
+ *
+ * @param {number} start
+ * @param {number} artCount
+ */
+
+function oscResetArts(start, artCount) {
+  for (let i = start; i < artCount; i++) {
     const index = i + 1
     receive(`/art_name_${index}`, ' ')
     receive(`/art_inpt_${index}`, 'true')
@@ -117,13 +150,6 @@ function oscReset() {
     receive(`/art_mod_a_${index}`, 0.15)
     receive(`/art_mod_b_${index}`, 0.15)
   }
-  // reset the range information in OSC
-  receive('/template_io_key_range_var_1', ...[])
-  receive('/template_io_key_range_var_2', ...[])
-  receive('/template_io_key_range_script', 1)
-  receive('/selected_track_number', ' ')
-  receive('/selected_track_delays', ' ')
-  receive('/selected_track_notes', ' ')
 }
 
 //
@@ -157,13 +183,6 @@ module.exports = {
 
     if (port === 'OSC2' && address === '/control') {
       toggles_OSC2(arg1, arg2)
-      if (toggleAutoUpdate) {
-        receive('/track_name_color', '#70b7ff')
-        receive('/template_io_track_name_color', '#70b7ff')
-      } else {
-        receive('/track_name_color', 'red')
-        receive('/template_io_track_name_color', 'red')
-      }
       return data
     }
 
@@ -183,7 +202,6 @@ module.exports = {
 
     // this is the main function of this module, it receives the track number from Cubase and then sends the appropriate data to the UI
     if (address !== '/key_pressure') return data
-    oscReset()
 
     const trkNumb = arg1 * 128 + arg2
     receive('/selected_track_number', trkNumb)
@@ -192,6 +210,10 @@ module.exports = {
 
     if (!track) {
       receive('/selected_track_name', 'No Track Data!')
+      receive('/selected_track_delays', ' ')
+      receive('/selected_track_notes', ' ')
+      oscResetFads(0, 8)
+      oscResetArts(0, 18)
       return data
     }
 
@@ -236,6 +258,8 @@ module.exports = {
       sendParameters('OSC4', fad.code_type, fad.code, fad.default)
     }
 
+    oscResetFads(fadList.length, 8)
+
     /**
      * @param {import("@/../../src/components/backendCommands/backendCommands").ItemsArtListTap | import("@/../../src/components/backendCommands/backendCommands").ItemsArtListTog} art
      * @param {number} index
@@ -243,10 +267,11 @@ module.exports = {
      * @param {boolean} showCodes
      */
     function processArt(art, index, mode, showCodes) {
-      if (!art.name) {
+      if (!art.name || art.name === '') {
         receive('/template_io_key_range_var_1', track.full_ranges) // {}[]
         receive('/template_io_key_range_var_2', art.ranges) // string[]
         receive('/template_io_key_range_script', 1)
+        receive(`/art_name_${index}`, ' ')
         return
       }
 
@@ -381,6 +406,9 @@ module.exports = {
         sendParameters('OSC4', art.code_type, art.code, art.on)
 
         // send layers
+      } else {
+        receive(`/art_mod_a_${index}`, 0.15)
+        receive(`/art_mod_b_${index}`, 0.15)
       }
     }
 
@@ -389,7 +417,11 @@ module.exports = {
 
     // Process Tog Articulations
     for (let i = 0; i < artListTog.length; i++) {
-      processArt(artListTog[i], i + 1, 'toggle', toggleShowCodes)
+      if (artListTog.length === 1 && artListTog[0].name === '') {
+        oscResetArts(0, 1)
+      } else {
+        processArt(artListTog[i], i + 1, 'toggle', toggleShowCodes)
+      }
     }
 
     // Process Tap Articulations
@@ -401,8 +433,14 @@ module.exports = {
         index = artListTog.length + i + 1
       }
 
-      processArt(artListTap[i], index, 'tap', toggleShowCodes)
+      if (artListTap.length === 1 && artListTap[0].name === '') {
+        oscResetArts(artListTog.length - 1, 2)
+      } else {
+        processArt(artListTap[i], index, 'tap', toggleShowCodes)
+      }
     }
+
+    oscResetArts(artListTog.length + artListTap.length - 1, 18)
 
     return { address, args, host, port }
   },
