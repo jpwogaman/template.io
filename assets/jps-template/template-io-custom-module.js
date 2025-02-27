@@ -149,6 +149,15 @@ function oscResetArts(start, artCount) {
     receive(`/art_colr_${index}`, '#A9A9A9')
     receive(`/art_mod_a_${index}`, 0.15)
     receive(`/art_mod_b_${index}`, 0.15)
+    receive(`/art_type_${index}`, ' ')
+    receive(`/art_code_${index}`, ' ')
+    receive(`/art_deft_${index}`, ' ')
+    receive(`/art_on___${index}`, ' ')
+    receive(`/art_off__${index}`, ' ')
+    receive(`/art_rang_${index}`, ' ')
+    receive(`/art_mode_${index}`, 'tap')
+    receive(`/art_layers_on_${index}`, ' ')
+    receive(`/art_layers_off_${index}`, ' ')
   }
 }
 
@@ -302,7 +311,15 @@ module.exports = {
 
         receive(`/art_name_${index}`, nameDisplay)
       } else {
-        receive(`/art_name_${index}`, art.name)
+
+        let layersCount = ''
+        if (mode === 'tap' && 'art_layers' in art) {
+          layersCount =
+            JSON.parse(art.art_layers).length > 0
+              ? `\n/${JSON.parse(art.art_layers).length}`
+              : ''
+        }
+        receive(`/art_name_${index}`, `${art.name}${layersCount}`)
       }
 
       receive(`/art_type_${index}`, art.code_type)
@@ -335,8 +352,15 @@ module.exports = {
             layers: layersFilteredObj
           }
           receive(`/art_layers_on_${index}`, newObj)
+
+          if (art.default) {
+            receive('/active_art_tap', newObj)
+          }
         } else {
           receive(`/art_layers_on_${index}`, '')
+          if (art.default) {
+            receive('/active_art_tap', '')
+          }
         }
       } else if (
         mode === 'toggle' &&
@@ -435,6 +459,7 @@ module.exports = {
 
       if (artListTap.length === 1 && artListTap[0].name === '') {
         oscResetArts(artListTog.length - 1, 2)
+        receive('/active_art_tap', 'empty')
       } else {
         processArt(artListTap[i], index, 'tap', toggleShowCodes)
       }
