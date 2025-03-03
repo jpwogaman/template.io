@@ -30,7 +30,7 @@ function sendUpdateCode() {
   send('midi', 'OSC4', '/control', 1, 127, 127)
 }
 
-const SENDPARAMS = false
+const SENDPARAMS = true
 // send default articulation parameters to Cubase, this does not just update the template-io UI, it actually sends the MIDI command to Cubase
 /**
  * @param {string} artOrFadPort

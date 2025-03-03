@@ -36,6 +36,7 @@ if (mode === 'tap' && !layersOn){
 
 if (mode === 'tap' && ((layersOn && !active_art_tap) || (JSON.parse(active_art_tap).id !== JSON.parse(layersOn).id))) {
   set('active_art_tap', layersOn)
+  set('active_art_tap_number', val)
   set('active_layer_index', 0)
   set('active_art_tap_info_var', `Active Art Tap: ${JSON.parse(layersOn).name}\nActive Layer:  ${JSON.parse(layersOn).layers[0].name}`)
   
@@ -67,6 +68,7 @@ function fireLayersOn(index, together){
   } else {
     layer = JSON.parse(layersOn).layers[index]
     console.log(`send('midi', 'OSC4', ${layer.code_type}, 1, ${layer.code}, ${layer.on})`)
+    send('midi:OSC4', layer.code_type, 1, layer.code, layer.on)
   }
 }
 /////////////// 'template_io_articulation_script'
