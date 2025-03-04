@@ -25,37 +25,9 @@ for (let i = -2; i < 9; i++) {
     'B' + i
   )
 }
-// update current MIDI track, when a track in Cubase receives this code, it will in turn send a Key Pressure message to this module
-function sendUpdateCode() {
-  send('midi', 'OSC4', '/control', 1, 127, 127)
-}
-
-const SENDPARAMS = true
-// send default articulation parameters to Cubase, this does not just update the template-io UI, it actually sends the MIDI command to Cubase
-/**
- * @param {string} artOrFadPort
- * @param {string} artOrFadAddress
- * @param {number} artOrFadCode
- * @param {number} artOrFadDefaultValue
- */
-function sendParameters(
-  artOrFadPort,
-  artOrFadAddress,
-  artOrFadCode,
-  artOrFadDefaultValue
-) {
-  if (!SENDPARAMS) return
-  send(
-    'midi',
-    artOrFadPort,
-    artOrFadAddress,
-    1,
-    artOrFadCode,
-    artOrFadDefaultValue
-  )
-}
 
 // toggles
+let SENDPARAMS = true
 let toggleAutoUpdate = false
 let toggleSendUpdate = false
 
@@ -80,6 +52,14 @@ function toggles_OSC2(arg1_OSC2, arg2_OSC2) {
   if (arg1_OSC2 === 126 && arg2_OSC2 === 1) {
     oscFullReset()
   }
+
+  // SEND PARAMS
+  if (arg1_OSC2 === 125 && arg2_OSC2 === 1) {
+    SENDPARAMS = true
+  }
+  if (arg1_OSC2 === 125 && arg2_OSC2 === 0) {
+    SENDPARAMS = false
+  }
 }
 
 /**
@@ -93,6 +73,35 @@ function toggles_OSC3(arg1_OSC3, arg2_OSC3) {
   if (arg1_OSC3 === 126 && arg2_OSC3 === 0) {
     toggleSendUpdate = false
   }
+}
+
+// update current MIDI track, when a track in Cubase receives this code, it will in turn send a Key Pressure message to this module
+function sendUpdateCode() {
+  send('midi', 'OSC4', '/control', 1, 127, 127)
+}
+
+// send default articulation parameters to Cubase, this does not just update the template-io UI, it actually sends the MIDI command to Cubase
+/**
+ * @param {string} artOrFadPort
+ * @param {string} artOrFadAddress
+ * @param {number} artOrFadCode
+ * @param {number} artOrFadDefaultValue
+ */
+function sendParameters(
+  artOrFadPort,
+  artOrFadAddress,
+  artOrFadCode,
+  artOrFadDefaultValue
+) {
+  if (!SENDPARAMS) return
+  send(
+    'midi',
+    artOrFadPort,
+    artOrFadAddress,
+    1,
+    artOrFadCode,
+    artOrFadDefaultValue
+  )
 }
 
 function oscFullReset() {
