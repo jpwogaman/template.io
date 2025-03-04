@@ -43,6 +43,7 @@ pub struct ItemsArtListTap {
   pub ranges: String,
   pub art_layers: String,
   pub layers_together: bool,
+  pub default_layer: String,
   pub fileitems_item_id: String, // manually changed to FileItemId
 }
 
@@ -74,6 +75,8 @@ pub struct ItemsArtListTapRequest {
   #[specta(optional)]
   pub layers_together: Option<bool>,
   #[specta(optional)]
+  pub default_layer: Option<String>,
+  #[specta(optional)]
   pub fileitems_item_id: Option<String>, // manually changed to FileItemId
 }
 
@@ -95,6 +98,7 @@ impl ItemsArtListTap {
       ranges: updates.ranges.unwrap_or_else(|| self.ranges.clone()),
       art_layers: updates.art_layers.unwrap_or_else(|| self.art_layers.clone()),
       layers_together: updates.layers_together.unwrap_or(self.layers_together),
+      default_layer: updates.default_layer.unwrap_or_else(|| self.default_layer.clone()),
       fileitems_item_id: updates.fileitems_item_id.unwrap_or_else(||
         self.fileitems_item_id.clone()
       ),
@@ -122,6 +126,7 @@ pub fn init_art_tap(
     ranges: format!("[\"{}_FR_0\"]", fileitems_item_id),
     art_layers: "[]".to_string(),
     layers_together: false,
+    default_layer: "".to_string(),
     fileitems_item_id: fileitems_item_id,
   }
 }

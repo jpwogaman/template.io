@@ -180,9 +180,21 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
                   .get("id")
                   .unwrap_or(&Value::String("unknown".to_string()))
               );
-            } else {
-            println!("---------TAP PASSED--------");
-          }
+            } 
+            if !tap_obj.contains_key("default_layer") {
+              tap_obj.insert("default_layer".to_string(), Value::String("".to_string()));
+
+              println!(
+                "Transformed tap {}: Added default_layer: \"\"\n-----",
+                tap_obj
+                  .get("id")
+                  .unwrap_or(&Value::String("unknown".to_string()))
+              );
+            }
+
+            if tap_obj.contains_key("default_layer") && tap_obj.contains_key("layers_together") {
+              println!("---------TAP PASSED--------");
+            }
           }
         }
       }

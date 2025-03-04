@@ -43,6 +43,7 @@ diesel::table! {
         ranges -> Text,
         art_layers -> Text,
         layers_together -> Bool,
+        default_layer -> Text,
         fileitems_item_id -> Text,
     }
 }
