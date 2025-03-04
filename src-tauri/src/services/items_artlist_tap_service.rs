@@ -32,6 +32,17 @@ pub fn list_items_artlist_tap(
     a_id_number.cmp(&b_id_number)
   });
 
+  for item in &mut items_artlist_tap {
+    if let Ok(mut art_layers) = serde_json::from_str::<Vec<String>>(&item.art_layers) {
+      art_layers.sort_by(|a, b| {
+        let a_num = a.split('_').last().and_then(|num| num.parse::<i32>().ok()).unwrap_or(0);
+        let b_num = b.split('_').last().and_then(|num| num.parse::<i32>().ok()).unwrap_or(0);
+        a_num.cmp(&b_num)
+      });
+      item.art_layers = serde_json::to_string(&art_layers).expect("Failed to serialize art_layers");
+    }
+  }
+
   items_artlist_tap
 }
 

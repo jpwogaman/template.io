@@ -159,7 +159,7 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
               tog.get("id").unwrap_or(&Value::String("unknown".to_string())),
               original
             );
-          }else {
+          } else {
             println!("---------TOG PASSED--------");
           }
         }
@@ -180,9 +180,12 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
                   .get("id")
                   .unwrap_or(&Value::String("unknown".to_string()))
               );
-            } 
+            }
             if !tap_obj.contains_key("default_layer") {
-              tap_obj.insert("default_layer".to_string(), Value::String("".to_string()));
+              tap_obj.insert(
+                "default_layer".to_string(),
+                Value::String("".to_string())
+              );
 
               println!(
                 "Transformed tap {}: Added default_layer: \"\"\n-----",
@@ -192,7 +195,10 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
               );
             }
 
-            if tap_obj.contains_key("default_layer") && tap_obj.contains_key("layers_together") {
+            if
+              tap_obj.contains_key("default_layer") &&
+              tap_obj.contains_key("layers_together")
+            {
               println!("---------TAP PASSED--------");
             }
           }
@@ -312,6 +318,13 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
             "tap",
             "art_layers"
           );
+          filter_and_log_default_layer(
+            &mut tap.default_layer,
+            &valid_layer_ids,
+            &tap.id,
+            "tap",
+            "default_layer"
+          );
           filter_and_log_ids(
             &mut tap.ranges,
             &valid_range_ids,
@@ -384,6 +397,30 @@ fn filter_and_log_ids(
     }
     Err(e) =>
       eprintln!("Failed to parse {} for {} {}: {}", field, label, id, e),
+  }
+}
+
+fn filter_and_log_default_layer( 
+  id: &mut String,
+  valid_ids: &HashSet<String>,
+  item_id: &str,
+  label: &str,
+  field: &str
+) {
+  if id.is_empty() || id == "[\"\"]" {    
+    *id = "".to_string();
+    return;
+  }
+
+  if !valid_ids.contains(id) {
+    println!(
+      "Edited {} {}: Removed invalid {} from {} \nNew Value \"\"\n----------",
+      label,
+      item_id,
+      id,
+      field
+    );
+    *id = "".to_string();
   }
 }
 
