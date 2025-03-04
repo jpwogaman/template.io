@@ -3,7 +3,9 @@
 ```js
 /////////////// This script is in every articulation button
 var id = id
-set('articulations_script_1', parseInt(id.split('_')[1]))
+var value = parseInt(id.split('_')[1])
+set('articulations_script_1', value)
+set('active_art_tap_number', value)
 //////////////// articulations_script_1
 var val = value
 

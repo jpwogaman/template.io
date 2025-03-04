@@ -57,7 +57,6 @@ function sendParameters(
 
 // toggles
 let toggleAutoUpdate = false
-let toggleShowCodes = true
 let toggleSendUpdate = false
 
 /**
@@ -80,16 +79,6 @@ function toggles_OSC2(arg1_OSC2, arg2_OSC2) {
   // call oscReset()
   if (arg1_OSC2 === 126 && arg2_OSC2 === 1) {
     oscFullReset()
-  }
-
-  // show codes in UI
-  if (arg1_OSC2 === 119 && arg2_OSC2 === 1) {
-    sendUpdateCode()
-    toggleShowCodes = true
-  }
-  if (arg1_OSC2 === 119 && arg2_OSC2 === 0) {
-    sendUpdateCode()
-    toggleShowCodes = false
   }
 }
 
@@ -145,6 +134,7 @@ function oscResetArts(start, artCount) {
   for (let i = start; i < artCount; i++) {
     const index = i + 1
     receive(`/art_name_${index}`, ' ')
+    receive(`/art_name_display_${index}`, ' ')
     receive(`/art_inpt_${index}`, 'true')
     receive(`/art_colr_${index}`, '#A9A9A9')
     receive(`/art_mod_a_${index}`, 0.15)
@@ -273,9 +263,8 @@ module.exports = {
      * @param {import("@/../../src/components/backendCommands/backendCommands").ItemsArtListTap | import("@/../../src/components/backendCommands/backendCommands").ItemsArtListTog} art
      * @param {number} index
      * @param {"toggle" | "tap"} mode
-     * @param {boolean} showCodes
      */
-    function processArt(art, index, mode, showCodes) {
+    function processArt(art, index, mode) {
       if (!art.name || art.name === '') {
         receive('/template_io_key_range_var_1', track.full_ranges) // {}[]
         receive('/template_io_key_range_var_2', art.ranges) // string[]
@@ -284,44 +273,37 @@ module.exports = {
         return
       }
 
-      if (showCodes) {
-        let codeDisplay = ''
-        if (art.code_type === '/control') {
-          codeDisplay = 'CC'
-        }
-        if (art.code_type === '/note') {
-          codeDisplay = `${globalAllNotesList[art.code]}/`
-        }
-
-        let artDelaySign = Math.sign(art.delay) === 1 ? '+' : ''
-        let layersCount = ''
-
-        if (
-          mode === 'toggle' &&
-          'art_layers_on' in art &&
-          'art_layers_off' in art
-        ) {
-          layersCount = `${JSON.parse(art.art_layers_on).length}/${JSON.parse(art.art_layers_off).length}`
-        } else if (mode === 'tap' && 'art_layers' in art) {
-          layersCount = JSON.parse(art.art_layers).length
-        }
-
-        let offDisplay = art.off ? `/${art.off}` : ''
-        let nameDisplay = `${art.name}\n(${codeDisplay}${art.code} - ${art.on}${offDisplay})\n(${artDelaySign}${art.delay}ms)\n(Layers: ${layersCount})`
-
-        receive(`/art_name_${index}`, nameDisplay)
-      } else {
-
-        let layersCount = ''
-        if (mode === 'tap' && 'art_layers' in art) {
-          layersCount =
-            JSON.parse(art.art_layers).length > 0
-              ? `\n/${JSON.parse(art.art_layers).length}`
-              : ''
-        }
-        receive(`/art_name_${index}`, `${art.name}${layersCount}`)
+      let codeDisplay = ''
+      if (art.code_type === '/control') {
+        codeDisplay = 'CC'
+      }
+      if (art.code_type === '/note') {
+        codeDisplay = `${globalAllNotesList[art.code]}/`
       }
 
+      let artDelaySign = Math.sign(art.delay) === 1 ? '+' : ''
+      let layersCount = ''
+
+      if (
+        mode === 'toggle' &&
+        'art_layers_on' in art &&
+        'art_layers_off' in art
+      ) {
+        layersCount = `${JSON.parse(art.art_layers_on).length}/${JSON.parse(art.art_layers_off).length}`
+      } else if (mode === 'tap' && 'art_layers' in art) {
+        layersCount = JSON.parse(art.art_layers).length
+      }
+
+      let offDisplay = art.off ? `/${art.off}` : ''
+
+      const newNameObj = {
+        name: art.name,
+        codeDisplay: `(${codeDisplay}${art.code} - ${art.on}${offDisplay})`,
+        delay: `(${artDelaySign}${art.delay}ms)`,
+        layersCount: layersCount
+      }
+
+      receive(`/art_name_${index}`, newNameObj)
       receive(`/art_type_${index}`, art.code_type)
       receive(`/art_code_${index}`, art.code)
       receive(`/art_inpt_${index}`, 'false')
@@ -444,7 +426,7 @@ module.exports = {
       if (artListTog.length === 1 && artListTog[0].name === '') {
         oscResetArts(0, 1)
       } else {
-        processArt(artListTog[i], i + 1, 'toggle', toggleShowCodes)
+        processArt(artListTog[i], i + 1, 'toggle')
       }
     }
 
@@ -461,10 +443,10 @@ module.exports = {
         oscResetArts(artListTog.length - 1, 2)
         receive('/active_art_tap', 'empty')
       } else {
-        processArt(artListTap[i], index, 'tap', toggleShowCodes)
+        processArt(artListTap[i], index, 'tap')
       }
     }
-
+    receive('/show_codes_script', 1)
     oscResetArts(artListTog.length + artListTap.length - 1, 18)
 
     return { address, args, host, port }
