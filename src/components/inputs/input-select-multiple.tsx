@@ -12,6 +12,7 @@ import {
   type SelectValuesKeys
 } from '@/components/context'
 import { InputCheckBox, type InputComponentProps } from '@/components/inputs'
+import { HiCheckCircle } from 'react-icons/hi2'
 
 export const InputSelectMultiple: FC<InputComponentProps> = ({
   id,
@@ -66,6 +67,13 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
     Set<string>
   >(new Set())
   const [tapLayersTogether, setTapLayersTogether] = useState(false)
+  const [tapLayersTogetherDefaultLayer, setTapLayersTogetherDefaultLayer] =
+    useState<string | undefined>(undefined)
+
+  const [tapLayersTogetherDefaultPopUp, setTapLayersTogetherDefaultPopUp] =
+    useState(false)
+  const [tapLayersTogetherDefaultPopUpId, setTapLayersTogetherDefaultPopUpId] =
+    useState<string | undefined>(undefined)
 
   const tapLayersOrBothRangesIsOnlyEmpty = useCallback(
     () =>
@@ -137,6 +145,15 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
           if (options === 'artLayersArray') {
             if (newSet.has(value)) {
               newSet.delete(value)
+              if (tapLayersTogetherDefaultLayer === value) {
+                setTapLayersTogetherDefaultPopUpId(undefined)
+                const syntheticEvent = {
+                  ...event,
+                  target: { ...event.target, value: '' }
+                } as unknown as ChangeEvent<HTMLInputElement>
+
+                onChangeFunction(syntheticEvent, 'default_layer')
+              }
             } else {
               newSet.add(value)
             }
@@ -230,6 +247,8 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
       setActiveValuesTapLayersOrBothRanges,
       setActiveValuesTogLayersOn,
       setActiveValuesTogLayersOff,
+      tapLayersTogetherDefaultLayer,
+      setTapLayersTogetherDefaultPopUpId,
       togLayersOffTab,
       multiSelectTog,
       onChangeFunction,
@@ -254,27 +273,27 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
             return (
               <div
                 key={`${value}_${index}`}
-                className='w-1/3 max-w-1/3 grow-1 p-0.5'>
+                className='relative w-1/3 max-w-1/3 grow-1 p-0.5'>
                 <button
                   type='button'
                   tabIndex={0}
                   title={value.toString()}
-                  id={id + 'rangeLayerPicker' + value.toString()}
+                  id={id + '_rangeLayerPicker_' + value.toString()}
                   className={twMerge(
-                    options === 'artLayersArray' &&
+                    name === 'artLayersArray' &&
                       multiSelectTog &&
                       togLayersOffTab &&
                       activeValuesTogLayersOff.has(value.toString())
                       ? 'bg-indigo-200'
                       : '',
-                    options === 'artLayersArray' &&
+                    name === 'artLayersArray' &&
                       multiSelectTog &&
                       !togLayersOffTab &&
                       activeValuesTogLayersOn.has(value.toString())
                       ? 'bg-indigo-200'
                       : '',
 
-                    options === 'artLayersArray' &&
+                    name === 'artLayersArray' &&
                       !multiSelectTog &&
                       activeValuesTogLayersOn.has(value.toString())
                       ? 'bg-indigo-200'
@@ -285,20 +304,77 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
                     'w-full cursor-pointer rounded-sm p-1 text-left text-black shadow-sm shadow-black',
                     'focus-visible:ring-4 focus-visible:ring-indigo-600 focus-visible:outline-hidden'
                   )}
-                  onClick={valChange}
+                  onClick={(e) => {
+                    valChange(e)
+                    setTapLayersTogetherDefaultPopUp(false)
+                  }}
                   onKeyDown={(e) => {
                     if (
                       e.shiftKey &&
                       e.key === 'Tab' &&
-                      options !== 'artLayersArray' &&
+                      name !== 'artLayersArray' &&
                       value === values[0]
                     ) {
                       setRangeLayersPopUpOpen(false)
                     }
                   }}
+                  onContextMenu={(e) => {
+                    e.preventDefault()
+                    if (name === 'artRngsArray') return
+                    if (name === 'artLayersArray' && multiSelectTog) return
+                    if (tapLayersTogether) return
+                    if (
+                      !activeValuesTapLayersOrBothRanges.has(value.toString())
+                    )
+                      return
+
+                    if (
+                      tapLayersTogetherDefaultPopUp &&
+                      tapLayersTogetherDefaultPopUpId === value.toString()
+                    ) {
+                      setTapLayersTogetherDefaultPopUp(false)
+                      return
+                    }
+
+                    setTapLayersTogetherDefaultPopUp(true)
+                    setTapLayersTogetherDefaultPopUpId(value.toString())
+                  }}
                   value={value.toString()}>
                   {useShortId ? shortenedSubItemId(value.toString()) : value}
                 </button>
+                {name === 'artLayersArray' &&
+                  !multiSelectTog &&
+                  !tapLayersTogether &&
+                  tapLayersTogetherDefaultLayer === value.toString() &&
+                  activeValuesTapLayersOrBothRanges.has(value.toString()) && (
+                    <HiCheckCircle className='absolute -top-1 -right-1 h-5 w-5 text-green-700' />
+                  )}
+                {name === 'artLayersArray' &&
+                  !multiSelectTog &&
+                  !tapLayersTogether &&
+                  tapLayersTogetherDefaultPopUp &&
+                  activeValuesTapLayersOrBothRanges.has(value.toString()) &&
+                  tapLayersTogetherDefaultPopUpId === value.toString() &&
+                  tapLayersTogetherDefaultLayer !== value.toString() && (
+                    <button
+                      type='button'
+                      onClick={(e) => {
+                        e.preventDefault()
+                        const syntheticEvent = {
+                          ...e,
+                          target: { ...e.target, value: value.toString() }
+                        } as unknown as ChangeEvent<HTMLInputElement>
+
+                        setTapLayersTogetherDefaultPopUp(false)
+                        setTapLayersTogetherDefaultLayer(() => {
+                          onChangeFunction(syntheticEvent, 'default_layer')
+                          return value.toString()
+                        })
+                      }}
+                      className='absolute -top-1 -right-1 flex h-5 w-5 cursor-pointer items-center justify-center rounded-md'>
+                      <HiCheckCircle className='h-5 w-5 text-gray-700' />
+                    </button>
+                  )}
               </div>
             )
           })}
@@ -313,7 +389,14 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
       activeValuesTogLayersOn,
       setRangeLayersPopUpOpen,
       shortenedSubItemId,
-      options,
+      tapLayersTogetherDefaultPopUp,
+      setTapLayersTogetherDefaultPopUp,
+      tapLayersTogetherDefaultPopUpId,
+      setTapLayersTogetherDefaultPopUpId,
+      setTapLayersTogetherDefaultLayer,
+      tapLayersTogetherDefaultLayer,
+      onChangeFunction,
+      tapLayersTogether,
       multiSelectTog,
       togLayersOffTab,
       id,
@@ -342,17 +425,23 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
     if (options === 'artLayersArray' && !multiSelectTog) {
       try {
         const fixedJson = (
-          defaultValue as { layers: string; together: boolean }
+          defaultValue as { layers: string; together: boolean; default: string }
         ).layers
           .toString()
           .replace(/'/g, '"')
 
-        const together = (defaultValue as { layers: string; together: boolean })
-          .together
+        const together = (
+          defaultValue as { layers: string; together: boolean; default: string }
+        ).together
+
+        const defaultLayer = (
+          defaultValue as { layers: string; together: boolean; default: string }
+        ).default
 
         const parsedLayers = JSON.parse(fixedJson) as string[]
 
         setActiveValuesTapLayersOrBothRanges(new Set(parsedLayers))
+        setTapLayersTogetherDefaultLayer(defaultLayer)
         setTapLayersTogether(together)
       } catch (error) {
         console.error(
@@ -394,7 +483,8 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
     setActiveValuesTogLayersOff,
     setActiveValuesTogLayersOn,
     setActiveValuesTapLayersOrBothRanges,
-    setTapLayersTogether
+    setTapLayersTogether,
+    setTapLayersTogetherDefaultLayer
   ])
 
   useLayoutEffect(() => {
@@ -405,12 +495,16 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
   }, [options, getSelectList])
 
   return (
-    <div className={twMerge('relative h-6 w-full')}>
+    <div
+      onClick={() => setTapLayersTogetherDefaultPopUp(false)}
+      className={twMerge('relative h-6 w-full')}>
       {rangeLayersPopUpOpen &&
         isSelectedSubItem &&
         options === 'artRngsArray' && (
           <div className='absolute right-[2px] bottom-[27px] z-100 block max-h-60 w-40 rounded-sm border border-black bg-zinc-300 p-2 dark:bg-zinc-200'>
-            <div className='flex h-full flex-wrap'>
+            <div
+              id='tapRangeLayerPickerPopUp'
+              className='flex h-full flex-wrap'>
               {buttonListTapLayersOrBothRanges}
             </div>
           </div>
@@ -437,7 +531,9 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
                 />
               </div>
             </div>
-            <div className='flex h-full flex-wrap'>
+            <div
+              id='tapRangeLayerPickerPopUp'
+              className='flex h-full flex-wrap'>
               {buttonListTapLayersOrBothRanges}
             </div>
           </div>
@@ -473,7 +569,9 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
                 Off
               </button>
             </div>
-            <div className='flex h-full flex-wrap'>
+            <div
+              id='tapRangeLayerPickerPopUp'
+              className='flex h-full flex-wrap'>
               {togLayersOffTab ? buttonListTogLayersOff : buttonListTogLayersOn}
             </div>
           </div>

@@ -121,7 +121,7 @@ export const TrackOptions: FC = () => {
             },
             (refetch = true)
           )
-        } else if (key === 'change_type' || key === 'art_layers') {
+        } else if (key === 'change_type' || key === 'art_layers' || key === 'default_layer') {
           update.artListTap(
             {
               id,
@@ -310,6 +310,10 @@ export const TrackOptions: FC = () => {
         layoutDataSingle,
         'layers_together'
       )
+      const safeValueTapLayersTogetherDefault = getLayoutData(
+        layoutDataSingle,
+        'default_layer'
+      )
 
       const inputPropsHelper: InputComponentProps = {
         id: `${layoutDataSingle.id}_${subKey.key}`,
@@ -329,7 +333,8 @@ export const TrackOptions: FC = () => {
                 subKey.key === 'art_layers'
               ? {
                   layers: safeValue as string,
-                  together: safeValueTapLayersTogether as boolean
+                  together: safeValueTapLayersTogether as boolean,
+                  default: safeValueTapLayersTogetherDefault as string
                 }
               : safeValue,
         options: subKey.selectArray,
@@ -532,7 +537,14 @@ export const TrackOptions: FC = () => {
                             value: layoutDataSingleId
                           })
                         }
-                        onContextMenu={() => {
+                        onContextMenu={(e) => {
+                          const tapRangeLayerPickerPopUp =
+                            document.getElementById('tapRangeLayerPickerPopUp')
+                          if (
+                            tapRangeLayerPickerPopUp?.contains(e.target as Node)
+                          ) {
+                            return
+                          }
                           setIsContextMenuOpen(true)
                           setContextMenuId(
                             layoutDataSingleId as contextMenuType
@@ -620,7 +632,14 @@ export const TrackOptions: FC = () => {
                           value: layoutDataSingleId
                         })
                       }
-                      onContextMenu={() => {
+                      onContextMenu={(e) => {
+                        const tapRangeLayerPickerPopUp =
+                          document.getElementById('tapRangeLayerPickerPopUp')
+                        if (
+                          tapRangeLayerPickerPopUp?.contains(e.target as Node)
+                        ) {
+                          return
+                        }
                         setIsContextMenuOpen(true)
                         setContextMenuId(layoutDataSingleId as contextMenuType)
                       }}
