@@ -2,7 +2,7 @@
 /// <reference path="./custom-module.d.ts" />
 
 /** @type {import("@/../../src/components/backendCommands/backendCommands").FullTrackListForExport} */
-const allTrack_jsn = loadJSON('tracks-11.27.2023-v30_new-export-test.json')
+const allTrack_jsn = loadJSON('tracks-11.27.2023-v31_new-export-test.json')
 
 const items = allTrack_jsn.items
 
@@ -327,19 +327,41 @@ module.exports = {
         receive(`/art_layers_together_${index}`, art.layers_together.toString())
 
         if (art.art_layers !== '[]') {
-          const layersFiltered = art.art_layers.replace('"",', '')
-          const obj = JSON.parse(layersFiltered)
-          const layersFilteredObj = obj.map((item) => {
+          /**
+           * @type {Array<`T_${number}_AL_${number}`>}
+           * */
+          const obj = JSON.parse(art.art_layers)
+
+          const layersFilteredObj = obj.map((layerId) => {
             const layer = {
-              ...track.art_layers.find((layer) => layer.id === item)
+              ...track.art_layers.find((layer) => layer.id === layerId)
             }
+
             delete layer.fileitems_item_id
-            return layer
+            return /** @type {Omit<import("@/../../src/components/backendCommands/backendCommands").ItemsArtLayers, "fileitems_item_id">} */ (
+              layer
+            )
           })
+
+          layersFilteredObj.sort(
+            /**
+             * @returns {number}
+             */
+            (a, b) => {
+              const aMatch = a.id.match(/T_\d+_AL_(\d+)/)
+              const bMatch = b.id.match(/T_\d+_AL_(\d+)/)
+
+              const aNum = aMatch ? parseInt(aMatch[1], 10) : 0
+              const bNum = bMatch ? parseInt(bMatch[1], 10) : 0
+
+              return aNum - bNum
+            }
+          )
 
           const newObj = {
             id: art.id,
             name: art.name,
+            defaultLayer: art.default_layer,
             layers: layersFilteredObj
           }
           receive(`/art_layers_on_${index}`, newObj)
@@ -419,6 +441,44 @@ module.exports = {
         receive('/template_io_key_range_var_2', art.ranges)
         receive('/template_io_key_range_script', 1)
         sendParameters('OSC4', art.code_type, art.code, art.on)
+
+        if (
+          mode === 'tap' &&
+          'art_layers' in art &&
+          art.art_layers !== '[]' &&
+          !art.layers_together &&
+          art.default_layer !== ''
+        ) {
+          const layerId = art.default_layer
+          const defaultLayer = track.art_layers.find(
+            (layer) => layer.id === layerId
+          )
+
+          if (!defaultLayer) return
+          sendParameters(
+            'OSC4',
+            defaultLayer.code_type,
+            defaultLayer.code,
+            defaultLayer.on
+          )
+        } else if (
+          mode === 'tap' &&
+          'art_layers' in art &&
+          art.art_layers !== '[]' &&
+          !art.layers_together &&
+          art.default_layer === ''
+        ) {
+          
+          const firstLayer = track.art_layers[0]
+
+          if (!firstLayer) return
+          sendParameters(
+            'OSC4',
+            firstLayer.code_type,
+            firstLayer.code,
+            firstLayer.on
+          )
+        }
 
         // send layers
       } else {
