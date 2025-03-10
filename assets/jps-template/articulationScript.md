@@ -32,10 +32,9 @@ var active_layer_index = parseInt(get('active_layer_index'))
 
 if (mode === 'tap' && !layersOn) {
   set('active_art_tap', null)
-  set(
-    'active_art_tap_info_var',
-    `Active Art Tap: ${artName.split('\n')[0]}\nActive Layer:  N/A`
-  )
+  set('active_art_tap_info_var', 'No Additional Layers')
+  set('active_tap_art_layers_prev_color', '#A9A9A9')
+  set('active_tap_art_layers_next_color', '#A9A9A9')
   return
 }
 
@@ -45,17 +44,40 @@ if (
     JSON.parse(active_art_tap).id !== JSON.parse(layersOn).id)
 ) {
   set('active_art_tap', layersOn)
-  set('active_art_tap_number', val)
-  set('active_layer_index', 0)
+
+  var layersOnLayers = JSON.parse(layersOn).layers
+  var layersOnName = JSON.parse(layersOn).name
+  var defaultLayerId = JSON.parse(layersOn).defaultLayer
+
+  let defaultIndex = 0
+  if (defaultLayerId) {
+    var defaultLayerFull = layersOnLayers.find(
+      (layer) => layer.id === defaultLayerId
+    )
+    defaultIndex = layersOnLayers.indexOf(defaultLayerFull)
+  }
+
+  set('active_layer_index', defaultIndex)
   set(
     'active_art_tap_info_var',
-    `Active Art Tap: ${JSON.parse(layersOn).name}\nActive Layer:  ${JSON.parse(layersOn).layers[0].name}`
+    `Active Art Tap: ${layersOnName}\nActive Layer:  ${layersOnLayers[defaultIndex].name}`
   )
 
-  if (layersTogether === 'true') {
-    fireLayersOn(0, true)
+  if (defaultIndex === 0) {
+    set('active_tap_art_layers_prev_color', '#A9A9A9')
   } else {
-    fireLayersOn(0, false)
+    set('active_tap_art_layers_prev_color', '#70b7ff')
+  }
+  if (defaultIndex === layersOnLayers.length - 1) {
+    set('active_tap_art_layers_next_color', '#A9A9A9')
+  } else {
+    set('active_tap_art_layers_next_color', '#70b7ff')
+  }
+
+  if (layersTogether === 'true') {
+    fireLayersOn(defaultIndex, true)
+  } else {
+    fireLayersOn(defaultIndex, false)
   }
   return
 }
@@ -76,14 +98,11 @@ function fireLayersOn(index, together) {
     for (let i = 0; i < JSON.parse(layersOn).layers.length; i++) {
       layer = JSON.parse(layersOn).layers[i]
       console.log(
-        `send('midi', 'OSC4', ${layer.code_type}, 1, ${layer.code}, ${layer.on})`
+        `send('midi:OSC4', ${layer.code_type}, 1, ${layer.code}, ${layer.on})`
       )
     }
   } else {
     layer = JSON.parse(layersOn).layers[index]
-    console.log(
-      `send('midi', 'OSC4', ${layer.code_type}, 1, ${layer.code}, ${layer.on})`
-    )
     send('midi:OSC4', layer.code_type, 1, layer.code, layer.on)
   }
 }

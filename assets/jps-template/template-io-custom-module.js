@@ -363,15 +363,40 @@ module.exports = {
             defaultLayer: art.default_layer,
             layers: layersFilteredObj
           }
+          const indexOfDefaultLayer = layersFilteredObj.findIndex(
+            (layer) => layer.id === art.default_layer
+          )
           receive(`/art_layers_on_${index}`, newObj)
 
           if (art.default) {
+            receive('/active_layer_index', indexOfDefaultLayer)
             receive('/active_art_tap', newObj)
+            receive('/active_art_tap_number', index)
+
+            if (indexOfDefaultLayer === 0) {
+              receive('/active_tap_art_layers_prev_color', '#A9A9A9')
+            } else {
+              receive('/active_tap_art_layers_prev_color', '#70b7ff')
+            }
+            if (indexOfDefaultLayer === newObj.layers.length - 1) {
+              receive('/active_tap_art_layers_next_color', '#A9A9A9')
+            } else {
+              receive('/active_tap_art_layers_next_color', '#70b7ff')
+            }
+
+            receive(
+              '/active_art_tap_info_var',
+              `Active Art Tap: ${newObj.name}\nActive Layer:  ${newObj.layers[indexOfDefaultLayer].name}`
+            )
           }
         } else {
           receive(`/art_layers_on_${index}`, '')
           if (art.default) {
             receive('/active_art_tap', '')
+            receive('/active_layer_index', 0)
+            receive('/active_tap_art_layers_prev_color', '#A9A9A9')
+            receive('/active_tap_art_layers_next_color', '#A9A9A9')
+            receive('/active_art_tap_info_var', 'No Additional Layers')
           }
         }
       } else if (
@@ -439,6 +464,7 @@ module.exports = {
         receive('/template_io_key_range_var_1', track.full_ranges)
         receive('/template_io_key_range_var_2', art.ranges)
         receive('/template_io_key_range_script', 1)
+
         sendParameters('OSC4', art.code_type, art.code, art.on)
 
         if (
@@ -477,8 +503,6 @@ module.exports = {
             firstLayer.on
           )
         }
-
-        // send layers
       } else {
         receive(`/art_mod_a_${index}`, 0.15)
         receive(`/art_mod_b_${index}`, 0.15)
@@ -509,6 +533,10 @@ module.exports = {
       if (artListTap.length === 1 && artListTap[0].name === '') {
         oscResetArts(artListTog.length - 1, 2)
         receive('/active_art_tap', 'empty')
+        receive('/active_layer_index', 0)
+        receive('/active_tap_art_layers_prev_color', '#A9A9A9')
+        receive('/active_tap_art_layers_next_color', '#A9A9A9')
+        receive('/active_art_tap_info_var', 'No Additional Layers')
       } else {
         processArt(artListTap[i], index, 'tap')
       }
