@@ -32,8 +32,8 @@ let toggleAutoUpdate = false
 let toggleSendUpdate = false
 
 /**
- * @param {number} arg1_OSC2
- * @param {number} arg2_OSC2
+ * @param {127 | 126 | 125} arg1_OSC2
+ * @param {0 | 1} arg2_OSC2
  */
 function toggles_OSC2(arg1_OSC2, arg2_OSC2) {
   // auto-update on track selection
@@ -63,8 +63,8 @@ function toggles_OSC2(arg1_OSC2, arg2_OSC2) {
 }
 
 /**
- * @param {number} arg1_OSC3
- * @param {number} arg2_OSC3
+ * @param {126} arg1_OSC3
+ * @param {0 | 1} arg2_OSC3
  */
 function toggles_OSC3(arg1_OSC3, arg2_OSC3) {
   if (arg1_OSC3 === 126 && arg2_OSC3 === 1) {
@@ -106,7 +106,6 @@ function sendParameters(
 
 function oscFullReset() {
   toggles_OSC2(127, 0)
-  toggles_OSC2(119, 0)
   oscResetFads(0, 8)
   oscResetArts(0, 18)
   receive('/template_io_key_range_var_1', ...[])
@@ -468,7 +467,6 @@ module.exports = {
           !art.layers_together &&
           art.default_layer === ''
         ) {
-          
           const firstLayer = track.art_layers[0]
 
           if (!firstLayer) return
