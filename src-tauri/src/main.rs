@@ -3,7 +3,6 @@
   windows_subsystem = "windows"
 )]
 
-mod bin;
 mod commands;
 mod models;
 mod services;

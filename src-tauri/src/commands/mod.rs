@@ -9,7 +9,7 @@ pub(crate) mod items_art_layers_commands;
 use tauri_specta::collect_commands;
 use specta_typescript::Typescript;
 use tauri::ipc::Invoke;
-use crate::bin::bindings_custom_types;
+use template_io::bindings_custom_types;
 
 pub fn generate_specta_bindings() {
   tauri_specta::Builder::<tauri::Wry>
