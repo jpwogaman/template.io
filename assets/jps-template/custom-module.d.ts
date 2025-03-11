@@ -5,17 +5,19 @@ declare function loadJSON(
   errorCallback?: (error: Error) => void
 ): any
 
+type Address = `/${string}`
+
 declare function receive(
-  address: string,
+  address: Address,
   ...args: (string | number | Record<string, any>)[]
 ): void
 
-declare function receive(
-  host: string | undefined,
-  port: string | number | undefined,
-  address: string,
-  ...args: (string | number | Record<string, any>)[]
-): void
+//declare function receive(
+//  host: string | undefined,
+//  port: string | number | undefined,
+//  address: string,
+//  ...args: (string | number | Record<string, any>)[]
+//): void
 
 declare function send(
   host: string,
