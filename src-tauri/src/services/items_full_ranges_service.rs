@@ -3,6 +3,12 @@ use crate::{
   models::{
     custom_errors::MyCustomError,
     items_full_ranges::{ ItemsFullRanges, ItemsFullRangesRequest },
+    items_artlist_tap::{ ItemsArtListTapRequest },
+    items_artlist_tog::{ ItemsArtListTogRequest },
+  },
+  services::{
+    items_artlist_tap_service::{ list_items_artlist_tap, update_art_tap },
+    items_artlist_tog_service::{ list_items_artlist_tog, update_art_tog },
   },
   schema::items_full_ranges::dsl,
 };
@@ -70,12 +76,78 @@ pub fn delete_full_range_by_fileitem(
   }
 
   diesel
-    ::delete(dsl::items_full_ranges.filter(dsl::id.eq(id)))
+    ::delete(dsl::items_full_ranges.filter(dsl::id.eq(id.clone())))
     .execute(connection)
     .expect("Error deleting range");
 
+  let _ = delete_range_id_from_art_taps_and_art_togs(id, fileitems_item_id);
   Ok(())
 }
+
+pub fn delete_range_id_from_art_taps_and_art_togs(
+  id: String,
+  fileitems_item_id: String
+) -> Result<(), MyCustomError> {
+  let items_artlist_tap = list_items_artlist_tap(fileitems_item_id.clone());
+  let items_artlist_tog = list_items_artlist_tog(fileitems_item_id.clone());
+
+  for tap in items_artlist_tap {
+    let mut new_tap = tap.clone();
+
+    match serde_json::from_str::<Vec<String>>(&tap.ranges) {
+      Ok(ranges) => {
+        let new_ranges: Vec<_> = ranges
+          .into_iter()
+          .filter(|range_id| range_id != &id)
+          .collect();
+
+        new_tap.ranges = serde_json
+          ::to_string(&new_ranges)
+          .expect("Failed to serialize ranges");
+
+        let temp_request = ItemsArtListTapRequest {
+          id: format!("{}", tap.id),
+          ranges: Some(new_tap.ranges),
+          ..Default::default()
+        };
+        let _ = update_art_tap(temp_request);
+      }
+      Err(e) => {
+        println!("Error deserializing ranges: {:?}", e);
+      }
+    }
+  }
+
+  for tog in items_artlist_tog {
+    let mut new_tog = tog.clone();
+    
+    match serde_json::from_str::<Vec<String>>(&tog.ranges) {
+      Ok(ranges) => {
+        let new_ranges: Vec<_> = ranges
+          .into_iter()
+          .filter(|range_id| range_id != &id)
+          .collect();
+
+        new_tog.ranges = serde_json
+          ::to_string(&new_ranges)
+          .expect("Failed to serialize ranges");
+        
+        let temp_request = ItemsArtListTogRequest {
+          id: format!("{}", tog.id),
+          ranges: Some(new_tog.ranges),
+          ..Default::default()
+        };
+        let _ = update_art_tog(temp_request);
+      }
+      Err(e) => {
+        println!("Error deserializing ranges: {:?}", e);
+      }
+    }
+  }
+
+  Ok(())
+}
+
 
 pub fn delete_all_full_ranges_for_fileitem(fileitems_item_id: String) {
   let connection = &mut establish_db_connection();

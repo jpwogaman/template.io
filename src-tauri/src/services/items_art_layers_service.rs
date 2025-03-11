@@ -3,6 +3,12 @@ use crate::{
   models::{
     custom_errors::MyCustomError,
     items_art_layers::{ ItemsArtLayers, ItemsArtLayersRequest },
+    items_artlist_tap::{ ItemsArtListTapRequest },
+    items_artlist_tog::{ ItemsArtListTogRequest },
+  },
+  services::{
+    items_artlist_tap_service::{ list_items_artlist_tap, update_art_tap },
+    items_artlist_tog_service::{ list_items_artlist_tog, update_art_tog },
   },
   schema::items_art_layers::dsl,
 };
@@ -68,10 +74,96 @@ pub fn delete_art_layer_by_fileitem(
   }
 
   diesel
-    ::delete(dsl::items_art_layers.filter(dsl::id.eq(id)))
+    ::delete(dsl::items_art_layers.filter(dsl::id.eq(id.clone())))
     .execute(connection)
     .expect("Error deleting layer");
 
+  let _ = delete_layer_id_from_art_taps_and_art_togs(id, fileitems_item_id);
+  Ok(())
+}
+
+pub fn delete_layer_id_from_art_taps_and_art_togs(
+  id: String,
+  fileitems_item_id: String
+) -> Result<(), MyCustomError> {
+  let items_artlist_tap = list_items_artlist_tap(fileitems_item_id.clone());
+  let items_artlist_tog = list_items_artlist_tog(fileitems_item_id.clone());
+
+  for tap in items_artlist_tap {
+    let mut new_tap = tap.clone();
+
+    match serde_json::from_str::<Vec<String>>(&tap.art_layers) {
+      Ok(art_layers) => {
+        let new_layers: Vec<_> = art_layers
+          .into_iter()
+          .filter(|layer_id| layer_id != &id)
+          .collect();
+
+        new_tap.art_layers = serde_json
+          ::to_string(&new_layers)
+          .expect("Failed to serialize art_layers");
+
+        let temp_request = ItemsArtListTapRequest {
+          id: format!("{}", tap.id),
+          art_layers: Some(new_tap.art_layers),
+          ..Default::default()
+        };
+        let _ = update_art_tap(temp_request);
+      }
+      Err(e) => {
+        println!("Error deserializing art_layers: {:?}", e);
+      }
+    }
+  }
+
+  for tog in items_artlist_tog {
+    let mut new_tog = tog.clone();
+
+    match serde_json::from_str::<Vec<String>>(&tog.art_layers_on) {
+      Ok(art_layers_on) => {
+        let new_layers_on: Vec<_> = art_layers_on
+          .into_iter()
+          .filter(|layer_id| layer_id != &id)
+          .collect();
+
+        new_tog.art_layers_on = serde_json
+          ::to_string(&new_layers_on)
+          .expect("Failed to serialize art_layers_on");
+
+        let temp_request = ItemsArtListTogRequest {
+          id: format!("{}", tog.id),
+          art_layers_on: Some(new_tog.art_layers_on),
+          ..Default::default()
+        };
+        let _ = update_art_tog(temp_request);
+      }
+      Err(e) => {
+        println!("Error deserializing art_layers_on: {:?}", e);
+      }
+    }
+    match serde_json::from_str::<Vec<String>>(&tog.art_layers_off) {
+      Ok(art_layers_off) => {
+        let new_layers_off: Vec<_> = art_layers_off
+          .into_iter()
+          .filter(|layer_id| layer_id != &id)
+          .collect();
+
+        new_tog.art_layers_off = serde_json
+          ::to_string(&new_layers_off)
+          .expect("Failed to serialize art_layers_off");
+
+        let temp_request = ItemsArtListTogRequest {
+          id: format!("{}", tog.id),
+          art_layers_off: Some(new_tog.art_layers_off),
+          ..Default::default()
+        };
+        let _ = update_art_tog(temp_request);
+      }
+      Err(e) => {
+        println!("Error deserializing art_layers_off: {:?}", e);
+      }
+    }
+  }
   Ok(())
 }
 
@@ -111,9 +203,7 @@ pub fn update_art_layer(data: ItemsArtLayersRequest) {
 pub fn renumber_art_layers(fileitems_item_id: String) {
   let connection = &mut establish_db_connection();
 
-  let items_art_layers = list_items_art_layers(
-    fileitems_item_id.clone()
-  );
+  let items_art_layers = list_items_art_layers(fileitems_item_id.clone());
 
   let new_art_layers = items_art_layers
     .iter()
@@ -124,7 +214,7 @@ pub fn renumber_art_layers(fileitems_item_id: String) {
         name: layer.name.clone(),
         code_type: layer.code_type.clone(),
         code: layer.code,
-        on: layer.on,        
+        on: layer.on,
         fileitems_item_id: layer.fileitems_item_id.clone(),
       }
     })
