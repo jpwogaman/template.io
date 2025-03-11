@@ -211,11 +211,13 @@ export const SelectArraysProvider: FC<SelectArraysContextProps> = ({
                 key={`${value}_${index}`}
                 title={value.toString()}
                 value={
-                  value.toString().includes('---')
+                  name === 'valAddrList'
                     ? value.toString().split('---')[0]
-                    : value.toString()
+                    : name === 'valNoteList'
+                      ? value.toString().split(' / ')[0]
+                      : value.toString()
                 }>
-                {value.toString().includes('---')
+                {name === 'valAddrList'
                   ? value.toString().split('---')[1]
                   : useShortId
                     ? shortenedSubItemId(value.toString())

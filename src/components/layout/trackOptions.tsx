@@ -93,7 +93,8 @@ export const TrackOptions: FC = () => {
         if (
           key === 'change_type' ||
           key === 'art_layers_on' ||
-          key === 'art_layers_off'
+          key === 'art_layers_off' ||
+          key === 'code_type'
         ) {
           update.artListTog(
             {
@@ -121,7 +122,12 @@ export const TrackOptions: FC = () => {
             },
             (refetch = true)
           )
-        } else if (key === 'change_type' || key === 'art_layers' || key === 'default_layer') {
+        } else if (
+          key === 'change_type' ||
+          key === 'art_layers' ||
+          key === 'default_layer' ||
+          key === 'code_type'
+        ) {
           update.artListTap(
             {
               id,
@@ -149,7 +155,7 @@ export const TrackOptions: FC = () => {
         )
       }
       if (label === 'fad_list') {
-        if (key === 'change_type') {
+        if (key === 'change_type' || key === 'code_type') {
           update.fadList(
             {
               id,
@@ -285,6 +291,41 @@ export const TrackOptions: FC = () => {
     [isItemsArtListTog, isItemsArtListTap, isItemsFadList]
   )
 
+  const noteOptionsHelper = useCallback(
+    (
+      label: keyof FullTrackCounts,
+      item: layoutDataSingle,
+      subKey: TrackOptionsTableKeysType<
+        keyof FullTrackCounts
+      >[number]['keys'][number]['key']
+    ) => {
+      const artTogTypeNote =
+        label === 'art_list_tog' &&
+        isItemsArtListTog(item) &&
+        item.code_type === '/note' &&
+        subKey === 'code'
+
+      const artTapTypeNote =
+        label === 'art_list_tap' &&
+        isItemsArtListTap(item) &&
+        item.code_type === '/note' &&
+        subKey === 'code'
+
+      const fadTypeNote =
+        label === 'fad_list' &&
+        isItemsFadList(item) &&
+        item.code_type === '/note' &&
+        subKey === 'code'
+
+      if (artTogTypeNote || artTapTypeNote || fadTypeNote) {
+        return true
+      } else {
+        return false
+      }
+    },
+    [isItemsArtListTog, isItemsArtListTap, isItemsFadList]
+  )
+
   const [openPopupId, setOpenPopupId] = useState<string | null>(null)
 
   type getInputPropsHelperType = {
@@ -337,7 +378,13 @@ export const TrackOptions: FC = () => {
                   default: safeValueTapLayersTogetherDefault as string
                 }
               : safeValue,
-        options: subKey.selectArray,
+        options: noteOptionsHelper(
+          layoutConfig.label,
+          layoutDataSingle,
+          subKey.key
+        )
+          ? 'valNoteList'
+          : subKey.selectArray,
         multiSelectTog: layoutConfig.label === 'art_list_tog',
         isSelectedSubItem: layoutDataSingle.id === selected_sub_item_id,
         openPopupId,
