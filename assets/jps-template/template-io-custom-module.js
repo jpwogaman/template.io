@@ -542,7 +542,7 @@ module.exports = {
       }
     }
     receive('/show_codes_script', 1)
-    oscResetArts(artListTog.length + artListTap.length - 1, 18)
+    oscResetArts(artListTog.length + artListTap.length, 18)
 
     return { address, args, host, port }
   },
