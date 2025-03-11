@@ -419,6 +419,7 @@ export const TrackOptions: FC = () => {
     [
       getLayoutData,
       isSubKeyInputDisabled,
+      noteOptionsHelper,
       onChangeHelper,
       selectedItem?.locked,
       selected_sub_item_id,
