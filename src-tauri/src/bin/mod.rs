@@ -1,1 +1,1 @@
-pub mod bindings_custom_types;
+pub(crate) mod bindings_custom_types;
