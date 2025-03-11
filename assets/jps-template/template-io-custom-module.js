@@ -2,7 +2,7 @@
 /// <reference path="./custom-module.d.ts" />
 
 /** @type {import("@/../../src/components/backendCommands/backendCommands").FullTrackListForExport} */
-const allTrack_jsn = loadJSON('tracks-11.27.2023-v31_new-export-test.json')
+const allTrack_jsn = loadJSON('tracks-11.27.2023-v32_new-export-test.json')
 
 const items = allTrack_jsn.items
 
@@ -308,7 +308,7 @@ module.exports = {
         name: art.name,
         codeDisplay: `(${codeDisplay}${art.code} - ${art.on}${offDisplay})`,
         delay: `(${artDelaySign}${art.delay}ms)`,
-        layersCount: layersCount
+        layersCount: parseInt(layersCount)
       }
 
       receive(`/art_name_${index}`, newNameObj)
