@@ -210,7 +210,11 @@ export const SelectArraysProvider: FC<SelectArraysContextProps> = ({
               <option
                 key={`${value}_${index}`}
                 title={value.toString()}
-                value={value.toString()}>
+                value={
+                  value.toString().includes('---')
+                    ? value.toString().split('---')[0]
+                    : value.toString()
+                }>
                 {value.toString().includes('---')
                   ? value.toString().split('---')[1]
                   : useShortId
