@@ -17156,7 +17156,7 @@
           "delay": -25,
           "change_type": "Value 2",
           "ranges": "[\"T_109_FR_0\"]",
-          "art_layers": "[\"T_109_AL_0\",\"T_109_AL_1\"]",
+          "art_layers": "[]",
           "layers_together": false,
           "default_layer": "",
           "fileitems_item_id": "T_109"
@@ -17165,17 +17165,9 @@
       "art_layers": [
         {
           "id": "T_109_AL_0",
-          "name": "Double Tongue",
-          "code_type": "/note",
-          "code": 25,
-          "on": 127,
-          "fileitems_item_id": "T_109"
-        },
-        {
-          "id": "T_109_AL_1",
-          "name": "Triple Tongue",
-          "code_type": "/note",
-          "code": 27,
+          "name": "",
+          "code_type": "/control",
+          "code": 0,
           "on": 127,
           "fileitems_item_id": "T_109"
         }
@@ -17255,7 +17247,7 @@
           "delay": -50,
           "change_type": "Value 2",
           "ranges": "[\"T_110_FR_0\"]",
-          "art_layers": "[\"T_110_AL_0\",\"T_110_AL_1\"]",
+          "art_layers": "[]",
           "layers_together": false,
           "default_layer": "",
           "fileitems_item_id": "T_110"
@@ -17272,7 +17264,7 @@
           "delay": -50,
           "change_type": "Value 2",
           "ranges": "[\"T_110_FR_0\"]",
-          "art_layers": "[\"T_110_AL_0\",\"T_110_AL_1\"]",
+          "art_layers": "[]",
           "layers_together": false,
           "default_layer": "",
           "fileitems_item_id": "T_110"
@@ -17289,7 +17281,7 @@
           "delay": -50,
           "change_type": "Value 2",
           "ranges": "[\"T_110_FR_0\"]",
-          "art_layers": "[\"T_110_AL_0\",\"T_110_AL_1\"]",
+          "art_layers": "[]",
           "layers_together": false,
           "default_layer": "",
           "fileitems_item_id": "T_110"
@@ -17298,17 +17290,9 @@
       "art_layers": [
         {
           "id": "T_110_AL_0",
-          "name": "Double Tongue",
-          "code_type": "/note",
-          "code": 25,
-          "on": 127,
-          "fileitems_item_id": "T_110"
-        },
-        {
-          "id": "T_110_AL_1",
-          "name": "Triple Tongue",
-          "code_type": "/note",
-          "code": 27,
+          "name": "",
+          "code_type": "/control",
+          "code": 0,
           "on": 127,
           "fileitems_item_id": "T_110"
         }
