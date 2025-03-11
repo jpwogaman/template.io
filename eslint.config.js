@@ -1,7 +1,6 @@
 import { FlatCompat } from '@eslint/eslintrc'
 import js from '@eslint/js'
 
-// @ts-expect-error
 import reactCompiler from 'eslint-plugin-react-compiler'
 import typescriptEslint from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
