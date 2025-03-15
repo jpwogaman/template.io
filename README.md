@@ -4,12 +4,6 @@
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/jpwogaman/template.io/blob/main/LICENSE)
 
-# Disclaimer:
-
-_This app is not complete and there are no binaries available yet. I am currently working on the app and will release binaries as soon as I can._
-
-Here's an updated table of contents including all relevant sub-items:
-
 # Table of Contents
 
 1. [How To Use Template.io Standalone](#how-to-use-templateio-standalone)
