@@ -19,37 +19,13 @@
 3. [Editing Tracks](#3-editing-tracks)
    - [1. Main Track Information](#1-main-track-information)
    - [2. Context Menu](#2-context-menu)
-     - [Move a Track Up (coming soon)](#move-a-track-up-coming-soon)
-     - [Move a Track Down (coming soon)](#move-a-track-down-coming-soon)
-     - [Add Tracks Above Currently Selected Track (coming soon)](#add-tracks-above-currently-selected-track-coming-soon)
-     - [Add Tracks Below Currently Selected Track (coming soon)](#add-tracks-below-currently-selected-track-coming-soon)
-     - [Add Tracks At End of Track List](#add-tracks-at-end-of-track-list)
-     - [Duplicate Track Above Currently Selected Track (coming soon)](#duplicate-track-above-currently-selected-track-coming-soon)
-     - [Duplicate Track Below Currently Selected Track (coming soon)](#duplicate-track-below-currently-selected-track-coming-soon)
-     - [Duplicate Track At End of Track List (coming soon)](#duplicate-track-at-end-of-track-list-coming-soon)
-     - [Copy Track Settings](#copy-track-settings)
-     - [Paste Track SetTings (coming soon)](#paste-track-settings-coming-soon)
-     - [Clear a Track](#clear-a-track)
-     - [Delete a Track](#delete-a-track)
 4. [Editing Sub-Items](#4-editing-sub-items)
-   - [1. Instrument Ranges Information](#1-instrument-ranges-information)
-   - [2. Articulations (Toggle) Information](#2-articulations-toggle-information)
-   - [3. Articulations (Tap) Information](#3-articulations-tap-information)
-   - [4. Additional Layers Information](#4-additional-layers-information)
-   - [5. Faders Information](#5-faders-information)
+   - [1. Instrument Ranges](#1-instrument-ranges)
+   - [2. Articulations (Toggle)](#2-articulations-toggle)
+   - [3. Articulations (Tap)](#3-articulations-tap)
+   - [4. Additional Layers](#4-additional-layers)
+   - [5. Faders](#5-faders)
    - [6. Context Menu](#6-context-menu)
-     - [Move a Sub-Item Up (coming soon)](#move-a-sub-item-up-coming-soon)
-     - [Move a Sub-Item Down (coming soon)](#move-a-sub-item-down-coming-soon)
-     - [Add Sub-Items Above Currently Selected Sub-Item (coming soon)](#add-sub-items-above-currently-selected-sub-item-coming-soon)
-     - [Add Sub-Items Below Currently Selected Sub-Item (coming soon)](#add-sub-items-below-currently-selected-sub-item-coming-soon)
-     - [Add Sub-Items At End of Sub-Items List](#add-sub-items-at-end-of-sub-items-list)
-     - [Duplicate Sub-Item Above Currently Selected Sub-Item (coming soon)](#duplicate-sub-item-above-currently-selected-sub-item-coming-soon)
-     - [Duplicate Sub-Item Below Currently Selected Sub-Item (coming soon)](#duplicate-sub-item-below-currently-selected-sub-item-coming-soon)
-     - [Duplicate Sub-Item At End of Sub-Item List (coming soon)](#duplicate-sub-item-at-end-of-sub-item-list-coming-soon)
-     - [Copy Sub-Item Settings](#copy-sub-item-settings)
-     - [Paste Sub-Item SetTings (coming soon)](#paste-sub-item-settings-coming-soon)
-     - [Clear a Sub-Item (coming soon)](#clear-a-sub-item-coming-soon)
-     - [Delete a Sub-Item](#delete-a-sub-item)
 5. [Editing Settings](#5-editing-settings)
 6. [Import, Export, and Flush DB](#6-import-export-and-flush-db)
 
@@ -84,8 +60,6 @@
 ## 1. Install Template.io
 
 ### Option A. Download the Binary (coming soon)
-
-#### 1. Download the binary for your system from the releases page (coming soon).
 
 ### Option B. Build Template.io from Source
 
@@ -148,11 +122,12 @@ If you have already cloned the repository and would like to update it, navigate 
 
 ## 2. Launch Template.io
 
-1. Navigate to where you downloaded template-io.exe, or to where you built it from source, and launch the app.
+1. Navigate to where you downloaded template-io.exe (e.g., C:\Users\USERNAME\Downloads\template-io.exe), or to where you built it from source (e.g., C:\PATH\TO\template.io\src-tauri\target\release\template-io.exe), and launch the app.
 2. Upon the very first startup, Template.io will generate a new directory relative to your systems' home directory (_on Windows, this will be C:\Users\USERNAME\template.io_) containing two files:
    1. settings.json
    2. database.sqlite
-3. Do not move or delete these files while Template.io is running, as this will cause the app to crash. If you do, simply restart the app and it will generate new files. However, if you do delete these files, you will lose all of your data.
+
+> **⚠️ Do not move or delete these files while Template.io is running, as this will cause the app to crash. If you do, simply restart the app and it will generate new files. However, if you do delete these files, you will lose all of your data.**
 
 ![Application Folder](./assets/Images/application-folder.png)
 
@@ -231,7 +206,7 @@ To add a track, right-click on a track in the list and select "Add # Track At En
 
 ## 4. Editing Sub-Items
 
-### 1. Instrument Ranges Information
+### 1. Instrument Ranges
 
 - `id: T_{number}_FR_{number}` unique and not editable
 - `name: string`
@@ -241,9 +216,9 @@ To add a track, right-click on a track in the list and select "Add # Track At En
   - _TBD ADJUSTABLE IN SETTINGS_, but "Middle C" is always Note 60
 - `white_keys_only: boolean`
 
-![Instrument Ranges Information](./assets/Images/ranges-info.png)
+![Instrument Ranges](./assets/Images/ranges-info.png)
 
-### 2. Articulations (Toggle) Information
+### 2. Articulations (Toggle)
 
 - `id: T_{number}_AT_{number}` unique and not editable
 - `name: string`
@@ -267,13 +242,13 @@ To add a track, right-click on a track in the list and select "Add # Track At En
 - `art_layers_on: string` list of Additional Layer ids, these will fire all together in the Open Stage Control custom module
 - `art_layers_off: string` list of Additional Layer ids, these will fire all together in the Open Stage Control custom module
 
-![Articulations (Toggle) Information](./assets/Images/articulations-toggle-info.png)
+![Articulations (Toggle)](./assets/Images/articulations-toggle-info.png)
 
 ![Articulations (Toggle) Ranges Selection](./assets/Images/art-tog-ranges.png)
 
 ![Articulations (Toggle) Layers Selection](./assets/Images/art-tog-layers.png)
 
-### 3. Articulations (Tap) Information
+### 3. Articulations (Tap)
 
 - `id: T_{number}_AT_{number}` unique and not editable, the count will always start after the last Toggle Articulation
 - `name: string`
@@ -294,13 +269,13 @@ To add a track, right-click on a track in the list and select "Add # Track At En
 - `layers_together: boolean` whether Additional Layers fire all together or one-at-a-time in the custom module.
 - `default_layer: string` default Additional Layer if the layers fire one-at-a-time, only one layer may be default. If no default layer is selected, the Open Stage Control custom module will use the first layer in the list for the default.
 
-![Articulations (Tap) Information](./assets/Images/articulations-tap-info.png)
+![Articulations (Tap)](./assets/Images/articulations-tap-info.png)
 
 ![Articulations (Tap) Range Selection](./assets/Images/art-tap-ranges.png)
 
 ![Articulations (Tap) Layers Selection](./assets/Images/art-tap-layers.png)
 
-### 4. Additional Layers Information
+### 4. Additional Layers
 
 - `id: T_{number}_AL_{number}` unique and not editable
 - `name: string`
@@ -311,9 +286,9 @@ To add a track, right-click on a track in the list and select "Add # Track At En
     - if `code_type = /note`, then `code: 0-127`
 - `on: number` 0-127
 
-![Additional Layers Information](./assets/Images/additional-layers-info.png)
+![Additional Layers](./assets/Images/additional-layers-info.png)
 
-### 5. Faders Information
+### 5. Faders
 
 - `id: T_{number}_FL_{number}` unique and not editable
 - `name: string`
@@ -328,7 +303,7 @@ To add a track, right-click on a track in the list and select "Add # Track At En
     - Value 1 = the DEFAULT value relates to the CODE itself (e.g. DEFAULT = CC11)
     - Value 2 = the DEFAULT value relates to the CODE's second Value (e.g. CODE = C#3, DEFAULT = Velocity 20)
 
-![Faders Information](./assets/Images/faders-info.png)
+![Faders](./assets/Images/faders-info.png)
 
 ### 6. Context Menu
 
@@ -374,8 +349,6 @@ Template.io imports and exports JSON files with this schema (TBD).
 
 # How To Use Template.io with Open Stage Control and Cubase
 
-_Note: to my knowledge, this only works in real-time in Cubase._
-
 ## 1. Download the Custom Module and Generic Remote Files
 
 1. /assets/for-osc/**template-io-workfile.json**
@@ -387,7 +360,7 @@ _Note: to my knowledge, this only works in real-time in Cubase._
 
 Once you have exported a track list, you must now add it to top of the **template-io-custom-module.js** file.
 
-```JS
+```js
 const allTrack_jsn = loadJSON('YOUR_TRACK_LIST.json')
 ```
 
@@ -429,10 +402,9 @@ In a command prompt or terminal, navigate to the directory where you would like 
 2.  ```
     cd open-stage-control/
     ```
-3.  ```
-    # uncomment next line if you want the latest release
-    # instead of the current development version
-    # git checkout $(git describe --tags `git rev-list --tags --max-count=1`)
+3.  _Optional! Only if you want the latest release instead of the current development version._
+    ```
+    git checkout $(git describe --tags `git rev-list --tags --max-count=1`)
     ```
 4.  ```
     npm install
@@ -496,7 +468,7 @@ The in/out configuration works like this:
 | **OSC3**           | **↔** | **OSC3** | Yes                  |
 | **OSC4**           | **→**  | **OSC4** | Yes                  |
 
-_Also, if you use a touchscreen that is connect via USB (as opposed to a tablet using WIFI), I recommend that you add `nofocus=1` to the 'client-options' input._
+Also, if you use a touchscreen that is connect via USB (as opposed to a tablet using WIFI), I recommend that you add `nofocus=1` to the 'client-options' input.
 
 ![Open Stage Control Setup](./assets/Images/osc-launcher.png)
 
@@ -562,7 +534,7 @@ This is how it maps to the Template.io:
 
 ## 6. Setup Cubase
 
-**_NOTE: TEMPLATE.IO WAS BUILT AROUND CUBASE VERSION 11 AND 12, IT HAS NOT BEEN TESTED ON ANY OF THE LATER VERSIONS_**
+> **⚠️ Note: Template.io was built around Cubase version 11 and 12, it has not been tested on any of the later versions**
 
 ### 1. Assign MIDI ports
 
@@ -572,13 +544,14 @@ Now in Cubase, open Studio Setup to setup your MIDI ports to match the schema ab
 
 ### 2. Add Generic Remote
 
-In Studio Setup, create a new Generic Remote by clicking "Add Device"
+1. Open Cubase and navigate to `Studio > Studio Setup`.
+2. In the `Studio Setup` window, click on `Add Device` and select `Generic Remote`.
+3. Set the `MIDI Output` to `OSC3`.
+4. Click on `Import` and select the `template-io-generic-remote.xml` file.
 
-Set the MIDI Output to OSC3 and import **template-io-generic-remote.xml**
+This generic remote setup in Cubase is configured to transmit `Control Code 126 at Value 1 on Channel 1 on Port OSC3` every time a MIDI track is selected.
 
 ![Generic Remote Setup](./assets/Images/template-io-generic-remote.png)
-
-This generic remote tells Cubase to transmit `Control Code 126 at Value 1 on Channel 1 on Port OSC3` every time a MIDI track is selected.
 
 In our custom module, every time Open Stage Control receives this exact MIDI signal, it will send `Control Code 127 at Value 127 on Channel 1 on Port OSC4` back to Cubase.
 
@@ -617,7 +590,7 @@ if (port === 'OSC3' && address === '/control') {
 
 ## 7. Build Your Template!
 
-_Note: Unfortunately, for the time being (as of Cubase v12.0.7), since there is no MIDI send feature on instrument tracks, audio tracks, or any other track other than MIDI tracks, your template will have to primarily use MIDI tracks routed to rack instrument tracks in Cubase or to Vienna Ensemble Pro._
+> **⚠️ Note: Unfortunately, for the time being (as of Cubase v12.0.7), since there is no MIDI send feature on instrument tracks, audio tracks, or any other track other than MIDI tracks, your template will have to primarily use MIDI tracks routed to rack instrument tracks in Cubase or to Vienna Ensemble Pro.**
 
 ### 1. Create Tracks
 
@@ -665,6 +638,6 @@ Okay let's make sure we have everything we need:
 - Cubase Generic Remote setup with correct MIDI ports
 - MIDI tracks created with Transformers and unique Polyphonic Key Pressure Signal correctly mapped to the `T_{number}` id of every track in the Track List
 
-Great! Now every time we select a track, Open Stage Control will populate the correct parameters for that track and we can not **_finally_** start writing music!
+Great! Now every time we select a track, Open Stage Control will populate the correct parameters for that track and we can now **_finally_** start writing music!
 
 ![custom module in action](./assets/Images/custom-module-in-action.gif)
