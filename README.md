@@ -6,34 +6,78 @@
 
 # Table of Contents
 
-1. [How To Use Template.io Standalone](#how-to-use-templateio-standalone)
+[How To Use Template.io Standalone](#how-to-use-templateio-standalone)
 
-   1. [Install Template.io](#1-install-templateio)
-      - [Option A. Download the Binary (coming soon)](#option-a-download-the-binary-coming-soon)
-      - [Option B. Build Template.io from Source](#option-b-build-templateio-from-source)
-   2. [Launch Template.io](#2-launch-templateio)
-   3. [Explanation of Layout](#3-explanation-of-layout)
-   4. [Editing Tracks](#4-editing-tracks)
-      - [Main Track Information](#1-main-track-information)
-      - [Context Menu](#2-context-menu)
-   5. [Editing Sub-Items](#5-editing-sub-items)
-      - [Instrument Ranges Information](#1-instrument-ranges-information)
-      - [Articulations (Toggle) Information](#2-articulations-toggle-information)
-      - [Articulations (Tap) Information](#3-articulations-tap-information)
-      - [Additional Layers Information](#4-additional-layers-information)
-      - [Faders Information](#5-faders-information)
-      - [Context Menu](#6-context-menu)
-   6. [Editing Settings](#6-editing-settings)
-   7. [Import/Export/Flush DB](#7-importexportflush-db)
+1. [Install Template.io](#1-install-templateio)
+   - [Option A. Download the Binary (coming soon)](#option-a-download-the-binary-coming-soon)
+   - [Option B. Build Template.io from Source](#option-b-build-templateio-from-source)
+     - [1. Configure Requirements (Windows)](#1-configure-requirements-windows)
+     - [2. Build Template.io](#2-build-templateio)
+     - [3. Update Template.io from Source](#3-update-templateio-from-source)
+2. [Launch Template.io](#2-launch-templateio)
+   - [Explanation of Layout](#explanation-of-layout)
+3. [Editing Tracks](#3-editing-tracks)
+   - [1. Main Track Information](#1-main-track-information)
+   - [2. Context Menu](#2-context-menu)
+     - [Move a Track Up (coming soon)](#move-a-track-up-coming-soon)
+     - [Move a Track Down (coming soon)](#move-a-track-down-coming-soon)
+     - [Add Tracks Above Currently Selected Track (coming soon)](#add-tracks-above-currently-selected-track-coming-soon)
+     - [Add Tracks Below Currently Selected Track (coming soon)](#add-tracks-below-currently-selected-track-coming-soon)
+     - [Add Tracks At End of Track List](#add-tracks-at-end-of-track-list)
+     - [Duplicate Track Above Currently Selected Track (coming soon)](#duplicate-track-above-currently-selected-track-coming-soon)
+     - [Duplicate Track Below Currently Selected Track (coming soon)](#duplicate-track-below-currently-selected-track-coming-soon)
+     - [Duplicate Track At End of Track List (coming soon)](#duplicate-track-at-end-of-track-list-coming-soon)
+     - [Copy Track Settings](#copy-track-settings)
+     - [Paste Track SetTings (coming soon)](#paste-track-settings-coming-soon)
+     - [Clear a Track](#clear-a-track)
+     - [Delete a Track](#delete-a-track)
+4. [Editing Sub-Items](#4-editing-sub-items)
+   - [1. Instrument Ranges Information](#1-instrument-ranges-information)
+   - [2. Articulations (Toggle) Information](#2-articulations-toggle-information)
+   - [3. Articulations (Tap) Information](#3-articulations-tap-information)
+   - [4. Additional Layers Information](#4-additional-layers-information)
+   - [5. Faders Information](#5-faders-information)
+   - [6. Context Menu](#6-context-menu)
+     - [Move a Sub-Item Up (coming soon)](#move-a-sub-item-up-coming-soon)
+     - [Move a Sub-Item Down (coming soon)](#move-a-sub-item-down-coming-soon)
+     - [Add Sub-Items Above Currently Selected Sub-Item (coming soon)](#add-sub-items-above-currently-selected-sub-item-coming-soon)
+     - [Add Sub-Items Below Currently Selected Sub-Item (coming soon)](#add-sub-items-below-currently-selected-sub-item-coming-soon)
+     - [Add Sub-Items At End of Sub-Items List](#add-sub-items-at-end-of-sub-items-list)
+     - [Duplicate Sub-Item Above Currently Selected Sub-Item (coming soon)](#duplicate-sub-item-above-currently-selected-sub-item-coming-soon)
+     - [Duplicate Sub-Item Below Currently Selected Sub-Item (coming soon)](#duplicate-sub-item-below-currently-selected-sub-item-coming-soon)
+     - [Duplicate Sub-Item At End of Sub-Item List (coming soon)](#duplicate-sub-item-at-end-of-sub-item-list-coming-soon)
+     - [Copy Sub-Item Settings](#copy-sub-item-settings)
+     - [Paste Sub-Item SetTings (coming soon)](#paste-sub-item-settings-coming-soon)
+     - [Clear a Sub-Item (coming soon)](#clear-a-sub-item-coming-soon)
+     - [Delete a Sub-Item](#delete-a-sub-item)
+5. [Editing Settings](#5-editing-settings)
+6. [Import, Export, and Flush DB](#6-import-export-and-flush-db)
 
-2. [How To Use Template.io with Open Stage Control and Cubase](#how-to-use-templateio-with-open-stage-control-and-cubase)
-   1. [Follow the Instructions Above to Download and Setup Template.io](#1-follow-the-instructions-above-to-download-and-setup-templateio)
-   2. [Setup MIDI Ports](#2-setup-midi-ports)
-   3. [Download the Custom Module and Generic Remote Files](#3-download-the-custom-module-and-generic-remote-files)
-   4. [Setup Open Stage Control](#4-setup-open-stage-control)
-   5. [Setup Cubase](#5-setup-cubase)
-   6. [Build Your Template! (eventually...)](#6-build-your-template-eventually)
-   7. [Custom Module in Action](#7-custom-module-in-action)
+[How To Use Template.io with Open Stage Control and Cubase](#how-to-use-templateio-with-open-stage-control-and-cubase)
+
+1. [Download the Custom Module and Generic Remote Files](#1-download-the-custom-module-and-generic-remote-files)
+2. [Follow the Instructions Above to Download and Setup Template.io](#2-follow-the-instructions-above-to-download-and-setup-templateio)
+3. [Setup MIDI Ports](#3-setup-midi-ports)
+4. [Download Open Stage Control](#4-download-open-stage-control)
+   - [Option A. Download .zip (recommended)](#option-a-download-zip-recommended)
+   - [Option B. Build Open Stage Control From Source](#option-b-build-open-stage-control-from-source)
+     - [1. Configure Open Stage Control Requirements (Windows)](#1-configure-open-stage-control-requirements-windows)
+     - [2. Build Open Stage Control](#2-build-open-stage-control)
+     - [3. Update Open Stage Control from Source](#3-update-open-stage-control-from-source)
+     - [4. Package an Open Stage Control Binary (Windows)](#4-package-an-open-stage-control-binary-windows)
+5. [Launch Open Stage Control](#5-launch-open-stage-control)
+   - [Option A. Launch from Executable](#option-a-launch-from-executable)
+   - [Option B. Launch from Terminal](#option-b-launch-from-terminal)
+   - [Option C. How JP Launches Open Stage Control](#option-c-how-jp-launches-open-stage-control)
+   - [Explanation of Layout](#explanation-of-layout)
+6. [Setup Cubase](#6-setup-cubase)
+   - [1. Assign MIDI ports](#1-assign-midi-ports)
+   - [2. Add Generic Remote](#2-add-generic-remote)
+7. [Build Your Template!](#7-build-your-template)
+   - [1. Create Tracks](#1-create-tracks)
+   - [2. For Each Track, Add a Transformer on the MIDI Sends with Port OSC3](#2-for-each-track-add-a-transformer-on-the-midi-sends-with-port-osc3)
+   - [3. Bonus! Empty Tracks](#3-bonus-empty-tracks)
+8. [Custom Module in Action](#8-custom-module-in-action)
 
 # How To Use Template.io Standalone
 
@@ -112,7 +156,7 @@ If you have already cloned the repository and would like to update it, navigate 
 
 ![Application Folder](./assets/Images/application-folder.png)
 
-## 3. Explanation of Layout
+### Explanation of Layout
 
 Now that we've successfully launched Template.io, let's go over the layout of the app. This is what you will see when you first open the app:
 
@@ -133,7 +177,7 @@ The sub-items in the Track Details can be displayed as either a table or as card
 
 ![Sub-Items Tables or Cards](./assets/Images/template-io-sub-items-cards.png)
 
-## 4. Editing Tracks
+## 3. Editing Tracks
 
 ### 1. Main Track Information
 
@@ -157,35 +201,35 @@ The sub-items in the Track Details can be displayed as either a table or as card
 
 ### 2. Context Menu
 
-#### - _Move a Track Up (coming soon)_
+#### _Move a Track Up (coming soon)_
 
-#### - _Move a Track Down (coming soon)_
+#### _Move a Track Down (coming soon)_
 
-#### - _Add Tracks Above Currently Selected Track (coming soon)_
+#### _Add Tracks Above Currently Selected Track (coming soon)_
 
-#### - _Add Tracks Below Currently Selected Track (coming soon)_
+#### _Add Tracks Below Currently Selected Track (coming soon)_
 
-#### - Add Tracks At End of Track List
+#### Add Tracks At End of Track List
 
 To add a track, right-click on a track in the list and select "Add # Track At End". To change the number of tracks you want to add, adjust the number in the input box. This can also be adjusted in the settings.
 
 ![Track Context Menu](./assets/Images/track-context-menu.png)
 
-#### - _Duplicate Track Above Currently Selected Track (coming soon)_
+#### _Duplicate Track Above Currently Selected Track (coming soon)_
 
-#### - _Duplicate Track Below Currently Selected Track (coming soon)_
+#### _Duplicate Track Below Currently Selected Track (coming soon)_
 
-#### - _Duplicate Track At End of Track List (coming soon)_
+#### _Duplicate Track At End of Track List (coming soon)_
 
-#### - Copy Track Settings
+#### Copy Track Settings
 
-#### - _Paste Track SetTings (coming soon)_
+#### _Paste Track SetTings (coming soon)_
 
-#### - Clear a Track
+#### Clear a Track
 
-#### - Delete a Track
+#### Delete a Track
 
-## 5. Editing Sub-Items
+## 4. Editing Sub-Items
 
 ### 1. Instrument Ranges Information
 
@@ -288,39 +332,39 @@ To add a track, right-click on a track in the list and select "Add # Track At En
 
 ### 6. Context Menu
 
-#### - _Move a Sub-Item Up (coming soon)_
+#### _Move a Sub-Item Up (coming soon)_
 
-#### - _Move a Sub-Item Down (coming soon)_
+#### _Move a Sub-Item Down (coming soon)_
 
-#### - _Add Sub-Items Above Currently Selected Sub-Item (coming soon)_
+#### _Add Sub-Items Above Currently Selected Sub-Item (coming soon)_
 
-#### - _Add Sub-Items Below Currently Selected Sub-Item (coming soon)_
+#### _Add Sub-Items Below Currently Selected Sub-Item (coming soon)_
 
-#### - Add Sub-Items At End of Sub-Items List
+#### Add Sub-Items At End of Sub-Items List
 
 To add a sub-item, right-click on a sub-item and follow the same procedure as above for tracks. The number input for adding sub-items is independent from the number input for adding tracks, and can also be adjusted in the settings.
 
 ![Sub-Item Context Menu](./assets/Images/sub-item-context-menu.png)
 
-#### - _Duplicate Sub-Item Above Currently Selected Sub-Item (coming soon)_
+#### _Duplicate Sub-Item Above Currently Selected Sub-Item (coming soon)_
 
-#### - _Duplicate Sub-Item Below Currently Selected Sub-Item (coming soon)_
+#### _Duplicate Sub-Item Below Currently Selected Sub-Item (coming soon)_
 
-#### - _Duplicate Sub-Item At End of Sub-Item List (coming soon)_
+#### _Duplicate Sub-Item At End of Sub-Item List (coming soon)_
 
-#### - Copy Sub-Item Settings
+#### Copy Sub-Item Settings
 
-#### - _Paste Sub-Item SetTings (coming soon)_
+#### _Paste Sub-Item SetTings (coming soon)_
 
-#### - _Clear a Sub-Item (coming soon)_
+#### _Clear a Sub-Item (coming soon)_
 
-#### - Delete a Sub-Item
+#### Delete a Sub-Item
 
-## 6. Editing Settings
+## 5. Editing Settings
 
 ![Template.io Settings](./assets/Images/template-io-settings.png)
 
-## 7. Import/Export/Flush DB
+## 6. Import, Export, and Flush DB
 
 Template.io imports and exports JSON files with this schema (TBD).
 
@@ -332,37 +376,115 @@ Template.io imports and exports JSON files with this schema (TBD).
 
 _Note: to my knowledge, this only works in real-time in Cubase._
 
-## 1. Follow the Instructions Above to Download and Setup Template.io
+## 1. Download the Custom Module and Generic Remote Files
 
-## 2. Setup MIDI Ports
+1. /assets/for-osc/**template-io-workfile.json**
+2. /assets/for-osc/**template-io-custom-module.js**
+3. /assets/for-cubase/**template-io-generic-remote.xml**
+4. /assets/for-cubase/**template-io-empty-tracks.cpr**
 
-1. If on MAC, use your IAC driver to create 4 virtual MIDI ports named OSC1, OSC2, OSC3, and OSC4
-2. If on PC, download [**loopMIDI**](https://www.tobias-erichsen.de/software/loopmidi.html) and create the same 4 virtual MIDI ports
+## 2. Follow the Instructions Above to Download and Setup Template.io
 
-   <!--![loopMIDI Setup](./assets/Images/loopMIDI.png)-->
+Once you have exported a track list, you must now add it to top of the **template-io-custom-module.js** file.
+
+```JS
+const allTrack_jsn = loadJSON('YOUR_TRACK_LIST.json')
+```
+
+## 3. Setup MIDI Ports
+
+1. For Mac, use your IAC driver to create 4 virtual MIDI ports named OSC1, OSC2, OSC3, and OSC4
+2. For Windows, download [**loopMIDI**](https://www.tobias-erichsen.de/software/loopmidi.html) and create the same 4 virtual MIDI ports
+
    <img src="./assets/Images/loopMIDI.png" width="450">
 
-## 3. Download the Custom Module and Generic Remote Files
+## 4. Download Open Stage Control
 
-These files are already setup in the repository:
+### Option A. Download .zip (recommended)
 
-1. template.io/assets/for-osc/template-io-workfile.json
-2. template.io/assets/for-osc/template-io-custom-module.js
-3. template.io/assets/for-cubase/template-io-generic-remote.xml
-4. template.io/assets/for-cubase/template-io-empty-tracks.cpr
+Navigate to [**Open Stage Control**](https://github.com/jean-emmanuel/open-stage-control/releases/) and download the most recent **open-stage-control_X.XX.X_win32-x64.zip** file.
 
-## 4. Setup Open Stage Control
+### Option B. Build Open Stage Control From Source
 
-Download and launch [**Open Stage Control**](https://github.com/jean-emmanuel/open-stage-control.git). Add the locations for the **template-io-workfile.json** and the **template-io-custom-module.js** files in the 'load' and 'custom-module' inputs, respectively.
+#### 1. Configure Open Stage Control Requirements (Windows)
+
+Requirements 1-2 are pulled from [**Running from sources**](https://openstagecontrol.ammd.net/docs/getting-started/running-from-sources/).
+Requirements 3-4 are pulled from [**MIDI configuration**](https://openstagecontrol.ammd.net/docs/midi/midi-configuration/#__tabbed_1_2)
+
+1. [**Git**](https://git-scm.com/downloads)
+
+2. [**Node.js**](https://nodejs.org/en/download/) - **version 16 and above**
+
+3. [**python 3**](https://www.python.org/downloads/windows/)
+
+4. [**python package python-rtmidi**](https://spotlightkid.github.io/python-rtmidi/installation.html#from-pypi)
+
+#### 2. Build Open Stage Control
+
+In a command prompt or terminal, navigate to the directory where you would like to download the repository and run the following commands:
+
+1.  ```
+    git clone https://github.com/jean-emmanuel/open-stage-control
+    ```
+2.  ```
+    cd open-stage-control/
+    ```
+3.  ```
+    # uncomment next line if you want the latest release
+    # instead of the current development version
+    # git checkout $(git describe --tags `git rev-list --tags --max-count=1`)
+    ```
+4.  ```
+    npm install
+    ```
+5.  ```
+    npm run build
+    ```
+
+#### 3. Update Open Stage Control from Source
+
+If you have already cloned the repository and would like to update it, navigate to the root of the repository in a command prompt or terminal and run the following commands:
+
+1.  ```
+    git pull
+    ```
+2.  ```
+    npm install
+    ```
+3.  ```
+    npm run build
+    ```
+
+#### 4. Package an Open Stage Control Binary (Windows)
+
+If you would like to package an executable as opposed to running from a command prompt, you can open a command prompt or terminal, navigate to the root of the repository and run:
+
+1. ```
+   export PLATFORM=win32
+   ```
+2. ```
+   export ARCH=x64
+   ```
+3. ```
+   npm run package
+   ```
+
+The binary should build relative to the repository:
+
+**_C:\PATH\TO\open-stage-control\dist\open-stage-control-win32-x64\open-stage-control.exe_**
+
+## 5. Launch Open Stage Control
+
+### Option A. Launch from Executable
+
+When you launch the executable, a launcher GUI will pop-up. Add the locations for the **template-io-workfile.json** and the **template-io-custom-module.js** files in the 'load' and 'custom-module' inputs, respectively.
 
 Add the MIDI ports that we created above by pasting the following into the MIDI input:
 
 ```JS
-OSC1:null,OSC1 OSC2:OSC2,OSC2 OSC3:OSC3,OSC3 OSC4:null,OSC4
-```
-
-```JS
-//port1:input,output port2:input,output
+OSC1:-1,OSC1 OSC2:OSC2,OSC2 OSC3:OSC3,OSC3 OSC4:-1,OSC4
+//device_name:input,output
+//-1 will bypass the input/output
 ```
 
 The in/out configuration works like this:
@@ -374,34 +496,175 @@ The in/out configuration works like this:
 | **OSC3**           | **↔** | **OSC3** | Yes                  |
 | **OSC4**           | **→**  | **OSC4** | Yes                  |
 
-_Note: if you are already using Open Stage Control and have a your own ports, custom-module, workfile, etc. setup, I still recommend going through these steps to see how the system works._
-
-_Also, if you use a touchscreen that is connect via USB (as opposed to a tablet using WIFI), I recommend that you add the following to the 'client-options' input:_
-
-```
-nofocus=1
-```
+_Also, if you use a touchscreen that is connect via USB (as opposed to a tablet using WIFI), I recommend that you add `nofocus=1` to the 'client-options' input._
 
 ![Open Stage Control Setup](./assets/Images/osc-launcher.png)
 
-## 5. Setup Cubase
+### Option B. Launch from Terminal
 
-Now in Cubase, setup your MIDI ports to match the scheme above, create a new Generic Remote, and import **template-io-generic-remote.xml**. This tells Cubase to transmit Control Code 126 at Value 1 on Channel 1 on Port OSC3 every time a MIDI track is selected. Because of our custom-module, every time Open Stage Control receives this exact MIDI signal, it will send Control Code 127 at Value 127 on Channel 1 on Port OSC4 back to Cubase.
+If you have built Open Stage Control from source, you can open a command prompt or terminal, navigate to the root of the repository and run:
+
+Option 1.
+
+```
+npm start
+```
+
+Option 2.
+
+```
+npm start [ -- options]
+```
+
+If you add the [-- options], the launcher GUI will **_not_** pop-up and you will need to pass all of the options in directly.
+
+### Option C. How JP Launches Open Stage Control
+
+I have a .BAT script similar to this one loaded on a Stream Deck, so I just press one button and skip the launcher GUI. Note that I am still using the built executable in this script, but in theory, you could still use `npm start`.
+
+```bat
+@echo off
+
+set directory=C:\PATH\TO\open-stage-control\dist\open-stage-control-win32-x64
+@REM set directory=C:\PATH\TO\open-stage-control
+set workfile=C:\PATH\TO\template-io-workfile.json
+set custom_module=C:\PATH\TO\template-io-custom-module.js
+set midi=OSC1:-1,OSC1 OSC2:OSC2,OSC2 OSC3:OSC3,OSC3 OSC4:-1,OSC4
+set client_options=nofocus=1
+
+start "Open Stage Control" /d "%directory%" /min cmd /k "open-stage-control.exe -- --load %workfile% --custom-module %custom_module% --midi %midi% --client-options %client_options%"
+@REM start "Open Stage Control" /d "%directory%" /min cmd /k "npm start -- --load %workfile% --custom-module %custom_module% --midi %midi% --client-options %client_options%"
+```
+
+### Explanation of Layout
+
+Below is my personal template, located at **assets/jps-template/template-io-workfile.json**, with red boxes showing where Template.io maps to.
+
+![JP's Template Marked](./assets/Images/jps-template-marked.png)
+
+This is how it maps to the Template.io:
+
+- Instrument Ranges
+
+  ![Instrument Ranges in Workfile](./assets/Images/ranges-workfile.png)
+
+- Articulations (Toggle in brown, Tap in green)
+
+  ![Articulations in Workfile](./assets/Images/articulations-workfile.png)
+
+- Additional Layers
+
+  ![Additional Layers in Workfile](./assets/Images/layers-workfile.png)
+
+- Faders
+
+  ![Faders in Workfile](./assets/Images/faders-workfile.png)
+
+## 6. Setup Cubase
+
+**_NOTE: TEMPLATE.IO WAS BUILT AROUND CUBASE VERSION 11 AND 12, IT HAS NOT BEEN TESTED ON ANY OF THE LATER VERSIONS_**
+
+### 1. Assign MIDI ports
+
+Now in Cubase, open Studio Setup to setup your MIDI ports to match the schema above.
 
 ![Cubase Ports Setup](./assets/Images/cubase-port-setup.png)
 
+### 2. Add Generic Remote
+
+In Studio Setup, create a new Generic Remote by clicking "Add Device"
+
+Set the MIDI Output to OSC3 and import **template-io-generic-remote.xml**
+
 ![Generic Remote Setup](./assets/Images/template-io-generic-remote.png)
 
-## 6. Build Your Template! (eventually...)
+This generic remote tells Cubase to transmit `Control Code 126 at Value 1 on Channel 1 on Port OSC3` every time a MIDI track is selected.
 
-_Note: Unfortunately, for the time being, since there is no MIDI send feature on instrument tracks, audio tracks, or any other track other than MIDI tracks, your template will have to primarily use MIDI tracks routed to instrument tracks or a hosting companion such as Vienna Ensemble Pro._
+In our custom module, every time Open Stage Control receives this exact MIDI signal, it will send `Control Code 127 at Value 127 on Channel 1 on Port OSC4` back to Cubase.
 
-Create empty MIDI tracks and start naming and routing them as you would normally, however, be sure to add a transformer on the MIDI sends for the track. This will receive the signal that Open Stage Control just sent (in response to the signal Cubase sent when the track was selected) and return a Polyphonic Key Pressure signal on port OSC3 that is completely unique to every track.
+```js
+////// ln. 65-76
 
-I know this seems like a hassle, so I took the liberty of setting up these transformers on over 300 empty MIDI tracks so you wouldn't have to! These tracks are available in the **template-io-empty-tracks.cpr** file and are all disabled for you to activate anytime you wish to add a new instrument. I recommend you import these into your template, or use the file to start a new one.
+/**
+ * @param {126} arg1_OSC3
+ * @param {0 | 1} arg2_OSC3
+ */
+function toggles_OSC3(arg1_OSC3, arg2_OSC3) {
+  if (arg1_OSC3 === 126 && arg2_OSC3 === 1) {
+    toggleSendUpdate = true
+  }
+  if (arg1_OSC3 === 126 && arg2_OSC3 === 0) {
+    toggleSendUpdate = false
+  }
+}
+
+////// ln. 78-81
+
+function sendUpdateCode() {
+  send('midi', 'OSC4', '/control', 1, 127, 127)
+}
+
+////// ln. 196-206
+
+if (port === 'OSC3' && address === '/control') {
+  toggles_OSC3(arg1, arg2)
+  if (toggleAutoUpdate && toggleSendUpdate) {
+    sendUpdateCode()
+    toggleSendUpdate = false
+  }
+}
+```
+
+## 7. Build Your Template!
+
+_Note: Unfortunately, for the time being (as of Cubase v12.0.7), since there is no MIDI send feature on instrument tracks, audio tracks, or any other track other than MIDI tracks, your template will have to primarily use MIDI tracks routed to rack instrument tracks in Cubase or to Vienna Ensemble Pro._
+
+### 1. Create Tracks
+
+Create empty MIDI tracks and start naming and routing them as you would normally. I personally name these verbatim what I have in my Template.io track list.
+
+### 2. For Each Track, Add a Transformer on the MIDI Sends with Port OSC3
+
+![transformer setup](./assets/Images/cubase-transformer-sends.png)
+
+![transformer target](./assets/Images/cubase-transformer-target.png)
+
+This will receive the signal that Open Stage Control just sent (in response to the signal Cubase sent when the track was selected) and return a `Polyphonic Key Pressure signal on port OSC3` that is completely unique to every track.
+
+This number is calculated in the Custom Module like so:
+
+```js
+if (address !== '/key_pressure') return data
+
+const trkNumb = arg1 * 128 + arg2
+
+// address = "Poly Pressure" in the "Event Transform Actions" in the picture above
+// arg1 = "Value 1" in the "Event Transform Actions" in the picture above
+// arg2 = "Value 2" in the "Event Transform Actions" in the picture above
+```
+
+The `trkNumb` will reference the index of the tracks in the track list, which is ordered by the `T_{number}` id that every track is given.
+
+```js
+const track = items[trkNumb]
+```
+
+### 3. Bonus! Empty Tracks
+
+I know adding transformers on each track seems like a hassle, so I took the liberty of setting up these transformers on **384** empty MIDI tracks so you wouldn't have to! These tracks are available in the **template-io-empty-tracks.cpr** file and are all disabled for you to activate anytime you wish to add a new instrument. I recommend you import these into your template, or use the file to start a new one.
 
 ![transformer setup](./assets/Images/cubase-transformer.png)
 
-## 7. Custom Module in Action
+## 8. Custom Module in Action
+
+Okay let's make sure we have everything we need:
+
+- Track List populated with track parameters and loaded into the Open Stage Control custom module
+- Open Stage Control launched with correct MIDI ports
+- Cubase MIDI ports setup with correct in/out configuration
+- Cubase Generic Remote setup with correct MIDI ports
+- MIDI tracks created with Transformers and unique Polyphonic Key Pressure Signal correctly mapped to the `T_{number}` id of every track in the Track List
+
+Great! Now every time we select a track, Open Stage Control will populate the correct parameters for that track and we can not **_finally_** start writing music!
 
 ![custom module in action](./assets/Images/custom-module-in-action.gif)
