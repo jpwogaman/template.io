@@ -215,7 +215,7 @@ module.exports = {
 
     const track = items[trkNumb]
 
-    if (!track) {
+    if (!track || trkNumb !== parseInt(track.id.split('_')[1])) {
       receive('/selected_track_name', 'No Track Data!')
       receive('/selected_track_delays', ' ')
       receive('/selected_track_notes', ' ')
