@@ -154,30 +154,30 @@ The sub-items in the Track Details can be displayed as either a table or as card
 
 ## 3. Editing Tracks
 
-| Color Code                                            | Description                                                                                                                         |
-| ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| <code style="color: LightSkyBlue">LightSkyBlue</code> | Directly used in the Open Stage Custom Module                                                                                       |
-| <code style="color: LightGreen">LightGreen</code>     | Directly used in the Open Stage Custom Module and sent as MIDI commands to Cubase                                                   |
-| `Yellow`                                              | Only used in Template.io                                                                                                            |
-| <code style="color: OrangeRed">OrangeRed</code>       | Only used in Template.io for reference, but is not part of the exportable schema, editable, or used in the Open Stage Custom Module |
+|     | Description                                                                                                                         |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| ✔️  | Directly used in the Open Stage Custom Module                                                                                       |
+| ⚡  | Directly used in the Open Stage Custom Module and sent as MIDI commands to Cubase                                                   |
+| 🔷  | Only used in Template.io                                                                                                            |
+| 🔶  | Only used in Template.io for reference, but is not part of the exportable schema, editable, or used in the Open Stage Custom Module |
 
 ### 1. Main Track Information
 
-- `color: string` track color
-- `locked: boolean` prevents editing or deleting the track
-- <code style="color: LightSkyBlue">id: T\_{number}</code> unique and not editable
-- <code style="color: LightSkyBlue">name: string</code>
-- `channel: number` 1-16, corresponds to a MIDI channel
-- `vep_instance: string` the name of the instance if using VEP,
+- 🔷`color: string` track color
+- 🔷`locked: boolean` prevents editing or deleting the track
+- ✔️`id: T_{number}` unique and not editable
+- ✔️`name: string`
+- 🔷`channel: number` 1-16, corresponds to a MIDI channel
+- 🔷`vep_instance: string` the name of the instance if using VEP,
   - _TBD ADJUSTABLE IN SETTINGS_
-- `vep_out: string` the set of main outputs in VEP if using VEP, the number of available outputs can be adjusted in the settings
-- `smp_number: string` the number of the sampler if using VEP
+- 🔷`vep_out: string` the set of main outputs in VEP if using VEP, the number of available outputs can be adjusted in the settings
+- 🔷`smp_number: string` the number of the sampler if using VEP
   - _TBD ADJUSTABLE IN SETTINGS_
-- `smp_out: string` the set of outputs in the sampler if using VEP, the number of available outputs can be adjusted in the settings
-- <code style="color: LightSkyBlue">base_delay: number</code> the positive or negative track delay in ms
-- <code style="color: LightSkyBlue">avg_delay: number</code> not editable, average of all articulation delays (in ms) if they differ from the base delay
-- <code style="color: orangered">arts: number</code> not editable and not part of actual schema, this is a count of all of the articulations in the Track Details
-- <code style="color: LightSkyBlue">notes: string</code> editable in the Track Details
+- 🔷`smp_out: string` the set of outputs in the sampler if using VEP, the number of available outputs can be adjusted in the settings
+- ✔️`base_delay: number` the positive or negative track delay in ms
+- ✔️`avg_delay: number` not editable, average of all articulation delays (in ms) if they differ from the base delay
+- 🔶`arts: number` not editable and not part of actual schema, this is a count of all of the articulations in the Track Details
+- ✔️`notes: string` editable in the Track Details
 
 ![Template.io Main Information](./assets/Images/template-io-main-info.png)
 
@@ -213,45 +213,45 @@ To add a track, right-click on a track in the list and select "Add # Track At En
 
 ## 4. Editing Sub-Items
 
-| Color Code                                            | Description                                                                                                                         |
-| ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| <code style="color: LightSkyBlue">LightSkyBlue</code> | Directly used in the Open Stage Custom Module                                                                                       |
-| <code style="color: LightGreen">LightGreen</code>     | Directly used in the Open Stage Custom Module and sent as MIDI commands to Cubase                                                   |
-| `Yellow`                                              | Only used in Template.io                                                                                                            |
-| <code style="color: OrangeRed">OrangeRed</code>       | Only used in Template.io for reference, but is not part of the exportable schema, editable, or used in the Open Stage Custom Module |
+|     | Description                                                                                                                         |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| ✔️  | Directly used in the Open Stage Custom Module                                                                                       |
+| ⚡  | Directly used in the Open Stage Custom Module and sent as MIDI commands to Cubase                                                   |
+| 🔷  | Only used in Template.io                                                                                                            |
+| 🔶  | Only used in Template.io for reference, but is not part of the exportable schema, editable, or used in the Open Stage Custom Module |
 
 ### 1. Instrument Ranges
 
-- <code style="color: LightSkyBlue">id: T\_{number}\_FR\_{number}</code> unique and not editable
-- <code style="color: LightSkyBlue">name: string</code>
-- <code style="color: LightSkyBlue">low: string</code> note names, with "Middle C" being C3
+- ✔️`id: T_{number}_FR_{number}` unique and not editable
+- ✔️`name: string`
+- ✔️`low: string` note names, with "Middle C" being C3
   - _TBD ADJUSTABLE IN SETTINGS_, but "Middle C" is always Note 60
-- <code style="color: LightSkyBlue">high: number</code> note names, with "Middle C" being C3
+- ✔️`high: number` note names, with "Middle C" being C3
   - _TBD ADJUSTABLE IN SETTINGS_, but "Middle C" is always Note 60
-- <code style="color: LightSkyBlue">white_keys_only: boolean</code>
+- ✔️`white_keys_only: boolean`
 
 ![Instrument Ranges](./assets/Images/ranges-info.png)
 
 ### 2. Articulations (Toggle)
 
-- <code style="color: LightSkyBlue">id: T\_{number}\_AT\_{number}</code> unique and not editable
-- <code style="color: LightSkyBlue">name: string</code>
-- <code style="color: LightGreen">code_type: string</code> these correlate to Open Stage Control addresses
-- <code style="color: LightGreen">code: number</code>
+- ✔️`id: T_{number}_AT_{number}` unique and not editable
+- ✔️`name: string`
+- ⚡`code_type: string` these correlate to Open Stage Control addresses
+- ⚡`code: number`
   - _TBD number ranges will change depending on code_type_, currently:
-    - if <code style="color: LightGray">code_type = /control</code>, then <code style="color: LightGreen">code: 0-127</code>
-    - if <code style="color: LightGray">code_type = /note</code>, then <code style="color: LightGreen">code: 0-127</code>
-- <code style="color: LightGreen">on: number</code> 0-127
-- <code style="color: LightGreen">off: number</code> 0-127
-- <code style="color: LightSkyBlue">default: string</code> "On" or "Off"
-- <code style="color: LightSkyBlue">delay: number</code> the track delay (in ms) when this articulation is active
-- `change_type: string`
+    - if `code_type = /control`, then ⚡`code: 0-127`
+    - if `code_type = /note`, then ⚡`code: 0-127`
+- ⚡`on: number` 0-127
+- ⚡`off: number` 0-127
+- ✔️`default: string` "On" or "Off"
+- ✔️`delay: number` the track delay (in ms) when this articulation is active
+- 🔷`change_type: string`
   - _TBD actually employing this logic in the Open Stage Control custom module._ Current logic is the Value 2 logic but the options would be:
     - Value 1 = the ON and OFF values relate to the CODE itself (i.e. ON = CC18, OFF = CC35)
     - Value 2 = the ON and OFF values relate to the CODE's second Value (i.e. CODE = C#3, ON = Velocity 20, OFF = Velocity 21)
-- <code style="color: LightSkyBlue">ranges: string</code> list of Instrument Range ids, there must always be one Instrument Range linked to every Articulation (Tap or Toggle)
-- <code style="color: LightSkyBlue">art_layers_on: string</code> list of Additional Layer ids, these will fire all together in the Open Stage Control custom module
-- <code style="color: LightSkyBlue">art_layers_off: string</code> list of Additional Layer ids, these will fire all together in the Open Stage Control custom module
+- ✔️`ranges: string` list of Instrument Range ids, there must always be one Instrument Range linked to every Articulation (Tap or Toggle)
+- ✔️`art_layers_on: string` list of Additional Layer ids, these will fire all together in the Open Stage Control custom module
+- ✔️`art_layers_off: string` list of Additional Layer ids, these will fire all together in the Open Stage Control custom module
 
 ![Articulations (Toggle)](./assets/Images/articulations-toggle-info.png)
 
@@ -261,24 +261,24 @@ To add a track, right-click on a track in the list and select "Add # Track At En
 
 ### 3. Articulations (Tap)
 
-- <code style="color: LightSkyBlue">id: T\_{number}\_AT\_{number}</code> unique and not editable, the count will always start after the last Toggle Articulation
-- <code style="color: LightSkyBlue">name: string</code>
-- <code style="color: LightGreen">code_type: string</code> these correlate to Open Stage Control addresses
-- <code style="color: LightGreen">code: number</code>
+- ✔️`id: T_{number}_AT_{number}` unique and not editable, the count will always start after the last Toggle Articulation
+- ✔️`name: string`
+- ⚡`code_type: string` these correlate to Open Stage Control addresses
+- ⚡`code: number`
   - _TBD number ranges will change depending on code_type_, currently:
-    - if <code style="color: LightGray">code_type = /control</code>, then <code style="color: LightGreen">code: 0-127</code>
-    - if <code style="color: LightGray">code_type = /note</code>, then <code style="color: LightGreen">code: 0-127</code>
-- <code style="color: LightGreen">on: number</code> 0-127
-- <code style="color: LightSkyBlue">default: boolean</code> only one Tap Articulation may be default
-- <code style="color: LightSkyBlue">delay: number</code> the track delay (in ms) when this articulation is active
-- `change_type: string`
+    - if `code_type = /control`, then ⚡`code: 0-127`
+    - if `code_type = /note`, then ⚡`code: 0-127`
+- ⚡`on: number` 0-127
+- ✔️`default: boolean` only one Tap Articulation may be default
+- ✔️`delay: number` the track delay (in ms) when this articulation is active
+- 🔷`change_type: string`
   - _TBD actually employing this logic in the Open Stage Control custom module._ Current logic is the Value 2 logic but the options would be:
     - Value 1 = the ON value relates to the CODE itself (e.g. ON = CC18)
     - Value 2 = the ON value relates to the CODE's second Value (e.g. CODE = C#3, ON = Velocity 20)
-- <code style="color: LightSkyBlue">ranges: string</code> list of Instrument Range ids, there must always be one Instrument Range linked to every Articulation (Tap or Toggle)
-- <code style="color: LightSkyBlue">art_layers: string</code> list of Additional Layer ids
-- <code style="color: LightSkyBlue">layers_together: boolean</code> whether Additional Layers fire all together or one-at-a-time in the custom module.
-- <code style="color: LightSkyBlue">default_layer: string</code> default Additional Layer if the layers fire one-at-a-time, only one layer may be default. If no default layer is selected, the Open Stage Control custom module will use the first layer in the list for the default.
+- ✔️`ranges: string` list of Instrument Range ids, there must always be one Instrument Range linked to every Articulation (Tap or Toggle)
+- ✔️`art_layers: string` list of Additional Layer ids
+- ✔️`layers_together: boolean` whether Additional Layers fire all together or one-at-a-time in the custom module.
+- ✔️`default_layer: string` default Additional Layer if the layers fire one-at-a-time, only one layer may be default. If no default layer is selected, the Open Stage Control custom module will use the first layer in the list for the default.
 
 ![Articulations (Tap)](./assets/Images/articulations-tap-info.png)
 
@@ -288,28 +288,28 @@ To add a track, right-click on a track in the list and select "Add # Track At En
 
 ### 4. Additional Layers
 
-- <code style="color: LightSkyBlue">id: T\_{number}\_AL\_{number}</code> unique and not editable
-- <code style="color: LightSkyBlue">name: string</code>
-- <code style="color: LightGreen">code_type: string</code> these correlate to Open Stage Control addresses
-- <code style="color: LightGreen">code: number</code>
+- ✔️`id: T_{number}_AL_{number}` unique and not editable
+- ✔️`name: string`
+- ⚡`code_type: string` these correlate to Open Stage Control addresses
+- ⚡`code: number`
   - _TBD number ranges will change depending on code_type_, currently:
-    - if <code style="color: LightGray">code_type = /control</code>, then <code style="color: LightGreen">code: 0-127</code>
-    - if <code style="color: LightGray">code_type = /note</code>, then <code style="color: LightGreen">code: 0-127</code>
-- <code style="color: LightGreen">on: number</code> 0-127
+    - if `code_type = /control`, then ⚡`code: 0-127`
+    - if `code_type = /note`, then ⚡`code: 0-127`
+- ⚡`on: number` 0-127
 
 ![Additional Layers](./assets/Images/additional-layers-info.png)
 
 ### 5. Faders
 
-- `id: T_{number}_FL_{number}` unique and not editable
-- <code style="color: LightSkyBlue">name: string</code>
-- <code style="color: LightGreen">code_type: string</code> these correlate to Open Stage Control addresses
-- <code style="color: LightGreen">code: number</code>
+- 🔷`id: T_{number}_FL_{number}` unique and not editable
+- ✔️`name: string`
+- ⚡`code_type: string` these correlate to Open Stage Control addresses
+- ⚡`code: number`
   - _TBD number ranges will change depending on code_type_, currently:
-    - if <code style="color: LightGray">code_type = /control</code>, then <code style="color: LightGreen">code: 0-127</code>
-    - if <code style="color: LightGray">code_type = /note</code>, then <code style="color: LightGreen">code: 0-127</code>
-- <code style="color: LightGreen">default: number</code> 0-127
-- `change_type: string`
+    - if `code_type = /control`, then ⚡`code: 0-127`
+    - if `code_type = /note`, then ⚡`code: 0-127`
+- ⚡`default: number` 0-127
+- 🔷`change_type: string`
   - _TBD actually employing this logic in the Open Stage Control custom module._ Current logic is the Value 2 logic but the options would be:
     - Value 1 = the DEFAULT value relates to the CODE itself (e.g. DEFAULT = CC11)
     - Value 2 = the DEFAULT value relates to the CODE's second Value (e.g. CODE = C#3, DEFAULT = Velocity 20)
