@@ -154,12 +154,12 @@ The sub-items in the Track Details can be displayed as either a table or as card
 
 ## 3. Editing Tracks
 
-|     | Description                                                                                                                         |
-| --- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| ✔️  | Directly used in the Open Stage Custom Module                                                                                       |
-| ⚡  | Directly used in the Open Stage Custom Module and sent as MIDI commands to Cubase                                                   |
-| 🔷  | Only used in Template.io                                                                                                            |
-| 🔶  | Only used in Template.io for reference, but is not part of the exportable schema, editable, or used in the Open Stage Custom Module |
+| Icon | Description                                                                                                                         |
+| ---- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| ✔️   | Directly used in the Open Stage Custom Module                                                                                       |
+| ⚡   | Directly used in the Open Stage Custom Module and sent as MIDI commands to Cubase                                                   |
+| 🔷   | Only used in Template.io                                                                                                            |
+| 🔶   | Only used in Template.io for reference, but is not part of the exportable schema, editable, or used in the Open Stage Custom Module |
 
 ### 1. Main Track Information
 
@@ -213,12 +213,12 @@ To add a track, right-click on a track in the list and select "Add # Track At En
 
 ## 4. Editing Sub-Items
 
-|     | Description                                                                                                                         |
-| --- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| ✔️  | Directly used in the Open Stage Custom Module                                                                                       |
-| ⚡  | Directly used in the Open Stage Custom Module and sent as MIDI commands to Cubase                                                   |
-| 🔷  | Only used in Template.io                                                                                                            |
-| 🔶  | Only used in Template.io for reference, but is not part of the exportable schema, editable, or used in the Open Stage Custom Module |
+| Icon | Description                                                                                                                         |
+| ---- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| ✔️   | Directly used in the Open Stage Custom Module                                                                                       |
+| ⚡   | Directly used in the Open Stage Custom Module and sent as MIDI commands to Cubase                                                   |
+| 🔷   | Only used in Template.io                                                                                                            |
+| 🔶   | Only used in Template.io for reference, but is not part of the exportable schema, editable, or used in the Open Stage Custom Module |
 
 ### 1. Instrument Ranges
 
