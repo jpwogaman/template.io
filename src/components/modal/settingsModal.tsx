@@ -11,7 +11,8 @@ import { twMerge } from 'tailwind-merge'
 
 export const SettingsModal = () => {
   const { settings, updateSettings } = useSelectedItem()
-  const { getSelectList } = useSelectArraysContext()
+  const { getSelectList, getInputList, setSelectValues } =
+    useSelectArraysContext()
 
   type SettingsMenuOptions = Record<
     string,
@@ -101,7 +102,7 @@ export const SettingsModal = () => {
     }
   }
   return (
-    <div className='text-main relative top-12 w-full'>
+    <div className='text-main relative w-full'>
       <h3 className='text-center text-2xl'>Settings</h3>
       <div className='text-main font-code mt-4 text-left text-base'>
         {Object.entries(SettingsMenuOptions).map(([key, item]) => {
@@ -119,73 +120,70 @@ export const SettingsModal = () => {
                 return (
                   <div
                     key={subKey}
-                    className='flex items-center'>
-                    <label className='mr-4'>{`${label}:`}</label>
-                    <div className=''>
-                      {input === 'number' && (
-                        <input
-                          type='number'
-                          id={subKey}
-                          max={max}
-                          min={1}
-                          title={
-                            subKey +
-                            '_currentValue: ' +
-                            (settings[subKey] as string)
-                          }
-                          value={settings[subKey] as number}
-                          onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                            e.stopPropagation()
-                            e.preventDefault()
-                            const newValue = parseInt(e.target.value) || 1
+                    className='flex w-full items-center text-sm'>
+                    <label className='mr-4 whitespace-nowrap'>{`${label}:`}</label>
+                    {input === 'number' && (
+                      <input
+                        type='number'
+                        id={subKey}
+                        max={max}
+                        min={1}
+                        title={
+                          subKey +
+                          '_currentValue: ' +
+                          (settings[subKey] as string)
+                        }
+                        value={settings[subKey] as number}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                          e.stopPropagation()
+                          e.preventDefault()
+                          const newValue = parseInt(e.target.value) || 1
 
-                            void updateSettings({
-                              key: subKey,
-                              value: newValue
-                            })
-                          }}
-                          className={twMerge(
-                            'h-full w-[60px]',
-                            'hover:cursor-text',
-                            'rounded-xs bg-inherit p-1 outline-hidden',
-                            'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:ring-4 focus-visible:ring-indigo-600 focus-visible:outline-hidden'
-                          )}
-                        />
-                      )}
-                      {input === 'select' && (
-                        <select
-                          id={subKey}
-                          autoComplete='off'
-                          title={
-                            subKey +
-                            '_currentValue: ' +
-                            (settings[subKey] as string)
-                          }
-                          value={settings[subKey] as string}
-                          onChange={(e) => {
-                            e.stopPropagation()
-                            e.preventDefault()
+                          void updateSettings({
+                            key: subKey,
+                            value: newValue
+                          })
+                        }}
+                        className={twMerge(
+                          'h-full w-[60px]',
+                          'hover:cursor-text',
+                          'rounded-xs bg-inherit p-1 outline-hidden',
+                          'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:ring-4 focus-visible:ring-indigo-600 focus-visible:outline-hidden'
+                        )}
+                      />
+                    )}
+                    {input === 'select' && (
+                      <select
+                        id={subKey}
+                        autoComplete='off'
+                        title={
+                          subKey +
+                          '_currentValue: ' +
+                          (settings[subKey] as string)
+                        }
+                        value={settings[subKey] as string}
+                        onChange={(e) => {
+                          e.stopPropagation()
+                          e.preventDefault()
 
-                            const newValue = e.target.value
-                            void updateSettings({
-                              key: subKey,
-                              value: newValue
-                            })
-                          }}
-                          className={twMerge(
-                            'w-full cursor-pointer overflow-scroll rounded-xs bg-inherit p-1 transition-all duration-200',
-                            'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:ring-4 focus-visible:ring-indigo-600 focus-visible:outline-hidden'
-                          )}>
-                          {getSelectList(selectList ?? 'valNoneList')}
-                        </select>
-                      )}
-                      {/*{input === 'list' && (
-                        <div>
-                          {' '}
-                          {getSelectList(selectList ?? 'valNoneList')}{' '}
-                        </div>
-                      )}*/}
-                    </div>
+                          const newValue = e.target.value
+                          void updateSettings({
+                            key: subKey,
+                            value: newValue
+                          })
+                        }}
+                        className={twMerge(
+                          'cursor-pointer overflow-scroll rounded-xs bg-inherit p-1 transition-all duration-200',
+                          'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:ring-4 focus-visible:ring-indigo-600 focus-visible:outline-hidden'
+                        )}>
+                        {getSelectList(selectList ?? 'valNoneList')}
+                      </select>
+                    )}
+                    {input === 'list' && selectList && (
+                      <div className='mb-2 flex max-h-24 w-full flex-col overflow-y-scroll border-b border-zinc-600'>
+                        <div className='py-2'>{getInputList(selectList)}</div>
+                      </div>
+                    )}
                   </div>
                 )
               })}

@@ -14,6 +14,7 @@ import React, {
 } from 'react'
 import { useSelectedItem } from './selectedItemContext'
 import { useMutations } from './mutationContext'
+import { HiXMark } from 'react-icons/hi2'
 
 const generateAllNotesArray = (MiddleC: { bottom: number; top: number }) => {
   const arr = []
@@ -102,6 +103,7 @@ interface SelectArraysContextType {
     SetStateAction<Record<SelectValuesKeys, string[] | number[]>>
   >
   getSelectList: (name: SelectValuesKeys) => React.JSX.Element | undefined
+  getInputList: (name: SelectValuesKeys) => React.JSX.Element | undefined
 }
 
 const selectArraysContextDefaultValues: SelectArraysContextType = {
@@ -127,7 +129,8 @@ const selectArraysContextDefaultValues: SelectArraysContextType = {
     artLayersArray: ['N/A']
   },
   setSelectValues: () => undefined,
-  getSelectList: () => undefined
+  getSelectList: () => undefined,
+  getInputList: () => undefined
 }
 
 const SelectArraysContext = createContext<SelectArraysContextType>(
@@ -153,8 +156,20 @@ export const SelectArraysProvider: FC<SelectArraysContextProps> = ({
       ...prev,
       smpOutsList: generateSmpOutsArray(settings.smp_out_settings),
       vepOutsList: generateVepOutsArray(settings.vep_out_settings),
-      smpTypeList: settings.sampler_list,
-      vepInstList: settings.vep_instance_list
+      //smpTypeList: settings.sampler_list,
+
+      //sort alphabetically, except 'N/A' which should always be first
+      smpTypeList: settings.sampler_list.toSorted((a, b) => {
+        if (a === 'N/A') return -1
+        if (b === 'N/A') return 1
+        return a.localeCompare(b)
+      }),
+
+      vepInstList: settings.vep_instance_list.toSorted((a, b) => {
+        if (a === 'N/A') return -1
+        if (b === 'N/A') return 1
+        return a.localeCompare(b)
+      })
     }))
   }, [
     settings.smp_out_settings,
@@ -212,13 +227,59 @@ export const SelectArraysProvider: FC<SelectArraysContextProps> = ({
     [selectValues]
   )
 
+  const getInputList = useCallback(
+    (name: SelectValuesKeys) => {
+      const values = selectValues[name].filter((value) => value !== 'N/A')
+
+      return (
+        <>
+          {values?.map((value, index) => {
+            return (
+              <div
+                key={`${value}_${index}`}
+                className='flex w-full items-center justify-between'>
+                <input
+                  id={`${value}_${index}`}
+                  type='text'
+                  onChange={(e) => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                    const newValue = e.target.value
+
+                    console.log('newValue:', newValue)
+
+                    //setSelectValues((prev) => ({
+                    //  ...prev,
+                    //  [name]: prev[name].map((val, i) =>
+                    //    i === index ? newValue : val
+                    //  )
+                    //}))
+                  }}
+                  title={value.toString()}
+                  value={value.toString()}
+                  className='w-full'
+                />
+
+                <button>
+                  <HiXMark className='h-4 w-4' />
+                </button>
+              </div>
+            )
+          })}
+        </>
+      )
+    },
+    [selectValues]
+  )
+
   const value = useMemo(
     () => ({
       selectValues,
       setSelectValues,
-      getSelectList
+      getSelectList,
+      getInputList
     }),
-    [selectValues, setSelectValues, getSelectList]
+    [selectValues, setSelectValues, getSelectList, getInputList]
   )
 
   return (

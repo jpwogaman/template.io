@@ -66,23 +66,25 @@ export const Modal = () => {
         strict>
         <m.div
           onClick={(e) => e.stopPropagation()}
-          className='bg-main m-auto flex flex-col items-center rounded-xl px-8 py-0 dark:shadow-lg dark:shadow-zinc-600'
+          className='bg-main relative m-auto flex flex-col items-center rounded-xl px-8 py-4 dark:shadow-lg dark:shadow-zinc-600'
           style={{
             width: 'clamp(50%, 700px, 90%)',
-            height: 'min(60%, 800px)'
+            height: 'min(100%, 800px)'
           }}
           variants={dropIn}
           initial='hidden'
           animate='visible'
           exit='exit'>
-          {modalType === 'about' && <AboutModal />}
-          {modalType === 'settings' && <SettingsModal />}
+          <div className='h-full w-full pt-12'>
+            {modalType === 'about' && <AboutModal />}
+            {modalType === 'settings' && <SettingsModal />}
+          </div>
 
           <button
             onClick={close}
             type='button'
             className={twMerge(
-              'relative bottom-6 mx-auto mt-auto mb-0 flex min-h-[48px] cursor-pointer items-center rounded-sm px-12 py-0 text-lg text-white',
+              'flex min-h-[48px] cursor-pointer items-center rounded-sm px-12 py-0 text-lg text-white',
               'bg-indigo-500',
               'sunrise:bg-red-800',
               'hover:bg-indigo-600',
