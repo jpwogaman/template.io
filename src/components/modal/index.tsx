@@ -66,16 +66,12 @@ export const Modal = () => {
         strict>
         <m.div
           onClick={(e) => e.stopPropagation()}
-          className='bg-main relative m-auto flex flex-col items-center rounded-xl px-8 py-4 dark:shadow-lg dark:shadow-zinc-600'
-          style={{
-            width: 'clamp(50%, 700px, 90%)',
-            height: 'min(100%, 800px)'
-          }}
+          className='bg-main min-h-content relative m-auto flex min-w-1/2 flex-col items-center rounded-xl px-8 py-4 dark:shadow-lg dark:shadow-zinc-600'
           variants={dropIn}
           initial='hidden'
           animate='visible'
           exit='exit'>
-          <div className='h-full w-full pt-12'>
+          <div className='h-full w-full py-12'>
             {modalType === 'about' && <AboutModal />}
             {modalType === 'settings' && <SettingsModal />}
           </div>

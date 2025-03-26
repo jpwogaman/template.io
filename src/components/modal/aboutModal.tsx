@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export const AboutModal = () => {
   return (
-    <div className='text-main relative top-12 w-full'>
+    <div className='text-main relative w-full'>
       <h3 className='text-center text-2xl'>Template.io</h3>
       <div className='text-main font-code mt-4 text-left text-base'>
         <p>
