@@ -184,29 +184,13 @@ The sub-items in the Track Details can be displayed as either a table or as card
 
 ### 2. Context Menu
 
-#### _Move a Track Up (coming soon)_
-
-#### _Move a Track Down (coming soon)_
-
-#### _Add Tracks Above Currently Selected Track (coming soon)_
-
-#### _Add Tracks Below Currently Selected Track (coming soon)_
-
 #### Add Tracks At End of Track List
 
 To add a track, right-click on a track in the list and select "Add # Track At End". To change the number of tracks you want to add, adjust the number in the input box. This can also be adjusted in the settings.
 
 ![Track Context Menu](./assets/Images/track-context-menu.png)
 
-#### _Duplicate Track Above Currently Selected Track (coming soon)_
-
-#### _Duplicate Track Below Currently Selected Track (coming soon)_
-
-#### _Duplicate Track At End of Track List (coming soon)_
-
 #### Copy Track Settings
-
-#### _Paste Track SetTings (coming soon)_
 
 #### Clear a Track
 
@@ -319,31 +303,13 @@ To add a track, right-click on a track in the list and select "Add # Track At En
 
 ### 6. Context Menu
 
-#### _Move a Sub-Item Up (coming soon)_
-
-#### _Move a Sub-Item Down (coming soon)_
-
-#### _Add Sub-Items Above Currently Selected Sub-Item (coming soon)_
-
-#### _Add Sub-Items Below Currently Selected Sub-Item (coming soon)_
-
 #### Add Sub-Items At End of Sub-Items List
 
 To add a sub-item, right-click on a sub-item and follow the same procedure as above for tracks. The number input for adding sub-items is independent from the number input for adding tracks, and can also be adjusted in the settings.
 
 ![Sub-Item Context Menu](./assets/Images/sub-item-context-menu.png)
 
-#### _Duplicate Sub-Item Above Currently Selected Sub-Item (coming soon)_
-
-#### _Duplicate Sub-Item Below Currently Selected Sub-Item (coming soon)_
-
-#### _Duplicate Sub-Item At End of Sub-Item List (coming soon)_
-
 #### Copy Sub-Item Settings
-
-#### _Paste Sub-Item SetTings (coming soon)_
-
-#### _Clear a Sub-Item (coming soon)_
 
 #### Delete a Sub-Item
 
