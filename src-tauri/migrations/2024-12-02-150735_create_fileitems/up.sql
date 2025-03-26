@@ -10,6 +10,7 @@ CREATE TABLE fileitems (
     vep_out VARCHAR(255) NOT NULL,
     vep_instance VARCHAR(255) NOT NULL,
     smp_number VARCHAR(255) NOT NULL,
+    smp_instance VARCHAR(255) NOT NULL,
     smp_out VARCHAR(255) NOT NULL,
     color VARCHAR(255) NOT NULL
 );

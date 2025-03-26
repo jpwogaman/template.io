@@ -68,7 +68,7 @@ use crate::{
   },
 };
 use diesel::{ prelude::* };
-use serde_json::Value;
+use serde_json::{ Value };
 use std::collections::HashSet;
 
 pub fn init() {
@@ -131,6 +131,22 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
       .and_then(|i| i.as_array_mut())
   {
     for item in items {
+      // if smp_instance doesn't exist, add it with default value
+      if let Some(obj) = item.as_object_mut() {
+        if !obj.contains_key("smp_instance") {
+          obj.insert(
+            "smp_instance".to_string(),
+            Value::String("N/A".to_string())
+          );
+          println!(
+            "Transformed {}: Added smp_instance with default value \"N/A\"\n-----",
+            item.get("id").unwrap_or(&Value::String("unknown".to_string()))
+          );
+        }
+      } else {
+        println!("Error: item is not a JSON object.");
+      }
+
       if
         let Some(art_list_tog) = item
           .get_mut("art_list_tog")
@@ -251,6 +267,8 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
       settings.set();
 
       let mut new_colors: HashSet<String> = HashSet::new();
+      let mut new_sampler_list: HashSet<String> = HashSet::new();
+      let mut new_vep_instance_list: HashSet<String> = HashSet::new();
 
       for full_track in json.items {
         let fileitem = full_track.fileitem;
@@ -262,6 +280,8 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
 
         // Collect colors from the current track and normalize them
         collect_colors_from_track(&fileitem, &mut new_colors);
+        collect_samplers_from_track(&fileitem, &mut new_sampler_list);
+        collect_vep_instances_from_track(&fileitem, &mut new_vep_instance_list);
 
         // Store other track data
         store_new_item(&fileitem);
@@ -347,6 +367,12 @@ pub fn create_all_fileitems_from_json(full_data: Value) {
 
       // Update the settings with the new colors
       add_colors_to_settings(new_colors);
+
+      // Update the settings with the new samplers
+      add_samplers_to_settings(new_sampler_list);
+
+      // Update the settings with the new VEP instances
+      add_vep_instances_to_settings(new_vep_instance_list);
     }
     Err(e) => {
       eprintln!("JSON does not match schema: {:?}", e);
@@ -400,14 +426,14 @@ fn filter_and_log_ids(
   }
 }
 
-fn filter_and_log_default_layer( 
+fn filter_and_log_default_layer(
   id: &mut String,
   valid_ids: &HashSet<String>,
   item_id: &str,
   label: &str,
   field: &str
 ) {
-  if id.is_empty() || id == "[\"\"]" {    
+  if id.is_empty() || id == "[\"\"]" {
     *id = "".to_string();
     return;
   }
@@ -441,6 +467,40 @@ fn add_colors_to_settings(new_colors: HashSet<String>) {
   }
 
   settings.normalize_colors();
+  settings.set();
+}
+
+fn collect_samplers_from_track(
+  fileitem: &FileItem,
+  new_samplers: &mut HashSet<String>
+) {
+  new_samplers.insert(fileitem.smp_instance.clone());
+}
+
+fn collect_vep_instances_from_track(
+  fileitem: &FileItem,
+  new_vep_instances: &mut HashSet<String>
+) {
+  new_vep_instances.insert(fileitem.vep_instance.clone());
+}
+
+fn add_samplers_to_settings(new_samplers: HashSet<String>) {
+  let mut settings = Settings::get();
+  // Add the new samplers to the settings, ensuring no duplicates
+  for sampler in new_samplers {
+    settings.sampler_list.insert(sampler);
+  }
+
+  settings.set();
+}
+
+fn add_vep_instances_to_settings(new_vep_instances: HashSet<String>) {
+  let mut settings = Settings::get();
+  // Add the new VEP instances to the settings, ensuring no duplicates
+  for vep_instance in new_vep_instances {
+    settings.vep_instance_list.insert(vep_instance);
+  }
+
   settings.set();
 }
 
@@ -629,6 +689,7 @@ pub fn clear_fileitem(id: String) {
     vep_out: Some("N/A".to_string()),
     vep_instance: Some("N/A".to_string()),
     smp_number: Some("N/A".to_string()),
+    smp_instance: Some("N/A".to_string()),
     smp_out: Some("N/A".to_string()),
     color: Some("#71717A".to_string()),
   };

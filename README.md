@@ -173,6 +173,7 @@ The sub-items in the Track Details can be displayed as either a table or as card
 - 🔷`vep_out: string` the set of main outputs in VEP if using VEP, the number of available outputs can be adjusted in the settings
 - 🔷`smp_number: string` the number of the sampler if using VEP
   - _TBD ADJUSTABLE IN SETTINGS_
+- 🔷`smp_instance: string` the name of the sampler if using VEP
 - 🔷`smp_out: string` the set of outputs in the sampler if using VEP, the number of available outputs can be adjusted in the settings
 - ✔️`base_delay: number` the positive or negative track delay in ms
 - ✔️`avg_delay: number` not editable, average of all articulation delays (in ms) if they differ from the base delay

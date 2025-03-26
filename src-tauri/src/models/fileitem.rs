@@ -40,6 +40,7 @@ pub struct FileItem {
   pub vep_out: String,
   pub vep_instance: String,
   pub smp_number: String,
+  pub smp_instance: String,
   pub smp_out: String,
   pub color: String,
 }
@@ -66,6 +67,8 @@ pub struct FileItemRequest {
   #[specta(optional)]
   pub smp_number: Option<String>,
   #[specta(optional)]
+  pub smp_instance: Option<String>,
+  #[specta(optional)]
   pub smp_out: Option<String>,
   #[specta(optional)]
   pub color: Option<String>,
@@ -86,6 +89,9 @@ impl FileItem {
         self.vep_instance.clone()
       ),
       smp_number: updates.smp_number.unwrap_or_else(|| self.smp_number.clone()),
+      smp_instance: updates.smp_instance.unwrap_or_else(||
+        self.smp_instance.clone()
+      ),
       smp_out: updates.smp_out.unwrap_or_else(|| self.smp_out.clone()),
       color: updates.color.unwrap_or_else(|| self.color.clone()),
     }
@@ -104,6 +110,7 @@ pub fn init_fileitem(id: String) -> FileItem {
     vep_out: "N/A".to_string(),
     vep_instance: "N/A".to_string(),
     smp_number: "N/A".to_string(),
+    smp_instance: "N/A".to_string(),
     smp_out: "N/A".to_string(),
     color: "#71717A".to_string(),
   }

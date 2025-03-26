@@ -99,7 +99,28 @@ const selectedItemContextDefaultValues: SelectedItemContextType = {
       '#c034b5',
       '#224596',
       '#37bdb4'
-    ]
+    ],
+    sampler_list: [
+      'Native Instruments Kontakt',
+      'Native Instruments Maschine',
+      'Native Instruments Reaktor',
+      'Native Instruments Komplete Kontrol',
+      'EastWest Opus',
+      'EastWest Play',
+      'Orchestral Tools SINE Player',
+      'Spitfire Audio LABS',
+      'Spitfire Audio BBC Symphony Orchestra',
+      'Vienna Synchron Player',
+      'Vienna Instruments'
+    ],
+    vep_instance_list: [
+      'N/A',
+      'Strings',
+      'Percussion + Pianos',
+      'Brass',
+      'Woodwinds'
+    ],
+    middle_c: 'C3'
   },
   updateSettings: async () => undefined
 }

@@ -63,28 +63,6 @@ const generateVepOutsArray = (vepOutSettings: number) => {
   return arr
 }
 
-const smpTypeList = [
-  'Native Instruments Kontakt',
-  'Native Instruments Maschine',
-  'Native Instruments Reaktor',
-  'Native Instruments Komplete Kontrol',
-  'EastWest Opus',
-  'EastWest Play',
-  'Orchestral Tools SINE Player',
-  'Spitfire Audio LABS',
-  'Spitfire Audio BBC Symphony Orchestra',
-  'Vienna Synchron Player',
-  'Vienna Instruments'
-]
-
-const vepInstList = [
-  'N/A',
-  'Strings',
-  'Percussion + Pianos',
-  'Brass',
-  'Woodwinds'
-]
-
 const valAddrList = [
   '/control---Control Code',
   '/note---Note',
@@ -97,11 +75,7 @@ const valAddrList = [
 ]
 
 const valDeftList = ['On', 'Off']
-const setNoteList = [
-  'Middle C (60) = C5',
-  'Middle C (60) = C4',
-  'Middle C (60) = C3'
-]
+const setNoteList = ['C5', 'C4', 'C3']
 
 export type SelectValuesKeys =
   | 'setOutsList'
@@ -135,10 +109,10 @@ const selectArraysContextDefaultValues: SelectArraysContextType = {
     setOutsList: generateNumberArray(1, 128),
     setNoteList,
     chnMidiList: generateNumberArray(1, 16),
-    smpTypeList,
+    smpTypeList: [],
     smpOutsList: generateSmpOutsArray(32),
     vepOutsList: generateVepOutsArray(128),
-    vepInstList,
+    vepInstList: ['N/A'],
     valAddrList,
     valMidiList: generateNumberArray(0, 127),
     valNoteList: generateValNotesArray(
@@ -177,10 +151,17 @@ export const SelectArraysProvider: FC<SelectArraysContextProps> = ({
   useLayoutEffect(() => {
     setSelectValues((prev) => ({
       ...prev,
-      smpOutsArray: generateSmpOutsArray(settings.smp_out_settings),
-      vepOutsArray: generateVepOutsArray(settings.vep_out_settings)
+      smpOutsList: generateSmpOutsArray(settings.smp_out_settings),
+      vepOutsList: generateVepOutsArray(settings.vep_out_settings),
+      smpTypeList: settings.sampler_list,
+      vepInstList: settings.vep_instance_list
     }))
-  }, [settings.smp_out_settings, settings.vep_out_settings])
+  }, [
+    settings.smp_out_settings,
+    settings.vep_out_settings,
+    settings.sampler_list,
+    settings.vep_instance_list
+  ])
 
   useLayoutEffect(() => {
     if (!selectedItem) return

@@ -1,12 +1,17 @@
 'use client'
 
 import { type ChangeEvent, Fragment } from 'react'
-import { useSelectedItem } from '@/components/context'
+import {
+  SelectValuesKeys,
+  useSelectArraysContext,
+  useSelectedItem
+} from '@/components/context'
 import { type Settings } from '@/components/backendCommands/backendCommands'
 import { twMerge } from 'tailwind-merge'
 
 export const SettingsModal = () => {
   const { settings, updateSettings } = useSelectedItem()
+  const { getSelectList } = useSelectArraysContext()
 
   type SettingsMenuOptions = Record<
     string,
@@ -16,7 +21,8 @@ export const SettingsModal = () => {
         {
           label: string
           input: string
-          max: number
+          max?: number
+          selectList?: SelectValuesKeys
         }
       >
     >
@@ -73,6 +79,25 @@ export const SettingsModal = () => {
         input: 'number',
         max: 10
       }
+    },
+    vep: {
+      sampler_list: {
+        label: 'Available Samplers',
+        input: 'list',
+        selectList: 'smpTypeList'
+      },
+      vep_instance_list: {
+        label: 'VEP Instance Names',
+        input: 'list',
+        selectList: 'vepInstList'
+      }
+    },
+    midi: {
+      middle_c: {
+        label: 'Middle C (60)',
+        input: 'select',
+        selectList: 'setNoteList'
+      }
     }
   }
   return (
@@ -89,20 +114,25 @@ export const SettingsModal = () => {
               {(Object.entries(item) as subItemMap).map(([subKey, subItem]) => {
                 if (!subItem) return null
 
-                const { label, input, max } = subItem
+                const { label, input, max, selectList } = subItem
 
                 return (
                   <div
                     key={subKey}
                     className='flex items-center'>
                     <label className='mr-4'>{`${label}:`}</label>
-                    <div className='w-[60px]'>
+                    <div className=''>
                       {input === 'number' && (
                         <input
                           type='number'
-                          id='contextMenuCountInput'
+                          id={subKey}
                           max={max}
                           min={1}
+                          title={
+                            subKey +
+                            '_currentValue: ' +
+                            (settings[subKey] as string)
+                          }
                           value={settings[subKey] as number}
                           onChange={(e: ChangeEvent<HTMLInputElement>) => {
                             e.stopPropagation()
@@ -115,13 +145,46 @@ export const SettingsModal = () => {
                             })
                           }}
                           className={twMerge(
-                            'h-full w-full',
+                            'h-full w-[60px]',
                             'hover:cursor-text',
                             'rounded-xs bg-inherit p-1 outline-hidden',
                             'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:ring-4 focus-visible:ring-indigo-600 focus-visible:outline-hidden'
                           )}
                         />
                       )}
+                      {input === 'select' && (
+                        <select
+                          id={subKey}
+                          autoComplete='off'
+                          title={
+                            subKey +
+                            '_currentValue: ' +
+                            (settings[subKey] as string)
+                          }
+                          value={settings[subKey] as string}
+                          onChange={(e) => {
+                            e.stopPropagation()
+                            e.preventDefault()
+
+                            const newValue = e.target.value
+                            void updateSettings({
+                              key: subKey,
+                              value: newValue
+                            })
+                          }}
+                          className={twMerge(
+                            'w-full cursor-pointer overflow-scroll rounded-xs bg-inherit p-1 transition-all duration-200',
+                            'focus-visible:cursor-text focus-visible:bg-white focus-visible:text-zinc-900 focus-visible:placeholder-zinc-500 focus-visible:ring-4 focus-visible:ring-indigo-600 focus-visible:outline-hidden'
+                          )}>
+                          {getSelectList(selectList ?? 'valNoneList')}
+                        </select>
+                      )}
+                      {/*{input === 'list' && (
+                        <div>
+                          {' '}
+                          {getSelectList(selectList ?? 'valNoneList')}{' '}
+                        </div>
+                      )}*/}
                     </div>
                   </div>
                 )

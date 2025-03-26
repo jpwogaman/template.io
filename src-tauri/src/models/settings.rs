@@ -21,6 +21,9 @@ pub struct Settings {
   pub next_item_id: Option<String>,
   pub track_options_layouts: TrackOptionLayouts,
   pub default_colors: HashSet<String>,
+  pub sampler_list: HashSet<String>,
+  pub vep_instance_list: HashSet<String>,
+  pub middle_c: String,
 }
 
 #[derive(Deserialize, Serialize, Debug, specta::Type)]
@@ -65,6 +68,31 @@ pub fn init_settings() -> Settings {
     ]
       .into_iter()
       .collect(),
+    sampler_list: [
+      "Native Instruments Kontakt".to_string(),
+      "Native Instruments Maschine".to_string(),
+      "Native Instruments Reaktor".to_string(),
+      "Native Instruments Komplete Kontrol".to_string(),
+      "EastWest Opus".to_string(),
+      "EastWest Play".to_string(),
+      "Orchestral Tools SINE Player".to_string(),
+      "Spitfire Audio LABS".to_string(),
+      "Spitfire Audio BBC Symphony Orchestra".to_string(),
+      "Vienna Synchron Player".to_string(),
+      "Vienna Instruments".to_string(),
+    ]
+      .into_iter()
+      .collect(),
+    vep_instance_list: [
+      "N/A".to_string(),
+      "Strings".to_string(),
+      "Percussion + Pianos".to_string(),
+      "Brass".to_string(),
+      "Woodwinds".to_string(),
+    ]
+      .into_iter()
+      .collect(),
+    middle_c: "C3".to_string(),
   }
 }
 
@@ -89,13 +117,12 @@ pub fn normalize_hex(color: &str) -> Option<String> {
 
 impl Settings {
   pub fn normalize_colors(&mut self) {
-        let mut normalized_colors = HashSet::new();
-        for color in &self.default_colors {
-            if let Some(valid_color) = normalize_hex(color) {
-                normalized_colors.insert(valid_color);
-            }
-        }
-        self.default_colors = normalized_colors;
+    let mut normalized_colors = HashSet::new();
+    for color in &self.default_colors {
+      if let Some(valid_color) = normalize_hex(color) {
+        normalized_colors.insert(valid_color);
+      }
     }
+    self.default_colors = normalized_colors;
+  }
 }
-

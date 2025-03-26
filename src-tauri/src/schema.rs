@@ -12,6 +12,7 @@ diesel::table! {
         vep_out -> Text,
         vep_instance -> Text,
         smp_number -> Text,
+        smp_instance -> Text,
         smp_out -> Text,
         color -> Text,
     }
