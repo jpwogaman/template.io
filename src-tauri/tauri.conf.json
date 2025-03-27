@@ -21,7 +21,7 @@
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDdERDVDNDlFQ0Q0MTFGMEQKUldRTkgwSE5uc1RWZlg1NVVoWUJQaG5YcjZKVENEdHlJTUF5UDJURzU3cjhzSGg1M2p5QkQ1dkQK",
       "endpoints": [
-        "https://raw.githubusercontent.com/jpwogaman/template.io/refs/heads/updater/updates/v0.0.1.json"
+        "https://github.com/jpwogaman/template.io/releases/latest/download/latest.json"
       ],
       "dialog": true,
       "active": true

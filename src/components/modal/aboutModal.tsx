@@ -51,12 +51,12 @@ export const AboutModal = () => {
         <p>Written by: JP Wogaman II</p>
         <p>
           Source code & Tutorials:{' '}
-          <a
+          <Link
             className='text-blue-600 dark:text-blue-400'
             href='https://www.github.com/jpwogaman/template.io'
             target='_blank'>
             https://www.github.com/jpwogaman/template.io
-          </a>
+          </Link>
         </p>
       </div>
     </div>
