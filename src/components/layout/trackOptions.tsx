@@ -441,7 +441,29 @@ export const TrackOptions: FC = () => {
         title={`Track Id: ${selectedItem?.id} - Track Name: ${selectedItem?.name}`}
         className='pt-4 pb-2 text-3xl'>{`Track Name: ${selectedItem?.name}`}</h1>
 
-      <h2>Notes:</h2>
+      <div className='flex items-center text-sm'>
+        <h2 className='px-2'>Sampler:</h2>
+        <div className='w-1/2'>
+          <InputSelectSingle
+            id={`${selectedItem?.id}_smp_instance`}
+            codeFullLocked={selectedItem?.locked ?? false}
+            defaultValue={selectedItem?.smp_instance}
+            options='smpTypeList'
+            onChangeFunction={(event: ChangeEventHelper) => {
+              if (!selectedItem?.id) return
+              const refetch = false
+              update.track(
+                {
+                  id: selectedItem?.id,
+                  smp_instance: event.target.value
+                },
+                refetch
+              )
+            }}
+          />
+        </div>
+      </div>
+      <h2 className='px-2 pt-4 text-sm'>Notes:</h2>
       <div
         className={twMerge(
           'm-1 flex items-center p-1'
