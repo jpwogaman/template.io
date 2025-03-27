@@ -1,6 +1,6 @@
 [package]
 name = "template-io"
-version = "0.1.0"
+version = "0.0.0"
 description = "template-io"
 authors = ["JP Wogaman II"]
 license = "MIT"
@@ -10,10 +10,6 @@ edition = "2021"
 rust-version = "1.84.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-[[bin]]
-name = "bindings_custom_types"
-path = "./src/bin/bindings_custom_types.rs"
-
 [build-dependencies]
 tauri-build = { version = "2.0.3", features = [] }
 
@@ -63,3 +59,4 @@ png = []
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
 tauri-plugin-global-shortcut = "2.0.1"
+tauri-plugin-updater = "2"

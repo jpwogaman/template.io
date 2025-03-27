@@ -1,6 +1,6 @@
 {
   "name": "template-io",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "",
   "private": true,
   "type": "module",
@@ -22,7 +22,6 @@
     "depsProd": "ncu --interactive --dep prod --format group",
     "tauri": "tauri",
     "count": "count-lines-in-repo.bat",
-    "bindings": "cd src-tauri && cargo test && cargo run --bin bindings_custom_types",
     "full_clean": "cd src-tauri && cargo clean && cd.. && rm -rf node_modules/ && rm -rf pnpm-lock.yaml && rm -rf dist/ && rm -rf .next/ && pnpm install && pnpm tauri dev",
     "migrations": "cd src-tauri && ENV DATABASE_URL=\"file:./migrations.sqlite\" diesel migration run && rm -rf ./migrations.sqlite"
   },
@@ -55,6 +54,7 @@
     "@tauri-apps/plugin-os": "~2",
     "@tauri-apps/plugin-process": "~2",
     "@tauri-apps/plugin-shell": "~2",
+    "@tauri-apps/plugin-updater": "~2",
     "@use-gesture/react": "^10.3.1",
     "motion": "^12.6.1",
     "next": "15.2.4",

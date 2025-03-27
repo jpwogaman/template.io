@@ -8,18 +8,25 @@
   },
   "bundle": {
     "active": true,
+    "createUpdaterArtifacts": true,
     "category": "Productivity",
     "copyright": "Copyright ©2022 JP Wogaman II",
-    "icon": [
-      "icons/icon.ico",
-      "icons/icon.png"
-    ]
+    "icon": ["icons/icon.ico", "icons/icon.png"]
   },
   "productName": "template-io",
   "mainBinaryName": "template-io",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "identifier": "template-io",
-  "plugins": {},
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDdERDVDNDlFQ0Q0MTFGMEQKUldRTkgwSE5uc1RWZlg1NVVoWUJQaG5YcjZKVENEdHlJTUF5UDJURzU3cjhzSGg1M2p5QkQ1dkQK",
+      "endpoints": [
+        "https://raw.githubusercontent.com/jpwogaman/template.io/refs/heads/updater/updates/v0.0.1.json"
+      ],
+      "dialog": true,
+      "active": true
+    }
+  },
   "app": {
     "windows": [
       {
@@ -33,12 +40,7 @@
     ],
     "security": {
       "csp": null,
-      "capabilities": [
-        "migrated",
-        "desktop-capability",
-        "fs",
-        "log"
-      ]
+      "capabilities": ["migrated", "desktop-capability", "fs", "log", "updater"]
     }
   }
 }

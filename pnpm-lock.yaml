@@ -50,6 +50,9 @@ importers:
       '@tauri-apps/plugin-shell':
         specifier: ~2
         version: 2.2.0
+      '@tauri-apps/plugin-updater':
+        specifier: ~2
+        version: 2.6.1
       '@use-gesture/react':
         specifier: ^10.3.1
         version: 10.3.1(react@19.0.0)
@@ -762,6 +765,9 @@ packages:
 
   '@tauri-apps/plugin-shell@2.2.0':
     resolution: {integrity: sha512-iC3Ic1hLmasoboG7BO+7p+AriSoqAwKrIk+Hpk+S/bjTQdXqbl2GbdclghI4gM32X0bls7xHzIFqhRdrlvJeaA==}
+
+  '@tauri-apps/plugin-updater@2.6.1':
+    resolution: {integrity: sha512-iiOevw4kc12Ok99J9KthXwUqwPv1sYjG+tNEDZqPmwvOmIq7s58nKMRz6NJPKXT4U16NzMPffFcP/LUOsz6c4A==}
 
   '@types/eslint@9.6.1':
     resolution: {integrity: sha512-FXx2pKgId/WyYo2jXw63kk7/+TY7u7AziEJxJAnSFzHlqTAS3Ync6SvgYAN/k4/PQpnnVuzoMuVnByKK2qp0ag==}
@@ -2835,6 +2841,10 @@ snapshots:
       '@tauri-apps/api': 2.4.0
 
   '@tauri-apps/plugin-shell@2.2.0':
+    dependencies:
+      '@tauri-apps/api': 2.4.0
+
+  '@tauri-apps/plugin-updater@2.6.1':
     dependencies:
       '@tauri-apps/api': 2.4.0
 
