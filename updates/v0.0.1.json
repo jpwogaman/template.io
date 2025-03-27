@@ -1,0 +1,10 @@
+{
+  "version": "0.0.1",
+  "notes": "test",
+  "platforms": {
+    "windows-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRTkgwSE5uc1RWZlEvVkNNRThLMGl0d2FodWtJNnpVWkJ3TzEvZ1ErSFVmVDd0czVJU0R0aU9uZ0t5c1hvM3I0VGs5WHNtM1JCaEczTThJYmt6VmEwRDJHUDk4RWcwalEwPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzQzMDg3MDUwCWZpbGU6dGVtcGxhdGUtaW9fMC4xLjBfeDY0X2VuLVVTLm1zaQo4a0JKSmgySGpETU4rL0p0a2g2UVFQRmRBbGFKQjVMMXQyUEd0aE1DR2FkT21SZWVleDJIazVnZUMwWHFBdXFkZUtoKzAwTkordTAxTDFSY1F1VFhEQT09Cg==",
+      "url": "https://github.com/jpwogaman/template.io/releases/download/v0.0.1/template-io_0.1.0_x64_en-US.msi"
+    }
+  }
+}
