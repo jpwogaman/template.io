@@ -54,6 +54,10 @@
    - [2. For Each Track, Add a Transformer on the MIDI Sends with Port OSC3](#2-for-each-track-add-a-transformer-on-the-midi-sends-with-port-osc3)
    - [3. Bonus! Empty Tracks](#3-bonus-empty-tracks)
 8. [Custom Module in Action](#8-custom-module-in-action)
+9. [Full Example Using VEP](#9-full-example-using-vep)
+   - [Part 1. Gather Track Information](#part-1-gather-track-information)
+   - [Part 2. Input into Template.io](#part-2-input-into-templateio)
+   - [Part 3. Where the Magic Happens](#part-3-where-the-magic-happens)
 
 # How To Use Template.io Standalone
 
@@ -628,3 +632,57 @@ Okay let's make sure we have everything we need:
 Great! Now every time we select a track, Open Stage Control will populate the correct parameters for that track and we can now **_finally_** start writing music!
 
 ![custom module in action](./assets/Images/custom-module-in-action.gif)
+
+## 9. Full Example Using VEP
+
+### Part 1. Gather Track Information
+
+#### 1. VEP Instance
+
+![Full Example](./assets/Images/example-fl1-1.png)
+
+#### 2. Sampler and Individual Patch
+
+![Full Example](./assets/Images/example-fl1-2.png)
+![Full Example](./assets/Images/example-fl1-3.png)
+![Full Example](./assets/Images/example-fl1-13.png)
+
+### Part 2. Input into Template.io
+
+#### 1.
+
+![Full Example](./assets/Images/example-fl1-7.png)
+
+#### 2.
+
+![Full Example](./assets/Images/example-fl1-8.png)
+
+#### 3.
+
+![Full Example](./assets/Images/example-fl1-9.png)
+
+#### 4.
+
+![Full Example](./assets/Images/example-fl1-10.png)
+
+#### 5.
+
+![Full Example](./assets/Images/example-fl1-11.png)
+
+#### 6.
+
+![Full Example](./assets/Images/example-fl1-12.png)
+
+#### 7.
+
+![Full Example](./assets/Images/example-fl1-4.png)
+
+### Part 3. Where the Magic Happens
+
+#### 1. Cubase
+
+![Full Example](./assets/Images/example-fl1-5.png)
+
+#### 2. Open Stage Control
+
+![Full Example](./assets/Images/example-fl1-6.png)
