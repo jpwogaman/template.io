@@ -67,20 +67,28 @@ jobs:
 
       - name: Get Release Assets
         id: get_assets
+        shell: pwsh
         run: |
-          RELEASE_ID=${{ steps.tauri_build.outputs.releaseId }}
-          ASSETS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/releases/$RELEASE_ID/assets")
+          $releaseId = "${{ steps.tauri_build.outputs.releaseId }}"
+          echo "Release ID: $releaseId"
 
-          echo "$ASSETS" > assets.json
+          $headers = @{ Authorization = "token ${{ secrets.GITHUB_TOKEN }}" }
+          $assets = Invoke-RestMethod -Uri "https://api.github.com/repos/${{ github.repository }}/releases/$releaseId/assets" -Headers $headers
+
+          $assets | ConvertTo-Json -Depth 10 | Out-File -FilePath assets.json
           echo "Assets fetched. Now filtering..."
 
       - name: Delete Unwanted Assets
+        shell: pwsh
         run: |
-          RELEASE_ID=${{ steps.tauri_build.outputs.releaseId }}
+          $releaseId = "${{ steps.tauri_build.outputs.releaseId }}"
+          $headers = @{ Authorization = "token ${{ secrets.GITHUB_TOKEN }}" }
 
-          for ASSET_ID in $(jq -r '.[] | select(.name | endswith(".sig") or endswith(".exe")) | .id' assets.json); do
-            echo "Deleting asset ID: $ASSET_ID"
-            curl -X DELETE -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              "https://api.github.com/repos/${{ github.repository }}/releases/assets/$ASSET_ID"
-          done
+          $assets = Get-Content assets.json | ConvertFrom-Json
+
+          foreach ($asset in $assets) {
+            if ($asset.name -match "\.(sig|exe)$") {
+              Write-Host "Deleting asset: $($asset.name) (ID: $($asset.id))"
+              Invoke-RestMethod -Uri "https://api.github.com/repos/${{ github.repository }}/releases/assets/$($asset.id)" -Headers $headers -Method Delete
+            }
+          }
