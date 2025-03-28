@@ -1,5 +1,9 @@
 {
   "$schema": "./gen/schemas/acl-manifests.json",
+  "productName": "Template.io",
+  "mainBinaryName": "template-io",
+  "identifier": "io.template",
+  "version": "0.0.1",
   "build": {
     "beforeBuildCommand": "pnpm build",
     "beforeDevCommand": "pnpm dev",
@@ -10,14 +14,12 @@
     "active": true,
     "createUpdaterArtifacts": true,
     "category": "Productivity",
+    "shortDescription": "Workflow enhancement for Open Stage Control, VEP, & Cubase.",
     "copyright": "Copyright ©2022 JP Wogaman II",
+    "publisher": "Wogamusic, LLC",
     "icon": ["icons/icon.ico", "icons/icon.png"],
     "targets": ["msi"]
   },
-  "productName": "template-io",
-  "mainBinaryName": "template-io",
-  "version": "0.0.1",
-  "identifier": "template-io",
   "plugins": {
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDdERDVDNDlFQ0Q0MTFGMEQKUldRTkgwSE5uc1RWZlg1NVVoWUJQaG5YcjZKVENEdHlJTUF5UDJURzU3cjhzSGg1M2p5QkQ1dkQK",
