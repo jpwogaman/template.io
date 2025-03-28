@@ -1,18 +1,15 @@
 {
   "name": "template-io",
   "version": "0.0.1",
-  "description": "",
-  "private": true,
-  "type": "module",
+  "author": "JP Wogaman II",
   "repository": {
     "type": "git",
     "url": "https://github.com/jpwogaman/template.io"
   },
-  "author": "JP Wogaman II",
+  "description": "Workflow enhancement for Open Stage Control, VEP, & Cubase.",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/jpwogaman/template.io/issues"
-  },
+  "private": true,
+  "type": "module",
   "scripts": {
     "build": "next build",
     "dev": "next dev",
