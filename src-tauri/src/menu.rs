@@ -20,7 +20,7 @@ pub fn setup_menu(app: &App) -> tauri::Result<()> {
     .text("quit", "Quit")
     .build()?;
   let help_submenu = SubmenuBuilder::new(app, "Help")
-    .text("about", "About (v0.1.0)")
+    .text("about", "About (v0.0.1)")
     .text("settings", "Settings")
     .build()?;
 

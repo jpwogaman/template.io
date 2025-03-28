@@ -40,7 +40,7 @@ export const AboutModal = () => {
       <h3 className='text-center text-2xl'>Template.io</h3>
       <div className='text-main font-code mt-4 text-left text-base'>
         <p>
-          Version: 0.0.0{' '}
+          Version: 0.0.1{' '}
           <button
             className='text-blue-600 dark:text-blue-400'
             onClick={checkForUpdates}
