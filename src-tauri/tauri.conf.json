@@ -11,7 +11,8 @@
     "createUpdaterArtifacts": true,
     "category": "Productivity",
     "copyright": "Copyright ©2022 JP Wogaman II",
-    "icon": ["icons/icon.ico", "icons/icon.png"]
+    "icon": ["icons/icon.ico", "icons/icon.png"],
+    "targets": ["msi"]
   },
   "productName": "template-io",
   "mainBinaryName": "template-io",

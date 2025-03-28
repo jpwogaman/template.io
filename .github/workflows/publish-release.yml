@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:          
+        include:
           - platform: 'windows-latest'
             args: ''
 
@@ -27,13 +27,14 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 9.15
+          run_install: false
 
-      - name: Setup Node.js
+      - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
-          cache: pnpm
+          node-version: 18.20
+          cache: 'pnpm'
 
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
@@ -41,10 +42,17 @@ jobs:
           # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
           targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
       - name: install frontend dependencies
         run: pnpm install # change this to npm, pnpm or bun depending on which one you use.
 
-      - uses: tauri-apps/tauri-action@v0
+      - name: Tauri Build and Upload Assets
+        id: tauri_action
+        uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
@@ -56,3 +64,23 @@ jobs:
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}
+
+      - name: Get Release Assets
+        id: get_assets
+        run: |
+          RELEASE_ID=${{ steps.tauri_build.outputs.releaseId }}
+          ASSETS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/releases/$RELEASE_ID/assets")
+
+          echo "$ASSETS" > assets.json
+          echo "Assets fetched. Now filtering..."
+
+      - name: Delete Unwanted Assets
+        run: |
+          RELEASE_ID=${{ steps.tauri_build.outputs.releaseId }}
+
+          for ASSET_ID in $(jq -r '.[] | select(.name | endswith(".sig") or endswith(".exe")) | .id' assets.json); do
+            echo "Deleting asset ID: $ASSET_ID"
+            curl -X DELETE -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              "https://api.github.com/repos/${{ github.repository }}/releases/assets/$ASSET_ID"
+          done
