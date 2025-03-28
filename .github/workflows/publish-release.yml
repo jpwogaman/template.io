@@ -69,7 +69,7 @@ jobs:
         id: get_assets
         shell: pwsh
         run: |
-          $releaseId = "${{ steps.tauri_build.outputs.releaseId }}"
+          $releaseId = "${{ steps.tauri_action.outputs.releaseId }}"
           echo "Release ID: $releaseId"
 
           $headers = @{ Authorization = "token ${{ secrets.GITHUB_TOKEN }}" }
@@ -81,7 +81,7 @@ jobs:
       - name: Delete Unwanted Assets
         shell: pwsh
         run: |
-          $releaseId = "${{ steps.tauri_build.outputs.releaseId }}"
+          $releaseId = "${{ steps.tauri_action.outputs.releaseId }}"
           $headers = @{ Authorization = "token ${{ secrets.GITHUB_TOKEN }}" }
 
           $assets = Get-Content assets.json | ConvertFrom-Json
