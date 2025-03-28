@@ -14,7 +14,7 @@ export const AboutModal = () => {
       let downloaded = 0
       let contentLength = 0
       // alternatively we could also call update.download() and update.install() separately
-      await update.download((event) => {
+      await update.downloadAndInstall((event) => {
         switch (event.event) {
           case 'Started':
             contentLength = event.data.contentLength ?? 0
@@ -31,7 +31,7 @@ export const AboutModal = () => {
       })
 
       console.log('update downloaded')
-      //await relaunch()
+      await relaunch()
     }
   }
 

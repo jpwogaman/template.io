@@ -78,7 +78,7 @@ jobs:
           $assets | ConvertTo-Json -Depth 10 | Out-File -FilePath assets.json
           echo "Assets fetched. Now filtering..."
 
-      - name: Delete Unwanted Assets
+      - name: Delete Unwanted Assets (.sig)
         shell: pwsh
         run: |
           $releaseId = "${{ steps.tauri_action.outputs.releaseId }}"
@@ -87,7 +87,7 @@ jobs:
           $assets = Get-Content assets.json | ConvertFrom-Json
 
           foreach ($asset in $assets) {
-            if ($asset.name -match "\.(sig|exe)$") {
+            if ($asset.name -match "\.(sig)$") {
               Write-Host "Deleting asset: $($asset.name) (ID: $($asset.id))"
               Invoke-RestMethod -Uri "https://api.github.com/repos/${{ github.repository }}/releases/assets/$($asset.id)" -Headers $headers -Method Delete
             }
