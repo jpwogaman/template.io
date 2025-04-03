@@ -1,5 +1,5 @@
 'use client'
-import React, { useCallback, useLayoutEffect, type FC } from 'react'
+import React, { use, useCallback, useLayoutEffect, type FC } from 'react'
 import { HiOutlineLockClosed, HiOutlineLockOpen } from 'react-icons/hi2'
 import { FaArrowDown19 } from 'react-icons/fa6'
 import { twMerge } from 'tailwind-merge'
@@ -23,9 +23,14 @@ import {
   useContextMenu,
   type contextMenuType,
   type FileItemId,
-  type SubItemId
+  type SubItemId,
+  SelectValuesKeys
 } from '@/components/context'
 import { ScrollToSelectedItemButton } from './scrollToSelectedItemButton'
+import {
+  FileItem,
+  FullTrackWithCounts
+} from '../backendCommands/backendCommands'
 
 export const TrackList: FC = () => {
   const { setIsContextMenuOpen, setContextMenuId } = useContextMenu()
@@ -47,6 +52,41 @@ export const TrackList: FC = () => {
       refetch
     )
   }
+
+  type getInputPropsHelperType = {
+    item: FullTrackWithCounts
+    key: keyof FileItem
+    selectArray: SelectValuesKeys | undefined
+  }
+  const getInputPropsHelper = useCallback(
+    ({ item, key, selectArray }: getInputPropsHelperType) => {
+      const inputPropsHelper: InputComponentProps = {
+        id: `${item.id}_${key}`,
+        codeFullLocked: item?.locked,
+        defaultValue: item[key],
+        options: selectArray,
+        onChangeFunction: (event: ChangeEventHelper) => {
+          let typedValue: string | number | boolean = event.target.value
+
+          if (typeof item[key] === 'string') {
+            typedValue = event.target.value
+          } else if (typeof item[key] === 'number') {
+            typedValue = parseInt(event.target.value)
+          } else if (typeof item[key] === 'boolean') {
+            typedValue = event.target.value === 'true'
+          }
+          onChangeHelper({
+            newValue: typedValue,
+            layoutDataSingleId: item.id,
+            key
+          })
+        }
+      }
+
+      return inputPropsHelper
+    },
+    [onChangeHelper]
+  )
 
   const scrollIntoView = useCallback(() => {
     const manualWorksCardRef = document.getElementById(
@@ -257,29 +297,11 @@ export const TrackList: FC = () => {
                   const { key, show, input, selectArray } = keyActual
                   if (!show) return
 
-                  const inputPropsHelper: InputComponentProps = {
-                    id: `${item.id}_${key}`,
-                    codeFullLocked: item?.locked,
-                    defaultValue: item[key],
-                    options: selectArray,
-                    onChangeFunction: (event: ChangeEventHelper) => {
-                      let typedValue: string | number | boolean =
-                        event.target.value
-
-                      if (typeof item[key] === 'string') {
-                        typedValue = event.target.value
-                      } else if (typeof item[key] === 'number') {
-                        typedValue = parseInt(event.target.value)
-                      } else if (typeof item[key] === 'boolean') {
-                        typedValue = event.target.value === 'true'
-                      }
-                      onChangeHelper({
-                        newValue: typedValue,
-                        layoutDataSingleId: item.id,
-                        key
-                      })
-                    }
-                  }
+                  const inputPropsHelper = getInputPropsHelper({
+                    item,
+                    key,
+                    selectArray
+                  })
 
                   return (
                     <td
