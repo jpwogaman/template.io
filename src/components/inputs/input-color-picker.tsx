@@ -2,7 +2,8 @@ import React, {
   type FC,
   type ChangeEvent,
   useState,
-  useLayoutEffect
+  useLayoutEffect,
+  useCallback
 } from 'react'
 import { type InputComponentProps } from './index'
 import { twMerge } from 'tailwind-merge'
@@ -98,6 +99,20 @@ export const InputColorPicker: FC<InputComponentProps> = ({
     setColorDeleteId(null)
   }
 
+  const getSelectedItemDistanceFromTrackListHead = useCallback(() => {
+    const selectedItem = document.getElementById(id)
+    const trackListHead = document.getElementById('trackListHead')
+    const trackListHeadBottom =
+      trackListHead?.getBoundingClientRect().bottom ?? 0
+    const selectedItemTop = selectedItem?.getBoundingClientRect().top ?? 0
+    const selectedItemHeight = selectedItem?.getBoundingClientRect().height ?? 0
+
+    const selectedItemDistanceFromTrackListHead =
+      selectedItemTop - trackListHeadBottom + selectedItemHeight
+
+    return selectedItemDistanceFromTrackListHead
+  }, [id])
+
   return (
     <div
       style={{
@@ -112,7 +127,12 @@ export const InputColorPicker: FC<InputComponentProps> = ({
       {colorPickerPopUpOpen && isSelectedItem && (
         <div
           id='colorPickerPopUp'
-          className='absolute bottom-[34px] left-[22px] z-150 block max-h-112 min-h-32 w-40 rounded-sm bg-zinc-300 p-2 dark:bg-zinc-200'
+          className={twMerge(
+            getSelectedItemDistanceFromTrackListHead() < 160
+              ? 'top-[34px]'
+              : 'bottom-[34px]',
+            'absolute left-[22px] z-49 block max-h-112 min-h-32 w-40 rounded-sm bg-zinc-300 p-2 dark:bg-zinc-200'
+          )}
           onClick={(e) => {
             const colorDeletePopUp = document.getElementById('colorDeletePopUp')
 

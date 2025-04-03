@@ -87,7 +87,7 @@ export const TrackList: FC = () => {
       id='trackList'
       className='relative h-full w-1/2 overflow-y-scroll'>
       <table className='w-full table-fixed border-separate border-spacing-0 text-left text-xs'>
-        <thead>
+        <thead id='trackListHead'>
           <tr>
             {/* COLOR PICKER HEAD */}
             <td
