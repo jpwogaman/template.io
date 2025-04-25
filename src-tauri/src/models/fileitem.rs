@@ -45,7 +45,7 @@ pub struct FileItem {
   pub color: String,
 }
 
-#[derive(Deserialize, Serialize, Default, Clone, specta::Type)]
+#[derive(Deserialize, Serialize, Default, Debug, Clone, specta::Type)]
 pub struct FileItemRequest {
   pub id: String, // manually changed to FileItemId
   #[specta(optional)]

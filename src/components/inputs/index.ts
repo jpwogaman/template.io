@@ -79,6 +79,7 @@ export type InputComponentProps = {
     | boolean
     | { off: string; on: string }
     | { layers: string; together: boolean; default: string }
+    | { ranges: string }
   placeholder?: string | number
   options?: SelectValuesKeys
   multiSelectTog?: boolean

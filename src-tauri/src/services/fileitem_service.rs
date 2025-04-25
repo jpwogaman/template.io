@@ -51,6 +51,7 @@ use crate::{
       delete_all_art_tap,
       delete_all_art_tap_for_fileitem,
     },
+    items_artlist_service,
     items_art_layers_service::{
       store_new_art_layer,
       list_items_art_layers,
@@ -640,14 +641,26 @@ pub fn delete_all_fileitems() {
 }
 
 pub fn update_fileitem(data: FileItemRequest) {
+
+  println!("Updating fileitem: {:?}", data.clone());
+
   let connection = &mut establish_db_connection();
 
   let original_fileitem = get_fileitem(data.id.clone()).unwrap();
   let new_fileitem = original_fileitem.update_from(data.clone());
 
+  // Call get_avg_delay ONLY if base_delay has changed
+  if
+    data.base_delay.is_some() &&
+    data.base_delay != Some(original_fileitem.base_delay)
+  {
+    items_artlist_service::get_avg_delay(data.id.clone(),
+      Some(data.base_delay.unwrap())
+    );
+  }
+
   diesel
     ::update(fileitems_dsl::fileitems.filter(fileitems_dsl::id.eq(data.id)))
-
     .set(&new_fileitem)
     .execute(connection)
     .expect("Error updating fileitem");
