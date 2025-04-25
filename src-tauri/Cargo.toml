@@ -1,11 +1,10 @@
 [package]
 name = "template-io"
-version = "0.1.0"
-description = "template-io"
+version = "0.0.1"
 authors = ["JP Wogaman II"]
-license = "MIT"
 repository = "https://github.com/jpwogaman/template.io"
-default-run = "template-io"
+description = "Workflow enhancement for Open Stage Control, VEP, & Cubase."
+license = "MIT"
 edition = "2021"
 rust-version = "1.84.0"
 
