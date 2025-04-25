@@ -409,7 +409,9 @@ export const InputSelectMultiple: FC<InputComponentProps> = ({
 
     if (options === 'artRngsArray') {
       try {
-        const fixedJson = (defaultValue as string).toString().replace(/'/g, '"')
+        const fixedJson = (defaultValue as { ranges: string }).ranges
+          .toString()
+          .replace(/'/g, '"')
         const parsedArray = JSON.parse(fixedJson) as string[]
         setActiveValuesTapLayersOrBothRanges(new Set(parsedArray))
       } catch (error) {

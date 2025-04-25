@@ -1,18 +1,15 @@
 {
   "name": "template-io",
-  "version": "0.1.0",
-  "description": "",
-  "private": true,
-  "type": "module",
+  "version": "0.0.1",
+  "author": "JP Wogaman II",
   "repository": {
     "type": "git",
     "url": "https://github.com/jpwogaman/template.io"
   },
-  "author": "JP Wogaman II",
+  "description": "Workflow enhancement for Open Stage Control, VEP, & Cubase.",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/jpwogaman/template.io/issues"
-  },
+  "private": true,
+  "type": "module",
   "scripts": {
     "build": "next build",
     "dev": "next dev",
@@ -22,7 +19,6 @@
     "depsProd": "ncu --interactive --dep prod --format group",
     "tauri": "tauri",
     "count": "count-lines-in-repo.bat",
-    "bindings": "cd src-tauri && cargo test && cargo run --bin bindings_custom_types",
     "full_clean": "cd src-tauri && cargo clean && cd.. && rm -rf node_modules/ && rm -rf pnpm-lock.yaml && rm -rf dist/ && rm -rf .next/ && pnpm install && pnpm tauri dev",
     "migrations": "cd src-tauri && ENV DATABASE_URL=\"file:./migrations.sqlite\" diesel migration run && rm -rf ./migrations.sqlite"
   },
@@ -30,15 +26,8 @@
     "initVersion": "6.11.2"
   },
   "engines": {
-    "node": "18.20.x",
-    "pnpm": "9.15.x"
-  },
-  "pnpm": {
-    "peerDependencyRules": {
-      "allowedVersions": {
-        "eslint": "9"
-      }
-    }
+    "node": "22",
+    "pnpm": "10"
   },
   "dependencies": {
     "@next/bundle-analyzer": "^15.3.1",
@@ -55,6 +44,7 @@
     "@tauri-apps/plugin-os": "~2",
     "@tauri-apps/plugin-process": "~2",
     "@tauri-apps/plugin-shell": "~2",
+    "@tauri-apps/plugin-updater": "~2",
     "@use-gesture/react": "^10.3.1",
     "motion": "^12.9.1",
     "next": "15.3.1",

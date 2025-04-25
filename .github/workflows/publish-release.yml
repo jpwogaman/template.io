@@ -1,0 +1,94 @@
+# https://github.com/tauri-apps/tauri-action
+
+name: 'publish'
+
+on:
+  push:
+    branches:
+      - updater
+
+# This workflow will trigger on each push to the `release` branch to create or update a GitHub release, build your app, and upload the artifacts to the release.
+
+jobs:
+  publish-tauri:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: 'windows-latest'
+            args: ''
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - name: install frontend dependencies
+        run: pnpm install # change this to npm, pnpm or bun depending on which one you use.
+
+      - name: Tauri Build and Upload Assets
+        id: tauri_action
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        with:
+          tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
+          releaseName: 'v__VERSION__'
+          releaseBody: 'See the assets to download this version and install.'
+          releaseDraft: false
+          prerelease: false
+          args: ${{ matrix.args }}
+
+      - name: Get Release Assets
+        id: get_assets
+        shell: pwsh
+        run: |
+          $releaseId = "${{ steps.tauri_action.outputs.releaseId }}"
+          echo "Release ID: $releaseId"
+
+          $headers = @{ Authorization = "token ${{ secrets.GITHUB_TOKEN }}" }
+          $assets = Invoke-RestMethod -Uri "https://api.github.com/repos/${{ github.repository }}/releases/$releaseId/assets" -Headers $headers
+
+          $assets | ConvertTo-Json -Depth 10 | Out-File -FilePath assets.json
+          echo "Assets fetched. Now filtering..."
+
+      - name: Delete Unwanted Assets (.sig)
+        shell: pwsh
+        run: |
+          $releaseId = "${{ steps.tauri_action.outputs.releaseId }}"
+          $headers = @{ Authorization = "token ${{ secrets.GITHUB_TOKEN }}" }
+
+          $assets = Get-Content assets.json | ConvertFrom-Json
+
+          foreach ($asset in $assets) {
+            if ($asset.name -match "\.(sig)$") {
+              Write-Host "Deleting asset: $($asset.name) (ID: $($asset.id))"
+              Invoke-RestMethod -Uri "https://api.github.com/repos/${{ github.repository }}/releases/assets/$($asset.id)" -Headers $headers -Method Delete
+            }
+          }

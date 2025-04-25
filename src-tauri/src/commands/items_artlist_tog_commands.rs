@@ -70,5 +70,11 @@ pub fn delete_art_tog_by_fileitem(
 #[tauri::command]
 #[specta::specta]
 pub fn update_art_tog(data: ItemsArtListTogRequest) {
-  items_artlist_tog_service::update_art_tog(data);
+  items_artlist_tog_service::update_art_tog(data.clone());
+  let original_art_tog = items_artlist_tog_service
+    ::get_art_tog(data.id.clone())
+    .unwrap();
+
+  let fileitems_item_id = original_art_tog.fileitems_item_id.clone();
+  items_artlist_service::get_avg_delay(fileitems_item_id, None);
 }

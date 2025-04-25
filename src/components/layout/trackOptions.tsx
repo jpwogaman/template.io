@@ -377,7 +377,16 @@ export const TrackOptions: FC = () => {
                   together: safeValueTapLayersTogether as boolean,
                   default: safeValueTapLayersTogetherDefault as string
                 }
-              : safeValue,
+              : layoutConfig.label === 'art_list_tog' && subKey.key === 'ranges'
+                ? {
+                    ranges: safeValue as string
+                  }
+                : layoutConfig.label === 'art_list_tap' &&
+                    subKey.key === 'ranges'
+                  ? {
+                      ranges: safeValue as string
+                    }
+                  : safeValue,
         options: noteOptionsHelper(
           layoutConfig.label,
           layoutDataSingle,

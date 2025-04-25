@@ -81,8 +81,16 @@ pub fn delete_art_tap_by_fileitem(
 #[tauri::command]
 #[specta::specta]
 pub fn update_art_tap(data: ItemsArtListTapRequest) -> Result<(), String> {
-  match items_artlist_tap_service::update_art_tap(data) {
-    Ok(_) => { Ok(()) }
+  match items_artlist_tap_service::update_art_tap(data.clone()) {
+    Ok(_) => {
+      let original_art_tap = items_artlist_tap_service
+        ::get_art_tap(data.id.clone())
+        .unwrap();
+
+      let fileitems_item_id = original_art_tap.fileitems_item_id.clone();
+      items_artlist_service::get_avg_delay(fileitems_item_id, None);
+      Ok(())
+    }
     Err(err) => {
       println!("Error: {}", err);
       Err(err.to_string())

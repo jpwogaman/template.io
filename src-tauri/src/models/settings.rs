@@ -99,7 +99,7 @@ pub fn init_settings() -> Settings {
 pub fn normalize_hex(color: &str) -> Option<String> {
   let re = Regex::new(r"^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$").unwrap();
 
-  if let Some(caps) = re.captures(color) {
+  match re.captures(color) { Some(caps) => {
     let hex = caps.get(1).unwrap().as_str().to_lowercase();
     let normalized = if hex.len() == 3 {
       hex
@@ -110,9 +110,9 @@ pub fn normalize_hex(color: &str) -> Option<String> {
       hex
     };
     Some(format!("#{}", normalized))
-  } else {
+  } _ => {
     None
-  }
+  }}
 }
 
 impl Settings {
